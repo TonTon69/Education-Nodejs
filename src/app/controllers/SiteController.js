@@ -1,7 +1,7 @@
 class SiteController {
     // [GET]/
     index(req, res, next) {
-        res.send("Hello");
+        res.render("index");
     }
 }
 

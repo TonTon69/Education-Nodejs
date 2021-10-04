@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const path = require("path");
 const express = require("express");
-const morgan = require("morgan");
+// const morgan = require("morgan");
 
 const methodOverride = require("method-override");
 // const moment = require("moment");
@@ -17,6 +17,7 @@ const db = require("./config/db");
 db.connect();
 
 const app = express();
+// const port = 3000;
 
 // Template engine
 app.set("view engine", "pug");
@@ -28,7 +29,7 @@ app.use(express.json());
 // HTTP request logger middleware for node.js
 // app.use(morgan("combined"));
 
-// app.use(cookieParser(process.env.SESSION_SECRET));
+app.use(cookieParser(process.env.SESSION_SECRET));
 
 // Static file
 app.use(express.static(path.join(__dirname, "public")));
@@ -38,14 +39,14 @@ app.use(methodOverride("_method"));
 // app.locals.moment = moment;
 
 //
-// app.use(
-//     session({
-//         cookie: { maxAge: 60000 },
-//         saveUninitialized: true,
-//         resave: "true",
-//         secret: "secret",
-//     })
-// );
+app.use(
+    session({
+        cookie: { maxAge: 60000 },
+        saveUninitialized: true,
+        resave: "true",
+        secret: "secret",
+    })
+);
 
 app.use(flash());
 

@@ -10,8 +10,16 @@
         "watch": "node-sass --watch src/resources/scss/ --output src/public/css/",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TonTon69/Education-NodeJS.git"
+    },
     "author": "",
     "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/TonTon69/Education-Nodejs/issues"
+    },
+    "homepage": "https://github.com/TonTon69/Education-Nodejs#readme",
     "lint-staged": {
         "src/**/*.{js,json,scss}": "prettier --trailing-comma all --tab-width 4 --write"
     },
