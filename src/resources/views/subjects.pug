@@ -15,14 +15,29 @@ block main
             #grade10.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='grade10-tab')
                 h4.fw-bold.mb-4 Môn học khối 10
                 .row
-                    .col-sm-3
-                        .subjects__item
-                            a.subjects__link(href='detail.html')
-                                .brand PC3
-                                .subject
-                                    h4 Môn Toán
-                                    ion-icon(name='calculator')
-                            h6.mt-3.subjects__title
-                                a(href='detail.html') Toán Học 10
+                    each subject in subjects
+                        if subject.gradeID === 10
+                            .col-sm-3
+                                .subjects__item
+                                    a.subjects__link(href=`/subjects/${subject.slug}`)
+                                        .brand PC3
+                                        .subject
+                                            h4= subject.name
+                                            ion-icon(name=subject.icon)
+                                    h6.mt-3.subjects__title
+                                        a(href=`/subjects/${subject.slug}`)= subject.name + " 10"
             #grade11.tab-pane.fade(role='tabpanel', aria-labelledby='grade11-tab') 2
-            #grade12.tab-pane.fade(role='tabpanel', aria-labelledby='grade12-tab') 3
+            #grade12.tab-pane.fade(role='tabpanel', aria-labelledby='grade12-tab')
+                h4.fw-bold.mb-4 Môn học khối 12
+                .row
+                    each subject in subjects
+                        if subject.gradeID === 12
+                            .col-sm-3
+                                .subjects__item
+                                    a.subjects__link(href=`/subjects/${subject.slug}`)
+                                        .brand PC3
+                                        .subject
+                                            h4= subject.name
+                                            ion-icon(name=subject.icon)
+                                    h6.mt-3.subjects__title
+                                        a(href=`/subjects/${subject.slug}`)= subject.name + " 12"

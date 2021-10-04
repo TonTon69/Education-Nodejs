@@ -1,3 +1,6 @@
+const Subject = require("../models/Subject");
+const Grade = require("../models/Grade");
+
 class SiteController {
     // [GET]/
     index(req, res, next) {
@@ -6,7 +9,11 @@ class SiteController {
 
     // [GET]/subjects
     subjects(req, res, next) {
-        res.render("subjects");
+        Promise.all([Subject.find({}), Grade.find({})])
+            .then(([subjects, grades]) => {
+                res.render("subjects", { subjects, grades });
+            })
+            .catch(next);
     }
 }
 

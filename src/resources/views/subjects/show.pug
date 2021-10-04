@@ -1,0 +1,95 @@
+extends ../layouts/common
+block main
+    section.subject__detail
+        .row
+            .col-sm-8
+                .mb-5
+                    h2.fw-bold.mb-3=subject.name + " " + subject.gradeID
+                    span.mt-4= subject.description
+                div
+                    h5.fw-bold Nội dung môn học
+                    .mt-4
+                        span 7 chương
+                        span -
+                        span 71 bài học
+                    #accordionSubjectDetail.accordion.mt-4
+                        .accordion-item
+                            h2#headingOne.accordion-header
+                                button.accordion-button(type='button', data-bs-toggle='collapse', data-bs-target='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
+                                    | CHƯƠNG 1. ỨNG DỤNG ĐẠO HÀM ĐỂ KHẢO SÁT VÀ VẼ ĐỒ THỊ HÀM SỐ
+                                    span.ms-2 (13 bài học)
+                            #collapseOne.accordion-collapse.collapse.show(aria-labelledby='headingOne', data-bs-parent='#accordionSubjectDetail')
+                                .accordion-body.p-0
+                                    .lession__item
+                                        | B&agrave;i 1. S&#x1EF1; &dstrok;&#x1ED3;ng bi&#x1EBF;n, ngh&#x1ECB;ch
+                                        | bi&#x1EBF;n c&#x1EE7;a h&agrave;m s&#x1ED1;
+                                    .lession__item
+                                        | B&agrave;i 2. C&#x1EF1;c tr&#x1ECB; c&#x1EE7;a h&agrave;m s&#x1ED1;
+            .col-sm-4
+                .d-flex.align-items-center.flex-column.ps-4
+                    h3 Mi&#x1EC5;n ph&iacute;
+                    div
+                        a.btn.btn-primary.rounded-pill.mt-3(href='learning.html')
+                            span.text-uppercase &Ocirc;n l&yacute; thuy&#x1EBF;t
+                    ul.ps-0.mb-0.pt-4.subject__detail--list
+                        li
+                            ion-icon(name='barcode-outline')
+                            span
+                            | T&#x1ED5;ng s&#x1ED1; 
+                            b 71
+                            |  b&agrave;i h&#x1ECD;c
+                        li
+                            ion-icon(name='battery-full-outline')
+                            span H&#x1ECD;c m&#x1ECD;i l&uacute;c, m&#x1ECD;i n&#x1A1;i
+                    .chart.shadow.mt-4
+                        .text-center
+                            .d-flex.align-items-center.justify-content-center.mb-3
+                                img(src='../img/graph-bar.svg', width='32', alt='')
+                                h6.fw-bold.mb-0.ms-3 B&#x1EA2;NG X&#x1EBE;P H&#x1EA0;NG M&Ocirc;N TO&Aacute;N 10
+                            button.text-danger.btn-instruct(type='button', data-bs-toggle='modal', data-bs-target='#instructModal')
+                                | C&aacute;ch t&iacute;nh &dstrok;i&#x1EC3;m? Xem t&#x1EA1;i &dstrok;&acirc;y!
+                            #instructModal.modal.fade(tabindex='-1', aria-labelledby='instructModalLabel', aria-hidden='true')
+                                .modal-dialog
+                                    .modal-content
+                                        .modal-header
+                                            h5#instructModalLabel.modal-title
+                                                | C&aacute;ch t&iacute;nh &dstrok;i&#x1EC3;m v&agrave; quy &dstrok;&#x1ECB;nh x&#x1EBF;p h&#x1EA1;ng
+                                            button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                                        .modal-body
+                                            .mb-3
+                                                | V&#x1EA5;n &dstrok;&#x1EC1; b&#x1EA1;n g&#x1EB7;p ph&#x1EA3;i l&agrave; g&igrave;?
+                            ul.ps-0.mb-0.mt-4
+                                li.chart__item
+                                    .position-relative
+                                        img.avatar(src='../img/avatar-no-name.png', alt='')
+                                        img.position-absolute.top-0.start-0(src='../img/gold.png', alt='')
+                                    span.name Hu&#x1EF3;nh Minh Ho&agrave;ng
+                                    .d-flex.align-items-center
+                                        span.me-1 10000
+                                        ion-icon(name='heart-circle')
+                                hr
+                                li.chart__item
+                                    .position-relative
+                                        img.avatar(src='../img/avatar-no-name.png', alt='')
+                                        img.position-absolute.top-0.start-0(src='../img/silver.png', alt='')
+                                    span.name Le Min Ho
+                                    .d-flex.align-items-center
+                                        span.me-1 1000
+                                        ion-icon(name='heart-circle')
+                                hr
+                                li.chart__item
+                                    .position-relative
+                                        img.avatar(src='../img/avatar-no-name.png', alt='')
+                                        img.position-absolute.top-0.start-0(src='../img/bronze.png', alt='')
+                                    span.name Park Min Young
+                                    .d-flex.align-items-center
+                                        span.me-1 100
+                                        ion-icon(name='heart-circle')
+                                hr
+                                li.chart__item
+                                    .position-relative
+                                        img.avatar(src='../img/avatar-no-name.png', alt='')
+                                    span.name Haki Yona
+                                    .d-flex.align-items-center
+                                        span.me-1 10
+                                        ion-icon(name='heart-circle')

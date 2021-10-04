@@ -1,7 +1,13 @@
+const Subject = require("../models/Subject");
+
 class SubjectController {
     // [GET]/subjects/:slug
     show(req, res, next) {
-        res.render("show");
+        Subject.findOne({ slug: req.params.slug })
+            .then(function (subject) {
+                res.render("subjects/show", { subject });
+            })
+            .catch(next);
     }
 }
 
