@@ -1,0 +1,28 @@
+extends ./layouts/common
+block main
+    section.subjects
+        ul#myTab.nav.nav-tabs(role='tablist')
+            li.nav-item(role='presentation')
+                button#grade10-tab.nav-link.active(data-bs-toggle='tab', data-bs-target='#grade10', type='button', role='tab', aria-controls='grade10', aria-selected='true')
+                    | Khối 10
+            li.nav-item(role='presentation')
+                button#grade11-tab.nav-link(data-bs-toggle='tab', data-bs-target='#grade11', type='button', role='tab', aria-controls='grade11', aria-selected='false')
+                    | Khối 11
+            li.nav-item(role='presentation')
+                button#grade12-tab.nav-link(data-bs-toggle='tab', data-bs-target='#grade12', type='button', role='tab', aria-controls='grade12', aria-selected='false')
+                    | Khối 12
+        .tab-content.mt-5
+            #grade10.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='grade10-tab')
+                h4.fw-bold.mb-4 Môn học khối 10
+                .row
+                    .col-sm-3
+                        .subjects__item
+                            a.subjects__link(href='detail.html')
+                                .brand PC3
+                                .subject
+                                    h4 Môn Toán
+                                    ion-icon(name='calculator')
+                            h6.mt-3.subjects__title
+                                a(href='detail.html') Toán Học 10
+            #grade11.tab-pane.fade(role='tabpanel', aria-labelledby='grade11-tab') 2
+            #grade12.tab-pane.fade(role='tabpanel', aria-labelledby='grade12-tab') 3
