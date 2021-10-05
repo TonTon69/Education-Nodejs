@@ -10,38 +10,42 @@ block main
                     h5.fw-bold Nội dung môn học
                     .mt-4
                         span= units.length + " chương"
-                        span  -
-                        each lengthLession in lessions.length
-                            span= lengthLession + " bài học"
+                        span  - 
+                        span= lessions.length + " bài học"
                     #accordionSubjectDetail.accordion.mt-4
-                        .accordion-item
-                            h2#headingOne.accordion-header
-                                button.accordion-button(type='button', data-bs-toggle='collapse', data-bs-target='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
-                                    | CHƯƠNG 1. ỨNG DỤNG ĐẠO HÀM ĐỂ KHẢO SÁT VÀ VẼ ĐỒ THỊ HÀM SỐ
-                                    span.ms-2 (13 bài học)
-                            #collapseOne.accordion-collapse.collapse.show(aria-labelledby='headingOne', data-bs-parent='#accordionSubjectDetail')
-                                .accordion-body.p-0
-                                    .lession__item
-                                        | B&agrave;i 1. S&#x1EF1; &dstrok;&#x1ED3;ng bi&#x1EBF;n, ngh&#x1ECB;ch
-                                        | bi&#x1EBF;n c&#x1EE7;a h&agrave;m s&#x1ED1;
-                                    .lession__item
-                                        | B&agrave;i 2. C&#x1EF1;c tr&#x1ECB; c&#x1EE7;a h&agrave;m s&#x1ED1;
+                        - var index=0;
+                        each unit in units
+                            - index++;
+                            .accordion-item.mb-0
+                                h2.accordion-header(id=`heading${index}`)
+                                    button.accordion-button.collapsed(type='button', data-bs-toggle='collapse', data-bs-target=`#collapse${index}`, aria-expanded='false', aria-controls=`collapse${index}`)
+                                        | #{unit.name}
+                                        - var count = 0;
+                                        each lession in lessions
+                                            if(lession.unitID == unit.id)
+                                                - count++;
+                                        span.ms-2 (#{count} bài học)
+                                .accordion-collapse.collapse(id=`collapse${index}`, aria-labelledby=`heading${index}`, data-bs-parent='#accordionSubjectDetail')
+                                    .accordion-body.p-0
+                                        each lession in lessions
+                                            if(lession.unitID == unit.id)
+                                                .lession__item= lession.name
             .col-sm-4
                 .d-flex.align-items-center.flex-column.ps-4
-                    h3 Mi&#x1EC5;n ph&iacute;
+                    h3 Miễn phí
                     div
                         a.btn.btn-primary.rounded-pill.mt-3(href='learning.html')
-                            span.text-uppercase &Ocirc;n l&yacute; thuy&#x1EBF;t
+                            span.text-uppercase ôn lý thuyết
                     ul.ps-0.mb-0.pt-4.subject__detail--list
                         li
                             ion-icon(name='barcode-outline')
                             span
-                            | T&#x1ED5;ng s&#x1ED1; 
-                            b 71
-                            |  b&agrave;i h&#x1ECD;c
+                            | Tổng số 
+                            b= lessions.length 
+                            |  bài học
                         li
                             ion-icon(name='battery-full-outline')
-                            span H&#x1ECD;c m&#x1ECD;i l&uacute;c, m&#x1ECD;i n&#x1A1;i
+                            span Học mọi lúc, mọi nơi
                     .chart.shadow.mt-4
                         .text-center
                             .d-flex.align-items-center.justify-content-center.mb-3
