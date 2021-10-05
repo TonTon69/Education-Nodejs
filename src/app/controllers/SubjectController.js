@@ -3,6 +3,8 @@ const Unit = require("../models/Unit");
 const Lession = require("../models/Lession");
 const Theory = require("../models/Theory");
 const RatingRegulation = require("../models/RatingRegulation");
+const ExerciseCategory = require("../models/ExerciseCategory");
+const Exercise = require("../models/Exercise");
 class SubjectController {
     // [GET]/subjects/:slug
     async show(req, res, next) {
@@ -57,8 +59,28 @@ class SubjectController {
     }
 
     // [GET]/exercise/:slug
-    exercise(req, res, next) {
-        res.render("exercise");
+    async exercise(req, res, next) {
+        try {
+            const subject = await Subject.findOne({ slug: req.params.slug });
+            if (subject) {
+                const lession = await Lession.findOne({ slug: req.query.name });
+                const exercises = await Exercise.find({
+                    lessionID: lession.id,
+                });
+                const exerciseCategories = await ExerciseCategory.find({});
+
+                res.render("subjects/exercise", {
+                    lession,
+                    subject,
+                    exercises,
+                    exerciseCategories,
+                });
+            } else {
+                res.render("error");
+            }
+        } catch (error) {
+            res.render("error");
+        }
     }
 }
 
