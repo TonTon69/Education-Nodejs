@@ -29,12 +29,12 @@ block main
                                     .accordion-body.p-0
                                         each lession in lessions
                                             if(lession.unitID == unit.id)
-                                                .lession__item= lession.name
+                                                a(href=`/learning/${subject.slug}?name=${lession.slug}`).lession__item= lession.name
             .col-sm-4
                 .d-flex.align-items-center.flex-column.ps-4
                     h3 Miễn phí
                     div
-                        a.btn.btn-primary.rounded-pill.mt-3(href='learning.html')
+                        //- a.btn.btn-primary.rounded-pill.mt-3(href=`/learning/${subject.slug}?id=${lession.id}`)
                             span.text-uppercase ôn lý thuyết
                     ul.ps-0.mb-0.pt-4.subject__detail--list
                         li

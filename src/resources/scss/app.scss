@@ -101,6 +101,10 @@ body {
 
 .btn.btn-exercise {
     background: #fb5533;
+
+    &.disabled {
+        opacity: 0.65 !important;
+    }
 }
 
 .btn.btn-secondary,

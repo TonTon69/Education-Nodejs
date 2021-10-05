@@ -1,0 +1,85 @@
+extends ../layouts/common
+block main
+    section.learning
+        .row
+            .col-sm-8
+                .learning__content.shadow
+                    .row
+                        .col-sm-9
+                            h4.title.mb-0= lession.name
+                        .col-sm-3.text-end
+                            if theory
+                                a.btn.btn-exercise.btn-padding.rounded-pill.fs-7(href='')
+                                    span.ms-1 Bài tập vận dụng
+                    hr
+                    if theory
+                        .mt-4.mb-4= theory.content
+                    else
+                        .mt-4.mb-4 Nội dung bài học đang cập nhật. Vui lòng thử lại sau!
+                    .text-center.mt-4.mb-4
+                        if theory
+                            a.btn.btn-exercise.rounded-pill(href='')
+                                | Luyện bài tập vận dụng tại đây
+                    hr
+                    .report
+                        button.report__btn(type='button', data-bs-toggle='modal', data-bs-target='#reportModal')
+                            ion-icon(name='close-circle')
+                            span.ms-1 Báo lỗi
+                        #reportModal.modal.fade(tabindex='-1', aria-labelledby='reportModalLabel', aria-hidden='true')
+                            .modal-dialog
+                                .modal-content
+                                    .modal-header
+                                        h5#reportModalLabel.modal-title Báo lỗi
+                                        button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                                    form(method='get')
+                                        .modal-body
+                                            .mb-3
+                                                label.col-form-label(for='message-text')
+                                                    | V&#x1EA5;n &dstrok;&#x1EC1; b&#x1EA1;n g&#x1EB7;p ph&#x1EA3;i l&agrave; g&igrave;?
+                                                .form-check.d-flex.align-items-center.mt-1.mb-1
+                                                    input#flexRadioReport1.form-check-input.mt-0.me-2(type='radio', name='flexRadioReport')
+                                                    label.form-check-label(for='flexRadioReport1')
+                                                        | Sai n&#x1ED9;i dung
+                                                .form-check.d-flex.align-items-center.mt-1.mb-1
+                                                    input#flexRadioReport2.form-check-input.mt-0.me-2(type='radio', name='flexRadioReport')
+                                                    label.form-check-label(for='flexRadioReport2')
+                                                        | L&yacute; thuy&#x1EBF;t kh&oacute; hi&#x1EC3;u
+                                                .form-check.d-flex.align-items-center.mt-1.mb-1
+                                                    input#flexRadioReport3.form-check-input.mt-0.me-2(type='radio', name='flexRadioReport')
+                                                    label.form-check-label(for='flexRadioReport3')
+                                                        | N&#x1ED9;i dung ch&#x1B0;a ph&ugrave; h&#x1EE3;p (VD: &Dstrok;&atilde; gi&#x1EA3;m t&#x1EA3;i,...)
+                                                .form-check.d-flex.align-items-center.mt-1.mb-1
+                                                    input#flexRadioReport4.form-check-input.mt-0.me-2(type='radio', name='flexRadioReport')
+                                                    label.form-check-label(for='flexRadioReport4')
+                                                        | L&#x1ED7;i kh&aacute;c
+                                            .mb-3
+                                                label.col-form-label(for='message-text')
+                                                    | M&ocirc; t&#x1EA3; chi
+                                                    | ti&#x1EBF;t
+                                                textarea#message-text.form-control(rows='5', placeholder='Góp ý lỗi bạn gặp phải với chúng tôi để khắc phục sớm nhất. Cảm ơn, chúc bạn học tập vui vẻ!')
+                                        .modal-footer
+                                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal')
+                                                | H&#x1EE7;y b&#x1ECF;
+                                            button.btn.btn-primary(type='submit')
+                                                | G&#x1EED;i
+            .col-sm-4
+                .learning__list
+                    h6= subject.name + " " + subject.gradeID
+                    span.fs-7 Tổng số #{lessions.length} bài học
+                    #accordionSubjectDetail.accordion.mt-3
+                        - var index=0;
+                        each unit in units
+                            - index++;
+                            .accordion-item.mb-0
+                                h2.accordion-header(id=`heading${index}`)
+                                    button.accordion-button.collapsed(type='button', data-bs-toggle='collapse', data-bs-target=`#collapse${index}`, aria-expanded='false', aria-controls=`collapse${index}`)
+                                        | #{unit.name}
+                                        - var count = 0;
+                                        each lession in lessions
+                                            if(lession.unitID == unit.id)
+                                                - count++;
+                                .accordion-collapse.collapse(id=`collapse${index}`, aria-labelledby=`heading${index}`, data-bs-parent='#accordionSubjectDetail')
+                                    .accordion-body.p-0
+                                        each lession in lessions
+                                            if(lession.unitID == unit.id)
+                                                a(href=`/learning/${subject.slug}?name=${lession.slug}`).lession__item= lession.name

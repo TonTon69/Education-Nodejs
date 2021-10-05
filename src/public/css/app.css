@@ -68,6 +68,8 @@ body {
 
 .btn.btn-exercise {
   background: #fb5533; }
+  .btn.btn-exercise.disabled {
+    opacity: 0.65 !important; }
 
 .btn.btn-secondary:hover,
 .btn.btn-success:hover {
