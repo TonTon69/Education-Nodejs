@@ -72,14 +72,17 @@ block main
                             - index++;
                             .accordion-item.mb-0
                                 h2.accordion-header(id=`heading${index}`)
-                                    button.accordion-button.collapsed(type='button', data-bs-toggle='collapse', data-bs-target=`#collapse${index}`, aria-expanded='false', aria-controls=`collapse${index}`)
+                                    button.accordion-button(type='button', data-bs-toggle='collapse', data-bs-target=`#collapse${index}`, aria-expanded='true', aria-controls=`collapse${index}`)
                                         | #{unit.name}
                                         - var count = 0;
-                                        each lession in lessions
-                                            if(lession.unitID == unit.id)
+                                        each item in lessions
+                                            if (item.unitID == unit.id)
                                                 - count++;
-                                .accordion-collapse.collapse(id=`collapse${index}`, aria-labelledby=`heading${index}`, data-bs-parent='#accordionSubjectDetail')
+                                .accordion-collapse.collapse.show(id=`collapse${index}`, aria-labelledby=`heading${index}`, data-bs-parent='#accordionSubjectDetail')
                                     .accordion-body.p-0
-                                        each lession in lessions
-                                            if(lession.unitID == unit.id)
-                                                a(href=`/learning/${subject.slug}?name=${lession.slug}`).lession__item= lession.name
+                                        each item in lessions
+                                            if (item.unitID == unit.id)
+                                                if (lession.slug == item.slug)
+                                                    a(href=`/learning/${item.slug}?name=${item.slug}`).lession__item.active= item.name
+                                                else
+                                                    a(href=`/learning/${item.slug}?name=${item.slug}`).lession__item= item.name

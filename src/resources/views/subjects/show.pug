@@ -22,13 +22,13 @@ block main
                                         | #{unit.name}
                                         - var count = 0;
                                         each lession in lessions
-                                            if(lession.unitID == unit.id)
+                                            if (lession.unitID == unit.id)
                                                 - count++;
-                                        span.ms-2 (#{count} bài học)
+                                        span (#{count} bài học)
                                 .accordion-collapse.collapse(id=`collapse${index}`, aria-labelledby=`heading${index}`, data-bs-parent='#accordionSubjectDetail')
                                     .accordion-body.p-0
                                         each lession in lessions
-                                            if(lession.unitID == unit.id)
+                                            if (lession.unitID == unit.id)
                                                 a(href=`/learning/${subject.slug}?name=${lession.slug}`).lession__item= lession.name
             .col-sm-4
                 .d-flex.align-items-center.flex-column.ps-4
@@ -50,19 +50,20 @@ block main
                         .text-center
                             .d-flex.align-items-center.justify-content-center.mb-3
                                 img(src='../img/graph-bar.svg', width='32', alt='')
-                                h6.fw-bold.mb-0.ms-3 B&#x1EA2;NG X&#x1EBE;P H&#x1EA0;NG M&Ocirc;N TO&Aacute;N 10
+                                h6.fw-bold.mb-0.ms-3.text-uppercase BẢNG XẾP HẠNG MÔN #{subject.name} #{subject.gradeID}
                             button.text-danger.btn-instruct(type='button', data-bs-toggle='modal', data-bs-target='#instructModal')
-                                | C&aacute;ch t&iacute;nh &dstrok;i&#x1EC3;m? Xem t&#x1EA1;i &dstrok;&acirc;y!
+                                | Cách tính điểm? Xem tại đây!
                             #instructModal.modal.fade(tabindex='-1', aria-labelledby='instructModalLabel', aria-hidden='true')
                                 .modal-dialog
                                     .modal-content
                                         .modal-header
                                             h5#instructModalLabel.modal-title
-                                                | C&aacute;ch t&iacute;nh &dstrok;i&#x1EC3;m v&agrave; quy &dstrok;&#x1ECB;nh x&#x1EBF;p h&#x1EA1;ng
+                                                | Cách tính điểm và quy định xếp hạng
                                             button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
                                         .modal-body
                                             .mb-3
-                                                | V&#x1EA5;n &dstrok;&#x1EC1; b&#x1EA1;n g&#x1EB7;p ph&#x1EA3;i l&agrave; g&igrave;?
+                                                each regulation in ratingRegulation
+                                                    | #{regulation.content}
                             ul.ps-0.mb-0.mt-4
                                 li.chart__item
                                     .position-relative

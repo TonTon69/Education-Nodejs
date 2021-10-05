@@ -735,8 +735,12 @@ body {
                     padding: 8px 26px;
                     border-bottom: 1px solid rgba(0, 0, 0, 0.03);
 
-                    &:hover {
-                        background: rgba(0, 0, 0, 0.01);
+                    &.active {
+                        background: #f8e3de;
+                    }
+
+                    &:hover:not(.active) {
+                        background: rgba(0, 0, 0, 0.02);
                     }
                 }
             }
@@ -1111,3 +1115,28 @@ body {
 }
 
 @import "./login";
+
+.error-404 {
+    font-family: "Nunito", sans-serif;
+
+    .page-error {
+        h1 {
+            font-size: 10em;
+            font-weight: 700;
+            color: #6c757d;
+        }
+
+        .page-description,
+        .page-back-home {
+            font-size: 18px;
+            font-weight: 400;
+            color: #34395e;
+        }
+
+        .simple-footer {
+            font-size: 14px;
+            font-weight: 400;
+            color: #6c757d;
+        }
+    }
+}
