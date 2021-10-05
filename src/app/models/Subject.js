@@ -10,7 +10,6 @@ const Subject = new Schema(
         name: { type: String, require: true },
         gradeID: { type: Number, ref: "Grade" },
         icon: { type: String },
-        description: { type: String },
         slug: { type: String, slug: "name" + "gradeID", unique: true },
     },
     {

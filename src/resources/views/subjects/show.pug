@@ -5,13 +5,14 @@ block main
             .col-sm-8
                 .mb-5
                     h2.fw-bold.mb-3=subject.name + " " + subject.gradeID
-                    span.mt-4= subject.description
+                    span.mt-4 #{subject.name} khối #{subject.gradeID} có khó không? #{subject.name} khối #{subject.gradeID} học những gì?
                 div
                     h5.fw-bold Nội dung môn học
                     .mt-4
-                        span 7 chương
-                        span -
-                        span 71 bài học
+                        span= units.length + " chương"
+                        span  -
+                        each lengthLession in lessions.length
+                            span= lengthLession + " bài học"
                     #accordionSubjectDetail.accordion.mt-4
                         .accordion-item
                             h2#headingOne.accordion-header
