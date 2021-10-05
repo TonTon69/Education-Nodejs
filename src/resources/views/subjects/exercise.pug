@@ -1,0 +1,120 @@
+extends ../layouts/common
+block main
+    section.exercise
+        .row
+            .col-sm-5.pe-5
+            h4.fw-bold.mb-4 S&#x1EF1; &dstrok;&#x1ED3;ng bi&#x1EBF;n, ngh&#x1ECB;ch bi&#x1EBF;n c&#x1EE7;a h&agrave;m s&#x1ED1;
+            ul#myTab.nav.nav-tabs(role='tablist')
+                li.nav-item(role='presentation')
+                button#description-tab.nav-link.active(data-bs-toggle='tab', data-bs-target='#description', type='button', role='tab', aria-controls='description', aria-selected='true')
+                    | M&ocirc; t&#x1EA3; b&agrave;i t&#x1EAD;p
+                li.nav-item(role='presentation')
+                button#rank-tab.nav-link(data-bs-toggle='tab', data-bs-target='#rank', type='button', role='tab', aria-controls='rank', aria-selected='false')
+                    | B&#x1EA3;ng x&#x1EBF;p h&#x1EA1;ng
+                li.nav-item(role='presentation')
+                button#help-tab.nav-link(data-bs-toggle='tab', data-bs-target='#help', type='button', role='tab', aria-controls='help', aria-selected='false')
+                    | Tr&#x1EE3; gi&uacute;p
+            .tab-content
+                #description.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='description-tab')
+                .mb-4.mt-4
+                    button.btn.btn-exercise.btn-padding.rounded-pill.fs-7.me-2 #Quiz
+                    a.btn.btn-primary.btn-padding.rounded-pill(href='/learning.html')
+                    .d-flex.align-items-center.fs-7
+                        ion-icon(name='book')
+                        span.ms-2 &Ocirc;n l&yacute; thuy&#x1EBF;t
+                div
+                    blockquote
+                    | Ch&#x1ECD;n &dstrok;&aacute;p &aacute;n &dstrok;&uacute;ng b&ecirc;n ph&#x1EA3;i m&agrave;n h&igrave;nh v&agrave; b&#x1EA5;m Ki&#x1EC3;m tra.
+                .d-flex.align-items-center.justify-content-between.mt-5.row
+                    .col-sm-4
+                    .score__achieved
+                        .top
+                        | S&#x1ED1; &dstrok;i&#x1EC3;m &dstrok;&#x1EA1;t &dstrok;&#x1B0;&#x1EE3;c
+                        .bottom
+                        | 0/100
+                    .col-sm-4
+                    .questions__done
+                        .top
+                        | S&#x1ED1; c&acirc;u &dstrok;&atilde; l&agrave;m
+                        .bottom
+                        | 0/10
+                    .col-sm-4
+                    .homework__time
+                        .top
+                        | Th&#x1EDD;i gian l&agrave;m b&agrave;i
+                        .bottom
+                        span#hour 00
+                        span :
+                        span#minute 00
+                        span :
+                        span#second 00
+                #rank.tab-pane.fade(role='tabpanel', aria-labelledby='rank-tab')
+                table.table.table-striped.mt-4
+                    thead
+                    tr
+                        th(scope='col') #
+                        th(scope='col') Th&agrave;nh vi&ecirc;n
+                        th(scope='col') &Dstrok;i&#x1EC3;m
+                        th(scope='col') Th&#x1EDD;i gian n&#x1ED9;p
+                    tbody
+                    tr.align-middle
+                        th(scope='row')
+                        img(src='./assets/img/gold.png', alt='')
+                        td
+                        .d-flex.align-items-center
+                            img.rounded-circle(src='./assets/img/avatar-no-name.png', alt='', width='30')
+                            span.ms-2 Mark
+                        td 100
+                        td 23:10:54 03/09/2020
+                #help.tab-pane.fade(role='tabpanel', aria-labelledby='help-tab')
+                | 3
+            .col-sm-7
+            .quiz
+                .d-flex.align-items-center
+                button.btn.btn-success.btn-padding.rounded-pill.fs-7.me-3 Nh&#x1EAD;n bi&#x1EBF;t
+                .d-flex.align-items-center
+                    ion-icon.text-danger.fs-4(name='heart-circle')
+                    span.ms-1 10
+                .mt-4.mb-4
+                h6.fw-bold.mb-3 C&acirc;u 1
+                .question
+                    | T&igrave;m m&ocirc; &dstrok;un c&#x1EE7;a s&#x1ED1; ph&#x1EE9;c z = 5 - 4i
+                .options.mt-4
+                    .form-check.d-flex.align-items-center
+                    input#flexRadioDefault1.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
+                    label.form-check-label(for='flexRadioDefault1')
+                        | A. 9
+                    .form-check.d-flex.align-items-center
+                    input#flexRadioDefault2.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
+                    label.form-check-label(for='flexRadioDefault2')
+                        | B. 3
+                    .form-check.d-flex.align-items-center
+                    input#flexRadioDefault3.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
+                    label.form-check-label(for='flexRadioDefault3')
+                        | C. 1
+                    .form-check.d-flex.align-items-center
+                    input#flexRadioDefault4.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
+                    label.form-check-label(for='flexRadioDefault4')
+                        | D. &Sqrt;41
+                .actions.d-flex.align-items-center.justify-content-end.pt-4
+                    .recommend
+                    button.btn.btn-primary.btn-padding.d-flex.align-items-center.me-2(data-bs-toggle='modal', data-bs-target='#recommendModal')
+                        ion-icon(name='sunny')
+                        span.ms-1 G&#x1EE3;i &yacute;
+                    button.btn.btn-success.btn-padding.d-flex.align-items-center
+                    ion-icon(name='arrow-forward-outline')
+                    span.ms-1 C&acirc;u ti&#x1EBF;p theo
+                // Modal recommend
+                #recommendModal.modal.fade(tabindex='-1', aria-labelledby='recommendModalLabel', aria-hidden='true')
+                    .modal-dialog
+                    .modal-content
+                        .modal-header
+                        h5#recommendModalLabel.modal-title
+                            | Ph&#x1B0;&#x1A1;ng ph&aacute;p
+                            | gi&#x1EA3;i
+                        button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                        .modal-body
+                        | Ghi ph&#x1B0;&#x1A1;ng ph&aacute;p t&#x1EA1;i &dstrok;&acirc;y!
+                        .modal-footer
+                        button.btn.btn-success(type='button', data-bs-dismiss='modal')
+                            | T&ocirc;i &dstrok;&atilde; hi&#x1EC3;u

@@ -9,7 +9,7 @@ block main
                             h4.title.mb-0= lession.name
                         .col-sm-3.text-end
                             if theory
-                                a.btn.btn-exercise.btn-padding.rounded-pill.fs-7(href='')
+                                a.btn.btn-exercise.btn-padding.rounded-pill.fs-7(href=`/exercise/${subject.slug}?name=${lession.slug}`)
                                     span.ms-1 Bài tập vận dụng
                     hr
                     if theory
@@ -83,6 +83,6 @@ block main
                                         each item in lessions
                                             if (item.unitID == unit.id)
                                                 if (lession.slug == item.slug)
-                                                    a(href=`/learning/${item.slug}?name=${item.slug}`).lession__item.active= item.name
+                                                    a(href=`/learning/${subject.slug}?name=${item.slug}`).lession__item.active= item.name
                                                 else
-                                                    a(href=`/learning/${item.slug}?name=${item.slug}`).lession__item= item.name
+                                                    a(href=`/learning/${subject.slug}?name=${item.slug}`).lession__item= item.name

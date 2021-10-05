@@ -24,7 +24,7 @@ block main
                                         each lession in lessions
                                             if (lession.unitID == unit.id)
                                                 - count++;
-                                        span (#{count} bài học)
+                                        span.ms-1 (#{count} bài học)
                                 .accordion-collapse.collapse(id=`collapse${index}`, aria-labelledby=`heading${index}`, data-bs-parent='#accordionSubjectDetail')
                                     .accordion-body.p-0
                                         each lession in lessions
@@ -62,8 +62,8 @@ block main
                                             button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
                                         .modal-body
                                             .mb-3
-                                                each regulation in ratingRegulation
-                                                    | #{regulation.content}
+                                                each instruct in ratingRegulation
+                                                    | #{instruct.content}
                             ul.ps-0.mb-0.mt-4
                                 li.chart__item
                                     .position-relative

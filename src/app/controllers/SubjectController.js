@@ -28,28 +28,37 @@ class SubjectController {
     // [GET]/learning/:slug
     async learning(req, res, next) {
         try {
-            const lession = await Lession.findOne({ slug: req.query.name });
-            const theory = await Theory.findOne({ lessionID: lession.id });
+            const subject = await Subject.findOne({ slug: req.params.slug });
+            if (subject) {
+                const lession = await Lession.findOne({ slug: req.query.name });
+                const theory = await Theory.findOne({ lessionID: lession.id });
 
-            const units = await Unit.find({ id: lession.unitID });
-            const subject = await Subject.findOne({ id: units.subjectID });
+                const units = await Unit.find({ id: lession.unitID });
 
-            // mục lục môn học
-            const unitIdArray = units.map(({ _id }) => _id);
-            const lessions = await Lession.find({
-                unitID: { $in: unitIdArray },
-            });
+                // mục lục môn học
+                const unitIdArray = units.map(({ _id }) => _id);
+                const lessions = await Lession.find({
+                    unitID: { $in: unitIdArray },
+                });
 
-            res.render("subjects/learning", {
-                lession,
-                theory,
-                subject,
-                units,
-                lessions,
-            });
+                res.render("subjects/learning", {
+                    lession,
+                    theory,
+                    subject,
+                    units,
+                    lessions,
+                });
+            } else {
+                res.render("error");
+            }
         } catch (error) {
             res.render("error");
         }
+    }
+
+    // [GET]/exercise/:slug
+    exercise(req, res, next) {
+        res.render("exercise");
     }
 }
 
