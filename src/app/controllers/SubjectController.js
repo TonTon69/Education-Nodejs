@@ -27,7 +27,7 @@ class SubjectController {
         }
     }
 
-    // [GET]/learning/:slug
+    // [GET]/learning/:slug?name=lession
     async learning(req, res, next) {
         try {
             const subject = await Subject.findOne({ slug: req.params.slug });
@@ -58,7 +58,7 @@ class SubjectController {
         }
     }
 
-    // [GET]/exercise/:slug
+    // [GET]/exercise/:slug?name=lession
     async exercise(req, res, next) {
         try {
             const subject = await Subject.findOne({ slug: req.params.slug });

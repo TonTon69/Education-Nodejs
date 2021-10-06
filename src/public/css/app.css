@@ -75,6 +75,12 @@ body {
 .btn.btn-success:hover {
   opacity: 0.8; }
 
+.btn-type {
+  border-bottom-right-radius: 16px !important;
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 16px !important;
+  border-top-right-radius: 0 !important; }
+
 .btn-padding {
   padding: 4px 12px !important; }
 
@@ -447,7 +453,7 @@ body {
       background: #77909b; }
   .main .exercise .quiz {
     padding-right: 10px;
-    max-height: 550px;
+    max-height: 525px;
     overflow-y: auto;
     scroll-snap-type: y mandatory; }
     .main .exercise .quiz::-webkit-scrollbar {
@@ -475,14 +481,20 @@ body {
         line-height: 1.5;
         flex: 1 1;
         cursor: pointer; }
+    .main .exercise .quiz .recommend-header {
+      cursor: pointer; }
+    .main .exercise .quiz .recommend-body {
+      padding: 10px 20px;
+      border: 1px solid #e3950c;
+      display: none; }
+      .main .exercise .quiz .recommend-body .recommend-content {
+        line-height: 1.5; }
+      .main .exercise .quiz .recommend-body.show {
+        display: block; }
     .main .exercise .quiz .actions {
       position: fixed;
       bottom: 44px;
-      right: 38px; }
-    .main .exercise .quiz .modal-dialog {
-      transition: all 0.3s ease; }
-      .main .exercise .quiz .modal-dialog .btn-close {
-        box-shadow: unset; }
+      right: 48px; }
   .main .subject__detail .accordion-item,
   .main .learning__list .accordion-item {
     margin-bottom: 8px; }

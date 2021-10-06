@@ -68,51 +68,53 @@ block main
                     #help.tab-pane.fade(role='tabpanel', aria-labelledby='help-tab')
                         | 3
             .col-sm-7
-                .quiz
-                    .d-flex.align-items-center
-                        button.btn.btn-success.btn-padding.rounded-pill.fs-7.me-3 Nh&#x1EAD;n bi&#x1EBF;t
-                        .d-flex.align-items-center
-                            ion-icon.text-danger.fs-4(name='heart-circle')
-                            span.ms-1 10
-                    .mt-4.mb-4
-                        h6.fw-bold.mb-3 C&acirc;u 1
-                        .question
-                            | T&igrave;m m&ocirc; &dstrok;un c&#x1EE7;a s&#x1ED1; ph&#x1EE9;c z = 5 - 4i
-                        .options.mt-4
-                            .form-check.d-flex.align-items-center
-                                input#flexRadioDefault1.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
-                                label.form-check-label(for='flexRadioDefault1')
-                                    | A. 9
-                            .form-check.d-flex.align-items-center
-                                input#flexRadioDefault2.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
-                                label.form-check-label(for='flexRadioDefault2')
-                                    | B. 3
-                            .form-check.d-flex.align-items-center
-                                input#flexRadioDefault3.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
-                                label.form-check-label(for='flexRadioDefault3')
-                                    | C. 1
-                            .form-check.d-flex.align-items-center
-                                input#flexRadioDefault4.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
-                                label.form-check-label(for='flexRadioDefault4')
-                                    | D. &Sqrt;41
-                        .actions.d-flex.align-items-center.justify-content-end.pt-4
-                            .recommend
-                                button.btn.btn-primary.btn-padding.d-flex.align-items-center.me-2(data-bs-toggle='modal', data-bs-target='#recommendModal')
+                .quiz.mb-4
+                    - var index=0;
+                    - var point=0;
+                    - point=100/(exercises.length);
+                    each exercise in exercises
+                        - index++;
+                        .exercise-item.mb-4
+                            .d-flex.align-items-center.justify-content-between
+                                h6.fw-bold.mb-0 Câu #{index}
+                                .d-flex.align-items-center
+                                    .d-flex.align-items-center.me-3
+                                        ion-icon.text-danger.fs-4(name='heart-circle') 
+                                        span.ms-1= point
+                                    each category in exerciseCategories
+                                        if (category.id == exercise.ceID)
+                                            button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= category.type
+                            .question.mt-2= exercise.question
+                            .options.mt-3
+                                .form-check.d-flex.align-items-center
+                                    input#flexRadioDefault1.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
+                                    label.form-check-label(for='flexRadioDefault1')
+                                        | A. #{exercise.option1}
+                                .form-check.d-flex.align-items-center
+                                    input#flexRadioDefault2.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
+                                    label.form-check-label(for='flexRadioDefault2')
+                                        | B. #{exercise.option2}
+                                .form-check.d-flex.align-items-center
+                                    input#flexRadioDefault3.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
+                                    label.form-check-label(for='flexRadioDefault3')
+                                        | C. #{exercise.option3}
+                                .form-check.d-flex.align-items-center
+                                    input#flexRadioDefault4.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
+                                    label.form-check-label(for='flexRadioDefault4')
+                                        | D. #{exercise.option4}
+                            .recommend(id=`recommend-${index}`)
+                                .recommend-header.text-primary.d-inline-flex.align-items-center
+                                    span.me-1 Gợi ý
                                     ion-icon(name='sunny')
-                                    span.ms-1 G&#x1EE3;i &yacute;
-                            button.btn.btn-success.btn-padding.d-flex.align-items-center
-                                ion-icon(name='arrow-forward-outline')
-                                span.ms-1 C&acirc;u ti&#x1EBF;p theo
-                        #recommendModal.modal.fade(tabindex='-1', aria-labelledby='recommendModalLabel', aria-hidden='true')
-                            .modal-dialog
-                                .modal-content
-                                    .modal-header
-                                        h5#recommendModalLabel.modal-title
-                                            | Ph&#x1B0;&#x1A1;ng ph&aacute;p
-                                            | gi&#x1EA3;i
-                                        button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
-                                    .modal-body
-                                        | Ghi ph&#x1B0;&#x1A1;ng ph&aacute;p t&#x1EA1;i &dstrok;&acirc;y!
-                                    .modal-footer
-                                        button.btn.btn-success(type='button', data-bs-dismiss='modal')
-                                            | T&ocirc;i &dstrok;&atilde; hi&#x1EC3;u
+                                .recommend-body.mt-4
+                                    span.fw-bold Phương pháp giải
+                                    .mt-2.recommend-content= exercise.recommend
+                    .actions.d-flex.justify-content-end.pt-4
+                        button.btn.btn-success.btn-padding.d-flex.align-items-center
+                            ion-icon(name='arrow-forward-outline')
+                            span.ms-1 Nộp bài
+    script.
+        $('.recommend-header').click(function() {
+            var parent = $(this).parent();
+            parent.find('.recommend-body').toggleClass('show');
+        })

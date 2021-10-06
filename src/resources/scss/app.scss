@@ -114,6 +114,13 @@ body {
     }
 }
 
+.btn-type {
+    border-bottom-right-radius: 16px !important;
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 16px !important;
+    border-top-right-radius: 0 !important;
+}
+
 .btn-padding {
     padding: 4px 12px !important;
 }
@@ -641,7 +648,7 @@ body {
 
         .quiz {
             padding-right: 10px;
-            max-height: 550px;
+            max-height: 525px;
             overflow-y: auto;
             scroll-snap-type: y mandatory;
 
@@ -684,18 +691,30 @@ body {
                 }
             }
 
+            .recommend {
+                &-header {
+                    cursor: pointer;
+                }
+
+                &-body {
+                    padding: 10px 20px;
+                    border: 1px solid #e3950c;
+                    display: none;
+
+                    .recommend-content {
+                        line-height: 1.5;
+                    }
+
+                    &.show {
+                        display: block;
+                    }
+                }
+            }
+
             .actions {
                 position: fixed;
                 bottom: 44px;
-                right: 38px;
-            }
-
-            .modal-dialog {
-                transition: all 0.3s ease;
-
-                .btn-close {
-                    box-shadow: unset;
-                }
+                right: 48px;
             }
         }
     }
