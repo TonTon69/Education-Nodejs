@@ -70,6 +70,10 @@ body {
     transition: all 0.3s ease;
     color: $white-color;
 
+    &:disabled {
+        opacity: 0.65 !important;
+    }
+
     &:hover {
         opacity: 0.9;
     }
@@ -101,10 +105,6 @@ body {
 
 .btn.btn-exercise {
     background: #fb5533;
-
-    &.disabled {
-        opacity: 0.65 !important;
-    }
 }
 
 .btn.btn-secondary,
@@ -605,7 +605,7 @@ body {
 
         .score__achieved,
         .homework__time,
-        .questions__done {
+        .questions__true {
             border: 1px solid #dee2e6;
             text-align: center;
 
@@ -630,7 +630,7 @@ body {
             }
         }
 
-        .questions__done {
+        .questions__true {
             color: #ec8e00;
 
             .top {
@@ -703,10 +703,6 @@ body {
 
                     .recommend-content {
                         line-height: 1.5;
-                    }
-
-                    &.show {
-                        display: block;
                     }
                 }
             }

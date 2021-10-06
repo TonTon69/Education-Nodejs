@@ -7,13 +7,13 @@ block main
                 ul#myTab.nav.nav-tabs(role='tablist')
                     li.nav-item(role='presentation')
                         button#description-tab.nav-link.active(data-bs-toggle='tab', data-bs-target='#description', type='button', role='tab', aria-controls='description', aria-selected='true')
-                            | M&ocirc; t&#x1EA3; b&agrave;i t&#x1EAD;p
+                            | Mô tả bài tập
                     li.nav-item(role='presentation')
                         button#rank-tab.nav-link(data-bs-toggle='tab', data-bs-target='#rank', type='button', role='tab', aria-controls='rank', aria-selected='false')
-                            | B&#x1EA3;ng x&#x1EBF;p h&#x1EA1;ng
+                            | Bảng xếp hạng
                     li.nav-item(role='presentation')
                         button#help-tab.nav-link(data-bs-toggle='tab', data-bs-target='#help', type='button', role='tab', aria-controls='help', aria-selected='false')
-                            | Tr&#x1EE3; gi&uacute;p
+                            | Trợ giúp
                 .tab-content
                     #description.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='description-tab')
                         .mb-4.mt-4
@@ -23,8 +23,13 @@ block main
                                     ion-icon(name='book')
                                     span.ms-2 Ôn lý thuyết
                         div
-                            blockquote Chọn đáp án đúng bên phải màn hình và bấm Câu tiếp theo.
-                        .d-flex.align-items-center.justify-content-between.mt-5.row
+                            blockquote Chọn các đáp án đúng bên phải màn hình và bấm Nộp bài.
+                        .mt-5.row
+                            .col-sm-4
+                                .homework__time
+                                    .top
+                                        | Thời gian làm bài
+                                    .bottom#stopwatch 00:00:00
                             .col-sm-4
                                 .score__achieved
                                     .top
@@ -32,21 +37,11 @@ block main
                                     .bottom
                                         | 0/100
                             .col-sm-4
-                                .questions__done
+                                .questions__true
                                     .top
-                                        | Số câu đã làm
+                                        | Số câu làm đúng
                                     .bottom
                                         | 0/10
-                            .col-sm-4
-                                .homework__time
-                                    .top
-                                        | Thời gian làm bài
-                                    .bottom
-                                        span#hour 00
-                                        span :
-                                        span#minute 00
-                                        span :
-                                        span#second 00
                     #rank.tab-pane.fade(role='tabpanel', aria-labelledby='rank-tab')
                         table.table.table-striped.mt-4
                             thead
@@ -87,34 +82,33 @@ block main
                             .question.mt-2= exercise.question
                             .options.mt-3
                                 .form-check.d-flex.align-items-center
-                                    input#flexRadioDefault1.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
-                                    label.form-check-label(for='flexRadioDefault1')
+                                    input.form-check-input.mt-0.me-3(id=`qa-${index}`, type='radio', name=exercise.id, value=exercise.option1)
+                                    label.form-check-label(for=`qa-${index}`)
                                         | A. #{exercise.option1}
                                 .form-check.d-flex.align-items-center
-                                    input#flexRadioDefault2.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
-                                    label.form-check-label(for='flexRadioDefault2')
+                                    input.form-check-input.mt-0.me-3(id=`qb-${index}`, type='radio', name=exercise.id, value=exercise.option2)
+                                    label.form-check-label(for=`qb-${index}`)
                                         | B. #{exercise.option2}
                                 .form-check.d-flex.align-items-center
-                                    input#flexRadioDefault3.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
-                                    label.form-check-label(for='flexRadioDefault3')
+                                    input.form-check-input.mt-0.me-3(id=`qc-${index}`, type='radio', name=exercise.id, value=exercise.option3)
+                                    label.form-check-label(for=`qc-${index}`)
                                         | C. #{exercise.option3}
                                 .form-check.d-flex.align-items-center
-                                    input#flexRadioDefault4.form-check-input.mt-0.me-3(type='radio', name='flexRadioDefault')
-                                    label.form-check-label(for='flexRadioDefault4')
+                                    input.form-check-input.mt-0.me-3(id=`qd-${index}`, type='radio', name=exercise.id, value=exercise.option4)
+                                    label.form-check-label(for=`qd-${index}`)
                                         | D. #{exercise.option4}
-                            .recommend(id=`recommend-${index}`)
-                                .recommend-header.text-primary.d-inline-flex.align-items-center
-                                    span.me-1 Gợi ý
-                                    ion-icon(name='sunny')
-                                .recommend-body.mt-4
-                                    span.fw-bold Phương pháp giải
-                                    .mt-2.recommend-content= exercise.recommend
-                    .actions.d-flex.justify-content-end.pt-4
-                        button.btn.btn-success.btn-padding.d-flex.align-items-center
+                            if (exercise.recommend != "")
+                                .recommend(id=`recommend-${index}`)
+                                    .recommend-header.text-primary.d-inline-flex.align-items-center
+                                        span.me-1 Gợi ý
+                                        ion-icon(name='sunny')
+                                    .recommend-body.mt-4
+                                        span.fw-bold Phương pháp giải
+                                        .mt-2.recommend-content= exercise.recommend
+                    .actions.pt-4
+                        button#btn-load-result.btn.btn-success.btn-padding.d-flex.align-items-center(value="submit")
+                            ion-icon(name='reader')
+                            span.ms-1 Xem đáp án
+                        button#btn-submit-exercise.btn.btn-success.btn-padding.d-flex.align-items-center(value="submit")
                             ion-icon(name='arrow-forward-outline')
                             span.ms-1 Nộp bài
-    script.
-        $('.recommend-header').click(function() {
-            var parent = $(this).parent();
-            parent.find('.recommend-body').toggleClass('show');
-        })

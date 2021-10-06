@@ -38,6 +38,11 @@ body {
   opacity: 1;
   transition: all 0.3s ease;
   color: #fff; }
+  .btn.btn-primary:disabled,
+  .btn.btn-secondary:disabled,
+  .btn.btn-exercise:disabled,
+  .btn.btn-success:disabled {
+    opacity: 0.65 !important; }
   .btn.btn-primary:hover,
   .btn.btn-secondary:hover,
   .btn.btn-exercise:hover,
@@ -68,8 +73,6 @@ body {
 
 .btn.btn-exercise {
   background: #fb5533; }
-  .btn.btn-exercise.disabled {
-    opacity: 0.65 !important; }
 
 .btn.btn-secondary:hover,
 .btn.btn-success:hover {
@@ -424,18 +427,18 @@ body {
     line-height: 1.5; }
   .main .exercise .score__achieved,
   .main .exercise .homework__time,
-  .main .exercise .questions__done {
+  .main .exercise .questions__true {
     border: 1px solid #dee2e6;
     text-align: center; }
     .main .exercise .score__achieved .top,
     .main .exercise .homework__time .top,
-    .main .exercise .questions__done .top {
+    .main .exercise .questions__true .top {
       font-size: 14px;
       padding: 10px;
       color: #fff; }
     .main .exercise .score__achieved .bottom,
     .main .exercise .homework__time .bottom,
-    .main .exercise .questions__done .bottom {
+    .main .exercise .questions__true .bottom {
       padding: 30px 10px;
       font-size: 22px;
       font-weight: 700; }
@@ -443,9 +446,9 @@ body {
     color: #44a500; }
     .main .exercise .score__achieved .top {
       background: #44a500; }
-  .main .exercise .questions__done {
+  .main .exercise .questions__true {
     color: #ec8e00; }
-    .main .exercise .questions__done .top {
+    .main .exercise .questions__true .top {
       background: #ec8e00; }
   .main .exercise .homework__time {
     color: #77909b; }
@@ -489,8 +492,6 @@ body {
       display: none; }
       .main .exercise .quiz .recommend-body .recommend-content {
         line-height: 1.5; }
-      .main .exercise .quiz .recommend-body.show {
-        display: block; }
     .main .exercise .quiz .actions {
       position: fixed;
       bottom: 44px;

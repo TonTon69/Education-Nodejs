@@ -72,7 +72,7 @@ block main
                             - index++;
                             .accordion-item.mb-0
                                 h2.accordion-header(id=`heading${index}`)
-                                    button.accordion-button(type='button', data-bs-toggle='collapse', data-bs-target=`#collapse${index}`, aria-expanded='true', aria-controls=`collapse${index}`)
+                                    button.accordion-button.text-uppercase(type='button', data-bs-toggle='collapse', data-bs-target=`#collapse${index}`, aria-expanded='true', aria-controls=`collapse${index}`)
                                         | #{unit.name}
                                         - var count = 0;
                                         each item in lessions
@@ -80,8 +80,10 @@ block main
                                                 - count++;
                                 .accordion-collapse.collapse.show(id=`collapse${index}`, aria-labelledby=`heading${index}`, data-bs-parent='#accordionSubjectDetail')
                                     .accordion-body.p-0
+                                        - var i=0;
                                         each item in lessions
                                             if (item.unitID == unit.id)
+                                                - i++;
                                                 if (lession.slug == item.slug)
                                                     a(href=`/learning/${subject.slug}?name=${item.slug}`).lession__item.active= item.name
                                                 else

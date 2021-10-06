@@ -32,8 +32,44 @@ $(document).ready(function () {
     //     }
     // }
 
+    //Recommend question
+    $(".recommend-header").click(function () {
+        var parent = $(this).parent();
+        parent.find(".recommend-body").slideToggle();
+    });
+
     //StopWatch
-    // $(function () {
-    //     $('#stop__watch').stopwatch().stopwatch('start');
-    // });
+    $("#stopwatch").stopwatch().stopwatch("start");
+
+    //Exercise
+    $(".score__achieved").hide();
+    $(".questions__true").hide();
+    $("#btn-load-result").attr("style", "display: none !important");
+
+    $("#btn-submit-exercise").click(function () {
+        $(".quiz").scrollTop(0);
+        $(".score__achieved").show();
+        $(".questions__true").show();
+        $("#stopwatch").stopwatch().stopwatch("stop");
+        $(this).attr("style", "display: none !important");
+        $("#btn-load-result").show();
+
+        const options = $(".quiz .form-check-input");
+        $.each(options, function (index, option) {
+            option.disabled = true;
+        });
+
+        const arrayTemp = [];
+        const arrayOptionChecked = $(
+            "input[type=radio]:checked",
+            ".quiz"
+        ).toArray();
+        $.each(arrayOptionChecked, function (index, item) {
+            arrayTemp.push({
+                name: item.getAttribute("name"),
+                value: item.getAttribute("value"),
+            });
+        });
+        console.log(arrayOptionChecked);
+    });
 });
