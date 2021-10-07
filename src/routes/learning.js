@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const subjectController = require("../app/controllers/SubjectController");
+const learningController = require("../app/controllers/LearningController");
 
 const { requireAuth } = require("../app/middlewares/AuthMiddleware");
 
-router.get("/:slug", subjectController.learning);
+router.get("/:slug", learningController.learning);
 
 module.exports = router;

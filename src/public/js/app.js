@@ -46,7 +46,8 @@ $(document).ready(function () {
     $(".questions__true").hide();
     $("#btn-load-result").attr("style", "display: none !important");
 
-    $("#btn-submit-exercise").click(function () {
+    $("#btn-submit-exercise").click(function (e) {
+        e.preventDefault();
         $(".quiz").scrollTop(0);
         $(".score__achieved").show();
         $(".questions__true").show();
@@ -70,6 +71,22 @@ $(document).ready(function () {
                 value: item.getAttribute("value"),
             });
         });
-        console.log(arrayOptionChecked);
+        // const time = $("#stopwatch").html();
+        // const params = new window.URLSearchParams(window.location.search);
+        // console.log(params.get("name"));
+        // const path = $(location).attr("pathname");
+        // console.log(path);
+
+        $.ajax({
+            type: "POST",
+            url: $(location).attr("href"),
+            contentType: "application/json",
+            data: JSON.stringify({ objectData: arrayTemp }),
+            success: function (data) {
+                // const obj = JSON.parse(data);
+                // console.log(obj);
+                // $(".questions__true .bottom").html(obj);
+            },
+        });
     });
 });

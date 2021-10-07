@@ -24,7 +24,7 @@ block main
                                         each lession in lessions
                                             if (lession.unitID == unit.id)
                                                 - count++;
-                                        span.ms-1 (#{count} bài học)
+                                        span.ms-1.text-lowercase (#{count} bài học)
                                 .accordion-collapse.collapse(id=`collapse${index}`, aria-labelledby=`heading${index}`, data-bs-parent='#accordionSubjectDetail')
                                     .accordion-body.p-0
                                         each lession in lessions
@@ -50,7 +50,7 @@ block main
                         .text-center
                             .d-flex.align-items-center.justify-content-center.mb-3
                                 img(src='../img/graph-bar.svg', width='32', alt='')
-                                h6.fw-bold.mb-0.ms-3.text-uppercase BẢNG XẾP HẠNG MÔN #{subject.name} #{subject.gradeID}
+                                h6.fw-bold.mb-0.ms-3.text-uppercase BẢNG XẾP HẠNG #{subject.name} #{subject.gradeID}
                             button.text-danger.btn-instruct(type='button', data-bs-toggle='modal', data-bs-target='#instructModal')
                                 | Cách tính điểm? Xem tại đây!
                             #instructModal.modal.fade(tabindex='-1', aria-labelledby='instructModalLabel', aria-hidden='true')
