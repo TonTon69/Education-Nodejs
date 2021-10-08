@@ -53,12 +53,14 @@ class ExerciseController {
             scoreTotal += score;
             console.log(scoreTotal);
 
-            var tab = req.query.tab;
-            if (tab) {
-                res.render("exercises/exercise", {
-                    scoreTotal,
-                });
-            }
+            res.writeHead(200, { "Content-Type": "text/plain" });
+
+            // var tab = req.query.tab;
+            // if (tab) {
+            //     res.render("exercises/exercise", {
+            //         scoreTotal,
+            //     });
+            // }
         } catch (error) {
             console.log(error);
         }

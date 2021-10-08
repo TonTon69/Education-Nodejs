@@ -76,19 +76,19 @@ $(document).ready(function () {
         var qaAnsChecked = $(".exercise-item.active .form-check input:checked");
         if (qaAnsChecked.length == 0) {
             if (confirm("Bạn muốn bỏ qua câu này?") == true) {
-                for (var i = 0; i < questions.length; i++) {
+                for (let i = 0; i < questions.length; i++) {
                     questions[i].className = "exercise-item";
                 }
                 questions[count].className = "exercise-item active";
+            } else {
+                count -= 1;
             }
         } else {
-            for (var i = 0; i < questions.length; i++) {
+            for (let i = 0; i < questions.length; i++) {
                 questions[i].className = "exercise-item";
             }
             questions[count].className = "exercise-item active";
         }
-
-        console.log(count);
 
         if (count == questions.length) {
             $("#stopwatch").stopwatch().stopwatch("stop");
@@ -123,8 +123,11 @@ $(document).ready(function () {
         answerTrue.text(` ~ Đáp án đúng: ${validText.substring(0, 1)}`);
 
         var answer = $(".exercise-item.active .form-check input:checked");
+        var score = $("#score").text();
         var scoreAchieved = $(".score__achieved .bottom");
         if (answer.is("[valid]")) {
+            scoreCount += parseInt(score);
+            scoreAchieved.text(`${scoreCount}/100`);
             message.text("Bạn đã chọn đúng");
             divAnswerTrue.addClass("valid");
         } else {
@@ -145,10 +148,7 @@ $(document).ready(function () {
             url: $(location).attr("href"),
             contentType: "application/json",
             data: JSON.stringify({ objectData: arrayTemp }),
-            success: function (data) {
-                console.log(data);
-                scoreAchieved.text(`${data.score}` + "/100");
-            },
+            success: function (data) {},
         });
     });
 
