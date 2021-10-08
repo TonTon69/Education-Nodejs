@@ -38,6 +38,7 @@ class ExerciseController {
 
             var sumCorrectAnswer = 0;
             var score = 0;
+            var scoreTotal = 0;
 
             const myJsonData = req.body.objectData;
             for (let i = 0; i < myJsonData.length; i++) {
@@ -49,8 +50,15 @@ class ExerciseController {
                 }
             }
             score = (sumCorrectAnswer / sumQuestions) * 100;
-            console.log(score);
-            res.send("Successfully");
+            scoreTotal += score;
+            console.log(scoreTotal);
+
+            var tab = req.query.tab;
+            if (tab) {
+                res.render("exercises/exercise", {
+                    scoreTotal,
+                });
+            }
         } catch (error) {
             console.log(error);
         }

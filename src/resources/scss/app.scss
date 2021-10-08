@@ -669,49 +669,88 @@ body {
                 visibility: visible;
             }
 
-            .question {
-                line-height: 1.5;
-            }
+            .exercise-item {
+                display: none;
 
-            .form-check {
-                background: #f7f9fa;
-                padding: 0 24px;
-                margin-bottom: 16px;
-
-                &-input {
-                    margin-left: 0;
-                    cursor: pointer;
+                &.active {
+                    display: block;
                 }
 
-                &-label {
-                    padding: 20px 0;
+                .question {
                     line-height: 1.5;
-                    flex: 1 1;
-                    cursor: pointer;
-                }
-            }
-
-            .recommend {
-                &-header {
-                    cursor: pointer;
                 }
 
-                &-body {
-                    padding: 10px 20px;
-                    border: 1px solid #e3950c;
-                    display: none;
+                .form-check {
+                    background: #f7f9fa;
+                    padding: 0 24px;
+                    margin-bottom: 16px;
 
-                    .recommend-content {
+                    &-input {
+                        margin-left: 0;
+                        cursor: pointer;
+                    }
+
+                    &-label {
+                        padding: 20px 0;
                         line-height: 1.5;
+                        flex: 1 1;
+                        cursor: pointer;
+                    }
+                }
+
+                .check-result {
+                    border: 1px dashed;
+                    padding: 10px;
+
+                    &.valid {
+                        border-color: #44a500;
+
+                        .message {
+                            color: #44a500;
+                        }
+                    }
+                    &.invalid {
+                        border-color: #dc5d40;
+
+                        .message {
+                            color: #dc5d40;
+                        }
+                    }
+
+                    .message,
+                    .answer-true {
+                        line-height: 1.5;
+                        font-weight: 600;
+                    }
+
+                    .answer-true {
+                        color: #44a500;
+                    }
+                }
+
+                .recommend,
+                .explain {
+                    &-header {
+                        cursor: pointer;
+                    }
+
+                    &-body {
+                        padding: 10px 20px;
+                        border: 1px solid #e3950c;
+                        display: none;
+
+                        .recommend-content {
+                            line-height: 1.5;
+                        }
                     }
                 }
             }
+        }
 
-            .actions {
-                position: fixed;
-                bottom: 44px;
-                right: 48px;
-            }
+        .actions {
+            position: fixed;
+            bottom: 44px;
+            right: 48px;
         }
     }
 

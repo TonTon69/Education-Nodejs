@@ -18,7 +18,7 @@ block main
                         .mt-4.mb-4 Nội dung bài học đang cập nhật. Vui lòng thử lại sau!
                     .text-center.mt-4.mb-4
                         if theory
-                            a.btn.btn-exercise.rounded-pill(href='')
+                            a.btn.btn-exercise.rounded-pill(href=`/exercise/${subject.slug}?name=${lession.slug}`)
                                 | Luyện bài tập vận dụng tại đây
                     hr
                     .report

@@ -38,44 +38,107 @@ $(document).ready(function () {
         parent.find(".recommend-body").slideToggle();
     });
 
+    $(".explain-header").click(function () {
+        var parent = $(this).parent();
+        parent.find(".explain-body").slideToggle();
+    });
+
     //StopWatch
     $("#stopwatch").stopwatch().stopwatch("start");
 
-    //Exercise
-    $(".score__achieved").hide();
-    $(".questions__true").hide();
-    $("#btn-load-result").attr("style", "display: none !important");
+    //Load question
+    var btnNextQuestion = $("#btn-next-question");
+    var btnCheckResult = $("#btn-check-result");
+    var questions = $(".exercise-item");
 
-    $("#btn-submit-exercise").click(function (e) {
-        e.preventDefault();
-        $(".quiz").scrollTop(0);
-        $(".score__achieved").show();
-        $(".questions__true").show();
+    var message = $(".exercise-item .check-result .message");
+    var divAnswerTrue = $(".exercise-item .check-result");
+    var answerTrue = $(".exercise-item .check-result .answer-true");
+    var qaAns = $(".exercise-item .form-check input");
+
+    questions.first().addClass("active");
+    btnCheckResult.attr("style", "display: none !important");
+    divAnswerTrue.attr("style", "display: none !important");
+    $(".explain").attr("style", "display: none !important");
+
+    var count = 0;
+    var scoreCount = 0;
+    btnNextQuestion.click(function () {
+        message.text("");
+        answerTrue.text("");
+        $("#stopwatch").stopwatch().stopwatch("start");
+        divAnswerTrue.attr("style", "display: none !important");
+        $(".explain").attr("style", "display: none !important");
+        $(".recommend").attr("style", "display: block !important");
+
+        count += 1;
+
+        var qaAnsChecked = $(".exercise-item.active .form-check input:checked");
+        if (qaAnsChecked.length == 0) {
+            if (confirm("Bạn muốn bỏ qua câu này?") == true) {
+                for (var i = 0; i < questions.length; i++) {
+                    questions[i].className = "exercise-item";
+                }
+                questions[count].className = "exercise-item active";
+            }
+        } else {
+            for (var i = 0; i < questions.length; i++) {
+                questions[i].className = "exercise-item";
+            }
+            questions[count].className = "exercise-item active";
+        }
+
+        console.log(count);
+
+        if (count == questions.length) {
+            $("#stopwatch").stopwatch().stopwatch("stop");
+            $(".quiz").attr("style", "display: none !important");
+            var submitResultForm = document.forms["submit-result-form"];
+            var url = $(location).attr("href");
+            // var urlParams = new URLSearchParams(window.location.search);
+            // var params = urlParams.get("name");
+            submitResultForm.setAttribute("action", `${url}?tab=result`);
+            submitResultForm.submit();
+        }
+    });
+
+    for (var i = 0; i < qaAns.length; i++) {
+        qaAns[i].onclick = function () {
+            btnCheckResult.attr("style", "display: flex !important");
+        };
+    }
+    btnCheckResult.click(function () {
+        $(".exercise-item.active .form-check input").attr("disabled", true);
+        divAnswerTrue.attr("style", "display: block !important");
+        $(".explain").attr("style", "display: block !important");
+        $(".recommend").attr("style", "display: none !important");
+        btnCheckResult.attr("style", "display: none !important");
         $("#stopwatch").stopwatch().stopwatch("stop");
-        $(this).attr("style", "display: none !important");
-        $("#btn-load-result").show();
 
-        const options = $(".quiz .form-check-input");
-        $.each(options, function (index, option) {
-            option.disabled = true;
-        });
+        var answerValid = $(
+            ".exercise-item.active .form-check input[valid=valid]"
+        );
+        var parent = answerValid.parent();
+        var validText = parent.find(".form-check-label").text();
+        answerTrue.text(` ~ Đáp án đúng: ${validText.substring(0, 1)}`);
 
-        const arrayTemp = [];
-        const arrayOptionChecked = $(
-            "input[type=radio]:checked",
-            ".quiz"
-        ).toArray();
-        $.each(arrayOptionChecked, function (index, item) {
+        var answer = $(".exercise-item.active .form-check input:checked");
+        var scoreAchieved = $(".score__achieved .bottom");
+        if (answer.is("[valid]")) {
+            message.text("Bạn đã chọn đúng");
+            divAnswerTrue.addClass("valid");
+        } else {
+            message.text("Bạn đã chọn sai");
+            divAnswerTrue.addClass("invalid");
+        }
+
+        var arrayTemp = [];
+        $.each(answer, function (index, item) {
             arrayTemp.push({
                 name: item.getAttribute("name"),
                 value: item.getAttribute("value"),
             });
         });
-        // const time = $("#stopwatch").html();
-        // const params = new window.URLSearchParams(window.location.search);
-        // console.log(params.get("name"));
-        // const path = $(location).attr("pathname");
-        // console.log(path);
 
         $.ajax({
             type: "POST",
@@ -83,10 +146,65 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify({ objectData: arrayTemp }),
             success: function (data) {
-                // const obj = JSON.parse(data);
-                // console.log(obj);
-                // $(".questions__true .bottom").html(obj);
+                console.log(data);
+                scoreAchieved.text(`${data.score}` + "/100");
             },
         });
     });
+
+    // btnCheckResult.click(function () {
+    //     for (var i = 0; i < qaAns.length; i++) {
+    //         var valid = qaAns[i].getAttribute("valid");
+    //         console.log(valid);
+    //     }
+    // });
+
+    //Exercise
+    // $(".score__achieved").hide();
+    // $(".questions__true").hide();
+    // $("#btn-load-result").attr("style", "display: none !important");
+
+    // $("#btn-submit-exercise").click(function (e) {
+    //     e.preventDefault();
+    //     $(".quiz").scrollTop(0);
+    //     $(".score__achieved").show();
+    //     $(".questions__true").show();
+    //     $("#stopwatch").stopwatch().stopwatch("stop");
+    //     $(this).attr("style", "display: none !important");
+    //     $("#btn-load-result").show();
+
+    //     const options = $(".quiz .form-check-input");
+    //     $.each(options, function (index, option) {
+    //         option.disabled = true;
+    //     });
+
+    //     const arrayTemp = [];
+    //     const arrayOptionChecked = $(
+    //         "input[type=radio]:checked",
+    //         ".quiz"
+    //     ).toArray();
+    //     $.each(arrayOptionChecked, function (index, item) {
+    //         arrayTemp.push({
+    //             name: item.getAttribute("name"),
+    //             value: item.getAttribute("value"),
+    //         });
+    //     });
+    //     // const time = $("#stopwatch").html();
+    //     // const params = new window.URLSearchParams(window.location.search);
+    //     // console.log(params.get("name"));
+    //     // const path = $(location).attr("pathname");
+    //     // console.log(path);
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: $(location).attr("href"),
+    //         contentType: "application/json",
+    //         data: JSON.stringify({ objectData: arrayTemp }),
+    //         success: function (data) {
+    //             // const obj = JSON.parse(data);
+    //             // console.log(obj);
+    //             // $(".questions__true .bottom").html(obj);
+    //         },
+    //     });
+    // });
 });

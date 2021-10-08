@@ -470,32 +470,56 @@ body {
     .main .exercise .quiz:hover::-webkit-scrollbar-thumb {
       opacity: 1;
       visibility: visible; }
-    .main .exercise .quiz .question {
-      line-height: 1.5; }
-    .main .exercise .quiz .form-check {
-      background: #f7f9fa;
-      padding: 0 24px;
-      margin-bottom: 16px; }
-      .main .exercise .quiz .form-check-input {
-        margin-left: 0;
-        cursor: pointer; }
-      .main .exercise .quiz .form-check-label {
-        padding: 20px 0;
-        line-height: 1.5;
-        flex: 1 1;
-        cursor: pointer; }
-    .main .exercise .quiz .recommend-header {
-      cursor: pointer; }
-    .main .exercise .quiz .recommend-body {
-      padding: 10px 20px;
-      border: 1px solid #e3950c;
+    .main .exercise .quiz .exercise-item {
       display: none; }
-      .main .exercise .quiz .recommend-body .recommend-content {
+      .main .exercise .quiz .exercise-item.active {
+        display: block; }
+      .main .exercise .quiz .exercise-item .question {
         line-height: 1.5; }
-    .main .exercise .quiz .actions {
-      position: fixed;
-      bottom: 44px;
-      right: 48px; }
+      .main .exercise .quiz .exercise-item .form-check {
+        background: #f7f9fa;
+        padding: 0 24px;
+        margin-bottom: 16px; }
+        .main .exercise .quiz .exercise-item .form-check-input {
+          margin-left: 0;
+          cursor: pointer; }
+        .main .exercise .quiz .exercise-item .form-check-label {
+          padding: 20px 0;
+          line-height: 1.5;
+          flex: 1 1;
+          cursor: pointer; }
+      .main .exercise .quiz .exercise-item .check-result {
+        border: 1px dashed;
+        padding: 10px; }
+        .main .exercise .quiz .exercise-item .check-result.valid {
+          border-color: #44a500; }
+          .main .exercise .quiz .exercise-item .check-result.valid .message {
+            color: #44a500; }
+        .main .exercise .quiz .exercise-item .check-result.invalid {
+          border-color: #dc5d40; }
+          .main .exercise .quiz .exercise-item .check-result.invalid .message {
+            color: #dc5d40; }
+        .main .exercise .quiz .exercise-item .check-result .message,
+        .main .exercise .quiz .exercise-item .check-result .answer-true {
+          line-height: 1.5;
+          font-weight: 600; }
+        .main .exercise .quiz .exercise-item .check-result .answer-true {
+          color: #44a500; }
+      .main .exercise .quiz .exercise-item .recommend-header,
+      .main .exercise .quiz .exercise-item .explain-header {
+        cursor: pointer; }
+      .main .exercise .quiz .exercise-item .recommend-body,
+      .main .exercise .quiz .exercise-item .explain-body {
+        padding: 10px 20px;
+        border: 1px solid #e3950c;
+        display: none; }
+        .main .exercise .quiz .exercise-item .recommend-body .recommend-content,
+        .main .exercise .quiz .exercise-item .explain-body .recommend-content {
+          line-height: 1.5; }
+  .main .exercise .actions {
+    position: fixed;
+    bottom: 44px;
+    right: 48px; }
   .main .subject__detail .accordion-item,
   .main .learning__list .accordion-item {
     margin-bottom: 8px; }
