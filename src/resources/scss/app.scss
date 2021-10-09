@@ -373,6 +373,8 @@ body {
     min-height: 100vh;
     padding: 74px 28px 78px 104px;
 
+    @import "./infor";
+
     .slideshow {
         padding-top: 15px;
 

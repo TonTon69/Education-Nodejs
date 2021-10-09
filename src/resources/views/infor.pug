@@ -1,0 +1,43 @@
+extends ./layouts/common
+block main
+    .section__infor.shadow
+        .row
+            .col-sm-4
+                .Boxchange__avatar
+                    .change__avatar
+                        a.icon__image
+                            ion-icon.icon-image(name='image-outline', aria-hidden='true')
+                            p.text-center(style='color: rgb(255, 255, 255)')
+                                | Thay avatar
+                        img.avatar__profile(src=user.avatar, alt='', style='width: 100%')
+            .col-sm-8
+                .box__infor
+                        h3.infor__title.text-center.mb-4
+                            | CHỈNH SỬA THÔNG TIN CÁ NHÂN
+                        form(action="/infor/update", method="POST")
+                        div
+                            p(style='margin-bottom: 1.2rem')
+                                label(for='') Tên tài khoản:
+                                span= user.username
+                            p
+                                label(for='') H&#x1ECD; t&ecirc;n:
+                                input.infor__input(maxlength='50', type='text', name='first', placeholder='Họ và tên', value=user.fullname)
+                        div
+                            p
+                                label(for='') S&#x1ED1; &dstrok;i&#x1EC7;n tho&#x1EA1;i:
+                                input.infor__input(maxlength='50', type='text', name='first', placeholder='Điền số điện thoại', value=user.phone)
+                        div
+                            p
+                                label(for='') Ng&agrave;y sinh:
+                                input#birthday.infor__input(type='date', value=user.birthDay, name='birthday')
+                        div
+                            p(style='margin: 1.4rem 0 1.8rem 0')
+                                label(for='') Email:
+                                span= user.email
+                            p
+                                | Hãy nhập chính xác 
+                                span(style='color: red') số điện thoại của bạn hoặc người thân 
+                                | để được thầy cô hỗ trợ nhanh chóng!
+                        p.box__update
+                            button.btn__update(type='submit')
+                                | Cập nhật

@@ -1,0 +1,95 @@
+.section__infor {
+    border-radius: 16px;
+    margin-left: 40px;
+    margin-top: 15px;
+}
+
+.Boxchange__avatar {
+    width: 258px;
+    height: 200px;
+
+    .change__avatar {
+        width: 178px;
+        height: 178px;
+        background-color: #fff;
+        border-radius: 50%;
+        margin: auto;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .icon__image {
+        width: 158px;
+        height: 158px;
+        margin: 10px;
+        position: absolute;
+        visibility: hidden;
+        z-index: 2;
+
+        & ion-icon {
+            padding-left: 60px;
+            padding-top: 60px;
+            font-size: 30px;
+            color: #fff;
+            opacity: 0.9;
+        }
+    }
+}
+
+.icon-image::before {
+    content: "\f03e";
+}
+
+.box__infor {
+    padding: 20px;
+
+    .infor__title {
+        color: #e29000;
+        text-transform: uppercase;
+        font-size: 18px;
+        line-height: 1.5;
+        font-weight: 700;
+    }
+
+    p {
+        label {
+            width: 170px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .infor__input {
+            padding: 0 12px;
+            width: 70%;
+            height: 35px;
+            border-radius: 5px;
+            outline: none;
+            color: #999;
+            border: 1px solid #e1e1e1;
+        }
+    }
+}
+
+.box__update {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.btn__update {
+    height: 42px;
+    width: 240px;
+    display: inline-block;
+    padding: 10px 0;
+    background-color: #8ac53e;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 16px;
+    margin: 0 5px;
+
+    &:hover {
+        background-color: #e29000;
+    }
+}

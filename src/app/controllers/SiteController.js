@@ -40,10 +40,8 @@ class SiteController {
     // [GET]/infor
     async infor(req, res, next) {
         try {
-            const user = await User.find({});
-            res.render("infor", {
-                user,
-            });
+            const user = await User.findOne({ _id: req.signedCookies.userId });
+            res.render("infor", { user });
         } catch (error) {
             res.render("error");
         }
