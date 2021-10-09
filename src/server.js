@@ -5,7 +5,7 @@ const express = require("express");
 // const morgan = require("morgan");
 
 const methodOverride = require("method-override");
-// const moment = require("moment");
+const moment = require("moment");
 const session = require("express-session");
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(methodOverride("_method"));
 
-// app.locals.moment = moment;
+app.locals.moment = moment;
 
 //
 app.use(

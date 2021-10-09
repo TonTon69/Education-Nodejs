@@ -9,22 +9,23 @@ header.header
     .header__actions
         .header__actions--noti
             ion-icon(name='notifications')
-        .header__actions--avatar
-            img(src='https://graph.facebook.com/1200171846994675/picture?width=400&height=400', alt='')
-        .header__actions--userMenu.shadow
-            .user
-                .user__avatar
-                    img(src='https://graph.facebook.com/1200171846994675/picture?width=400&height=400', alt='')
-                .user__info
-                    .name Huynh Minh Hoang
-                    .username @huynh-minh-hoang
-            hr
-            ul.list
-                li.list__item
-                    a.list__link(href='') Thông tin cá nhân
-                li.list__item
-                    a.list__link(href='') Kết quả học tập
-            hr
-            ul.list
-                li.list__item
-                    a.list__link(href='') Đăng xuất
+        if user
+            .header__actions--avatar
+                img(src=user.avatar, alt='')
+            .header__actions--userMenu.shadow
+                .user
+                    .user__avatar
+                        img(src=user.avatar, alt='')
+                    .user__info
+                        .name= user.fullname
+                        .username @#{user.username}
+                hr
+                ul.list
+                    li.list__item
+                        a.list__link(href='') Thông tin cá nhân
+                    li.list__item
+                        a.list__link(href='') Kết quả học tập
+                hr
+                ul.list
+                    li.list__item
+                        a.list__link(href='') Đăng xuất

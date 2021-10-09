@@ -9,13 +9,14 @@ block main
                         button(type='button', data-bs-target='#carouselBannerCaptions', data-bs-slide-to='1', aria-label='Slide 2')
                         button(type='button', data-bs-target='#carouselBannerCaptions', data-bs-slide-to='2', aria-label='Slide 3')
                     .carousel-inner
-                        .carousel-item.active
-                            .carousel-caption.d-none.d-md-block.text-start
-                                h2.fw-bold PC3 trên Facebook
-                                p.fs-6 PC3 trên Facebook, ở đâu có cơ hội học tập và có những con người yêu thích học tập sẽ ở đó.
-                                a.btn.btn-outline-primary.rounded-pill.mt-2(href='/') Truy c&#x1EAD;p nh&oacute;m
-                            .carousel-banner
-                                img.w-100(src='https://scontent.fdad1-3.fna.fbcdn.net/v/t1.6435-9/p720x720/40488518_1454090424693551_1331303140066066432_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=e3f864&_nc_ohc=PBv7PAJTpWIAX_psqkH&_nc_oc=AQnOSyjUPN9Vfw6lp-5x8DBnkZrS6cdfo2UejcAZJ40Qnza117N6JuRGDp338NDFULk&tn=NaXtSDzsFAKYe3M3&_nc_ht=scontent.fdad1-3.fna&oh=8f09fc7918e87a82c899d6316ca745f0&oe=617BCC99', alt='...')
+                        each banner in banners
+                            .carousel-item.active
+                                .carousel-caption.d-none.d-md-block.text-start
+                                    h2.fw-bold= banner.title
+                                    p.fs-6= banner.description
+                                    a.btn.btn-outline-primary.rounded-pill.mt-2(href=banner.url) Truy cập nhóm
+                                .carousel-banner
+                                    img.w-100(src=banner.image, alt='...')
                     button.carousel-control-prev(type='button', data-bs-target='#carouselBannerCaptions', data-bs-slide='prev')
                         span.carousel-control-prev-icon(aria-hidden='true')
                         span.visually-hidden Previous
@@ -36,60 +37,97 @@ block main
                     #grade10.container.tab-pane.active
                         .title__container.d-flex.align-items-center.justify-content-between.mb-4
                             h3.fw-bold.mb-0 Môn học khối 10
-                            a.d-flex.align-items-center.text-primary(href='')
+                            a.d-flex.align-items-center.text-primary(href='/subjects')
                                 span Xem tất cả
                                 ion-icon.right(name='chevron-forward-outline')
                         .row
                             .swiper-container.swiper1
                                 .swiper-wrapper.mb-3
-                                    .swiper-slide
-                                        .subjects__item
-                                            a.subjects__link(href='')
-                                                .brand PC3
-                                                .subject
-                                                    h4 Môn Toán
-                                                    ion-icon(name='calculator')
-                                            h5.mt-3.subjects__title
-                                                a(href='') Toán Học 10
+                                    each item in subjects
+                                        if item.gradeID === 10
+                                            .swiper-slide
+                                                .subjects__item
+                                                    a.subjects__link(href=`/subjects/${item.slug}`)
+                                                        .brand PC3
+                                                        .subject
+                                                            h4= item.name
+                                                            ion-icon(name=item.icon)
+                                                    h5.mt-3.subjects__title
+                                                        a(href=`/subjects/${item.slug}`)= item.name +" " + "10" 
                                 .swiper-button-prev
                                 .swiper-button-next
                                 .swiper-scrollbar
                     #grade11.container.tab-pane.fade
                         .title__container.d-flex.align-items-center.justify-content-between.mb-4
                             h3.fw-bold.mb-0 Môn học khối 11
-                            a.d-flex.align-items-center.text-primary(href='')
+                            a.d-flex.align-items-center.text-primary(href='/subjects')
                                 span Xem tất cả
                                 ion-icon.right(name='chevron-forward-outline')
+                        .row
+                            .swiper-container.swiper1
+                                .swiper-wrapper.mb-3
+                                    each item in subjects   
+                                        if item.gradeID === 11
+                                            .swiper-slide
+                                                .subjects__item
+                                                    a.subjects__link(href=`/subjects/${item.slug}`)
+                                                        .brand PC3
+                                                        .subject
+                                                            h4= item.name
+                                                            ion-icon(name=item.icon)
+                                                    h5.mt-3.subjects__title
+                                                        a(href=`/subjects/${item.slug}`)= item.name +" " + "11" 
+                                .swiper-button-prev
+                                .swiper-button-next
+                                .swiper-scrollbar
                     #grade12.container.tab-pane.fade
                         .title__container.d-flex.align-items-center.justify-content-between.mb-4
                             h3.fw-bold.mb-0 Môn học khối 12
-                            a.d-flex.align-items-center.text-primary(href='')
+                            a.d-flex.align-items-center.text-primary(href='/subjects')
                                 span Xem tất cả
                                 ion-icon.right(name='chevron-forward-outline')
-            // news Blog
+                        .row
+                            .swiper-container.swiper1
+                                .swiper-wrapper.mb-3
+                                    each item in subjects  
+                                        if item.gradeID === 12
+                                            .swiper-slide
+                                                .subjects__item
+                                                    a.subjects__link(href=`/subjects/${item.slug}`)
+                                                        .brand PC3
+                                                        .subject
+                                                            h4= item.name
+                                                            ion-icon(name=item.icon)
+                                                    h5.mt-3.subjects__title
+                                                        a(href=`/subjects/${item.slug}`)= item.name +" " + "12" 
+                                .swiper-button-prev
+                                .swiper-button-next
+                                .swiper-scrollbar
         .section__list
             .container.mt-5.pt-4
                 .title__container.d-flex.align-items-center.justify-content-between.mb-4
                     h3.fw-bold.mb-0 Các bài viết nổi bật
-                    a.d-flex.align-items-center.text-primary(href='')
+                    a.d-flex.align-items-center.text-primary(href='/blog')
                         span Xem tất cả
                         ion-icon.right(name='chevron-forward-outline')
                 .row
                     .swiper-container.swiper2
                         .swiper-wrapper.mb-3
-                            .swiper-slide
-                                .blogs__item
-                                    a.blogs__link(href='')
-                                        img.imagepost(src='https://cdn.fullstack.edu.vn/f8-learning/blog_posts/661/61546ab0dd3d0.png', alt='')
-                                    h5.blogs__title.mt-3.mb-3
-                                        a(href='') Tiện ích hiển thị keystrokes trong Windows & MacOS
-                                    .post__author
-                                        img.avatar(src='https://fullstack.edu.vn/assets/images/nobody_m.256x256.jpg', alt='')
-                                        .fs-7
-                                            strong Nguyễn Phúc Ân
-                                            span.dot .
-                                            span 5 giờ trước
+                            each b in blogs
+                                .swiper-slide
+                                    .blogs__item
+                                        a.blogs__link(href='')
+                                            img.imagepost(src=b.image, alt='')
+                                        h5.blogs__title.mt-3.mb-3
+                                            a(href='')= b.title
+                                        .post__author
+                                            each u in users
+                                                if (b.userID == u.id)
+                                                    img.avatar(src=u.avatar, alt='')
+                                                    .fs-7
+                                                        strong= u.fullname
+                                                        span.dot .
+                                                        span= moment(b.createdAt).locale("vi").fromNow()
                         .swiper-button-prev
                         .swiper-button-next
                         .swiper-scrollbar
-
