@@ -36,12 +36,12 @@ block main
                                         | Số điểm đạt được
                                     .bottom
                                         | 0/100
-                            //- .col-sm-4
-                            //-     .questions__true
-                            //-         .top
-                            //-             | Số câu làm đúng
-                            //-         .bottom
-                            //-             | 0/10
+                            .col-sm-4
+                                .questions__true
+                                    .top
+                                        | Số câu đã làm
+                                    .bottom
+                                        | 0
                     #rank.tab-pane.fade(role='tabpanel', aria-labelledby='rank-tab')
                         table.table.table-striped.mt-4
                             thead
@@ -135,4 +135,4 @@ block main
                     button#btn-next-question.btn.btn-success.btn-padding.d-flex.align-items-center(value="submit")
                         ion-icon(name='arrow-forward-outline')
                         span.ms-1 Câu tiếp theo
-                form(name="submit-result-form", method="POST")
+                form(name="submit-result-form", method="GET")

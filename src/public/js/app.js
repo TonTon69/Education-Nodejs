@@ -92,12 +92,11 @@ $(document).ready(function () {
 
         if (count == questions.length) {
             $("#stopwatch").stopwatch().stopwatch("stop");
-            $(".quiz").attr("style", "display: none !important");
             var submitResultForm = document.forms["submit-result-form"];
-            var url = $(location).attr("href");
-            // var urlParams = new URLSearchParams(window.location.search);
-            // var params = urlParams.get("name");
-            submitResultForm.setAttribute("action", `${url}?tab=result`);
+            submitResultForm.setAttribute(
+                "action",
+                "/result/" + projectId + "/force?_method=DELETE"
+            );
             submitResultForm.submit();
         }
     });
@@ -130,12 +129,15 @@ $(document).ready(function () {
             scoreAchieved.text(`${scoreCount}/100`);
             message.text("Bạn đã chọn đúng");
             divAnswerTrue.addClass("valid");
+            divAnswerTrue.removeClass("invalid");
         } else {
             message.text("Bạn đã chọn sai");
             divAnswerTrue.addClass("invalid");
+            divAnswerTrue.removeClass("valid");
         }
 
         var arrayTemp = [];
+        // var arrayOptionChecked = $(".exercise-item .form-check input:checked");
         $.each(answer, function (index, item) {
             arrayTemp.push({
                 name: item.getAttribute("name"),
@@ -147,7 +149,11 @@ $(document).ready(function () {
             type: "POST",
             url: $(location).attr("href"),
             contentType: "application/json",
-            data: JSON.stringify({ objectData: arrayTemp }),
+            data: JSON.stringify({
+                objectData: arrayTemp,
+                time: $("#stopwatch").text(),
+                score: $(".score__achieved .bottom").text(),
+            }),
             success: function (data) {},
         });
     });
