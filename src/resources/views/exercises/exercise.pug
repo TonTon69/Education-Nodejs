@@ -51,15 +51,18 @@ block main
                                     th(scope='col') Điểm
                                     th(scope='col') Thời gian làm
                             tbody
-                                tr.align-middle
-                                    th(scope='row')
-                                        img(src='../img/gold.png', alt='')
-                                    td
-                                        .d-flex.align-items-center
-                                            img.rounded-circle(src='../img/avatar-no-name.png', alt='', width='30')
-                                            span.ms-2 Mark
-                                    td 100
-                                    td 23:10:54 03/09/2020
+                                each result in results
+                                    tr.align-middle
+                                        th(scope='row')
+                                            img(src='../img/gold.png', alt='')
+                                        td
+                                            .d-flex.align-items-center
+                                                each user in users
+                                                    if (user.id == result.userID)
+                                                        img.rounded-circle(src=user.avatar, alt='', width='30')
+                                                        span.ms-2= user.fullname
+                                        td= result.score
+                                        td= result.time
                     #help.tab-pane.fade(role='tabpanel', aria-labelledby='help-tab')
                         | 3
             .col-sm-7

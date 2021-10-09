@@ -4,6 +4,7 @@ const ExerciseCategory = require("../models/ExerciseCategory");
 const Exercise = require("../models/Exercise");
 const Result = require("../models/Result");
 const ResultDetail = require("../models/ResultDetail");
+const User = require("../models/User");
 class ExerciseController {
     // [GET]/exercise/:slug?name=lession
     async exercise(req, res, next) {
@@ -14,13 +15,27 @@ class ExerciseController {
                 const exercises = await Exercise.find({
                     lessionID: lession.id,
                 });
-                const exerciseCategories = await ExerciseCategory.find({});
+                const exerciseCatagoryIdArray = exercises.map(
+                    ({ ceID }) => ceID
+                );
+                const exerciseCategories = await ExerciseCategory.find({
+                    _id: { $in: exerciseCatagoryIdArray },
+                });
+
+                const results = await Result.find({ lessionID: lession.id })
+                    .sort({ score: -1 })
+                    .limit(10);
+                const userIdArray = results.map(({ userID }) => userID);
+                const users = await User.find({ _id: { $in: userIdArray } });
+                console.log(users);
 
                 res.render("exercises/exercise", {
                     lession,
                     subject,
                     exercises,
                     exerciseCategories,
+                    results,
+                    users,
                 });
             } else {
                 res.render("error");

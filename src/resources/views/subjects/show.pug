@@ -65,37 +65,15 @@ block main
                                                 each instruct in ratingRegulation
                                                     | #{instruct.content}
                             ul.ps-0.mb-0.mt-4
-                                li.chart__item
-                                    .position-relative
-                                        img.avatar(src='../img/avatar-no-name.png', alt='')
-                                        img.position-absolute.top-0.start-0(src='../img/gold.png', alt='')
-                                    span.name Hu&#x1EF3;nh Minh Ho&agrave;ng
-                                    .d-flex.align-items-center
-                                        span.me-1 10000
-                                        ion-icon(name='heart-circle')
-                                hr
-                                li.chart__item
-                                    .position-relative
-                                        img.avatar(src='../img/avatar-no-name.png', alt='')
-                                        img.position-absolute.top-0.start-0(src='../img/silver.png', alt='')
-                                    span.name Le Min Ho
-                                    .d-flex.align-items-center
-                                        span.me-1 1000
-                                        ion-icon(name='heart-circle')
-                                hr
-                                li.chart__item
-                                    .position-relative
-                                        img.avatar(src='../img/avatar-no-name.png', alt='')
-                                        img.position-absolute.top-0.start-0(src='../img/bronze.png', alt='')
-                                    span.name Park Min Young
-                                    .d-flex.align-items-center
-                                        span.me-1 100
-                                        ion-icon(name='heart-circle')
-                                hr
-                                li.chart__item
-                                    .position-relative
-                                        img.avatar(src='../img/avatar-no-name.png', alt='')
-                                    span.name Haki Yona
-                                    .d-flex.align-items-center
-                                        span.me-1 10
-                                        ion-icon(name='heart-circle')
+                                each result in results
+                                    li.chart__item
+                                        each user in users
+                                            if (user.id == result.userID)
+                                                .position-relative
+                                                    img.avatar(src=user.avatar, alt='')
+                                                    img.position-absolute.top-0.start-0(src='../img/gold.png', alt='')
+                                                span.name= user.fullname
+                                        .d-flex.align-items-center
+                                            span.me-1= result.score
+                                            ion-icon(name='heart-circle')
+                                    hr

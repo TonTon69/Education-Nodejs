@@ -49,7 +49,7 @@ $(document).ready(function () {
     //Load question
     var btnNextQuestion = $("#btn-next-question");
     var btnCheckResult = $("#btn-check-result");
-    var questions = $(".exercise-item");
+    var questions = $(".quiz .exercise-item");
 
     var message = $(".exercise-item .check-result .message");
     var divAnswerTrue = $(".exercise-item .check-result");
@@ -63,15 +63,16 @@ $(document).ready(function () {
 
     var count = 0;
     var scoreCount = 0;
+
     btnNextQuestion.click(function () {
+        count += 1;
+
         message.text("");
         answerTrue.text("");
         $("#stopwatch").stopwatch().stopwatch("start");
         divAnswerTrue.attr("style", "display: none !important");
         $(".explain").attr("style", "display: none !important");
         $(".recommend").attr("style", "display: block !important");
-
-        count += 1;
 
         var qaAnsChecked = $(".exercise-item.active .form-check input:checked");
         if (qaAnsChecked.length == 0) {
@@ -83,19 +84,24 @@ $(document).ready(function () {
             } else {
                 count -= 1;
             }
+            $(".questions__true .bottom").text(`${count}`);
         } else {
             for (let i = 0; i < questions.length; i++) {
                 questions[i].className = "exercise-item";
             }
             questions[count].className = "exercise-item active";
+            $(".questions__true .bottom").text(`${count}`);
         }
 
         if (count == questions.length) {
             $("#stopwatch").stopwatch().stopwatch("stop");
+            var path = $(location).attr("pathname").split("/")[2];
+            var params = new window.URLSearchParams(window.location.search);
+            var query = params.get("name");
             var submitResultForm = document.forms["submit-result-form"];
             submitResultForm.setAttribute(
                 "action",
-                "/result/" + projectId + "/force?_method=DELETE"
+                "/result/" + path + `?name=${query}`
             );
             submitResultForm.submit();
         }
@@ -106,7 +112,8 @@ $(document).ready(function () {
             btnCheckResult.attr("style", "display: flex !important");
         };
     }
-    btnCheckResult.click(function () {
+    btnCheckResult.click(function (e) {
+        e.preventDefault();
         $(".exercise-item.active .form-check input").attr("disabled", true);
         divAnswerTrue.attr("style", "display: block !important");
         $(".explain").attr("style", "display: block !important");
@@ -157,60 +164,4 @@ $(document).ready(function () {
             success: function (data) {},
         });
     });
-
-    // btnCheckResult.click(function () {
-    //     for (var i = 0; i < qaAns.length; i++) {
-    //         var valid = qaAns[i].getAttribute("valid");
-    //         console.log(valid);
-    //     }
-    // });
-
-    //Exercise
-    // $(".score__achieved").hide();
-    // $(".questions__true").hide();
-    // $("#btn-load-result").attr("style", "display: none !important");
-
-    // $("#btn-submit-exercise").click(function (e) {
-    //     e.preventDefault();
-    //     $(".quiz").scrollTop(0);
-    //     $(".score__achieved").show();
-    //     $(".questions__true").show();
-    //     $("#stopwatch").stopwatch().stopwatch("stop");
-    //     $(this).attr("style", "display: none !important");
-    //     $("#btn-load-result").show();
-
-    //     const options = $(".quiz .form-check-input");
-    //     $.each(options, function (index, option) {
-    //         option.disabled = true;
-    //     });
-
-    //     const arrayTemp = [];
-    //     const arrayOptionChecked = $(
-    //         "input[type=radio]:checked",
-    //         ".quiz"
-    //     ).toArray();
-    //     $.each(arrayOptionChecked, function (index, item) {
-    //         arrayTemp.push({
-    //             name: item.getAttribute("name"),
-    //             value: item.getAttribute("value"),
-    //         });
-    //     });
-    //     // const time = $("#stopwatch").html();
-    //     // const params = new window.URLSearchParams(window.location.search);
-    //     // console.log(params.get("name"));
-    //     // const path = $(location).attr("pathname");
-    //     // console.log(path);
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: $(location).attr("href"),
-    //         contentType: "application/json",
-    //         data: JSON.stringify({ objectData: arrayTemp }),
-    //         success: function (data) {
-    //             // const obj = JSON.parse(data);
-    //             // console.log(obj);
-    //             // $(".questions__true .bottom").html(obj);
-    //         },
-    //     });
-    // });
 });
