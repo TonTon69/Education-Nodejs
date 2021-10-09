@@ -15,23 +15,13 @@ class SiteController {
             const blogs = await Blog.find({}).sort({ view: -1 }).limit(6);
             const blogIDArray = blogs.map(({ _id }) => _id);
             const users = await User.find({ userID: { $in: blogIDArray } });
-            const user = await User.findOne({ _id: req.signedCookies.userId });
-            if (user) {
-                res.locals.user = user;
-                res.render("index", {
-                    users,
-                    banners,
-                    subjects,
-                    blogs,
-                });
-            } else {
-                res.render("index", {
-                    users,
-                    banners,
-                    subjects,
-                    blogs,
-                });
-            }
+
+            res.render("index", {
+                users,
+                banners,
+                subjects,
+                blogs,
+            });
         } catch (error) {
             res.render("error");
         }

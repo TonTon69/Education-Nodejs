@@ -34,6 +34,9 @@ class LearningController {
             res.render("error");
         }
     }
+
+    // [GET]/learning/result
+    async learningResult(req, res, next) {}
 }
 
 module.exports = new LearningController();

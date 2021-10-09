@@ -10,6 +10,8 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
 
+const { userLocal } = require("./app/middlewares/LocalMiddleware");
+
 const route = require("./routes");
 const db = require("./config/db");
 
@@ -35,6 +37,9 @@ app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(methodOverride("_method"));
+
+// Custom middleware
+app.use(userLocal);
 
 app.locals.moment = moment;
 
