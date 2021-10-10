@@ -11,6 +11,7 @@ const User = new Schema(
         email: { type: String, unique: true },
         password: { type: String },
         phone: { type: String },
+        address: { type: String },
         roleID: { type: Schema.Types.ObjectId, ref: "Role" },
         fullname: { type: String },
         avatar: { type: String },

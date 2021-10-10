@@ -27,7 +27,6 @@ class ExerciseController {
                     .limit(10);
                 const userIdArray = results.map(({ userID }) => userID);
                 const users = await User.find({ _id: { $in: userIdArray } });
-                console.log(users);
 
                 res.render("exercises/exercise", {
                     lession,

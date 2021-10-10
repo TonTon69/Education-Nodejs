@@ -29,7 +29,7 @@ block main
                         div
                             p
                                 label(for='') Ng&agrave;y sinh:
-                                input#birthday.infor__input(type='date', value=user.birthDay, name='birthday')
+                                input#birthday.infor__input(type='date', value=moment(user.birthDay).format("YYYY-MM-DD"), name='birthday')
                         div
                             p(style='margin: 1.4rem 0 1.8rem 0')
                                 label(for='') Email:

@@ -3,6 +3,7 @@ const Grade = require("../models/Grade");
 const User = require("../models/User");
 const Banner = require("../models/Banner");
 const Blog = require("../models/Blog");
+const BlogCategory = require("../models/BlogCategory");
 const bcrypt = require("bcrypt");
 class SiteController {
     // [GET]/
@@ -31,7 +32,11 @@ class SiteController {
     async infor(req, res, next) {
         try {
             const user = await User.findOne({ _id: req.signedCookies.userId });
-            res.render("infor", { user });
+            if (user) {
+                res.render("infor", { user });
+            } else {
+                res.render("error");
+            }
         } catch (error) {
             res.render("error");
         }
@@ -90,6 +95,31 @@ class SiteController {
             signed: true,
         });
         res.redirect("/");
+    }
+
+    // [GET]/logout
+    logout(req, res) {
+        res.clearCookie("userId");
+        res.clearCookie("sessionId");
+        res.redirect("/");
+    }
+
+    // [GET]/blog
+    async blog(req, res, next) {
+        try {
+            const categories = await BlogCategory.find({});
+            const blogs = await Blog.find({}).sort({ view: -1 });
+            const blogUserIdArray = blogs.map(({ userID }) => userID);
+            const users = await User.find({ _id: { $in: blogUserIdArray } });
+
+            res.render("blog", {
+                blogs,
+                categories,
+                users,
+            });
+        } catch (err) {
+            res.render("error");
+        }
     }
 }
 

@@ -1,0 +1,41 @@
+extends ./layouts/common
+block main
+    section.blog
+        .row
+            .col-md-9.col-lg-9.col-xl-8
+                .blog-wrap
+                    .blog-heading
+                        p.blog-heading-title
+                            | PHÙ HỢP VỚI BẠN
+                    each blog in blogs
+                        a(href=`/blog/${blog.slug}`)
+                            .blog-list
+                                .blog-item
+                                    .blog-item-heading
+                                        .blog-item-left
+                                            each user in users
+                                                if (user.id == blog.userID )
+                                                    img.blog-item-avatar(src=user.avatar alt='')
+                                                    p.blog-item-name
+                                                        span= user.fullname
+                                        .blog-item-right.fs-5
+                                            ion-icon.me-2(name='bookmark-outline')
+                                            ion-icon(name='ellipsis-horizontal')
+                                    .blog-item-content
+                                        .blog-item-content-left.pe-4
+                                            h5.blog-item-content-left-title
+                                                | #{blog.title}
+                                            p.blog-item-content-left-text
+                                                | #{blog.content}
+                                            p.blog-item-content-left-time= moment(blog.updatedAt).locale("vi").fromNow()
+                                        .blog-item-content-right
+                                            img(src=`${blog.image}` alt='')
+            .col-md-3.col-lg-3.col-xl-4
+                .topic-wrap
+                    .topic-wrap-heading
+                        | CÁC CHỦ ĐỀ ĐƯỢC ĐỀ XUẤT
+                    .toppic-wrap-content
+                        each category in categories
+                            ul
+                                li #{category.category}
+

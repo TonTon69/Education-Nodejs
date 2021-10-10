@@ -1,0 +1,31 @@
+extends ../layouts/common
+block main
+    section.blog-detail
+        .row
+            .col-sm-9
+                .blog-wrap
+                    h3.fw-bold.mb-4= blog.title
+                    .author.d-flex.align-items-center
+                        img.rounded-pill(src=user.avatar, width='48', alt='')
+                        .ms-3
+                            span.name(style='font-weight: 600')= user.fullname
+                            span.d-block.mt-2.fs-8.text-secondary= moment(blog.updatedAt).locale("vi").fromNow()
+                    .blog-content.mt-4(style='line-height: 2')= blog.content
+            .col-sm-3
+                .blog-related
+                    .blog-related-heading.fw-bold
+                        | C&Aacute;C B&Agrave;I VI&#x1EBE;T LI&Ecirc;N QUAN
+                    .blog-related-content.mt-4
+                        each item in blogRelated
+                            a.d-block.blog-card.mb-4(href=`/blog/${item.slug}`)
+                                img(src=item.image, alt='')
+                                h5.title.mt-3.mb-3= item.title
+                                .author.d-flex.align-items-center
+                                    each user in users
+                                        if (user.id == item.userID)
+                                            img(src=user.avatar, alt='')
+                                            .fs-7
+                                                span.ms-2.name= user.fullname
+                                                span.ms-1.me-1 .
+                                                span= moment(item.updatedAt).locale("vi").fromNow()
+
