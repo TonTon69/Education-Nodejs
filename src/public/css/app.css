@@ -275,29 +275,16 @@ body {
     overflow: hidden;
     position: relative;
     cursor: pointer; }
-  .main .Boxchange__avatar .icon__image {
-    width: 158px;
-    height: 158px;
-    margin: 10px;
-    position: absolute;
-    visibility: hidden;
-    z-index: 2; }
-    .main .Boxchange__avatar .icon__image ion-icon {
-      padding-left: 60px;
-      padding-top: 60px;
-      font-size: 30px;
-      color: #fff;
-      opacity: 0.9; }
-  .main .icon-image::before {
-    content: "\f03e"; }
+  .main .infor__title {
+    margin-left: 40px;
+    margin-top: 15px;
+    color: #e29000;
+    text-transform: uppercase;
+    font-size: 20px;
+    line-height: 1.5;
+    font-weight: 700; }
   .main .box__infor {
     padding: 20px; }
-    .main .box__infor .infor__title {
-      color: #e29000;
-      text-transform: uppercase;
-      font-size: 18px;
-      line-height: 1.5;
-      font-weight: 700; }
     .main .box__infor p label {
       width: 170px;
       display: inline-block;

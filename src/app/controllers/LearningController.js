@@ -2,6 +2,9 @@ const Subject = require("../models/Subject");
 const Unit = require("../models/Unit");
 const Lession = require("../models/Lession");
 const Theory = require("../models/Theory");
+const User = require("../models/User");
+const Result = require("../models/Result");
+const ResultDetail = require("../models/ResultDetail");
 
 class LearningController {
     // [GET]/learning/:slug?name=lession
@@ -36,7 +39,13 @@ class LearningController {
     }
 
     // [GET]/learning/result
-    async learningResult(req, res, next) {}
+    async learningResult(req, res, next) {
+        try {
+            const user = await User.findOne({ _id: req.signedCookies.userId });
+            const results = await Result.find({ userID: user.id });
+            res.render("learning/result", results);
+        } catch (error) {}
+    }
 }
 
 module.exports = new LearningController();
