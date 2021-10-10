@@ -6,7 +6,7 @@ module.exports = {
             res.redirect("/login");
             return;
         }
-        const user = await User.findOne({ id: req.signedCookies.userId });
+        const user = await User.findOne({ _id: req.signedCookies.userId });
         if (!user) {
             res.redirect("/login");
             return;

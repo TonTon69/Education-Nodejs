@@ -32,11 +32,10 @@ class SiteController {
     async infor(req, res, next) {
         try {
             const user = await User.findOne({ _id: req.signedCookies.userId });
-            if (user) {
-                res.render("infor", { user });
-            } else {
-                res.render("error");
-            }
+            res.render("infor", {
+                user,
+                success: req.flash("success"),
+            });
         } catch (error) {
             res.render("error");
         }
