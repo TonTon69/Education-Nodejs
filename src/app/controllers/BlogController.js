@@ -1,5 +1,4 @@
 const Blog = require("../models/Blog");
-const BlogCategory = require("../models/BlogCategory");
 const User = require("../models/User");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;

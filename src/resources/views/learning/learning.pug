@@ -31,37 +31,36 @@ block main
                                     .modal-header
                                         h5#reportModalLabel.modal-title Báo lỗi
                                         button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
-                                    form(method='get')
+                                    form(method='post', action='/report')
                                         .modal-body
                                             .mb-3
                                                 label.col-form-label(for='message-text')
                                                     | V&#x1EA5;n &dstrok;&#x1EC1; b&#x1EA1;n g&#x1EB7;p ph&#x1EA3;i l&agrave; g&igrave;?
                                                 .form-check.d-flex.align-items-center.mt-1.mb-1
-                                                    input#flexRadioReport1.form-check-input.mt-0.me-2(type='radio', name='flexRadioReport')
+                                                    input#flexRadioReport1.form-check-input.mt-0.me-2(type='radio', name='content', value='Sai nội dung')
                                                     label.form-check-label(for='flexRadioReport1')
-                                                        | Sai n&#x1ED9;i dung
+                                                        | Sai nội dung
                                                 .form-check.d-flex.align-items-center.mt-1.mb-1
-                                                    input#flexRadioReport2.form-check-input.mt-0.me-2(type='radio', name='flexRadioReport')
+                                                    input#flexRadioReport2.form-check-input.mt-0.me-2(type='radio', name='content', value='Lý thuyết khó hiểu')
                                                     label.form-check-label(for='flexRadioReport2')
-                                                        | L&yacute; thuy&#x1EBF;t kh&oacute; hi&#x1EC3;u
+                                                        | Lý thuyết khó hiểu
                                                 .form-check.d-flex.align-items-center.mt-1.mb-1
-                                                    input#flexRadioReport3.form-check-input.mt-0.me-2(type='radio', name='flexRadioReport')
+                                                    input#flexRadioReport3.form-check-input.mt-0.me-2(type='radio', name='content', value='Nội dung chưa phù hợp')
                                                     label.form-check-label(for='flexRadioReport3')
-                                                        | N&#x1ED9;i dung ch&#x1B0;a ph&ugrave; h&#x1EE3;p (VD: &Dstrok;&atilde; gi&#x1EA3;m t&#x1EA3;i,...)
+                                                        | Nội dung chưa phù hợp (VD: Đã giảm tải,...)
                                                 .form-check.d-flex.align-items-center.mt-1.mb-1
-                                                    input#flexRadioReport4.form-check-input.mt-0.me-2(type='radio', name='flexRadioReport')
+                                                    input#flexRadioReport4.form-check-input.mt-0.me-2(type='radio', name='content', value='Lỗi khác')
                                                     label.form-check-label(for='flexRadioReport4')
-                                                        | L&#x1ED7;i kh&aacute;c
+                                                        | Lỗi khác
                                             .mb-3
                                                 label.col-form-label(for='message-text')
-                                                    | M&ocirc; t&#x1EA3; chi
-                                                    | ti&#x1EBF;t
-                                                textarea#message-text.form-control(rows='5', placeholder='Góp ý lỗi bạn gặp phải với chúng tôi để khắc phục sớm nhất. Cảm ơn, chúc bạn học tập vui vẻ!')
+                                                    | Mô tả chi tiết
+                                                textarea#message-text.form-control(rows='5', name='summary', placeholder='Góp ý lỗi bạn gặp phải với chúng tôi để khắc phục sớm nhất. Cảm ơn, chúc bạn học tập vui vẻ!', required)
                                         .modal-footer
                                             button.btn.btn-secondary(type='button', data-bs-dismiss='modal')
-                                                | H&#x1EE7;y b&#x1ECF;
+                                                | Hủy bỏ
                                             button.btn.btn-primary(type='submit')
-                                                | G&#x1EED;i
+                                                | Gửi
             .col-sm-4
                 .learning__list
                     h6= subject.name + " " + subject.gradeID

@@ -4,6 +4,7 @@ const User = require("../models/User");
 const Banner = require("../models/Banner");
 const Blog = require("../models/Blog");
 const BlogCategory = require("../models/BlogCategory");
+const Report = require("../models/Report");
 const bcrypt = require("bcrypt");
 class SiteController {
     // [GET]/
@@ -136,6 +137,21 @@ class SiteController {
         } catch (err) {
             res.render("error");
         }
+    }
+
+    // [POST]/report
+    async report(req, res) {
+        const url = req.originalUrl;
+        console.log(url);
+        const user = await User.findOne({ _id: req.signedCookies.userId });
+        const report = new Report({
+            userID: user.id,
+            content: req.body.content,
+            summary: req.body.summary,
+        });
+        await report.save();
+        req.flash("success", "Bạn đã báo cáo thành công. Cảm ơn!");
+        res.redirect(`${url}`);
     }
 }
 

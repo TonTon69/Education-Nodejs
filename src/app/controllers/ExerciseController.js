@@ -47,6 +47,7 @@ class ExerciseController {
                             as: "User",
                         },
                     },
+                    { $sort: { score: -1, time: 1 } },
                     {
                         $limit: 10,
                     },
