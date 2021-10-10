@@ -15,7 +15,7 @@ block main
                                 label Tên tài khoản:
                                 span @#{user.username}
                             p
-                                label Họ tên
+                                label Họ tên 
                                     span.text-danger (*):
                                 input.infor__input(maxlength='30', type='text', name='fullname', placeholder='Nhập họ và tên', value=user.fullname, required)
                         div
@@ -25,12 +25,12 @@ block main
                                 input.infor__input(maxlength='10', type='text', name='phone', placeholder='Nhập số điện thoại', value=user.phone, required)
                         div
                             p
-                                label Ngày sinh
+                                label Ngày sinh 
                                     span.text-danger (*):
                                 input#birthday.infor__input(type='date', value=moment(user.birthDay).format("YYYY-MM-DD"), name='birthDay', required)
                         div
                             p
-                                label Địa chỉ
+                                label Địa chỉ 
                                     span.text-danger (*):
                                 input#address.infor__input(type='text', placeholder='Nhập địa chỉ hiện tại', value=user.address, name='address', required)
                         div
