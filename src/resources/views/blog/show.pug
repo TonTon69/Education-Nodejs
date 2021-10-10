@@ -21,11 +21,9 @@ block main
                                 img(src=item.image, alt='')
                                 h5.title.mt-3.mb-3= item.title
                                 .author.d-flex.align-items-center
-                                    each user in users
-                                        if (user.id == item.userID)
-                                            img(src=user.avatar, alt='')
-                                            .fs-7
-                                                span.ms-2.name= user.fullname
-                                                span.ms-1.me-1 .
-                                                span= moment(item.updatedAt).locale("vi").fromNow()
+                                    img(src=item.User[0].avatar, alt='')
+                                    .fs-7
+                                        span.ms-2.name= item.User[0].fullname
+                                        span.ms-1.me-1 .
+                                        span= moment(item.updatedAt).locale("vi").fromNow()
 

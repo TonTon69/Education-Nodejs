@@ -8,7 +8,7 @@ const mongooseDelete = require("mongoose-delete");
 const Subject = new Schema(
     {
         name: { type: String, require: true },
-        gradeID: { type: Number, ref: "Grade" },
+        gradeID: { type: Schema.Types.ObjectId, ref: "Grade" },
         icon: { type: String },
         slug: { type: String, slug: "name" + "gradeID", unique: true },
     },

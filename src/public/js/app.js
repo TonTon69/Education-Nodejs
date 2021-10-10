@@ -56,7 +56,7 @@ $(document).ready(function () {
     var answerTrue = $(".exercise-item .check-result .answer-true");
     var qaAns = $(".exercise-item .form-check input");
 
-    questions.first().addClass("active");
+    // questions.first().addClass("active");
     btnCheckResult.attr("style", "display: none !important");
     divAnswerTrue.attr("style", "display: none !important");
     $(".explain").attr("style", "display: none !important");
@@ -64,7 +64,8 @@ $(document).ready(function () {
     var count = 0;
     var scoreCount = 0;
 
-    btnNextQuestion.click(function () {
+    btnNextQuestion.click(function (e) {
+        e.preventDefault();
         count += 1;
 
         message.text("");
@@ -74,24 +75,11 @@ $(document).ready(function () {
         $(".explain").attr("style", "display: none !important");
         $(".recommend").attr("style", "display: block !important");
 
-        var qaAnsChecked = $(".exercise-item.active .form-check input:checked");
-        if (qaAnsChecked.length == 0) {
-            if (confirm("Bạn muốn bỏ qua câu này?") == true) {
-                for (let i = 0; i < questions.length; i++) {
-                    questions[i].className = "exercise-item";
-                }
-                questions[count].className = "exercise-item active";
-            } else {
-                count -= 1;
-            }
-            $(".questions__true .bottom").text(`${count}`);
-        } else {
-            for (let i = 0; i < questions.length; i++) {
-                questions[i].className = "exercise-item";
-            }
-            questions[count].className = "exercise-item active";
-            $(".questions__true .bottom").text(`${count}`);
-        }
+        // for (let i = 0; i < questions.length; i++) {
+        //     questions[i].className = "exercise-item";
+        // }
+        questions[count].className = "exercise-item active";
+        $(".questions__true .bottom").text(`${count}`);
 
         if (count == questions.length) {
             $("#stopwatch").stopwatch().stopwatch("stop");
@@ -105,6 +93,25 @@ $(document).ready(function () {
             );
             submitResultForm.submit();
         }
+
+        // var qaAnsChecked = $(".exercise-item.active .form-check input:checked");
+        // if (qaAnsChecked.length == 0) {
+        //     if (confirm("Bạn muốn bỏ qua câu này?") == true) {
+        //         for (let i = 0; i < questions.length; i++) {
+        //             questions[i].className = "exercise-item";
+        //         }
+        //         questions[count].className = "exercise-item active";
+        //     } else {
+        //         count -= 1;
+        //     }
+        //     $(".questions__true .bottom").text(`${count}`);
+        // } else {
+        //     for (let i = 0; i < questions.length; i++) {
+        //         questions[i].className = "exercise-item";
+        //     }
+        //     questions[count].className = "exercise-item active";
+        //     $(".questions__true .bottom").text(`${count}`);
+        // }
     });
 
     for (var i = 0; i < qaAns.length; i++) {

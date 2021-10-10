@@ -116,18 +116,16 @@ block main
                             each b in blogs
                                 .swiper-slide
                                     .blogs__item
-                                        a.blogs__link(href='')
+                                        a.blogs__link(href=`/blog/${b.slug}`)
                                             img.imagepost(src=b.image, alt='')
                                         h5.blogs__title.mt-3.mb-3
                                             a(href='')= b.title
                                         .post__author
-                                            each u in users
-                                                if (b.userID == u.id)
-                                                    img.avatar(src=u.avatar, alt='')
-                                                    .fs-7
-                                                        strong= u.fullname
-                                                        span.dot .
-                                                        span= moment(b.createdAt).locale("vi").fromNow()
+                                            img.avatar(src=b.User[0].avatar, alt='')
+                                            .fs-7
+                                                strong= b.User[0].fullname
+                                                span.dot .
+                                                span= moment(b.createdAt).locale("vi").fromNow()
                         .swiper-button-prev
                         .swiper-button-next
                         .swiper-scrollbar

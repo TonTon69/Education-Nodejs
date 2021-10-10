@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 async function connect() {
     try {
-        await mongoose.connect(process.env.MONGO_URL, {
+        await mongoose.connect("mongodb://localhost:27017/education_dev", {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             // useFindAndModify: false,

@@ -5,6 +5,8 @@ const Exercise = require("../models/Exercise");
 const Result = require("../models/Result");
 const ResultDetail = require("../models/ResultDetail");
 const User = require("../models/User");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 class ExerciseController {
     // [GET]/exercise/:slug?name=lession
     async exercise(req, res, next) {
@@ -12,29 +14,49 @@ class ExerciseController {
             const subject = await Subject.findOne({ slug: req.params.slug });
             if (subject) {
                 const lession = await Lession.findOne({ slug: req.query.name });
-                const exercises = await Exercise.find({
-                    lessionID: lession.id,
-                });
-                const exerciseCatagoryIdArray = exercises.map(
-                    ({ ceID }) => ceID
-                );
-                const exerciseCategories = await ExerciseCategory.find({
-                    _id: { $in: exerciseCatagoryIdArray },
-                });
+                const exercise = await Exercise.aggregate([
+                    {
+                        $match: {
+                            lessionID: ObjectId(lession.id),
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "exercise-categories",
+                            localField: "ceID",
+                            foreignField: "_id",
+                            as: "Cate",
+                        },
+                    },
+                    {
+                        $limit: 5,
+                    },
+                ]);
 
-                const results = await Result.find({ lessionID: lession.id })
-                    .sort({ score: -1 })
-                    .limit(10);
-                const userIdArray = results.map(({ userID }) => userID);
-                const users = await User.find({ _id: { $in: userIdArray } });
+                const results = await Result.aggregate([
+                    {
+                        $match: {
+                            lessionID: ObjectId(lession.id),
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "userID",
+                            foreignField: "_id",
+                            as: "User",
+                        },
+                    },
+                    {
+                        $limit: 10,
+                    },
+                ]);
 
                 res.render("exercises/exercise", {
                     lession,
                     subject,
-                    exercises,
-                    exerciseCategories,
+                    exercise,
                     results,
-                    users,
                 });
             } else {
                 res.render("error");
@@ -58,20 +80,22 @@ class ExerciseController {
             const myScore = req.body.score;
             const myScoreTemp = myScore.split("/")[0];
 
+            const user = await User.findOne({ _id: req.signedCookies.userId });
+
             const result = new Result({
-                userID: "615f01b576023090c2ac4971",
+                userID: user.id,
                 lessionID: lessionObj.id,
                 time: myTime,
                 score: myScoreTemp,
             });
             const findResult = await Result.findOne({
-                userID: "615f01b576023090c2ac4971",
+                userID: user.id,
                 lessionID: lessionObj.id,
             });
 
             if (findResult) {
                 const query = {
-                    userID: "615f01b576023090c2ac4971",
+                    userID: user.id,
                     lessionID: lessionObj.id,
                 };
                 await Result.findOneAndUpdate(query, {
@@ -97,17 +121,17 @@ class ExerciseController {
                         exerciseID: myJsonObj.name,
                         option: myJsonObj.value,
                     });
-                    resultDetail.save();
+                    await resultDetail.save();
                 }
             } else {
-                result.save();
+                await result.save();
                 if (result) {
                     const resultDetail = new ResultDetail({
                         resultID: result.id,
                         exerciseID: myJsonObj.name,
                         option: myJsonObj.value,
                     });
-                    resultDetail.save();
+                    await resultDetail.save();
                 }
             }
         } catch (error) {

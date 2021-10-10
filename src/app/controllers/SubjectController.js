@@ -27,6 +27,7 @@ class SubjectController {
                 .limit(10);
             const userIdArray = results.map(({ userID }) => userID);
             const users = await User.find({ _id: { $in: userIdArray } });
+
             res.render("subjects/show", {
                 subject,
                 units,

@@ -9,16 +9,25 @@ class SiteController {
     // [GET]/
     async index(req, res, next) {
         try {
-            const subjects = await Subject.find({})
-                .sort({ location: -1 })
-                .limit(6);
+            const subjects = await Subject.find({}).limit(6);
             const banners = await Banner.find({});
-            const blogs = await Blog.find({}).sort({ view: -1 }).limit(6);
-            const blogIDArray = blogs.map(({ _id }) => _id);
-            const users = await User.find({ userID: { $in: blogIDArray } });
+
+            const blogs = await Blog.aggregate([
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "userID",
+                        foreignField: "_id",
+                        as: "User",
+                    },
+                },
+                { $sort: { view: -1 } },
+                {
+                    $limit: 6,
+                },
+            ]);
 
             res.render("index", {
-                users,
                 banners,
                 subjects,
                 blogs,
@@ -107,14 +116,22 @@ class SiteController {
     async blog(req, res, next) {
         try {
             const categories = await BlogCategory.find({});
-            const blogs = await Blog.find({}).sort({ view: -1 });
-            const blogUserIdArray = blogs.map(({ userID }) => userID);
-            const users = await User.find({ _id: { $in: blogUserIdArray } });
+
+            const blogs = await Blog.aggregate([
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "userID",
+                        foreignField: "_id",
+                        as: "User",
+                    },
+                },
+                { $sort: { view: -1 } },
+            ]);
 
             res.render("blog", {
                 blogs,
                 categories,
-                users,
             });
         } catch (err) {
             res.render("error");

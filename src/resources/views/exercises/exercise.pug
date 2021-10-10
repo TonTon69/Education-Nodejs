@@ -23,7 +23,7 @@ block main
                                     ion-icon(name='book')
                                     span.ms-2 Ôn lý thuyết
                         div
-                            blockquote Chọn các đáp án đúng bên phải màn hình và bấm Nộp bài.
+                            blockquote Chọn đáp án đúng bên phải màn hình, bấm Kiểm tra để xem kết quả và bấm Câu tiếp theo.
                         .mt-5.row
                             .col-sm-4
                                 .homework__time
@@ -57,80 +57,58 @@ block main
                                             img(src='../img/gold.png', alt='')
                                         td
                                             .d-flex.align-items-center
-                                                each user in users
-                                                    if (user.id == result.userID)
-                                                        img.rounded-circle(src=user.avatar, alt='', width='30')
-                                                        span.ms-2= user.fullname
+                                                img.rounded-circle(src=result.User[0].avatar, alt='', width='30')
+                                                span.ms-2= result.User[0].fullname
                                         td= result.score
                                         td= result.time
                     #help.tab-pane.fade(role='tabpanel', aria-labelledby='help-tab')
                         | 3
             .col-sm-7
                 .quiz.mb-4
-                    - var index=0;
-                    - var point=0;
-                    - point=100/(exercises.length);
-                    each exercise in exercises
-                        - index++;
-                        .exercise-item.mb-4
-                            .d-flex.align-items-center.justify-content-between
-                                h6.fw-bold.mb-0 Câu #{index}
-                                .d-flex.align-items-center
-                                    .d-flex.align-items-center.me-3
-                                        ion-icon.text-danger.fs-4(name='heart-circle') 
-                                        span.ms-1#score= point
-                                    each category in exerciseCategories
-                                        if (category.id == exercise.ceID)
-                                            button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= category.type
-                            .question.mt-2= exercise.question
-                            .options.mt-3
-                                .form-check.d-flex.align-items-center
-                                    if (exercise.option1 == exercise.answer)
-                                        input.form-check-input.mt-0.me-3(id=`qa-${index}`, type='radio', name=exercise.id, value=exercise.option1, valid='valid')
-                                    else
-                                        input.form-check-input.mt-0.me-3(id=`qa-${index}`, type='radio', name=exercise.id, value=exercise.option1)
-                                    label.form-check-label(for=`qa-${index}`)
-                                        | A. #{exercise.option1}
-                                .form-check.d-flex.align-items-center
-                                    if (exercise.option2 == exercise.answer)
-                                        input.form-check-input.mt-0.me-3(id=`qb-${index}`, type='radio', name=exercise.id, value=exercise.option2, valid='valid')
-                                    else
-                                        input.form-check-input.mt-0.me-3(id=`qb-${index}`, type='radio', name=exercise.id, value=exercise.option2)
-                                    label.form-check-label(for=`qb-${index}`)
-                                        | B. #{exercise.option2}
-                                .form-check.d-flex.align-items-center
-                                    if (exercise.option3 == exercise.answer)
-                                        input.form-check-input.mt-0.me-3(id=`qc-${index}`, type='radio', name=exercise.id, value=exercise.option3, valid='valid')
-                                    else
-                                        input.form-check-input.mt-0.me-3(id=`qc-${index}`, type='radio', name=exercise.id, value=exercise.option3)
-                                    label.form-check-label(for=`qc-${index}`)
-                                        | C. #{exercise.option3}
-                                .form-check.d-flex.align-items-center
-                                    if (exercise.option4 == exercise.answer)
-                                        input.form-check-input.mt-0.me-3(id=`qd-${index}`, type='radio', name=exercise.id, value=exercise.option4, valid='valid')
-                                    else
-                                        input.form-check-input.mt-0.me-3(id=`qd-${index}`, type='radio', name=exercise.id, value=exercise.option4)
-                                    label.form-check-label(for=`qd-${index}`)
-                                        | D. #{exercise.option4}
-                            .check-result.mb-3
-                                span.message
-                                span.answer-true
-                            if (exercise.recommend != "")
-                                .recommend(id=`recommend-${index}`)
-                                    .recommend-header.text-primary.d-inline-flex.align-items-center
-                                        span.me-1 Gợi ý
-                                        ion-icon(name='sunny')
-                                    .recommend-body.mt-4
-                                        span.fw-bold Phương pháp giải
-                                        .mt-2.recommend-content= exercise.recommend
-                            if (exercise.explain != "")
-                                .explain(id=`explain-${index}`)
-                                    .explain-header.text-primary.d-inline-flex.align-items-center
-                                        span.me-1 Xem lời giải
-                                        ion-icon(name='sunny')
-                                    .explain-body.mt-4
-                                        span.fw-bold Lời giải
-                                        .mt-2.explain-content= exercise.explain
+                    .exercise-item.mb-4
+                        .d-flex.align-items-center.justify-content-between
+                            strong.d-block.fw-bold.mb-0 Câu 
+                                span 1
+                            .d-flex.align-items-center
+                                .d-flex.align-items-center.me-3
+                                    ion-icon.text-danger.fs-4(name='heart-circle') 
+                                    span.ms-1#score 50
+                                    button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= exercise[0].Cate[0].type
+                        .question.mt-2= exercise[0].question
+                        .options.mt-3
+                            .form-check.d-flex.align-items-center
+                                input.form-check-input.mt-0.me-3(id="1", type='radio', name='anwser', value=exercise[0].option1)
+                                label.form-check-label(for="1")
+                                    | A. #{exercise[0].option1}
+                            .form-check.d-flex.align-items-center
+                                input.form-check-input.mt-0.me-3(id="2", type='radio', name='anwser', value="2")
+                                label.form-check-label(for="2")
+                                    | A. #{exercise[0].option2}
+                            .form-check.d-flex.align-items-center
+                                input.form-check-input.mt-0.me-3(id="3", type='radio', name='anwser', value="3")
+                                label.form-check-label(for="3")
+                                    | A. #{exercise[0].option3}
+                            .form-check.d-flex.align-items-center
+                                input.form-check-input.mt-0.me-3(id="4", type='radio', name='anwser', value="4")
+                                label.form-check-label(for="4")
+                                    | A. #{exercise[0].option4}
+                        .check-result.mb-3
+                            span.message
+                            span.answer-true
+                        .recommend(id="")
+                            .recommend-header.text-primary.d-inline-flex.align-items-center
+                                span.me-1 Gợi ý
+                                ion-icon(name='sunny')
+                            .recommend-body.mt-4
+                                span.fw-bold Phương pháp giải
+                                .mt-2.recommend-content Phương pháp giải chi tiết
+                        .explain(id="")
+                            .explain-header.text-primary.d-inline-flex.align-items-center
+                                span.me-1 Xem lời giải
+                                ion-icon(name='sunny')
+                            .explain-body.mt-4
+                                span.fw-bold Lời giải
+                                .mt-2.explain-content Lời giải chi tiết
                 .actions.pt-4.d-flex.align-items-center
                     button#btn-check-result.btn.btn-secondary.btn-padding.d-flex.align-items-center.me-2(value="submit")
                         ion-icon(name='checkmark-outline')
