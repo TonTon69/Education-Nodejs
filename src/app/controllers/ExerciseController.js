@@ -69,27 +69,28 @@ class ExerciseController {
 
     async postExercise(req, res, next) {
         try {
-            const lession = req.query.name;
-
-            const lessionObj = await Lession.findOne({ slug: lession });
-            const exercises = await Exercise.find({ slug: lession });
-
             const myJsonData = req.body.objectData;
             const myJsonObj = Object.assign({}, ...myJsonData);
+            const myTime = req.body.time;
+            const myExercise = req.body.exercise;
 
-            const result = new Result({
-                userID: req.signedCookies.userId,
-                exerciseID: myJsonObj.name,
-                option: myJsonObj.value,
-            });
-            await result.save();
-
-            // const result = new Result({
-            //     userID: user.id,
-            //     lessionID: lessionObj.id,
-            //     time: myTime,
-            //     score: myScoreTemp,
-            // });
+            if (Object.keys(myJsonObj).length === 0) {
+                const result = new Result({
+                    userID: req.signedCookies.userId,
+                    exerciseID: myExercise,
+                    option: "",
+                    time: myTime,
+                });
+                await result.save();
+            } else {
+                const result = new Result({
+                    userID: req.signedCookies.userId,
+                    exerciseID: myJsonObj.name,
+                    option: myJsonObj.value,
+                    time: myTime,
+                });
+                await result.save();
+            }
         } catch (error) {
             console.log(error);
         }

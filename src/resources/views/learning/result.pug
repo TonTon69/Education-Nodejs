@@ -3,16 +3,68 @@ block main
     section.learning-result
         .row
             .col-sm-9
+                - var count = 0;
+                .exercise-item.mb-5.shadow
+                    .d-flex.align-items-center.justify-content-between
+                        strong.d-block.fw-bold.mb-0 Câu 
+                            span.index-qa 1
+                        button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= exercises[count].Cate[count].type
+                    .question.mt-2= exercises[count].question
+                    .options.mt-3.row
+                        .col-sm-6.form-check.d-flex.align-items-center
+                            input.form-check-input.ms-0.mt-0.me-3(id="option1", type='radio', disabled)
+                            label.form-check-label(for="option1")
+                                | A. #{exercises[count].option1}
+                        .col-sm-6.form-check.d-flex.align-items-center
+                            input.form-check-input.ms-0.mt-0.me-3(id="option2", type='radio', disabled)
+                            label.form-check-label(for="option2")
+                                | B. #{exercises[count].option2}
+                        .col-sm-6.form-check.d-flex.align-items-center
+                            input.form-check-input.ms-0.mt-0.me-3(id="option3", type='radio', disabled)
+                            label.form-check-label(for="option3")
+                                | C. #{exercises[count].option3}
+                        .col-sm-6.form-check.d-flex.align-items-center
+                            input.form-check-input.ms-0.mt-0.me-3(id="option4", type='radio', disabled)
+                            label.form-check-label(for="option4")
+                                | D. #{exercises[count].option4}
+                    if exercises[count].answer === results[count].option
+                        .check-result.valid.mb-4.mt-2.d-flex.align-items-center
+                            ion-icon(name="checkmark-circle").text-success.fs-4
+                            span.message Bạn đã chọn: #{results[count].option}
+                            span.ms-2.me-2 ~
+                            span.answer-true Đáp án đúng: #{exercises[count].answer}
+                    else if results[count].option === ""
+                        .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
+                            ion-icon(name="alert").text-danger.fs-4
+                            span.message.ms-2 Bạn đã bỏ qua câu này
+                            span.ms-2.me-2 ~
+                            span.answer-true Đáp án đúng: #{exercises[count].answer}
+                    else
+                        .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
+                            ion-icon(name="close-circle").text-danger.fs-4
+                            span.message Bạn đã chọn: #{results[count].option}
+                            span.ms-2.me-2 ~
+                            span.answer-true Đáp án đúng: #{exercises[count].answer}
+                    .explain
+                        .explain-header.text-primary.d-inline-flex.align-items-center
+                            span.me-1 Xem lời giải
+                            ion-icon(name='sunny')
+                        .explain-body.mt-4
+                            span.fw-bold Phương pháp giải
+                            .mt-2.explain-content= exercises[count].recommend
+                            hr
+                            span.fw-bold Lời giải
+                            .mt-2.explain-content= exercises[count].explain
                 .result
                     .animate
                     .score
                         img.top-star(src='../img/top-star.png')
                         strong.text-uppercase.text-white.fs-5.d-block.mt-4 ĐIỂM SỐ
-                        span.mt-3.d-block 100
+                        span.mt-3.d-block= totalScore
                     .done.text-white.mb-4
                         span.mb-2
                             ion-icon(name='shield-checkmark')
-                            | Số câu làm đúng: 0/25
+                            | Số câu làm đúng: #{totalAnswerTrue}/#{exercises.length}
                         span.mb-2
                             ion-icon(name='shield-checkmark')
                             | Thời gian làm: 30 phút     
@@ -32,19 +84,23 @@ block main
                         span.fs-7 (Bấm vào câu hỏi để xem chi tiết)
                     hr
                     ul.ps-0.pb-2
-                        li 
-                            a(href='').correct 1
-                        li 
-                            a(href='') 2
-                        li 
-                            a(href='') 3
-                        li 
-                            a(href='').not-correct 4
-                        li 
-                            a(href='') 5
-                        li 
-                            a(href='') 6
-                        li 
-                            a(href='') 7
-                        li 
-                            a(href='') 8
+                        - var i = 0;
+                        each exercise in exercises
+                            - i++;
+                            li 
+                                each result in results
+                                    if exercise.answer === result.option
+                                        a.correct= i
+                                    else if result.option === ""
+                                        a= i
+                                    else
+                                        a.not-correct= i
+    script.
+        $(document).ready(function () {
+            var listExercise = !{JSON.stringify(exercises)};
+            console.log(listExercise);
+
+            $(".result-detail a").click(function(){
+                $(".exercise-item").slideDown();
+            })
+        });

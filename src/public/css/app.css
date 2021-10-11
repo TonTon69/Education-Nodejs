@@ -536,23 +536,6 @@ body {
         line-height: 1.5;
         flex: 1 1;
         cursor: pointer; }
-    .main .exercise .quiz .exercise-item .check-result {
-      border: 1px dashed;
-      padding: 10px; }
-      .main .exercise .quiz .exercise-item .check-result.valid {
-        border-color: #44a500; }
-        .main .exercise .quiz .exercise-item .check-result.valid .message {
-          color: #44a500; }
-      .main .exercise .quiz .exercise-item .check-result.invalid {
-        border-color: #dc5d40; }
-        .main .exercise .quiz .exercise-item .check-result.invalid .message {
-          color: #dc5d40; }
-      .main .exercise .quiz .exercise-item .check-result .message,
-      .main .exercise .quiz .exercise-item .check-result .answer-true {
-        line-height: 1.5;
-        font-weight: 600; }
-      .main .exercise .quiz .exercise-item .check-result .answer-true {
-        color: #44a500; }
     .main .exercise .quiz .exercise-item .recommend-header,
     .main .exercise .quiz .exercise-item .explain-header {
       cursor: pointer; }
@@ -564,8 +547,6 @@ body {
       .main .exercise .quiz .exercise-item .recommend-body .recommend-content,
       .main .exercise .quiz .exercise-item .explain-body .recommend-content {
         line-height: 1.5; }
-    .main .exercise .quiz .exercise-item .explain {
-      display: none; }
   .main .exercise .actions {
     position: fixed;
     bottom: 44px;
@@ -690,6 +671,42 @@ body {
   .main .learning-result {
     padding-left: 40px;
     padding-top: 15px; }
+    .main .learning-result .exercise-item {
+      padding: 20px;
+      border-radius: 8px;
+      display: none; }
+      .main .learning-result .exercise-item .form-check {
+        padding-left: 12px;
+        margin-bottom: 12px; }
+        .main .learning-result .exercise-item .form-check label {
+          line-height: 1.5; }
+      .main .learning-result .exercise-item .check-result {
+        border-radius: 8px;
+        border: 1px dashed;
+        padding: 10px; }
+        .main .learning-result .exercise-item .check-result.valid {
+          border-color: #44a500; }
+          .main .learning-result .exercise-item .check-result.valid .message {
+            color: #44a500; }
+        .main .learning-result .exercise-item .check-result.invalid {
+          border-color: #dc5d40; }
+          .main .learning-result .exercise-item .check-result.invalid .message {
+            color: #dc5d40; }
+        .main .learning-result .exercise-item .check-result .message,
+        .main .learning-result .exercise-item .check-result .answer-true {
+          line-height: 1.5;
+          font-weight: 600; }
+        .main .learning-result .exercise-item .check-result .answer-true {
+          color: #44a500; }
+      .main .learning-result .exercise-item .explain-header {
+        cursor: pointer; }
+      .main .learning-result .exercise-item .explain-body {
+        border-radius: 8px;
+        padding: 10px 20px;
+        border: 1px solid #e3950c;
+        display: none; }
+        .main .learning-result .exercise-item .explain-body .recommend-content {
+          line-height: 1.5; }
     .main .learning-result .result {
       background: linear-gradient(#0e664d, #adbf36);
       height: 485px;
@@ -773,7 +790,8 @@ body {
             padding: 10px;
             text-align: center;
             font-size: 14px;
-            margin: 4px 6px 10px 10px; }
+            margin: 4px 6px 10px 10px;
+            cursor: pointer; }
             .main .learning-result .result-detail ul li a.not-correct {
               background: #d74726;
               color: #fff; }

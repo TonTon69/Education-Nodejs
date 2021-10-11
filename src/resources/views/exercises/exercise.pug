@@ -99,14 +99,7 @@ block main
                                 .recommend-body.mt-4
                                     span.fw-bold Phương pháp giải
                                     .mt-2.recommend-content= exercises[0].recommend
-                        if exercises[0].recommend !== null
-                            .explain(id="")
-                                .explain-header.text-primary.d-inline-flex.align-items-center
-                                    span.me-1 Xem lời giải
-                                    ion-icon(name='sunny')
-                                .explain-body.mt-4
-                                    span.fw-bold Lời giải
-                                    .mt-2.explain-content= exercises[0].explain
+                        
                 .actions.pt-4.d-flex.align-items-center
                     //- button#btn-check-result.btn.btn-success.btn-padding(value="submit")
                     //-     ion-icon(name='checkmark-outline')
@@ -117,6 +110,7 @@ block main
                     button#btn-submit-exercise.btn.btn-primary.btn-padding.ms-2(value="submit")
                         ion-icon(name='arrow-forward-outline')
                         span.ms-1 Nộp bài
+                form(name='form-submit-exercise', method='GET')
     script.
         $(document).ready(function () {
             var listExercise = !{JSON.stringify(exercises)};
@@ -132,23 +126,35 @@ block main
             //- });
 
             // When btn check clicked
-            //- $("#btn-check-result").click(function (e) {
-            //-     e.preventDefault();
-            //-     $(this).hide();
-            //-     $(".explain").show();
-            //-     $(".recommend").hide();
-            //-     $("#btn-next-question").show();
+            $("#btn-submit-exercise").click(function (e) {
+                e.preventDefault();
+                var inputChecked = $(".form-check-input:checked");
+                var arrayTemp = [];
+                arrayTemp.push({
+                    name: inputChecked.attr("name"),
+                    value: inputChecked.attr("value"),
+                });
 
-            //-     $.ajax({
-            //-         type: "POST",
-            //-         url: $(location).attr("href"),
-            //-         contentType: "application/json",
-            //-         data: JSON.stringify({}),
-            //-         success: function (data) {
-            //-             console.log(data);
-            //-         },
-            //-     });
-            //- });
+                $.ajax({
+                    type: "POST",
+                    url: $(location).attr("href"),
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        objectData: arrayTemp,
+                        exercise: $(".form-check-input").attr("name"),
+                        time: $("#stopwatch").text()
+                    }),
+                    success: function (data) {
+                        console.log(data);
+                    },
+                });
+
+                var formSubmitExercise = $('form[name="form-submit-exercise"]');
+                const urlParams = new URLSearchParams(window.location.search);
+                const lession = urlParams.get('name');
+                formSubmitExercise.attr("action", "/learning/result?name=" + lession);
+                formSubmitExercise.submit();
+            })
 
             // When btn next clicked
             $("#btn-next-question").click(function (e) {
@@ -165,7 +171,11 @@ block main
                     type: "POST",
                     url: $(location).attr("href"),
                     contentType: "application/json",
-                    data: JSON.stringify({objectData: arrayTemp}),
+                    data: JSON.stringify({
+                        objectData: arrayTemp,
+                        exercise: $(".form-check-input").attr("name"),
+                        time: $("#stopwatch").text()
+                    }),
                     success: function (data) {
                         console.log(data);
                     },

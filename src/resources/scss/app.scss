@@ -694,36 +694,6 @@ body {
                     }
                 }
 
-                .check-result {
-                    border: 1px dashed;
-                    padding: 10px;
-
-                    &.valid {
-                        border-color: #44a500;
-
-                        .message {
-                            color: #44a500;
-                        }
-                    }
-                    &.invalid {
-                        border-color: #dc5d40;
-
-                        .message {
-                            color: #dc5d40;
-                        }
-                    }
-
-                    .message,
-                    .answer-true {
-                        line-height: 1.5;
-                        font-weight: 600;
-                    }
-
-                    .answer-true {
-                        color: #44a500;
-                    }
-                }
-
                 .recommend,
                 .explain {
                     &-header {
@@ -739,10 +709,6 @@ body {
                             line-height: 1.5;
                         }
                     }
-                }
-
-                .explain {
-                    display: none;
                 }
             }
         }
@@ -941,6 +907,69 @@ body {
         padding-left: 40px;
         padding-top: 15px;
 
+        .exercise-item {
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+
+            .form-check {
+                padding-left: 12px;
+                margin-bottom: 12px;
+
+                label {
+                    line-height: 1.5;
+                }
+            }
+
+            .check-result {
+                border-radius: 8px;
+                border: 1px dashed;
+                padding: 10px;
+
+                &.valid {
+                    border-color: #44a500;
+
+                    .message {
+                        color: #44a500;
+                    }
+                }
+                &.invalid {
+                    border-color: #dc5d40;
+
+                    .message {
+                        color: #dc5d40;
+                    }
+                }
+
+                .message,
+                .answer-true {
+                    line-height: 1.5;
+                    font-weight: 600;
+                }
+
+                .answer-true {
+                    color: #44a500;
+                }
+            }
+
+            .explain {
+                &-header {
+                    cursor: pointer;
+                }
+
+                &-body {
+                    border-radius: 8px;
+                    padding: 10px 20px;
+                    border: 1px solid #e3950c;
+                    display: none;
+
+                    .recommend-content {
+                        line-height: 1.5;
+                    }
+                }
+            }
+        }
+
         .result {
             background: linear-gradient(#0e664d, #adbf36);
             height: 485px;
@@ -1057,6 +1086,7 @@ body {
                         text-align: center;
                         font-size: 14px;
                         margin: 4px 6px 10px 10px;
+                        cursor: pointer;
 
                         &.not-correct {
                             background: #d74726;
