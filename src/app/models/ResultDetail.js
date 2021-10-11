@@ -4,9 +4,11 @@ const Schema = mongoose.Schema;
 
 const ResultDetail = new Schema(
     {
-        resultID: { type: Schema.Types.ObjectId, ref: "Result" },
+        userID: { type: Schema.Types.ObjectId, ref: "User" },
+        // resultID: { type: Schema.Types.ObjectId, ref: "Result" },
         exerciseID: { type: Schema.Types.ObjectId, ref: "Exercise" },
         option: { type: String },
+        time: { type: String },
     },
     {
         timestamps: true,

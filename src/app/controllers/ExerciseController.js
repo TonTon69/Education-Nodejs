@@ -31,9 +31,6 @@ class ExerciseController {
                     {
                         $project: { answer: 0 },
                     },
-                    {
-                        $limit: 5,
-                    },
                 ]);
 
                 const results = await Result.aggregate([
@@ -72,7 +69,6 @@ class ExerciseController {
 
     async postExercise(req, res, next) {
         try {
-            const subject = req.params.slug;
             const lession = req.query.name;
 
             const lessionObj = await Lession.findOne({ slug: lession });
@@ -80,64 +76,20 @@ class ExerciseController {
 
             const myJsonData = req.body.objectData;
             const myJsonObj = Object.assign({}, ...myJsonData);
-            const myTime = req.body.time;
-            const myScore = req.body.score;
-            const myScoreTemp = myScore.split("/")[0];
-
-            const user = await User.findOne({ _id: req.signedCookies.userId });
 
             const result = new Result({
-                userID: user.id,
-                lessionID: lessionObj.id,
-                time: myTime,
-                score: myScoreTemp,
+                userID: req.signedCookies.userId,
+                exerciseID: myJsonObj.name,
+                option: myJsonObj.value,
             });
-            const findResult = await Result.findOne({
-                userID: user.id,
-                lessionID: lessionObj.id,
-            });
+            await result.save();
 
-            if (findResult) {
-                const query = {
-                    userID: user.id,
-                    lessionID: lessionObj.id,
-                };
-                await Result.findOneAndUpdate(query, {
-                    time: myTime,
-                    score: myScoreTemp,
-                });
-
-                const findResultDetail = await ResultDetail.findOne({
-                    resultID: findResult.id,
-                    exerciseID: myJsonObj.name,
-                });
-                if (findResultDetail) {
-                    const queryDetail = {
-                        resultID: findResultDetail.resultID,
-                        exerciseID: findResultDetail.exerciseID,
-                    };
-                    await ResultDetail.findOneAndUpdate(queryDetail, {
-                        option: myJsonObj.value,
-                    });
-                } else {
-                    const resultDetail = new ResultDetail({
-                        resultID: findResult.id,
-                        exerciseID: myJsonObj.name,
-                        option: myJsonObj.value,
-                    });
-                    await resultDetail.save();
-                }
-            } else {
-                await result.save();
-                if (result) {
-                    const resultDetail = new ResultDetail({
-                        resultID: result.id,
-                        exerciseID: myJsonObj.name,
-                        option: myJsonObj.value,
-                    });
-                    await resultDetail.save();
-                }
-            }
+            // const result = new Result({
+            //     userID: user.id,
+            //     lessionID: lessionObj.id,
+            //     time: myTime,
+            //     score: myScoreTemp,
+            // });
         } catch (error) {
             console.log(error);
         }

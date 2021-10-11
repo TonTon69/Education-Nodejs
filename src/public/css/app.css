@@ -708,7 +708,7 @@ body {
         height: 642px;
         width: 642px;
         left: 18%;
-        top: -50%;
+        top: -40%;
         position: absolute;
         opacity: 0.3;
         animation: spinner 10s infinite linear; }
@@ -757,6 +757,29 @@ body {
             font-size: 14px;
             font-weight: 600;
             background: #53c4c4; }
+    .main .learning-result .result-detail {
+      border-radius: 8px; }
+      .main .learning-result .result-detail ul {
+        list-style: none;
+        margin-bottom: 0; }
+        .main .learning-result .result-detail ul li {
+          display: inline-block; }
+          .main .learning-result .result-detail ul li a {
+            background: #e0e0e0;
+            display: inline-block;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            margin: 4px 6px 10px 10px; }
+            .main .learning-result .result-detail ul li a.not-correct {
+              background: #d74726;
+              color: #fff; }
+            .main .learning-result .result-detail ul li a.correct {
+              background: #8ac53e;
+              color: #fff; }
   .main .blog-wrap {
     width: 100%;
     padding: 15px 40px 0;

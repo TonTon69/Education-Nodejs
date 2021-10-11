@@ -30,12 +30,12 @@ block main
                                     .top
                                         | Thời gian làm bài
                                     .bottom#stopwatch 00:00:00
-                            .col-sm-4
-                                .score__achieved
-                                    .top
-                                        | Số điểm đạt được
-                                    .bottom
-                                        | 0/100
+                            //- .col-sm-4
+                            //-     .score__achieved
+                            //-         .top
+                            //-             | Số điểm đạt được
+                            //-         .bottom
+                            //-             | 0/100
                             .col-sm-4
                                 .questions__done
                                     .top
@@ -108,9 +108,9 @@ block main
                                     span.fw-bold Lời giải
                                     .mt-2.explain-content= exercises[0].explain
                 .actions.pt-4.d-flex.align-items-center
-                    button#btn-check-result.btn.btn-success.btn-padding(value="submit")
-                        ion-icon(name='checkmark-outline')
-                        span.ms-1 Kiểm tra
+                    //- button#btn-check-result.btn.btn-success.btn-padding(value="submit")
+                    //-     ion-icon(name='checkmark-outline')
+                    //-     span.ms-1 Kiểm tra
                     button#btn-next-question.btn.btn-success.btn-padding(value="submit")
                         ion-icon(name='arrow-forward-outline')
                         span.ms-1 Câu tiếp theo
@@ -126,35 +126,51 @@ block main
             $("#stopwatch").stopwatch().stopwatch("start");
 
             // When input clicked
-            $(".form-check-input").click(function () {
-                $("#btn-check-result").show();
-                $("#btn-next-question").hide();
-            });
+            //- $(".form-check-input").click(function () {
+            //-     $("#btn-check-result").show();
+            //-     //- $("#btn-next-question").hide();
+            //- });
 
             // When btn check clicked
-            $("#btn-check-result").click(function (e) {
-                e.preventDefault();
-                $(this).hide();
-                $(".explain").show();
-                $(".recommend").hide();
-                $("#btn-next-question").show();
+            //- $("#btn-check-result").click(function (e) {
+            //-     e.preventDefault();
+            //-     $(this).hide();
+            //-     $(".explain").show();
+            //-     $(".recommend").hide();
+            //-     $("#btn-next-question").show();
 
-                $.ajax({
-                    type: "POST",
-                    url: $(location).attr("href"),
-                    contentType: "application/json",
-                    data: JSON.stringify({}),
-                    success: function (data) {
-                        console.log(data);
-                    },
-                });
-            });
+            //-     $.ajax({
+            //-         type: "POST",
+            //-         url: $(location).attr("href"),
+            //-         contentType: "application/json",
+            //-         data: JSON.stringify({}),
+            //-         success: function (data) {
+            //-             console.log(data);
+            //-         },
+            //-     });
+            //- });
 
             // When btn next clicked
             $("#btn-next-question").click(function (e) {
                 e.preventDefault();
                 
                 var inputChecked = $(".form-check-input:checked");
+                var arrayTemp = [];
+                arrayTemp.push({
+                    name: inputChecked.attr("name"),
+                    value: inputChecked.attr("value"),
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: $(location).attr("href"),
+                    contentType: "application/json",
+                    data: JSON.stringify({objectData: arrayTemp}),
+                    success: function (data) {
+                        console.log(data);
+                    },
+                });
+
                 if (inputChecked.length === 0 && (confirm("Bạn muốn bỏ qua câu này?") === false)) {
                     return false;
                 }
@@ -164,18 +180,23 @@ block main
                 $(".index-qa").text(currentQa+1);
                 $(".question").text(listExercise[currentQa].question);
                 $(".btn-type").text(listExercise[currentQa].Cate[0].type);
+                $(".form-check-input").attr("name", listExercise[currentQa]._id);
+                $(".form-check-input[id=option1]").attr("value", listExercise[currentQa].option1);
+                $(".form-check-input[id=option2]").attr("value", listExercise[currentQa].option2);
+                $(".form-check-input[id=option3]").attr("value", listExercise[currentQa].option3);
+                $(".form-check-input[id=option4]").attr("value", listExercise[currentQa].option4);
                 $(".form-check-label[for=option1]").text(`A. ${listExercise[currentQa].option1}`);
                 $(".form-check-label[for=option2]").text(`B. ${listExercise[currentQa].option2}`);
                 $(".form-check-label[for=option3]").text(`C. ${listExercise[currentQa].option3}`);
                 $(".form-check-label[for=option4]").text(`D. ${listExercise[currentQa].option4}`);
                 $(".recommend-content").text(listExercise[currentQa].recommend);
-                //- $(".explain-content").text(listExercise[currentQa].explain);
-                $(".form-check-input").prop('checked', false);
 
                 if (currentQa == listExercise.length - 1) {
                     $(this).hide();
                     $("#btn-submit-exercise").show();
                 }
+
+                $(".form-check-input").prop('checked', false);
             });
         })
         

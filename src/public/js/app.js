@@ -148,14 +148,14 @@ $(document).ready(function () {
     //         divAnswerTrue.removeClass("valid");
     //     }
 
-    //     var arrayTemp = [];
-    //     // var arrayOptionChecked = $(".exercise-item .form-check input:checked");
-    //     $.each(answer, function (index, item) {
-    //         arrayTemp.push({
-    //             name: item.getAttribute("name"),
-    //             value: item.getAttribute("value"),
-    //         });
+    // var arrayTemp = [];
+    // // var arrayOptionChecked = $(".exercise-item .form-check input:checked");
+    // $.each(answer, function (index, item) {
+    //     arrayTemp.push({
+    //         name: item.getAttribute("name"),
+    //         value: item.getAttribute("value"),
     //     });
+    // });
 
     //     $.ajax({
     //         type: "POST",
