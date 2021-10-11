@@ -153,6 +153,14 @@ class SiteController {
         req.flash("success", "Bạn đã báo cáo thành công. Cảm ơn!");
         res.redirect(`${url}`);
     }
+
+    // [GET]/password/reset
+    passwordReset(req, res) {
+        res.render("password-reset", {
+            errors: req.flash("error"),
+            success: req.flash("success"),
+        });
+    }
 }
 
 module.exports = new SiteController();

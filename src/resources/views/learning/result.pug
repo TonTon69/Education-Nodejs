@@ -1,4 +1,31 @@
 extends ../layouts/common
 block main
-    section.learning
-        p Ket qua hoc tap
+    section.learning-result
+        .row
+            .col-sm-9
+                .result
+                    .animate
+                    .score
+                        img.top-star(src='../img/top-star.png')
+                        strong.text-uppercase.text-white.fs-5.d-block.mt-4 ĐIỂM SỐ
+                        span.mt-3.d-block 100
+                    .done.text-white.mb-4
+                        span.mb-2
+                            ion-icon(name='shield-checkmark')
+                            | Số câu làm đúng 0/100
+                        span.mb-2
+                            ion-icon(name='shield-checkmark')
+                            | Thời gian làm: 30 phút     
+                    ul.menu.d-flex.align-items-center.justify-content-center
+                        li
+                            a(href='') 
+                                img(src='../img/reload.png')
+                                span.text-uppercase danh mục bài học
+                        li
+                            a(href='') 
+                                img(src='../img/next.png')
+                                span.text-uppercase làm bài tiếp theo
+            .col-sm-3
+                .text-center
+                    strong.d-block.mb-2.fs-5 Kết quả
+                    span (Bấm vào câu hỏi để xem chi tiết)

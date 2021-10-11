@@ -43,132 +43,130 @@ $(document).ready(function () {
         parent.find(".explain-body").slideToggle();
     });
 
-    //StopWatch
-    $("#stopwatch").stopwatch().stopwatch("start");
-
     //Load question
-    var btnNextQuestion = $("#btn-next-question");
-    var btnCheckResult = $("#btn-check-result");
-    var questions = $(".quiz .exercise-item");
+    // var btnNextQuestion = $("#btn-next-question");
+    // var btnCheckResult = $("#btn-check-result");
+    // var questions = $(".quiz .exercise-item");
 
-    var message = $(".exercise-item .check-result .message");
-    var divAnswerTrue = $(".exercise-item .check-result");
-    var answerTrue = $(".exercise-item .check-result .answer-true");
-    var qaAns = $(".exercise-item .form-check input");
+    // var message = $(".exercise-item .check-result .message");
+    // var divAnswerTrue = $(".exercise-item .check-result");
+    // var answerTrue = $(".exercise-item .check-result .answer-true");
+    // var qaAns = $(".exercise-item .form-check input");
 
-    // questions.first().addClass("active");
-    btnCheckResult.attr("style", "display: none !important");
-    divAnswerTrue.attr("style", "display: none !important");
-    $(".explain").attr("style", "display: none !important");
+    // // questions.first().addClass("active");
+    // btnCheckResult.attr("style", "display: none !important");
+    // divAnswerTrue.attr("style", "display: none !important");
+    // $(".explain").attr("style", "display: none !important");
 
-    var count = 0;
-    var scoreCount = 0;
+    // var count = 0;
+    // var scoreCount = 0;
 
-    btnNextQuestion.click(function (e) {
-        e.preventDefault();
-        count += 1;
+    // btnNextQuestion.click(function (e) {
+    //     e.preventDefault();
+    //     count += 1;
 
-        message.text("");
-        answerTrue.text("");
-        $("#stopwatch").stopwatch().stopwatch("start");
-        divAnswerTrue.attr("style", "display: none !important");
-        $(".explain").attr("style", "display: none !important");
-        $(".recommend").attr("style", "display: block !important");
+    //     message.text("");
+    //     answerTrue.text("");
+    //     $("#stopwatch").stopwatch().stopwatch("start");
+    //     divAnswerTrue.attr("style", "display: none !important");
+    //     $(".explain").attr("style", "display: none !important");
+    //     $(".recommend").attr("style", "display: block !important");
 
-        // for (let i = 0; i < questions.length; i++) {
-        //     questions[i].className = "exercise-item";
-        // }
-        questions[count].className = "exercise-item active";
-        $(".questions__true .bottom").text(`${count}`);
+    //     // for (let i = 0; i < questions.length; i++) {
+    //     //     questions[i].className = "exercise-item";
+    //     // }
+    //     questions[count].className = "exercise-item active";
+    //     $(".questions__true .bottom").text(`${count}`);
 
-        if (count == questions.length) {
-            $("#stopwatch").stopwatch().stopwatch("stop");
-            var path = $(location).attr("pathname").split("/")[2];
-            var params = new window.URLSearchParams(window.location.search);
-            var query = params.get("name");
-            var submitResultForm = document.forms["submit-result-form"];
-            submitResultForm.setAttribute(
-                "action",
-                "/result/" + path + `?name=${query}`
-            );
-            submitResultForm.submit();
-        }
+    //     if (count == questions.length) {
+    //         $("#stopwatch").stopwatch().stopwatch("stop");
+    //         var path = $(location).attr("pathname").split("/")[2];
+    //         var params = new window.URLSearchParams(window.location.search);
+    //         var query = params.get("name");
+    //         var submitResultForm = document.forms["submit-result-form"];
+    //         submitResultForm.setAttribute(
+    //             "action",
+    //             "/result/" + path + `?name=${query}`
+    //         );
+    //         submitResultForm.submit();
+    //     }
 
-        // var qaAnsChecked = $(".exercise-item.active .form-check input:checked");
-        // if (qaAnsChecked.length == 0) {
-        //     if (confirm("Bạn muốn bỏ qua câu này?") == true) {
-        //         for (let i = 0; i < questions.length; i++) {
-        //             questions[i].className = "exercise-item";
-        //         }
-        //         questions[count].className = "exercise-item active";
-        //     } else {
-        //         count -= 1;
-        //     }
-        //     $(".questions__true .bottom").text(`${count}`);
-        // } else {
-        //     for (let i = 0; i < questions.length; i++) {
-        //         questions[i].className = "exercise-item";
-        //     }
-        //     questions[count].className = "exercise-item active";
-        //     $(".questions__true .bottom").text(`${count}`);
-        // }
-    });
+    //     // var qaAnsChecked = $(".exercise-item.active .form-check input:checked");
+    //     // if (qaAnsChecked.length == 0) {
+    //     //     if (confirm("Bạn muốn bỏ qua câu này?") == true) {
+    //     //         for (let i = 0; i < questions.length; i++) {
+    //     //             questions[i].className = "exercise-item";
+    //     //         }
+    //     //         questions[count].className = "exercise-item active";
+    //     //     } else {
+    //     //         count -= 1;
+    //     //     }
+    //     //     $(".questions__true .bottom").text(`${count}`);
+    //     // } else {
+    //     //     for (let i = 0; i < questions.length; i++) {
+    //     //         questions[i].className = "exercise-item";
+    //     //     }
+    //     //     questions[count].className = "exercise-item active";
+    //     //     $(".questions__true .bottom").text(`${count}`);
+    //     // }
+    // });
 
-    for (var i = 0; i < qaAns.length; i++) {
-        qaAns[i].onclick = function () {
-            btnCheckResult.attr("style", "display: flex !important");
-        };
-    }
-    btnCheckResult.click(function (e) {
-        e.preventDefault();
-        $(".exercise-item.active .form-check input").attr("disabled", true);
-        divAnswerTrue.attr("style", "display: block !important");
-        $(".explain").attr("style", "display: block !important");
-        $(".recommend").attr("style", "display: none !important");
-        btnCheckResult.attr("style", "display: none !important");
-        $("#stopwatch").stopwatch().stopwatch("stop");
+    // // for (var i = 0; i < qaAns.length; i++) {
+    // //     qaAns[i].onclick = function () {
+    // //         btnCheckResult.attr("style", "display: flex !important");
+    // //     };
+    // // }
 
-        var answerValid = $(
-            ".exercise-item.active .form-check input[valid=valid]"
-        );
-        var parent = answerValid.parent();
-        var validText = parent.find(".form-check-label").text();
-        answerTrue.text(` ~ Đáp án đúng: ${validText.substring(0, 1)}`);
+    // btnCheckResult.click(function (e) {
+    //     e.preventDefault();
+    //     $(".exercise-item.active .form-check input").attr("disabled", true);
+    //     divAnswerTrue.attr("style", "display: block !important");
+    //     $(".explain").attr("style", "display: block !important");
+    //     $(".recommend").attr("style", "display: none !important");
+    //     btnCheckResult.attr("style", "display: none !important");
+    //     $("#stopwatch").stopwatch().stopwatch("stop");
 
-        var answer = $(".exercise-item.active .form-check input:checked");
-        var score = $("#score").text();
-        var scoreAchieved = $(".score__achieved .bottom");
-        if (answer.is("[valid]")) {
-            scoreCount += parseInt(score);
-            scoreAchieved.text(`${scoreCount}/100`);
-            message.text("Bạn đã chọn đúng");
-            divAnswerTrue.addClass("valid");
-            divAnswerTrue.removeClass("invalid");
-        } else {
-            message.text("Bạn đã chọn sai");
-            divAnswerTrue.addClass("invalid");
-            divAnswerTrue.removeClass("valid");
-        }
+    //     var answerValid = $(
+    //         ".exercise-item.active .form-check input[valid=valid]"
+    //     );
+    //     var parent = answerValid.parent();
+    //     var validText = parent.find(".form-check-label").text();
+    //     answerTrue.text(` ~ Đáp án đúng: ${validText.substring(0, 1)}`);
 
-        var arrayTemp = [];
-        // var arrayOptionChecked = $(".exercise-item .form-check input:checked");
-        $.each(answer, function (index, item) {
-            arrayTemp.push({
-                name: item.getAttribute("name"),
-                value: item.getAttribute("value"),
-            });
-        });
+    //     var answer = $(".exercise-item.active .form-check input:checked");
+    //     var score = $("#score").text();
+    //     var scoreAchieved = $(".score__achieved .bottom");
+    //     if (answer.is("[valid]")) {
+    //         scoreCount += parseInt(score);
+    //         scoreAchieved.text(`${scoreCount}/100`);
+    //         message.text("Bạn đã chọn đúng");
+    //         divAnswerTrue.addClass("valid");
+    //         divAnswerTrue.removeClass("invalid");
+    //     } else {
+    //         message.text("Bạn đã chọn sai");
+    //         divAnswerTrue.addClass("invalid");
+    //         divAnswerTrue.removeClass("valid");
+    //     }
 
-        $.ajax({
-            type: "POST",
-            url: $(location).attr("href"),
-            contentType: "application/json",
-            data: JSON.stringify({
-                objectData: arrayTemp,
-                time: $("#stopwatch").text(),
-                score: $(".score__achieved .bottom").text(),
-            }),
-            success: function (data) {},
-        });
-    });
+    //     var arrayTemp = [];
+    //     // var arrayOptionChecked = $(".exercise-item .form-check input:checked");
+    //     $.each(answer, function (index, item) {
+    //         arrayTemp.push({
+    //             name: item.getAttribute("name"),
+    //             value: item.getAttribute("value"),
+    //         });
+    //     });
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: $(location).attr("href"),
+    //         contentType: "application/json",
+    //         data: JSON.stringify({
+    //             objectData: arrayTemp,
+    //             time: $("#stopwatch").text(),
+    //             score: $(".score__achieved .bottom").text(),
+    //         }),
+    //         success: function (data) {},
+    //     });
+    // });
 });

@@ -607,7 +607,7 @@ body {
 
         .score__achieved,
         .homework__time,
-        .questions__true {
+        .questions__done {
             border: 1px solid #dee2e6;
             text-align: center;
 
@@ -632,7 +632,7 @@ body {
             }
         }
 
-        .questions__true {
+        .questions__done {
             color: #ec8e00;
 
             .top {
@@ -672,12 +672,6 @@ body {
             }
 
             .exercise-item {
-                // display: none;
-
-                // &.active {
-                //     display: block;
-                // }
-
                 .question {
                     line-height: 1.5;
                 }
@@ -746,6 +740,10 @@ body {
                         }
                     }
                 }
+
+                .explain {
+                    display: none;
+                }
             }
         }
 
@@ -753,6 +751,15 @@ body {
             position: fixed;
             bottom: 44px;
             right: 48px;
+
+            ion-icon {
+                transform: translateY(2px);
+            }
+
+            #btn-check-result,
+            #btn-submit-exercise {
+                display: none;
+            }
         }
     }
 
@@ -925,6 +932,107 @@ body {
                 textarea:focus {
                     box-shadow: unset;
                     border-color: unset;
+                }
+            }
+        }
+    }
+
+    .learning-result {
+        padding-left: 40px;
+        padding-top: 15px;
+
+        .result {
+            background: linear-gradient(#0e664d, #adbf36);
+            height: 485px;
+            position: relative;
+            padding: 20px;
+            overflow: hidden;
+            border-radius: 8px;
+
+            @keyframes spinner {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .animate {
+                background-image: url(../img/1.png);
+                height: 642px;
+                width: 642px;
+                left: 18%;
+                top: -50%;
+                position: absolute;
+                opacity: 0.3;
+                animation: spinner 10s infinite linear;
+            }
+
+            .score {
+                width: 250px;
+                height: 220px;
+                background-color: #7b5821;
+                border-radius: 50px;
+                border: 5px solid #ffd800;
+                position: relative;
+                text-align: center;
+                margin: 40px auto;
+                position: relative;
+
+                .top-star {
+                    position: absolute;
+                    top: -50px;
+                    left: 6px;
+                }
+
+                span {
+                    color: #ffd800;
+                    font-weight: bold;
+                    font-size: 90px;
+                }
+            }
+
+            .done {
+                span {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    line-height: 1.5;
+                    font-size: 20px;
+                    font-weight: 600;
+
+                    ion-icon {
+                        color: #ffd800;
+                        margin-right: 4px;
+                        font-size: 28px;
+                    }
+                }
+            }
+
+            .menu {
+                li {
+                    margin: 0 20px;
+
+                    a {
+                        display: block;
+
+                        img {
+                            margin-right: -20px;
+                            position: relative;
+                        }
+
+                        span {
+                            color: $white-color;
+                            padding: 10px 30px;
+                            display: inline-block;
+                            border-radius: 0 50px 50px 0;
+                            border: 2px solid #fff;
+                            font-size: 14px;
+                            font-weight: 600;
+                            background: #53c4c4;
+                        }
+                    }
                 }
             }
         }

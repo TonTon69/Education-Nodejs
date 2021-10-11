@@ -1,0 +1,65 @@
+html
+    head
+        meta(charset='UTF-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        title Password Reset
+        link(rel='icon', href='/img/brand.png', type='image/png')
+        link(rel='preconnect', href='https://fonts.googleapis.com')
+        link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin='')
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css', integrity='sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==', crossorigin='anonymous')
+        link(href='https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap', rel='stylesheet')
+        link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css', rel='stylesheet', integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC', crossorigin='anonymous')
+        link(rel="stylesheet", href="/css/app.css")
+        link(rel="stylesheet", href="/vendor/eggy-js/css/eggy.css")
+        link(rel="stylesheet", href="/vendor/eggy-js/css/progressbar.css")
+        link(rel="stylesheet", href="/vendor/eggy-js/css/theme.css")
+        
+    body
+        .app
+            section#login.login
+                .card.shadow
+                    .card-body
+                        .text-center
+                            img.card-img(src='/img/brand.png')
+                            h2.card-title.fw-bold Reset Password
+                        
+                        form#form-login(action=`/auth/reset/confirm/${token}`, method='POST')
+                            .material-textfield
+                                input#password(placeholder=' ', type='password', name='password', value=values ? values.password : '', maxlength="30")
+                                label Create new password
+                            .material-textfield
+                                input#passwordConfirm(placeholder=' ', type='password', name='passwordConfirm', value=values ? values.passwordConfirm : '', maxlength="30")
+                                label Confirm new password
+                            button.btn.btn-success.mt-4(type='submit') Reset Password
+                            div.text-center.mt-4.fs-5
+                                | Already have an account? 
+                                a(href='/auth/login') Login
+                                div
+                                    a(href='/').fs-6 About author
+        if errors.length > 0
+            - var msgError = errors
+        else if success.length > 0
+            - var msgSuccess = success
+        script(src="/vendor/eggy-js/js/eggy.js")
+        script.
+            // toast message
+            let msgToastError = '#{msgError}';
+            if(msgToastError != ''){
+                Eggy({
+                    title: 'Something went wrong',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            }
+
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != ''){
+                Eggy({
+                    title: 'Success',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            }                                

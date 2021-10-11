@@ -7,6 +7,7 @@ const {
     authValidate,
 } = require("../app/middlewares/AuthMiddleware");
 
+router.get("/password/reset", siteController.passwordReset);
 router.post("/report", siteController.report);
 router.get("/subjects", siteController.subjects);
 router.get("/infor", requireAuth, siteController.infor);

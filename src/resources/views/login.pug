@@ -27,15 +27,25 @@ html
                         .form-check.d-flex.align-items-center.justify-content-between.fs-7
                             div
                                 input#rememberMe.form-check-input.mt-0(type='checkbox')
-                                label.form-check-label.ms-2(for='rememberMe') Lưu đăng nhập
-                            a.form-check-label.text-primary(href='#') Quên mật khẩu
+                                label.form-check-label(for='rememberMe') Lưu đăng nhập
+                            a.form-check-label.text-primary(href='/password/reset') Quên mật khẩu
                         .d-grid.mt-4
                             button.btn.btn-primary(type='submit')
                                 | Đăng nhập
                         .text-center.mt-4
                             .fs-7
-                                span Bạn chưa có tài khoản?
-                                a.text-primary(href='mailto:pc3@gmail.com') Đăng ký
+                                span Bạn chưa có tài khoản? 
+                                a.text-primary(type='button', data-bs-toggle='modal', data-bs-target='#registerModal') Đăng ký
+                                #registerModal.modal.fade(tabindex='-1', aria-labelledby='registerModalLabel', aria-hidden='true')
+                                    .modal-dialog(style='transition: all 0.3s ease')
+                                        .modal-content
+                                            .modal-header
+                                                h5#registerModalLabel.modal-title Bạn muốn đăng ký tài khoản?
+                                                button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                                            .modal-body.text-start.fs-6
+                                                p Vui lòng liên hệ admin qua địa chỉ email: pc3@gmail.com
+                                                p Hotline hỗ trợ: 0398412xxx
+                                                p Cảm ơn!
                             hr
                             .fs-8.mt-2
                                 a(href='/about') Giới thiệu về PC3

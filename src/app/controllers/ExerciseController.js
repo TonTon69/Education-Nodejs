@@ -14,7 +14,7 @@ class ExerciseController {
             const subject = await Subject.findOne({ slug: req.params.slug });
             if (subject) {
                 const lession = await Lession.findOne({ slug: req.query.name });
-                const exercise = await Exercise.aggregate([
+                const exercises = await Exercise.aggregate([
                     {
                         $match: {
                             lessionID: ObjectId(lession.id),
@@ -27,6 +27,9 @@ class ExerciseController {
                             foreignField: "_id",
                             as: "Cate",
                         },
+                    },
+                    {
+                        $project: { answer: 0 },
                     },
                     {
                         $limit: 5,
@@ -56,7 +59,7 @@ class ExerciseController {
                 res.render("exercises/exercise", {
                     lession,
                     subject,
-                    exercise,
+                    exercises,
                     results,
                 });
             } else {

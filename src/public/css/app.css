@@ -479,18 +479,18 @@ body {
     line-height: 1.5; }
   .main .exercise .score__achieved,
   .main .exercise .homework__time,
-  .main .exercise .questions__true {
+  .main .exercise .questions__done {
     border: 1px solid #dee2e6;
     text-align: center; }
     .main .exercise .score__achieved .top,
     .main .exercise .homework__time .top,
-    .main .exercise .questions__true .top {
+    .main .exercise .questions__done .top {
       font-size: 14px;
       padding: 10px;
       color: #fff; }
     .main .exercise .score__achieved .bottom,
     .main .exercise .homework__time .bottom,
-    .main .exercise .questions__true .bottom {
+    .main .exercise .questions__done .bottom {
       padding: 30px 10px;
       font-size: 22px;
       font-weight: 700; }
@@ -498,9 +498,9 @@ body {
     color: #44a500; }
     .main .exercise .score__achieved .top {
       background: #44a500; }
-  .main .exercise .questions__true {
+  .main .exercise .questions__done {
     color: #ec8e00; }
-    .main .exercise .questions__true .top {
+    .main .exercise .questions__done .top {
       background: #ec8e00; }
   .main .exercise .homework__time {
     color: #77909b; }
@@ -564,10 +564,17 @@ body {
       .main .exercise .quiz .exercise-item .recommend-body .recommend-content,
       .main .exercise .quiz .exercise-item .explain-body .recommend-content {
         line-height: 1.5; }
+    .main .exercise .quiz .exercise-item .explain {
+      display: none; }
   .main .exercise .actions {
     position: fixed;
     bottom: 44px;
     right: 48px; }
+    .main .exercise .actions ion-icon {
+      transform: translateY(2px); }
+    .main .exercise .actions #btn-check-result,
+    .main .exercise .actions #btn-submit-exercise {
+      display: none; }
   .main .subject__detail .accordion-item,
   .main .learning__list .accordion-item {
     margin-bottom: 8px; }
@@ -680,6 +687,76 @@ body {
         .main .learning__content .report textarea:focus {
           box-shadow: unset;
           border-color: unset; }
+  .main .learning-result {
+    padding-left: 40px;
+    padding-top: 15px; }
+    .main .learning-result .result {
+      background: linear-gradient(#0e664d, #adbf36);
+      height: 485px;
+      position: relative;
+      padding: 20px;
+      overflow: hidden;
+      border-radius: 8px; }
+
+@keyframes spinner {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
+      .main .learning-result .result .animate {
+        background-image: url(../img/1.png);
+        height: 642px;
+        width: 642px;
+        left: 18%;
+        top: -50%;
+        position: absolute;
+        opacity: 0.3;
+        animation: spinner 10s infinite linear; }
+      .main .learning-result .result .score {
+        width: 250px;
+        height: 220px;
+        background-color: #7b5821;
+        border-radius: 50px;
+        border: 5px solid #ffd800;
+        position: relative;
+        text-align: center;
+        margin: 40px auto;
+        position: relative; }
+        .main .learning-result .result .score .top-star {
+          position: absolute;
+          top: -50px;
+          left: 6px; }
+        .main .learning-result .result .score span {
+          color: #ffd800;
+          font-weight: bold;
+          font-size: 90px; }
+      .main .learning-result .result .done span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1.5;
+        font-size: 20px;
+        font-weight: 600; }
+        .main .learning-result .result .done span ion-icon {
+          color: #ffd800;
+          margin-right: 4px;
+          font-size: 28px; }
+      .main .learning-result .result .menu li {
+        margin: 0 20px; }
+        .main .learning-result .result .menu li a {
+          display: block; }
+          .main .learning-result .result .menu li a img {
+            margin-right: -20px;
+            position: relative; }
+          .main .learning-result .result .menu li a span {
+            color: #fff;
+            padding: 10px 30px;
+            display: inline-block;
+            border-radius: 0 50px 50px 0;
+            border: 2px solid #fff;
+            font-size: 14px;
+            font-weight: 600;
+            background: #53c4c4; }
   .main .blog-wrap {
     width: 100%;
     padding: 15px 40px 0;

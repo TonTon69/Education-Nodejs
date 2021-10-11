@@ -37,7 +37,7 @@ block main
                                     .bottom
                                         | 0/100
                             .col-sm-4
-                                .questions__true
+                                .questions__done
                                     .top
                                         | Số câu đã làm
                                     .bottom
@@ -68,52 +68,114 @@ block main
                     .exercise-item.mb-4
                         .d-flex.align-items-center.justify-content-between
                             strong.d-block.fw-bold.mb-0 Câu 
-                                span 1
-                            .d-flex.align-items-center
-                                .d-flex.align-items-center.me-3
-                                    ion-icon.text-danger.fs-4(name='heart-circle') 
-                                    span.ms-1#score 50
-                                    button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= exercise[0].Cate[0].type
-                        .question.mt-2= exercise[0].question
+                                span.index-qa 1
+                            button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= exercises[0].Cate[0].type
+                        .question.mt-2= exercises[0].question
                         .options.mt-3
                             .form-check.d-flex.align-items-center
-                                input.form-check-input.mt-0.me-3(id="1", type='radio', name='anwser', value=exercise[0].option1)
-                                label.form-check-label(for="1")
-                                    | A. #{exercise[0].option1}
+                                input.form-check-input.mt-0.me-3(id="option1", type='radio', name=exercises[0]._id, value=exercises[0].option1)
+                                label.form-check-label(for="option1")
+                                    | A. #{exercises[0].option1}
                             .form-check.d-flex.align-items-center
-                                input.form-check-input.mt-0.me-3(id="2", type='radio', name='anwser', value="2")
-                                label.form-check-label(for="2")
-                                    | A. #{exercise[0].option2}
+                                input.form-check-input.mt-0.me-3(id="option2", type='radio', name=exercises[0]._id, value=exercises[0].option2)
+                                label.form-check-label(for="option2")
+                                    | B. #{exercises[0].option2}
                             .form-check.d-flex.align-items-center
-                                input.form-check-input.mt-0.me-3(id="3", type='radio', name='anwser', value="3")
-                                label.form-check-label(for="3")
-                                    | A. #{exercise[0].option3}
+                                input.form-check-input.mt-0.me-3(id="option3", type='radio', name=exercises[0]._id, value=exercises[0].option3)
+                                label.form-check-label(for="option3")
+                                    | C. #{exercises[0].option3}
                             .form-check.d-flex.align-items-center
-                                input.form-check-input.mt-0.me-3(id="4", type='radio', name='anwser', value="4")
-                                label.form-check-label(for="4")
-                                    | A. #{exercise[0].option4}
-                        .check-result.mb-3
+                                input.form-check-input.mt-0.me-3(id="option4", type='radio', name=exercises[0]._id, value=exercises[0].option4)
+                                label.form-check-label(for="option4")
+                                    | D. #{exercises[0].option4}
+                        .check-result.mb-3.d-none
                             span.message
                             span.answer-true
-                        .recommend(id="")
-                            .recommend-header.text-primary.d-inline-flex.align-items-center
-                                span.me-1 Gợi ý
-                                ion-icon(name='sunny')
-                            .recommend-body.mt-4
-                                span.fw-bold Phương pháp giải
-                                .mt-2.recommend-content Phương pháp giải chi tiết
-                        .explain(id="")
-                            .explain-header.text-primary.d-inline-flex.align-items-center
-                                span.me-1 Xem lời giải
-                                ion-icon(name='sunny')
-                            .explain-body.mt-4
-                                span.fw-bold Lời giải
-                                .mt-2.explain-content Lời giải chi tiết
+                        if exercises[0].recommend !== null
+                            .recommend(id="")
+                                .recommend-header.text-primary.d-inline-flex.align-items-center
+                                    span.me-1 Gợi ý
+                                    ion-icon(name='sunny')
+                                .recommend-body.mt-4
+                                    span.fw-bold Phương pháp giải
+                                    .mt-2.recommend-content= exercises[0].recommend
+                        if exercises[0].recommend !== null
+                            .explain(id="")
+                                .explain-header.text-primary.d-inline-flex.align-items-center
+                                    span.me-1 Xem lời giải
+                                    ion-icon(name='sunny')
+                                .explain-body.mt-4
+                                    span.fw-bold Lời giải
+                                    .mt-2.explain-content= exercises[0].explain
                 .actions.pt-4.d-flex.align-items-center
-                    button#btn-check-result.btn.btn-secondary.btn-padding.d-flex.align-items-center.me-2(value="submit")
+                    button#btn-check-result.btn.btn-success.btn-padding(value="submit")
                         ion-icon(name='checkmark-outline')
                         span.ms-1 Kiểm tra
-                    button#btn-next-question.btn.btn-success.btn-padding.d-flex.align-items-center(value="submit")
+                    button#btn-next-question.btn.btn-success.btn-padding(value="submit")
                         ion-icon(name='arrow-forward-outline')
                         span.ms-1 Câu tiếp theo
-                form(name="submit-result-form", method="GET")
+                    button#btn-submit-exercise.btn.btn-primary.btn-padding.ms-2(value="submit")
+                        ion-icon(name='arrow-forward-outline')
+                        span.ms-1 Nộp bài
+    script.
+        $(document).ready(function () {
+            var listExercise = !{JSON.stringify(exercises)};
+            var currentQa = 0;
+
+            //StopWatch
+            $("#stopwatch").stopwatch().stopwatch("start");
+
+            // When input clicked
+            $(".form-check-input").click(function () {
+                $("#btn-check-result").show();
+                $("#btn-next-question").hide();
+            });
+
+            // When btn check clicked
+            $("#btn-check-result").click(function (e) {
+                e.preventDefault();
+                $(this).hide();
+                $(".explain").show();
+                $(".recommend").hide();
+                $("#btn-next-question").show();
+
+                $.ajax({
+                    type: "POST",
+                    url: $(location).attr("href"),
+                    contentType: "application/json",
+                    data: JSON.stringify({}),
+                    success: function (data) {
+                        console.log(data);
+                    },
+                });
+            });
+
+            // When btn next clicked
+            $("#btn-next-question").click(function (e) {
+                e.preventDefault();
+                
+                var inputChecked = $(".form-check-input:checked");
+                if (inputChecked.length === 0 && (confirm("Bạn muốn bỏ qua câu này?") === false)) {
+                    return false;
+                }
+                
+                currentQa++;
+                $(".questions__done .bottom").text(currentQa);
+                $(".index-qa").text(currentQa+1);
+                $(".question").text(listExercise[currentQa].question);
+                $(".btn-type").text(listExercise[currentQa].Cate[0].type);
+                $(".form-check-label[for=option1]").text(`A. ${listExercise[currentQa].option1}`);
+                $(".form-check-label[for=option2]").text(`B. ${listExercise[currentQa].option2}`);
+                $(".form-check-label[for=option3]").text(`C. ${listExercise[currentQa].option3}`);
+                $(".form-check-label[for=option4]").text(`D. ${listExercise[currentQa].option4}`);
+                $(".recommend-content").text(listExercise[currentQa].recommend);
+                //- $(".explain-content").text(listExercise[currentQa].explain);
+                $(".form-check-input").prop('checked', false);
+
+                if (currentQa == listExercise.length - 1) {
+                    $(this).hide();
+                    $("#btn-submit-exercise").show();
+                }
+            });
+        })
+        
