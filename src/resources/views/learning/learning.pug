@@ -84,6 +84,6 @@ block main
                                             if (item.unitID == unit.id)
                                                 - i++;
                                                 if (lession.slug == item.slug)
-                                                    a(href=`/learning/${subject.slug}?name=${item.slug}`).lession__item.active= item.name
+                                                    a(href=`/learning/${subject.slug}?name=${item.slug}`).lession__item.active Bài #{item.lessionNumber}. #{item.name}
                                                 else
-                                                    a(href=`/learning/${subject.slug}?name=${item.slug}`).lession__item= item.name
+                                                    a(href=`/learning/${subject.slug}?name=${item.slug}`).lession__item Bài #{item.lessionNumber}. #{item.name}

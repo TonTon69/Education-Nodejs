@@ -8,6 +8,7 @@ const mongooseDelete = require("mongoose-delete");
 const Lession = new Schema(
     {
         name: { type: String, require: true },
+        lessionNumber: { type: Number, require: true },
         unitID: { type: Schema.Types.ObjectId, ref: "Unit" },
         slug: { type: String, slug: "name", unique: true },
     },

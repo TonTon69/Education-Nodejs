@@ -675,6 +675,8 @@ body {
       padding: 20px;
       border-radius: 8px;
       display: none; }
+      .main .learning-result .exercise-item.active {
+        display: block; }
       .main .learning-result .exercise-item .form-check {
         padding-left: 12px;
         margin-bottom: 12px; }
@@ -713,7 +715,8 @@ body {
       position: relative;
       padding: 20px;
       overflow: hidden;
-      border-radius: 8px; }
+      border-radius: 8px;
+      z-index: 1; }
 
 @keyframes spinner {
   from {
@@ -728,7 +731,8 @@ body {
         top: -40%;
         position: absolute;
         opacity: 0.3;
-        animation: spinner 10s infinite linear; }
+        animation: spinner 10s infinite linear;
+        z-index: -1; }
       .main .learning-result .result .score {
         width: 250px;
         height: 220px;

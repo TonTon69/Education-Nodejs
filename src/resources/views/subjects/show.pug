@@ -29,7 +29,7 @@ block main
                                     .accordion-body.p-0
                                         each lession in lessions
                                             if (lession.unitID == unit.id)
-                                                a(href=`/learning/${subject.slug}?name=${lession.slug}`).lession__item= lession.name
+                                                a(href=`/learning/${subject.slug}?name=${lession.slug}`).lession__item Bài #{lession.lessionNumber}. #{lession.name}
             .col-sm-4
                 .d-flex.align-items-center.flex-column.ps-4
                     h3 Miễn phí

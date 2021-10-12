@@ -45,21 +45,6 @@ class LearningController {
         try {
             const lession = await Lession.findOne({ slug: req.query.name });
             if (lession) {
-                const exercises = await Exercise.aggregate([
-                    {
-                        $match: {
-                            lessionID: ObjectId(lession.id),
-                        },
-                    },
-                    {
-                        $lookup: {
-                            from: "exercise-categories",
-                            localField: "ceID",
-                            foreignField: "_id",
-                            as: "Cate",
-                        },
-                    },
-                ]);
                 const results = await Result.aggregate([
                     {
                         $match: {
@@ -71,7 +56,26 @@ class LearningController {
                             from: "exercises",
                             localField: "exerciseID",
                             foreignField: "_id",
-                            as: "Exercises",
+                            as: "exercises",
+                        },
+                    },
+                    {
+                        $unwind: "$exercises",
+                    },
+                    {
+                        $lookup: {
+                            from: "exercise-categories",
+                            localField: "exercises.ceID",
+                            foreignField: "_id",
+                            as: "exercises.category",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "lessions",
+                            localField: "exercises.lessionID",
+                            foreignField: "_id",
+                            as: "exercises.lession",
                         },
                     },
                     {
@@ -79,31 +83,46 @@ class LearningController {
                             from: "users",
                             localField: "userID",
                             foreignField: "_id",
-                            as: "User",
+                            as: "user",
                         },
                     },
                 ]);
 
-                var totalScore = 0;
-                var totalAnswerTrue = 0;
-                var score = 100 / exercises.length;
-                var time = results[results.length - 1].time;
+                if (results[0].exercises.lession[0]._id == lession.id) {
+                    const unit = await Unit.findById({ _id: lession.unitID });
+                    const subject = await Subject.findById({
+                        _id: unit.subjectID,
+                    });
 
-                console.log(time);
+                    const nextLession = await Lession.find({
+                        _id: { $gt: lession.id },
+                    })
+                        .sort({ _id: 1 })
+                        .limit(1);
 
-                results.forEach(async function (result) {
-                    if (result.option === result.Exercises[0].answer) {
-                        totalScore += score;
-                        totalAnswerTrue++;
-                    }
-                });
+                    var totalScore = 0;
+                    var totalAnswerTrue = 0;
+                    var score = 100 / results.length;
+                    var time = results[results.length - 1].time;
 
-                res.render("learning/result", {
-                    exercises,
-                    results,
-                    totalScore,
-                    totalAnswerTrue,
-                });
+                    results.forEach(async function (result) {
+                        if (result.option === result.exercises.answer) {
+                            totalScore += score;
+                            totalAnswerTrue++;
+                        }
+                    });
+
+                    res.render("learning/result", {
+                        results,
+                        totalScore,
+                        totalAnswerTrue,
+                        time,
+                        subject,
+                        nextLession,
+                    });
+                } else {
+                    res.render("error");
+                }
             } else {
                 res.render("error");
             }

@@ -912,6 +912,10 @@ body {
             border-radius: 8px;
             display: none;
 
+            &.active {
+                display: block;
+            }
+
             .form-check {
                 padding-left: 12px;
                 margin-bottom: 12px;
@@ -977,6 +981,7 @@ body {
             padding: 20px;
             overflow: hidden;
             border-radius: 8px;
+            z-index: 1;
 
             @keyframes spinner {
                 from {
@@ -996,6 +1001,7 @@ body {
                 position: absolute;
                 opacity: 0.3;
                 animation: spinner 10s infinite linear;
+                z-index: -1;
             }
 
             .score {

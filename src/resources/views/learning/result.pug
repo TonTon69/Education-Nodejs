@@ -4,57 +4,59 @@ block main
         .row
             .col-sm-9
                 - var count = 0;
-                .exercise-item.mb-5.shadow
-                    .d-flex.align-items-center.justify-content-between
-                        strong.d-block.fw-bold.mb-0 Câu 
-                            span.index-qa 1
-                        button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= exercises[count].Cate[count].type
-                    .question.mt-2= exercises[count].question
-                    .options.mt-3.row
-                        .col-sm-6.form-check.d-flex.align-items-center
-                            input.form-check-input.ms-0.mt-0.me-3(id="option1", type='radio', disabled)
-                            label.form-check-label(for="option1")
-                                | A. #{exercises[count].option1}
-                        .col-sm-6.form-check.d-flex.align-items-center
-                            input.form-check-input.ms-0.mt-0.me-3(id="option2", type='radio', disabled)
-                            label.form-check-label(for="option2")
-                                | B. #{exercises[count].option2}
-                        .col-sm-6.form-check.d-flex.align-items-center
-                            input.form-check-input.ms-0.mt-0.me-3(id="option3", type='radio', disabled)
-                            label.form-check-label(for="option3")
-                                | C. #{exercises[count].option3}
-                        .col-sm-6.form-check.d-flex.align-items-center
-                            input.form-check-input.ms-0.mt-0.me-3(id="option4", type='radio', disabled)
-                            label.form-check-label(for="option4")
-                                | D. #{exercises[count].option4}
-                    if exercises[count].answer === results[count].option
-                        .check-result.valid.mb-4.mt-2.d-flex.align-items-center
-                            ion-icon(name="checkmark-circle").text-success.fs-4
-                            span.message Bạn đã chọn: #{results[count].option}
-                            span.ms-2.me-2 ~
-                            span.answer-true Đáp án đúng: #{exercises[count].answer}
-                    else if results[count].option === ""
-                        .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
-                            ion-icon(name="alert").text-danger.fs-4
-                            span.message.ms-2 Bạn đã bỏ qua câu này
-                            span.ms-2.me-2 ~
-                            span.answer-true Đáp án đúng: #{exercises[count].answer}
-                    else
-                        .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
-                            ion-icon(name="close-circle").text-danger.fs-4
-                            span.message Bạn đã chọn: #{results[count].option}
-                            span.ms-2.me-2 ~
-                            span.answer-true Đáp án đúng: #{exercises[count].answer}
-                    .explain
-                        .explain-header.text-primary.d-inline-flex.align-items-center
-                            span.me-1 Xem lời giải
-                            ion-icon(name='sunny')
-                        .explain-body.mt-4
-                            span.fw-bold Phương pháp giải
-                            .mt-2.explain-content= exercises[count].recommend
-                            hr
-                            span.fw-bold Lời giải
-                            .mt-2.explain-content= exercises[count].explain
+                each result in results
+                    - count++;
+                    .exercise-item.mb-5.shadow(id=`item-${count}`)
+                        .d-flex.align-items-center.justify-content-between
+                            strong.d-block.fw-bold.mb-0 Câu 
+                                span.index-qa= count
+                            button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= result.exercises.category[0].type
+                        .question.mt-2= result.exercises.question
+                        .options.mt-3.row
+                            .col-sm-6.form-check.d-flex.align-items-center
+                                input.form-check-input.ms-0.mt-0.me-3(id="option1", type='radio', disabled)
+                                label.form-check-label(for="option1")
+                                    | A. #{result.exercises.option1}
+                            .col-sm-6.form-check.d-flex.align-items-center
+                                input.form-check-input.ms-0.mt-0.me-3(id="option2", type='radio', disabled)
+                                label.form-check-label(for="option2")
+                                    | B. #{result.exercises.option2}
+                            .col-sm-6.form-check.d-flex.align-items-center
+                                input.form-check-input.ms-0.mt-0.me-3(id="option3", type='radio', disabled)
+                                label.form-check-label(for="option3")
+                                    | C. #{result.exercises.option3}
+                            .col-sm-6.form-check.d-flex.align-items-center
+                                input.form-check-input.ms-0.mt-0.me-3(id="option4", type='radio', disabled)
+                                label.form-check-label(for="option4")
+                                    | D. #{result.exercises.option4}
+                        if  result.exercises.answer === result.option
+                            .check-result.valid.mb-4.mt-2.d-flex.align-items-center
+                                ion-icon(name="checkmark-circle").text-success.fs-4
+                                span.message.ms-2 Bạn đã chọn: #{result.option}
+                                span.ms-2.me-2 ~
+                                span.answer-true Đáp án đúng: #{result.exercises.answer}
+                        else if result.option === ""
+                            .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
+                                ion-icon(name="alert").text-danger.fs-4
+                                span.message.ms-2 Bạn đã bỏ qua câu này
+                                span.ms-2.me-2 ~
+                                span.answer-true Đáp án đúng: #{result.exercises.answer}
+                        else
+                            .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
+                                ion-icon(name="close-circle").text-danger.fs-4
+                                span.message.ms-2 Bạn đã chọn: #{result.option}
+                                span.ms-2.me-2 ~
+                                span.answer-true Đáp án đúng: #{result.exercises.answer}
+                        .explain
+                            .explain-header.text-primary.d-inline-flex.align-items-center
+                                span.me-1 Xem lời giải
+                                ion-icon(name='sunny')
+                            .explain-body.mt-4
+                                span.fw-bold Phương pháp giải
+                                .mt-2.explain-content= result.exercises.recommend
+                                hr
+                                span.fw-bold Lời giải
+                                .mt-2.explain-content= result.exercises.explain
                 .result
                     .animate
                     .score
@@ -64,19 +66,20 @@ block main
                     .done.text-white.mb-4
                         span.mb-2
                             ion-icon(name='shield-checkmark')
-                            | Số câu làm đúng: #{totalAnswerTrue}/#{exercises.length}
+                            | Số câu làm đúng: #{totalAnswerTrue}/#{results.length}
                         span.mb-2
                             ion-icon(name='shield-checkmark')
-                            | Thời gian làm: 30 phút     
+                            | Thời gian làm: #{time}     
                     ul.menu.d-flex.align-items-center.justify-content-center
                         li
-                            a(href='') 
+                            a(href=`/subjects/${subject.slug}`) 
                                 img(src='../img/reload.png')
                                 span.text-uppercase danh mục bài học
                         li
-                            a(href='') 
-                                img(src='../img/next.png')
-                                span.text-uppercase làm bài tiếp theo
+                            if nextLession[0] !== ""
+                                a(href=`/learning/${subject.slug}?name=${nextLession[0].slug}`) 
+                                    img(src='../img/next.png')
+                                    span.text-uppercase làm bài tiếp theo
             .col-sm-3.ps-5
                 .result-detail.text-center.shadow
                     .pt-3.ps-2.pe-2
@@ -85,22 +88,20 @@ block main
                     hr
                     ul.ps-0.pb-2
                         - var i = 0;
-                        each exercise in exercises
+                        each result in results
                             - i++;
                             li 
-                                each result in results
-                                    if exercise.answer === result.option
-                                        a.correct= i
-                                    else if result.option === ""
-                                        a= i
-                                    else
-                                        a.not-correct= i
+                                if result.exercises.answer === result.option
+                                    a.correct= i
+                                else if result.option === ""
+                                    a= i
+                                else
+                                    a.not-correct= i
     script.
         $(document).ready(function () {
-            var listExercise = !{JSON.stringify(exercises)};
-            console.log(listExercise);
-
-            $(".result-detail a").click(function(){
-                $(".exercise-item").slideDown();
+            $(".result-detail a").click(function(e) {
+                var qa = $(this).text();
+                console.log(qa);
+                $(`#item-${qa}`).className = "exercise-item active";
             })
         });
