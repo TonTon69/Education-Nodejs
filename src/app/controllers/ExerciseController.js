@@ -67,6 +67,7 @@ class ExerciseController {
         }
     }
 
+    // [POST]/exercise/:slug?name=lession
     async postExercise(req, res, next) {
         try {
             const myJsonData = req.body.objectData;

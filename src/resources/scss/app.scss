@@ -1082,7 +1082,7 @@ body {
                 li {
                     display: inline-block;
 
-                    a {
+                    button {
                         background: #e0e0e0;
                         display: inline-block;
                         width: 34px;
@@ -1093,6 +1093,8 @@ body {
                         font-size: 14px;
                         margin: 4px 6px 10px 10px;
                         cursor: pointer;
+                        outline: none;
+                        border: none;
 
                         &.not-correct {
                             background: #d74726;

@@ -785,7 +785,7 @@ body {
         margin-bottom: 0; }
         .main .learning-result .result-detail ul li {
           display: inline-block; }
-          .main .learning-result .result-detail ul li a {
+          .main .learning-result .result-detail ul li button {
             background: #e0e0e0;
             display: inline-block;
             width: 34px;
@@ -795,11 +795,13 @@ body {
             text-align: center;
             font-size: 14px;
             margin: 4px 6px 10px 10px;
-            cursor: pointer; }
-            .main .learning-result .result-detail ul li a.not-correct {
+            cursor: pointer;
+            outline: none;
+            border: none; }
+            .main .learning-result .result-detail ul li button.not-correct {
               background: #d74726;
               color: #fff; }
-            .main .learning-result .result-detail ul li a.correct {
+            .main .learning-result .result-detail ul li button.correct {
               background: #8ac53e;
               color: #fff; }
   .main .blog-wrap {

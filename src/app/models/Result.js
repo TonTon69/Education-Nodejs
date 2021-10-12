@@ -4,9 +4,6 @@ const Schema = mongoose.Schema;
 
 const Result = new Schema(
     {
-        // userID: { type: Schema.Types.ObjectId, ref: "User" },
-        // time: { type: String },
-        // score: { type: Number },
         userID: { type: Schema.Types.ObjectId, ref: "User" },
         exerciseID: { type: Schema.Types.ObjectId, ref: "Exercise" },
         option: { type: String },

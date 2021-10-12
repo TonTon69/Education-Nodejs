@@ -51,6 +51,15 @@ class LearningController {
                             userID: ObjectId(req.signedCookies.userId),
                         },
                     },
+
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "userID",
+                            foreignField: "_id",
+                            as: "user",
+                        },
+                    },
                     {
                         $lookup: {
                             from: "exercises",
@@ -71,24 +80,13 @@ class LearningController {
                         },
                     },
                     {
-                        $lookup: {
-                            from: "lessions",
-                            localField: "exercises.lessionID",
-                            foreignField: "_id",
-                            as: "exercises.lession",
-                        },
-                    },
-                    {
-                        $lookup: {
-                            from: "users",
-                            localField: "userID",
-                            foreignField: "_id",
-                            as: "user",
+                        $match: {
+                            "exercises.lessionID": ObjectId(lession.id),
                         },
                     },
                 ]);
 
-                if (results[0].exercises.lession[0]._id == lession.id) {
+                if (results.length > 0) {
                     const unit = await Unit.findById({ _id: lession.unitID });
                     const subject = await Subject.findById({
                         _id: unit.subjectID,

@@ -30,12 +30,6 @@ block main
                                     .top
                                         | Thời gian làm bài
                                     .bottom#stopwatch 00:00:00
-                            //- .col-sm-4
-                            //-     .score__achieved
-                            //-         .top
-                            //-             | Số điểm đạt được
-                            //-         .bottom
-                            //-             | 0/100
                             .col-sm-4
                                 .questions__done
                                     .top
@@ -101,9 +95,6 @@ block main
                                     .mt-2.recommend-content= exercises[0].recommend
                         
                 .actions.pt-4.d-flex.align-items-center
-                    //- button#btn-check-result.btn.btn-success.btn-padding(value="submit")
-                    //-     ion-icon(name='checkmark-outline')
-                    //-     span.ms-1 Kiểm tra
                     button#btn-next-question.btn.btn-success.btn-padding(value="submit")
                         ion-icon(name='arrow-forward-outline')
                         span.ms-1 Câu tiếp theo
@@ -111,6 +102,7 @@ block main
                         ion-icon(name='arrow-forward-outline')
                         span.ms-1 Nộp bài
                 form(name='form-submit-exercise', method='GET')
+    - var lessionName = lession.slug
     script.
         $(document).ready(function () {
             var listExercise = !{JSON.stringify(exercises)};
@@ -118,12 +110,6 @@ block main
 
             //StopWatch
             $("#stopwatch").stopwatch().stopwatch("start");
-
-            // When input clicked
-            //- $(".form-check-input").click(function () {
-            //-     $("#btn-check-result").show();
-            //-     //- $("#btn-next-question").hide();
-            //- });
 
             // When btn check clicked
             $("#btn-submit-exercise").click(function (e) {
@@ -149,11 +135,8 @@ block main
                     },
                 });
 
-                var formSubmitExercise = $('form[name="form-submit-exercise"]');
-                const urlParams = new URLSearchParams(window.location.search);
-                const lession = urlParams.get('name');
-                formSubmitExercise.attr("action", "/learning/result?name=" + lession);
-                formSubmitExercise.submit();
+                var slug = '#{lessionName}';
+                window.location.href = `/learning/result?name=${slug}`;
             })
 
             // When btn next clicked
