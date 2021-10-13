@@ -110,7 +110,7 @@ class LearningController {
                         }
                     });
 
-                    res.render("learning/result", {
+                    res.render("learning/result-detail", {
                         results,
                         totalScore,
                         totalAnswerTrue,
@@ -122,7 +122,83 @@ class LearningController {
                     res.render("error");
                 }
             } else {
-                res.render("error");
+                const results = await Result.aggregate([
+                    {
+                        $match: {
+                            userID: ObjectId(req.signedCookies.userId),
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "userID",
+                            foreignField: "_id",
+                            as: "user",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "exercises",
+                            localField: "exerciseID",
+                            foreignField: "_id",
+                            as: "exercises",
+                        },
+                    },
+                    {
+                        $unwind: "$exercises",
+                    },
+                    {
+                        $lookup: {
+                            from: "exercise-categories",
+                            localField: "exercises.ceID",
+                            foreignField: "_id",
+                            as: "exercises.category",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "lessions",
+                            localField: "exercises.lessionID",
+                            foreignField: "_id",
+                            as: "lession",
+                        },
+                    },
+                ]);
+
+                const resultExerciseArray = results.map(
+                    ({ exercises }) => exercises
+                );
+                const resultLessionIdArray = resultExerciseArray.map(
+                    ({ lessionID }) => lessionID
+                );
+                const lessions = await Lession.aggregate([
+                    {
+                        $match: {
+                            _id: { $in: resultLessionIdArray },
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "units",
+                            localField: "unitID",
+                            foreignField: "_id",
+                            as: "unit",
+                        },
+                    },
+                    {
+                        $unwind: "$unit",
+                    },
+                    {
+                        $lookup: {
+                            from: "subjects",
+                            localField: "unit.subjectID",
+                            foreignField: "_id",
+                            as: "unit.subject",
+                        },
+                    },
+                ]);
+
+                res.render("learning/result", { lessions });
             }
         } catch (error) {
             console.log(error);

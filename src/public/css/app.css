@@ -278,11 +278,7 @@ body {
   .main .infor__title {
     margin-left: 40px;
     margin-top: 15px;
-    color: #e29000;
-    text-transform: uppercase;
-    font-size: 20px;
-    line-height: 1.5;
-    font-weight: 700; }
+    line-height: 1.5; }
   .main .box__infor {
     padding: 20px; }
     .main .box__infor p label {

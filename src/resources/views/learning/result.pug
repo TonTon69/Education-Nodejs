@@ -1,140 +1,30 @@
 extends ../layouts/common
 block main
     section.learning-result
+        h4.fw-bold Kết quả học tập
         .row
-            .col-sm-9
-                .tab-content
-                    - var count = 0;
-                    each result in results
-                        - count++;
-                        .exercise-item.mb-5.shadow.tab-pane.fade(id=`item-${count}`,role="tabpanel" aria-labelledby=`tab-${count}`)
-                            .d-flex.align-items-center.justify-content-between
-                                strong.d-block.fw-bold.mb-0 Câu 
-                                    span.index-qa= count
-                                button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= result.exercises.category[0].type
-                            .question.mt-2= result.exercises.question
-                            .options.mt-3.row
-                                .col-sm-6.form-check.d-flex.align-items-center
-                                    input.form-check-input.ms-0.mt-0.me-3(id="option1", type='radio', disabled)
-                                    label.form-check-label(for="option1")
-                                        | A. #{result.exercises.option1}
-                                .col-sm-6.form-check.d-flex.align-items-center
-                                    input.form-check-input.ms-0.mt-0.me-3(id="option2", type='radio', disabled)
-                                    label.form-check-label(for="option2")
-                                        | B. #{result.exercises.option2}
-                                .col-sm-6.form-check.d-flex.align-items-center
-                                    input.form-check-input.ms-0.mt-0.me-3(id="option3", type='radio', disabled)
-                                    label.form-check-label(for="option3")
-                                        | C. #{result.exercises.option3}
-                                .col-sm-6.form-check.d-flex.align-items-center
-                                    input.form-check-input.ms-0.mt-0.me-3(id="option4", type='radio', disabled)
-                                    label.form-check-label(for="option4")
-                                        | D. #{result.exercises.option4}
-                            if  result.exercises.answer === result.option
-                                .check-result.valid.mb-4.mt-2.d-flex.align-items-center
-                                    ion-icon(name="checkmark-circle").text-success.fs-4
-                                    span.message.ms-2 Bạn đã chọn: 
-                                        if result.option === result.exercises.option1
-                                            span A
-                                        else if result.option === result.exercises.option2
-                                            span B
-                                        else if result.option === result.exercises.option3
-                                            span C
-                                        else if result.option === result.exercises.option4
-                                            span D
-                                    span.ms-2.me-2 ~
-                                    span.answer-true Đáp án đúng: 
-                                        if result.exercises.answer === result.exercises.option1
-                                            span A
-                                        else if result.exercises.answer === result.exercises.option2
-                                            span B
-                                        else if result.exercises.answer === result.exercises.option3
-                                            span C
-                                        else if result.exercises.answer === result.exercises.option4
-                                            span D
-                            else if result.option === ""
-                                .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
-                                    ion-icon(name="alert").text-danger.fs-4
-                                    span.message.ms-2 Bạn đã bỏ qua câu này
-                                    span.ms-2.me-2 ~
-                                    span.answer-true Đáp án đúng: 
-                                        if result.exercises.answer === result.exercises.option1
-                                            span A
-                                        else if result.exercises.answer === result.exercises.option2
-                                            span B
-                                        else if result.exercises.answer === result.exercises.option3
-                                            span C
-                                        else if result.exercises.answer === result.exercises.option4
-                                            span D
-                            else
-                                .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
-                                    ion-icon(name="close-circle").text-danger.fs-4
-                                    span.message.ms-2 Bạn đã chọn: 
-                                        if result.option === result.exercises.option1
-                                            span A
-                                        else if result.option === result.exercises.option2
-                                            span B
-                                        else if result.option === result.exercises.option3
-                                            span C
-                                        else if result.option === result.exercises.option4
-                                            span D
-                                    span.ms-2.me-2 ~
-                                    span.answer-true Đáp án đúng: 
-                                        if result.exercises.answer === result.exercises.option1
-                                            span A
-                                        else if result.exercises.answer === result.exercises.option2
-                                            span B
-                                        else if result.exercises.answer === result.exercises.option3
-                                            span C
-                                        else if result.exercises.answer === result.exercises.option4
-                                            span D
-                            .explain
-                                .explain-header.text-primary.d-inline-flex.align-items-center
-                                    span.me-1 Xem lời giải
-                                    ion-icon(name='sunny')
-                                .explain-body.mt-4
-                                    span.fw-bold Phương pháp giải
-                                    .mt-2.explain-content= result.exercises.recommend
-                                    hr
-                                    span.fw-bold Lời giải
-                                    .mt-2.explain-content= result.exercises.explain
-                .result
-                    .animate
-                    .score
-                        img.top-star(src='../img/top-star.png')
-                        strong.text-uppercase.text-white.fs-5.d-block.mt-4 ĐIỂM SỐ
-                        span.mt-3.d-block= totalScore
-                    .done.text-white.mb-4
-                        span.mb-2
-                            ion-icon(name='shield-checkmark')
-                            | Số câu làm đúng: #{totalAnswerTrue}/#{results.length}
-                        span.mb-2
-                            ion-icon(name='shield-checkmark')
-                            | Thời gian làm: #{time}     
-                    ul.menu.d-flex.align-items-center.justify-content-center
-                        li
-                            a(href=`/subjects/${subject.slug}`) 
-                                img(src='../img/reload.png')
-                                span.text-uppercase danh mục bài học
-                        li
-                            if nextLession.length > 0
-                                a(href=`/learning/${subject.slug}?name=${nextLession[0].slug}`) 
-                                    img(src='../img/next.png')
-                                    span.text-uppercase làm bài tiếp theo
-            .col-sm-3.ps-5
-                .result-detail.text-center.shadow
-                    .pt-3.ps-2.pe-2
-                        strong.d-block.mb-2.fs-5 Kết quả
-                        span.fs-7 (Bấm vào câu hỏi để xem chi tiết)
-                    hr
-                    ul.ps-0.pb-2.nav.nav-tabs(role="tablist")
-                        - var i = 0;
-                        each result in results
-                            - i++;
-                            li.nav-item(role="presentation")
-                                if result.exercises.answer === result.option
-                                    button.correct(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i
-                                else if result.option === ""
-                                    button(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i
-                                else
-                                    button.not-correct(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i
+            .col-sm-12
+                table.table.table-striped.mt-4
+                    thead
+                        tr
+                            th(scope='col') #
+                            th(scope='col') Môn học
+                            th(scope='col') Tên chuyên đề
+                            th(scope='col') Nội dung luyện tập
+                            th(scope='col') 
+                    tbody
+                        if lessions.length > 0
+                            - var count = 0;
+                            each lession in lessions
+                                - count++;
+                                tr.align-middle
+                                    th.pt-3.pb-3(scope='row')= count
+                                    td.pt-3.pb-3= lession.unit.subject[0].name  + ' ' + lession.unit.subject[0].gradeID
+                                    td.pt-3.pb-3= lession.unit.name
+                                    td.pt-3.pb-3= lession.name
+                                    td.pt-3.pb-3
+                                        a.text-primary(href=`/learning/result?name=${lession.slug}`) Xem chi tiết
+                        else
+                            tr
+                                td.text-center(colspan='5')
+                                    span.fw-bold Không có dữ liệu.!
