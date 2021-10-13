@@ -161,6 +161,11 @@ class SiteController {
             success: req.flash("success"),
         });
     }
+
+    // [GET]/admin
+    admin(req, res) {
+        res.render("admin-index");
+    }
 }
 
 module.exports = new SiteController();

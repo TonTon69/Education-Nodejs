@@ -8,6 +8,7 @@ const {
 } = require("../app/middlewares/AuthMiddleware");
 
 router.get("/password/reset", siteController.passwordReset);
+router.get("/admin", siteController.admin);
 router.post("/report", siteController.report);
 router.get("/subjects", siteController.subjects);
 router.get("/infor", requireAuth, siteController.infor);

@@ -1,0 +1,171 @@
+.horizontal-menu
+    nav.navbar.top-navbar.col-lg-12.col-12.p-0
+        .container-fluid
+            .navbar-menu-wrapper.d-flex.align-items-center.justify-content-between
+                ul.navbar-nav.navbar-nav-left
+                    li.nav-item.ml-0.mr-5.d-lg-flex.d-none
+                        a.nav-link.horizontal-nav-left-menu(href='#')
+                            i.mdi.mdi-format-list-bulleted
+                    li.nav-item.dropdown
+                        a#notificationDropdown.nav-link.count-indicator.dropdown-toggle.d-flex.align-items-center.justify-content-center(href='#', data-toggle='dropdown')
+                            i.mdi.mdi-bell.mx-0
+                            span.count.bg-success 2
+                        .dropdown-menu.dropdown-menu-right.navbar-dropdown.preview-list(aria-labelledby='notificationDropdown')
+                            p.mb-0.font-weight-normal.float-left.dropdown-header Notifications
+                            a.dropdown-item.preview-item
+                                .preview-thumbnail
+                                    .preview-icon.bg-success
+                                        i.mdi.mdi-information.mx-0
+                                .preview-item-content
+                                    h6.preview-subject.font-weight-normal Application Error
+                                    p.font-weight-light.small-text.mb-0.text-muted
+                                        | Just now
+                            a.dropdown-item.preview-item
+                                .preview-thumbnail
+                                    .preview-icon.bg-warning
+                                        i.mdi.mdi-settings.mx-0
+                                .preview-item-content
+                                    h6.preview-subject.font-weight-normal Settings
+                                    p.font-weight-light.small-text.mb-0.text-muted
+                                        | Private message
+                            a.dropdown-item.preview-item
+                                .preview-thumbnail
+                                    .preview-icon.bg-info
+                                        i.mdi.mdi-account-box.mx-0
+                                .preview-item-content
+                                    h6.preview-subject.font-weight-normal New user registration
+                                    p.font-weight-light.small-text.mb-0.text-muted
+                                        | 2 days ago
+                    li.nav-item.dropdown
+                        a#messageDropdown.nav-link.count-indicator.dropdown-toggle.d-flex.justify-content-center.align-items-center(href='#', data-toggle='dropdown')
+                            i.mdi.mdi-email.mx-0
+                            span.count.bg-primary 4
+                        .dropdown-menu.dropdown-menu-right.navbar-dropdown.preview-list(aria-labelledby='messageDropdown')
+                            p.mb-0.font-weight-normal.float-left.dropdown-header Messages
+                            a.dropdown-item.preview-item
+                                .preview-thumbnail
+                                    img.profile-pic(src='images/faces/face4.jpg', alt='image')
+                                .preview-item-content.flex-grow
+                                    h6.preview-subject.ellipsis.font-weight-normal
+                                        | David Grey
+                                    p.font-weight-light.small-text.text-muted.mb-0
+                                        | The meeting is cancelled
+                            a.dropdown-item.preview-item
+                                .preview-thumbnail
+                                    img.profile-pic(src='images/faces/face2.jpg', alt='image')
+                                .preview-item-content.flex-grow
+                                    h6.preview-subject.ellipsis.font-weight-normal
+                                        | Tim Cook
+                                    p.font-weight-light.small-text.text-muted.mb-0
+                                        | New product launch
+                            a.dropdown-item.preview-item
+                                .preview-thumbnail
+                                    img.profile-pic(src='images/faces/face3.jpg', alt='image')
+                                .preview-item-content.flex-grow
+                                    h6.preview-subject.ellipsis.font-weight-normal
+                                        | Johnson
+                                    p.font-weight-light.small-text.text-muted.mb-0
+                                        | Upcoming board meeting
+                    li.nav-item.dropdown
+                        a.nav-link.count-indicator(href='#')
+                            i.mdi.mdi-message-reply-text
+                    li.nav-item.nav-search.d-none.d-lg-block.ml-3
+                        .input-group
+                            .input-group-prepend
+                                span#search.input-group-text
+                                    i.mdi.mdi-magnify
+                            input.form-control(type='text', placeholder='search', aria-label='search', aria-describedby='search')
+                .text-center.navbar-brand-wrapper.d-flex.align-items-center.justify-content-center
+                    a.navbar-brand.brand-logo(href='index.html')
+                        img(src='images/logo.svg', alt='logo')
+                    a.navbar-brand.brand-logo-mini(href='index.html')
+                        img(src='images/logo-mini.svg', alt='logo')
+                ul.navbar-nav.navbar-nav-right
+                    li.nav-item.dropdown.d-lg-flex.d-none
+                        button.btn.btn-inverse-primary.btn-sm(type='button') Product 
+                    li.nav-item.dropdown.d-lg-flex.d-none
+                        a#nreportDropdown.dropdown-toggle.show-dropdown-arrow.btn.btn-inverse-primary.btn-sm(href='#', data-toggle='dropdown')
+                            | Reports
+                        .dropdown-menu.dropdown-menu-right.navbar-dropdown.preview-list(aria-labelledby='nreportDropdown')
+                            p.mb-0.font-weight-medium.float-left.dropdown-header Reports
+                            a.dropdown-item
+                                i.mdi.mdi-file-pdf.text-primary
+                                |                         Pdf
+                            a.dropdown-item
+                                i.mdi.mdi-file-excel.text-primary
+                                |                         Exel
+                    li.nav-item.dropdown.d-lg-flex.d-none
+                        button.btn.btn-inverse-primary.btn-sm(type='button') Settings
+                    li.nav-item.nav-profile.dropdown
+                        a#profileDropdown.nav-link.dropdown-toggle(href='#', data-toggle='dropdown')
+                            span.nav-profile-name Johnson
+                            span.online-status
+                            img(src='images/faces/face28.png', alt='profile')
+                        .dropdown-menu.dropdown-menu-right.navbar-dropdown(aria-labelledby='profileDropdown')
+                            a.dropdown-item
+                                i.mdi.mdi-settings.text-primary
+                                |                         Settings
+                            a.dropdown-item
+                                i.mdi.mdi-logout.text-primary
+                                |                         Logout
+                button.navbar-toggler.navbar-toggler-right.d-lg-none.align-self-center(type='button', data-toggle='horizontal-menu-toggle')
+                    span.mdi.mdi-menu
+    nav.bottom-navbar
+        .container
+            ul.nav.page-navigation
+                li.nav-item
+                    a.nav-link(href='index.html')
+                        i.mdi.mdi-file-document-box.menu-icon
+                        span.menu-title Dashboard
+                li.nav-item
+                    a.nav-link(href='#')
+                        i.mdi.mdi-cube-outline.menu-icon
+                        span.menu-title UI Elements
+                        i.menu-arrow
+                    .submenu
+                        ul
+                            li.nav-item
+                                a.nav-link(href='pages/ui-features/buttons.html') Buttons
+                            li.nav-item
+                                a.nav-link(href='pages/ui-features/typography.html') Typography
+                li.nav-item
+                    a.nav-link(href='pages/forms/basic_elements.html')
+                        i.mdi.mdi-chart-areaspline.menu-icon
+                        span.menu-title Form Elements
+                        i.menu-arrow
+                li.nav-item
+                    a.nav-link(href='pages/charts/chartjs.html')
+                        i.mdi.mdi-finance.menu-icon
+                        span.menu-title Charts
+                        i.menu-arrow
+                li.nav-item
+                    a.nav-link(href='pages/tables/basic-table.html')
+                        i.mdi.mdi-grid.menu-icon
+                        span.menu-title Tables
+                        i.menu-arrow
+                li.nav-item
+                    a.nav-link(href='pages/icons/mdi.html')
+                        i.mdi.mdi-emoticon.menu-icon
+                        span.menu-title Icons
+                        i.menu-arrow
+                li.nav-item
+                    a.nav-link(href='#')
+                        i.mdi.mdi-codepen.menu-icon
+                        span.menu-title Sample Pages
+                        i.menu-arrow
+                    .submenu
+                        ul.submenu-item
+                            li.nav-item
+                                a.nav-link(href='pages/samples/login.html') Login
+                            li.nav-item
+                                a.nav-link(href='pages/samples/login-2.html') Login 2
+                            li.nav-item
+                                a.nav-link(href='pages/samples/register.html') Register
+                            li.nav-item
+                                a.nav-link(href='pages/samples/register-2.html') Register 2
+                            li.nav-item
+                                a.nav-link(href='pages/samples/lock-screen.html') Lockscreen
+                li.nav-item
+                    a.nav-link(href='docs/documentation.html')
+                        i.mdi.mdi-file-document-box-outline.menu-icon
+                        span.menu-title Documentation
