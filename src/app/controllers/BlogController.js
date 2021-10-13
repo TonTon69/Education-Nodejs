@@ -6,9 +6,8 @@ class BlogController {
     // [GET]/blog/:slug
     async show(req, res, next) {
         try {
-            // const category = await BlogCategory.find({});
             const blog = await Blog.findOne({ slug: req.params.slug });
-            const user = await User.findOne({ id: blog.userID });
+            const user = await User.findOne({ _id: blog.userID });
 
             const blogRelated = await Blog.aggregate([
                 {

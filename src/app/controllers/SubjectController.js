@@ -40,6 +40,53 @@ class SubjectController {
             res.render("error");
         }
     }
+
+    // [GET]/subjects/list
+    async list(req, res) {
+        const subjects = await Subject.find({});
+        res.render("subjects/list", {
+            subjects,
+            success: req.flash("success"),
+        });
+    }
+
+    // [GET]/subjects/create
+    async create(req, res) {
+        res.render("subjects/create", {
+            success: req.flash("success"),
+        });
+    }
+
+    // [POST]/subjects/create
+    async postCreate(req, res) {
+        const subject = new Subject(req.body);
+        await subject.save();
+        req.flash("success", "Thêm mới thành công!");
+        res.redirect("back");
+    }
+
+    // [GET]/subjects/:id/edit
+    async edit(req, res, next) {
+        const subject = await Subject.findById(req.params.id);
+        res.render("subjects/edit", {
+            subject,
+            success: req.flash("success"),
+        });
+    }
+
+    // [PUT]/subjects/:id
+    async update(req, res, next) {
+        await Subject.updateOne({ _id: req.params.id }, req.body);
+        req.flash("success", "Cập nhật thành công!");
+        res.redirect("back");
+    }
+
+    // [DELETE]/subjects/:id
+    async delete(req, res, next) {
+        await Subject.deleteOne({ _id: req.params.id });
+        req.flash("success", "Xóa thành công!");
+        res.redirect("back");
+    }
 }
 
 module.exports = new SubjectController();

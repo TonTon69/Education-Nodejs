@@ -10,6 +10,13 @@ html
         link(rel='stylesheet', href='/admin/vendors/mdi/css/materialdesignicons.min.css')
         link(rel='stylesheet', href='/admin/vendors/base/vendor.bundle.base.css')
         link(rel='stylesheet', href='/admin/css/style.css')
+        link(rel="stylesheet", href="/vendor/eggy-js/css/eggy.css")
+        link(rel="stylesheet", href="/vendor/eggy-js/css/progressbar.css")
+        link(rel="stylesheet", href="/vendor/eggy-js/css/theme.css")
+        script(type='module', src='https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js')
+        script(nomodule='', src='https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js', integrity='sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==', crossorigin='anonymous', referrerpolicy='no-referrer')
+        script(src="/vendor/eggy-js/js/eggy.js")
     body
         .container-scroller
             include ../partials/horizontal-menu
@@ -17,7 +24,6 @@ html
                 .main-panel
                     .content-wrapper
                         block content
-                    include ../partials/footer
         script(src='/admin/vendors/base/vendor.bundle.base.js')
         script(src='/admin/js/template.js')
         script(src='/admin/vendors/chart.js/Chart.min.js')

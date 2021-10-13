@@ -76,10 +76,7 @@
                                     i.mdi.mdi-magnify
                             input.form-control(type='text', placeholder='search', aria-label='search', aria-describedby='search')
                 .text-center.navbar-brand-wrapper.d-flex.align-items-center.justify-content-center
-                    a.navbar-brand.brand-logo(href='index.html')
-                        img(src='images/logo.svg', alt='logo')
-                    a.navbar-brand.brand-logo-mini(href='index.html')
-                        img(src='images/logo-mini.svg', alt='logo')
+                    a.navbar-brand.brand-logo(href='/admin', style='font-weight: bold; background: linear-gradient(315deg, #2a2a72 0%, #009ffd 74%);  -webkit-background-clip: text; -webkit-text-fill-color: transparent;') PC3 Admin
                 ul.navbar-nav.navbar-nav-right
                     li.nav-item.dropdown.d-lg-flex.d-none
                         button.btn.btn-inverse-primary.btn-sm(type='button') Product 
@@ -100,7 +97,7 @@
                         a#profileDropdown.nav-link.dropdown-toggle(href='#', data-toggle='dropdown')
                             span.nav-profile-name Johnson
                             span.online-status
-                            img(src='images/faces/face28.png', alt='profile')
+                            img(src='https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-6/p843x403/245742418_1588156591551620_7312094953014591537_n.jpg?_nc_cat=1&ccb=1-5&_nc_sid=730e14&_nc_ohc=_nkxy-td6sUAX-HKe1N&_nc_ht=scontent.fdad2-1.fna&oh=13ca60484aada593dde9ba0782a20b79&oe=616C759D', alt='profile')
                         .dropdown-menu.dropdown-menu-right.navbar-dropdown(aria-labelledby='profileDropdown')
                             a.dropdown-item
                                 i.mdi.mdi-settings.text-primary
@@ -114,20 +111,20 @@
         .container
             ul.nav.page-navigation
                 li.nav-item
-                    a.nav-link(href='index.html')
+                    a.nav-link(href='/admin')
                         i.mdi.mdi-file-document-box.menu-icon
                         span.menu-title Dashboard
                 li.nav-item
                     a.nav-link(href='#')
-                        i.mdi.mdi-cube-outline.menu-icon
-                        span.menu-title UI Elements
+                        i.mdi.mdi-book.menu-icon
+                        span.menu-title Quản lý môn học
                         i.menu-arrow
                     .submenu
                         ul
                             li.nav-item
-                                a.nav-link(href='pages/ui-features/buttons.html') Buttons
+                                a.nav-link(href='/subjects/list') Danh sách
                             li.nav-item
-                                a.nav-link(href='pages/ui-features/typography.html') Typography
+                                a.nav-link(href='/subjects/create') Thêm mới
                 li.nav-item
                     a.nav-link(href='pages/forms/basic_elements.html')
                         i.mdi.mdi-chart-areaspline.menu-icon
