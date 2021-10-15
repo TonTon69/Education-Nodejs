@@ -1,0 +1,14 @@
+tbody
+    - var count = 0;
+    each subject in subjects
+        - count++;
+        tr
+            td= count
+            td.w-25= subject.name
+            td= subject.gradeID
+            td
+                ion-icon(name=subject.icon)
+            td.w-25= subject.slug
+            td.text-center(style='width: 15%')
+                a.btn.btn-secondary.mr-2(href=`/subjects/${subject.id}/edit`) Sửa
+                button.btn.btn-danger(data-toggle="modal" data-target="#deleteSubjectModal", data-id=subject._id) Xóa

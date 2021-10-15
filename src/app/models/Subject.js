@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 const Subject = new Schema(
     {
-        name: { type: String, require: true },
+        name: { type: String, index: true },
         gradeID: { type: Number, ref: "Grade" },
         icon: { type: String },
         slug: { type: String, slug: ["name", "gradeID"], unique: true },
@@ -15,5 +15,5 @@ const Subject = new Schema(
         timestamps: true,
     }
 );
-
+Subject.index({ name: "text" });
 module.exports = mongoose.model("Subject", Subject);

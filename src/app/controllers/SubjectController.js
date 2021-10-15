@@ -45,12 +45,31 @@ class SubjectController {
 
     // [GET]/subjects/list
     async list(req, res) {
-        const subjects = await Subject.find({});
+        const subjects = await Subject.find({}).sort({ gradeID: -1 });
         res.render("subjects/list", {
             subjects,
             success: req.flash("success"),
             errors: req.flash("error"),
         });
+    }
+
+    // [POST]/subjects/list
+    async search(req, res) {
+        try {
+            const searchString = req.body.query;
+            let subjects = [];
+            if (searchString.length > 0) {
+                subjects = await Subject.find({
+                    $text: { $search: searchString },
+                });
+            } else {
+                subjects = await Subject.find({}).sort({ gradeID: -1 });
+            }
+            res.render("helper/table", { subjects });
+        } catch (error) {
+            console.log(error);
+            req.flash("error", "Không tìm thấy kết quả!");
+        }
     }
 
     // [GET]/subjects/create
