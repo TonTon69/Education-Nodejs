@@ -50,34 +50,46 @@ block content
                                                 | Bạn có chắc chắn muốn xóa môn học này không???
                                             .modal-footer
                                                 button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
-                                                button.btn.btn-primary#btn-delete-subject(type='button') Chắc chắn
-    if  success.length > 0
+                                                button.btn.btn-danger#btn-delete-subject(type='button') Chắc chắn
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
         - var msgSuccess = success
     script.
-        $(document).ready(function () {
+        document.addEventListener('DOMContentLoaded', function() {
             var deleteSubjectModal = $("#deleteSubjectModal");
             var subjectId;
             var deleteSubjectForm = $('form[name="delete-subject-form"]');
             var btnDeleteSubject = $("#btn-delete-subject");
             
             let msgToastSuccess = '#{msgSuccess}';
-            if(msgToastSuccess != ''){
+            if(msgToastSuccess != '') {
                 Eggy({
                     title: 'Thành công',
                     message:  msgToastSuccess,
                     type: 'success',
                     duration: 5000,
                 });
-            }  
-            
+            };
+
+            let msgToastError = '#{msgError}';
+            if(msgToastError != '') {
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            };
+
             deleteSubjectModal.on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
-                var subjectId = button.data('id');
-            })
+                subjectId = button.data('id');
+            });
 
-             //When delete experience btn clicked
+             //When delete subject btn clicked
             btnDeleteSubject.click(function () {
-                deleteSubjectForm.attr("action", `/subjects/${subjectId}?_method=DELETE`);
+                deleteSubjectForm.attr("action", "/subjects/" + subjectId + "?_method=DELETE");
                 deleteSubjectForm.submit();
-            })
-        })
+            });
+        });

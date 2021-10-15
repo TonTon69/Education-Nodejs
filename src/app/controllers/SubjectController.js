@@ -4,6 +4,8 @@ const Lession = require("../models/Lession");
 const RatingRegulation = require("../models/RatingRegulation");
 const Result = require("../models/Result");
 const User = require("../models/User");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 class SubjectController {
     // [GET]/subjects/:slug
     async show(req, res, next) {
@@ -47,6 +49,7 @@ class SubjectController {
         res.render("subjects/list", {
             subjects,
             success: req.flash("success"),
+            errors: req.flash("error"),
         });
     }
 
@@ -83,9 +86,14 @@ class SubjectController {
 
     // [DELETE]/subjects/:id
     async delete(req, res, next) {
-        await Subject.deleteOne({ _id: req.params.id });
-        req.flash("success", "Xóa thành công!");
-        res.redirect("back");
+        try {
+            await Subject.deleteOne({ _id: req.params.id });
+            req.flash("success", "Xóa thành công!");
+            res.redirect("back");
+        } catch (error) {
+            req.flash("error", "Xóa thất bại!");
+            res.redirect("back");
+        }
     }
 }
 
