@@ -13,15 +13,15 @@ block content
                         p.card-description Nhập thông tin bên dưới để thêm mới 1 môn học
                         form.mt-4(action='/subjects/create', method='POST')
                             .form-group.row
-                                label.col-sm-3.col-form-label(for='name') Tên môn học
+                                label.col-sm-3.col-form-label.font-weight-bold(for='name') Tên môn học
                                 .col-sm-9
                                     input#name.form-control(type='text', placeholder='Nhập tên môn học', name='name')
                             .form-group.row
-                                label.col-sm-3.col-form-label(for='icon') Biểu tượng
+                                label.col-sm-3.col-form-label.font-weight-bold(for='icon') Biểu tượng
                                 .col-sm-9
                                     input#icon.form-control(type='text', placeholder='Nhập tên biểu tượng', name='icon')
                             .form-group.row
-                                label.col-sm-3.col-form-label(for='grade') Khối
+                                label.col-sm-3.col-form-label.font-weight-bold(for='grade') Khối
                                 .col-sm-9
                                     select.form-control.h-75(id='grade', name='gradeID')
                                         option.selected --Chọn khối--

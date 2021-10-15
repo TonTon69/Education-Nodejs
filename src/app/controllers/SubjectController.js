@@ -45,23 +45,52 @@ class SubjectController {
 
     // [GET]/subjects/list
     async list(req, res) {
-        const subjects = await Subject.find({}).sort({ gradeID: -1 });
+        let perPage = 3;
+        let page = req.params.page || 1;
+        const subjects = await Subject.find({})
+            .sort({ gradeID: -1 })
+            .skip(perPage * page - perPage)
+            .limit(perPage);
+        const subjectsCount = await Subject.countDocuments();
         res.render("subjects/list", {
             subjects,
+            current: page,
+            pages: Math.ceil(subjectsCount / perPage),
+            success: req.flash("success"),
+            errors: req.flash("error"),
+        });
+    }
+
+    // [GET]/subjects/list/:page
+    async pagination(req, res) {
+        let perPage = 3;
+        let page = req.params.page || 1;
+        const subjects = await Subject.find({})
+            .sort({ gradeID: -1 })
+            .skip(perPage * page - perPage)
+            .limit(perPage);
+        const subjectsCount = await Subject.countDocuments();
+        res.render("subjects/list", {
+            subjects,
+            current: page,
+            pages: Math.ceil(subjectsCount / perPage),
             success: req.flash("success"),
             errors: req.flash("error"),
         });
     }
 
     // [POST]/subjects/list
-    async search(req, res) {
+    async searchFilter(req, res) {
         try {
             const searchString = req.body.query;
+            const option = req.body.option;
             let subjects = [];
-            if (searchString.length > 0) {
+            if (searchString) {
                 subjects = await Subject.find({
                     $text: { $search: searchString },
-                });
+                }).sort({ gradeID: -1 });
+            } else if (option) {
+                subjects = await Subject.find({ gradeID: option });
             } else {
                 subjects = await Subject.find({}).sort({ gradeID: -1 });
             }
