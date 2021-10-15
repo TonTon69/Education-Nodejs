@@ -1,0 +1,174 @@
+extends ../layouts/admin
+block content
+    section.units__list
+        .col-lg-12.grid-margin.stretch-card
+            .card
+                .card-body
+                    .card-title Danh sách chuyên đề
+                    .d-flex.align-items-center
+                        .form-group.mb-0
+                            .input-group
+                                input.form-control(type='text', placeholder="Nhập từ khóa", name='search')
+                                .input-group-append
+                                    button.btn.btn-sm.btn-primary(type='submit') Tìm kiếm
+                        .form-group.mb-0.ml-4
+                            select.form-control(name='gradeID').text-dark.p-2
+                                option(value='').selected.disabled -- Tìm kiếm theo khối --
+                                option(value='12') Khối 12
+                                option(value='11') Khối 11
+                                option(value='10') Khối 10
+                        a.btn.btn-outline-success.btn-icon-text.ml-auto(href='/units/create') 
+                            i.mdi.mdi-upload.btn-icon-prepend
+                            | Thêm mới
+                    .table-responsive.pt-3
+                        table.table.table-hover.text-dark
+                            thead
+                                tr
+                                    th.font-weight-bold #
+                                    th.font-weight-bold Tên chuyên đề
+                                    th.font-weight-bold Tên môn học
+                                    th.font-weight-bold Khối
+                                    th.font-weight-bold.text-center Hành động
+                            tbody
+                                - var count = 0;
+                                each unit in units
+                                    - count++;
+                                    tr
+                                        td= count
+                                        td= unit.name
+                                        td= unit.subject[0].name
+                                        td= unit.subject[0].gradeID
+                                        td.text-center(style='width: 15%')
+                                            a.btn.btn-secondary.mr-2(href=`/units/${unit.id}/edit`) Sửa
+                                            button.btn.btn-danger(data-toggle="modal" data-target="#deleteUnitModal", data-id=unit._id) Xóa
+                                form(name="delete-unit-form", method="POST")
+                                #deleteUnitModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteUnitModalLabel', aria-hidden='true')
+                                    .modal-dialog(role='document', style='transition: all 0.3s ease')
+                                        .modal-content
+                                            .modal-header
+                                                strong#deleteUnitModalLabel.modal-title.font-weight-bold.text-danger.text-uppercase Xóa chuyên đề
+                                                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                                span(aria-hidden='true') &times;
+                                            .modal-body.text-dark
+                                                span.d-block.mb-2.mt-2 Hành động này không thể khôi phục!!!
+                                                span.d-block.mb-2 Bạn có chắc chắn muốn xóa chuyên đề này không???
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
+                                                button.btn.btn-danger#btn-delete-unit(type='button') Chắc chắn
+                    if pages > 0
+                        nav.d-flex.align-items-center.justify-content-center
+                            ul.pagination.mt-4
+                                if current == 1
+                                    li.page-item.disabled
+                                        a.page-link(href='#', aria-label='Previous')
+                                            span(aria-hidden='true') &laquo;
+                                            span.sr-only Previous
+                                else
+                                    li.page-item
+                                        a.page-link(href=`/subjects/list`, aria-label='Previous')
+                                            span(aria-hidden='true') &laquo;
+                                            span.sr-only Previous
+                                - var i = (Number(current) > 3 ? Number(current) - 2 : 1);
+                                if i !== 1
+                                    li.page-item.disabled
+                                        a.page-link(href='#') ...
+                                - for(; i <= (Number(current) + 2) && i <= pages; i++)
+                                    if i == current
+                                        li.page-item.active
+                                            a.page-link(href=`/subjects/list/${i}`)= i
+                                    else
+                                        li.page-item
+                                            a.page-link(href=`/subjects/list/${i}`)= i
+                                    if i == Number(current) + 2 && i < pages
+                                        li.page-item.disabled
+                                            a.page-link(href='#') ...
+                                if current == pages
+                                    li.page-item.disabled
+                                        a.page-link(href='#', aria-label='Next')
+                                            span(aria-hidden='true') &raquo;
+                                            span.sr-only Next
+                                else
+                                    li.page-item
+                                        a.page-link(href=`/subjects/list/${pages}`, aria-label='Next')
+                                            span(aria-hidden='true') &raquo;
+                                            span.sr-only Next
+                    
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            var deleteUnitModal = $("#deleteUnitModal");
+            var subjectId;
+            var deleteSubjectForm = $('form[name="delete-subject-form"]');
+            var btnDeleteSubject = $("#btn-delete-unit");
+            
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != '') {
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            };
+
+            let msgToastError = '#{msgError}';
+            if(msgToastError != '') {
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            };
+
+            deleteUnitModal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                subjectId = button.data('id');
+            });
+
+             //When delete subject btn clicked
+            btnDeleteSubject.click(function () {
+                deleteSubjectForm.attr("action", "/subjects/" + subjectId + "?_method=DELETE");
+                deleteSubjectForm.submit();
+            });
+
+            //Search
+            $('.input-group-append button').click(function (e) {
+                e.preventDefault();
+                showSubjects();
+            });
+
+            $('input[name=search]').keyup(function(e) {
+                showSubjects();
+            });
+
+            function showSubjects() {
+                var searchString = $('input[name=search]').val();
+                $.ajax({
+                    method: 'POST',
+                    url: '/subjects/list',
+                    contentType: 'application/json',
+                    data: JSON.stringify({query: searchString}),
+                    success: function (data) {
+                        $("table tbody").replaceWith(data);
+                    }
+                });
+            };
+
+            $("select[name=gradeID]").change(function (e) {
+                e.preventDefault();
+                var option = $(this).val();
+                $.ajax({
+                    method: 'POST',
+                    url: '/subjects/list',
+                    contentType: 'application/json',
+                    data: JSON.stringify({option: option}),
+                    success: function (data) {
+                        $("table tbody").replaceWith(data);
+                    }
+                });
+            });
+        });

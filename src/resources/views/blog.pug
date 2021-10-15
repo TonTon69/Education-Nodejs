@@ -40,6 +40,8 @@ block main
     script.
         document.addEventListener('DOMContentLoaded', function() {
             $('.toppic-wrap-content ul li').click(function() {
+                $(this).addClass('active').siblings().removeClass('active');
+                
                 var option = $(this).text();
                 $.ajax({
                     method: 'POST',

@@ -1,0 +1,45 @@
+extends ../layouts/admin
+block content
+    section.subject__edit
+        .row
+            .col-md-6.grid-margin.stretch-card.mx-auto
+                .card
+                    .card-body
+                        .d-flex.align-items-center.justify-content-between
+                            h4.card-title Chỉnh sửa môn học
+                            a.btn.btn-outline-warning.btn-icon-text(href='/subjects/list') 
+                                i.mdi.mdi-reload.btn-icon-prepend
+                                | Quay lại
+                        p.card-description Nhập thông tin bên dưới để chỉnh sửa 1 môn học
+                        form.mt-4(action=`/subjects/${subject._id}?_method=PUT`, method='POST')
+                            .form-group.row
+                                label.col-sm-3.col-form-label.font-weight-bold(for='name') Tên môn học
+                                .col-sm-9
+                                    input#name.form-control(type='text', placeholder='Nhập tên môn học', name='name', value=subject.name)
+                            .form-group.row
+                                label.col-sm-3.col-form-label.font-weight-bold(for='icon') Biểu tượng
+                                .col-sm-9
+                                    input#icon.form-control(type='text', placeholder='Nhập tên biểu tượng', name='icon', value=subject.icon)
+                            .form-group.row
+                                label.col-sm-3.col-form-label.font-weight-bold(for='grade') Khối
+                                .col-sm-9
+                                    select.form-control.h-75(id='grade', name='gradeID')
+                                        option.selected --Chọn khối--
+                                        option(value='12', selected= subject.gradeID == 12) 12
+                                        option(value='11', selected= subject.gradeID == 11) 11
+                                        option(value='10', selected= subject.gradeID == 10) 10
+                            a.btn.btn-light(href='/subjects/list') Hủy bỏ
+                            button.btn.btn-primary.ml-2(type='submit') Lưu lại
+    if  success.length > 0
+        - var msgSuccess = success 
+    script.
+        let msgToastSuccess = '#{msgSuccess}';
+        if(msgToastSuccess != ''){
+            Eggy({
+                title: 'Thành công',
+                message:  msgToastSuccess,
+                type: 'success',
+                duration: 5000,
+            });
+        }  
+    

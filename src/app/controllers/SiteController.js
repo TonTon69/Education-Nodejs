@@ -42,7 +42,7 @@ class SiteController {
     async infor(req, res, next) {
         try {
             const user = await User.findOne({ _id: req.signedCookies.userId });
-            res.render("infor", {
+            res.render("auth/infor", {
                 user,
                 success: req.flash("success"),
             });
@@ -81,8 +81,8 @@ class SiteController {
             return;
         }
 
-        // const matchPassword = await bcrypt.compare(password, user.password);
-        if (password != user.password) {
+        const matchPassword = await bcrypt.compare(password, user.password);
+        if (!matchPassword) {
             req.flash("error", "Mật khẩu của bạn không khớp!");
             res.render("login", {
                 values: req.body,
@@ -142,7 +142,6 @@ class SiteController {
     // [POST]/report
     async report(req, res) {
         const url = req.originalUrl;
-        console.log(url);
         const user = await User.findOne({ _id: req.signedCookies.userId });
         const report = new Report({
             userID: user.id,

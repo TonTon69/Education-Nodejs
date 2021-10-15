@@ -2,10 +2,19 @@ const express = require("express");
 const router = express.Router();
 
 const siteController = require("../app/controllers/SiteController");
+const authController = require("../app/controllers/AuthController");
 const {
     requireAuth,
     authValidate,
+    changePassValidate,
 } = require("../app/middlewares/AuthMiddleware");
+
+router.get("/password/change", authController.passwordChange);
+router.put(
+    "/password/change/:id",
+    changePassValidate,
+    authController.putPasswordChange
+);
 
 router.get("/password/reset", siteController.passwordReset);
 router.get("/admin", siteController.admin);

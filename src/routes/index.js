@@ -4,9 +4,11 @@ const learningRouter = require("./learning");
 const exerciseRouter = require("./exercise");
 const blogRouter = require("./blog");
 const inforRouter = require("./infor");
+const unitsRouter = require("./units");
 
 function route(app) {
     app.use("/", siteRouter);
+    app.use("/units", unitsRouter);
     app.use("/subjects", subjectsRouter);
     app.use("/learning", learningRouter);
     app.use("/exercise", exerciseRouter);
