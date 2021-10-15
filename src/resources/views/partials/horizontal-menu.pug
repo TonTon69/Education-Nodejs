@@ -2,76 +2,15 @@
     nav.navbar.top-navbar.col-lg-12.col-12.p-0
         .container-fluid
             .navbar-menu-wrapper.d-flex.align-items-center.justify-content-between
-                ul.navbar-nav.navbar-nav-left
+                ul.navbar-nav.navbar-nav-left(style="flex: 1 1")
                     li.nav-item.ml-0.mr-5.d-lg-flex.d-none
                         a.nav-link.horizontal-nav-left-menu(href='#')
                             i.mdi.mdi-format-list-bulleted
-                    li.nav-item.dropdown
-                        a#notificationDropdown.nav-link.count-indicator.dropdown-toggle.d-flex.align-items-center.justify-content-center(href='#', data-toggle='dropdown')
-                            i.mdi.mdi-bell.mx-0
-                            span.count.bg-success 2
-                        .dropdown-menu.dropdown-menu-right.navbar-dropdown.preview-list(aria-labelledby='notificationDropdown')
-                            p.mb-0.font-weight-normal.float-left.dropdown-header Notifications
-                            a.dropdown-item.preview-item
-                                .preview-thumbnail
-                                    .preview-icon.bg-success
-                                        i.mdi.mdi-information.mx-0
-                                .preview-item-content
-                                    h6.preview-subject.font-weight-normal Application Error
-                                    p.font-weight-light.small-text.mb-0.text-muted
-                                        | Just now
-                            a.dropdown-item.preview-item
-                                .preview-thumbnail
-                                    .preview-icon.bg-warning
-                                        i.mdi.mdi-settings.mx-0
-                                .preview-item-content
-                                    h6.preview-subject.font-weight-normal Settings
-                                    p.font-weight-light.small-text.mb-0.text-muted
-                                        | Private message
-                            a.dropdown-item.preview-item
-                                .preview-thumbnail
-                                    .preview-icon.bg-info
-                                        i.mdi.mdi-account-box.mx-0
-                                .preview-item-content
-                                    h6.preview-subject.font-weight-normal New user registration
-                                    p.font-weight-light.small-text.mb-0.text-muted
-                                        | 2 days ago
-                    li.nav-item.dropdown
-                        a#messageDropdown.nav-link.count-indicator.dropdown-toggle.d-flex.justify-content-center.align-items-center(href='#', data-toggle='dropdown')
-                            i.mdi.mdi-email.mx-0
-                            span.count.bg-primary 4
-                        .dropdown-menu.dropdown-menu-right.navbar-dropdown.preview-list(aria-labelledby='messageDropdown')
-                            p.mb-0.font-weight-normal.float-left.dropdown-header Messages
-                            a.dropdown-item.preview-item
-                                .preview-thumbnail
-                                    img.profile-pic(src='../admin/images/faces/face4.jpg', alt='image')
-                                .preview-item-content.flex-grow
-                                    h6.preview-subject.ellipsis.font-weight-normal
-                                        | David Grey
-                                    p.font-weight-light.small-text.text-muted.mb-0
-                                        | The meeting is cancelled
-                            a.dropdown-item.preview-item
-                                .preview-thumbnail
-                                    img.profile-pic(src='../admin/images/faces/face2.jpg', alt='image')
-                                .preview-item-content.flex-grow
-                                    h6.preview-subject.ellipsis.font-weight-normal
-                                        | Tim Cook
-                                    p.font-weight-light.small-text.text-muted.mb-0
-                                        | New product launch
-                            a.dropdown-item.preview-item
-                                .preview-thumbnail
-                                    img.profile-pic(src='../admin/images/faces/face3.jpg', alt='image')
-                                .preview-item-content.flex-grow
-                                    h6.preview-subject.ellipsis.font-weight-normal
-                                        | Johnson
-                                    p.font-weight-light.small-text.text-muted.mb-0
-                                        | Upcoming board meeting
-                    li.nav-item.dropdown
-                        a.nav-link.count-indicator(href='#')
-                            i.mdi.mdi-message-reply-text
-                .text-center.navbar-brand-wrapper.d-flex.align-items-center.justify-content-center
+                    li
+                        span.text-dark.font-weight-bold Trường THPT Phù Cát 3
+                .text-center.navbar-brand-wrapper.d-flex.align-items-center.justify-content-center(style="flex: 1 1")
                     a.navbar-brand.brand-logo(href='/admin', style='font-weight: bold; background: linear-gradient(315deg, #2a2a72 0%, #009ffd 74%);  -webkit-background-clip: text; -webkit-text-fill-color: transparent;') PC3 Admin
-                ul.navbar-nav.navbar-nav-right
+                ul.navbar-nav.navbar-nav-right.justify-content-end(style="flex: 1 1")
                     li.nav-item.nav-profile.dropdown
                         a#profileDropdown.nav-link.dropdown-toggle(href='#', data-toggle='dropdown')
                             span.nav-profile-name Johnson
@@ -105,43 +44,13 @@
                             li.nav-item
                                 a.nav-link(href='/subjects/create') Thêm mới
                 li.nav-item
-                    a.nav-link(href='pages/forms/basic_elements.html')
-                        i.mdi.mdi-chart-areaspline.menu-icon
-                        span.menu-title Form Elements
-                        i.menu-arrow
-                li.nav-item
-                    a.nav-link(href='pages/charts/chartjs.html')
-                        i.mdi.mdi-finance.menu-icon
-                        span.menu-title Charts
-                        i.menu-arrow
-                li.nav-item
-                    a.nav-link(href='pages/tables/basic-table.html')
-                        i.mdi.mdi-grid.menu-icon
-                        span.menu-title Tables
-                        i.menu-arrow
-                li.nav-item
-                    a.nav-link(href='pages/icons/mdi.html')
-                        i.mdi.mdi-emoticon.menu-icon
-                        span.menu-title Icons
-                        i.menu-arrow
-                li.nav-item
                     a.nav-link(href='#')
-                        i.mdi.mdi-codepen.menu-icon
-                        span.menu-title Sample Pages
+                        i.mdi.mdi-file-document-box-outline.menu-icon
+                        span.menu-title Quản lý chuyên đề
                         i.menu-arrow
                     .submenu
-                        ul.submenu-item
+                        ul
                             li.nav-item
-                                a.nav-link(href='pages/samples/login.html') Login
+                                a.nav-link(href='/units/list') Danh sách
                             li.nav-item
-                                a.nav-link(href='pages/samples/login-2.html') Login 2
-                            li.nav-item
-                                a.nav-link(href='pages/samples/register.html') Register
-                            li.nav-item
-                                a.nav-link(href='pages/samples/register-2.html') Register 2
-                            li.nav-item
-                                a.nav-link(href='pages/samples/lock-screen.html') Lockscreen
-                li.nav-item
-                    a.nav-link(href='docs/documentation.html')
-                        i.mdi.mdi-file-document-box-outline.menu-icon
-                        span.menu-title Documentation
+                                a.nav-link(href='/units/create') Thêm mới

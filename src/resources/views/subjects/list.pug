@@ -8,11 +8,11 @@ block content
                     .d-flex.align-items-center
                         .form-group.mb-0
                             .input-group
-                                input.form-control(type='text', placeholder="Tìm kiếm theo tên", name='search')
+                                input.form-control(type='text', placeholder="Nhập từ khóa", name='search')
                                 .input-group-append
                                     button.btn.btn-sm.btn-primary(type='submit') Tìm kiếm
                         .form-group.mb-0.ml-4
-                            select.form-control(name='gradeID').text-dark
+                            select.form-control(name='gradeID').text-dark.p-2
                                 option(value='').selected.disabled -- Tìm kiếm theo khối --
                                 option(value='12') Khối 12
                                 option(value='11') Khối 11
@@ -46,14 +46,15 @@ block content
                                             button.btn.btn-danger(data-toggle="modal" data-target="#deleteSubjectModal", data-id=subject._id) Xóa
                                 form(name="delete-subject-form", method="POST")
                                 #deleteSubjectModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteSubjectModalLabel', aria-hidden='true')
-                                    .modal-dialog(role='document')
+                                    .modal-dialog(role='document', style='transition: all 0.3s ease')
                                         .modal-content
                                             .modal-header
-                                                h5#deleteSubjectModalLabel.modal-title Xóa môn học
+                                                strong#deleteSubjectModalLabel.modal-title.font-weight-bold.text-danger.text-uppercase Xóa môn học
                                                 button.close(type='button', data-dismiss='modal', aria-label='Close')
                                                 span(aria-hidden='true') &times;
-                                            .modal-body
-                                                | Bạn có chắc chắn muốn xóa môn học này không???
+                                            .modal-body.text-dark
+                                                span.d-block.mb-2.mt-2 Hành động này không thể khôi phục!!!
+                                                span.d-block.mb-2 Bạn có chắc chắn muốn xóa môn học này không???
                                             .modal-footer
                                                 button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
                                                 button.btn.btn-danger#btn-delete-subject(type='button') Chắc chắn

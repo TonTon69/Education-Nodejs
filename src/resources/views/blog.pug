@@ -7,27 +7,28 @@ block main
                     .blog-heading
                         p.blog-heading-title
                             | PHÙ HỢP VỚI BẠN
-                    each blog in blogs
-                        a(href=`/blog/${blog.slug}`)
-                            .blog-list
-                                .blog-item
-                                    .blog-item-heading
-                                        .blog-item-left
-                                            img.blog-item-avatar(src=blog.User[0].avatar alt='')
-                                            p.blog-item-name
-                                                span= blog.User[0].fullname
-                                        .blog-item-right.fs-5
-                                            ion-icon.me-2(name='bookmark-outline')
-                                            ion-icon(name='ellipsis-horizontal')
-                                    .blog-item-content
-                                        .blog-item-content-left.pe-4
-                                            h5.blog-item-content-left-title
-                                                | #{blog.title}
-                                            p.blog-item-content-left-text
-                                                | #{blog.content}
-                                            p.blog-item-content-left-time= moment(blog.updatedAt).locale("vi").fromNow()
-                                        .blog-item-content-right
-                                            img(src=`${blog.image}` alt='')
+                    .blog-content
+                        each blog in blogs
+                            a(href=`/blog/${blog.slug}`)
+                                .blog-list
+                                    .blog-item
+                                        .blog-item-heading
+                                            .blog-item-left
+                                                img.blog-item-avatar(src=blog.User[0].avatar alt='')
+                                                p.blog-item-name
+                                                    span= blog.User[0].fullname
+                                            .blog-item-right.fs-5
+                                                ion-icon.me-2(name='bookmark-outline')
+                                                ion-icon(name='ellipsis-horizontal')
+                                        .blog-item-content
+                                            .blog-item-content-left.pe-4
+                                                h5.blog-item-content-left-title
+                                                    | #{blog.title}
+                                                p.blog-item-content-left-text
+                                                    | #{blog.content}
+                                                p.blog-item-content-left-time= moment(blog.updatedAt).locale("vi").fromNow()
+                                            .blog-item-content-right
+                                                img(src=`${blog.image}` alt='')
             .col-md-3.col-lg-3.col-xl-4
                 .topic-wrap
                     .topic-wrap-heading
@@ -36,4 +37,18 @@ block main
                         ul
                             each category in categories
                                 li #{category.category}
-
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            $('.toppic-wrap-content ul li').click(function() {
+                var option = $(this).text();
+                $.ajax({
+                    method: 'POST',
+                    url: '/blog/filter',
+                    contentType: 'application/json',
+                    data: JSON.stringify({option: option}),
+                    success: function (data) {
+                        $(".blog-content").replaceWith(data);
+                    }
+                });
+            });
+        });

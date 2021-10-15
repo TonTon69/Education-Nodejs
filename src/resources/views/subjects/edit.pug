@@ -6,22 +6,22 @@ block content
                 .card
                     .card-body
                         .d-flex.align-items-center.justify-content-between
-                            h4.card-title Thêm mới môn học
+                            h4.card-title Chỉnh sửa môn học
                             a.btn.btn-outline-warning.btn-icon-text(href='/subjects/list') 
                                 i.mdi.mdi-reload.btn-icon-prepend
                                 | Quay lại
-                        p.card-description Nhập thông tin bên dưới để thêm mới 1 môn học
+                        p.card-description Nhập thông tin bên dưới để chỉnh sửa 1 môn học
                         form.mt-4(action=`/subjects/${subject._id}?_method=PUT`, method='POST')
                             .form-group.row
-                                label.col-sm-3.col-form-label(for='name') Tên môn học
+                                label.col-sm-3.col-form-label.font-weight-bold(for='name') Tên môn học
                                 .col-sm-9
                                     input#name.form-control(type='text', placeholder='Nhập tên môn học', name='name', value=subject.name)
                             .form-group.row
-                                label.col-sm-3.col-form-label(for='icon') Biểu tượng
+                                label.col-sm-3.col-form-label.font-weight-bold(for='icon') Biểu tượng
                                 .col-sm-9
                                     input#icon.form-control(type='text', placeholder='Nhập tên biểu tượng', name='icon', value=subject.icon)
                             .form-group.row
-                                label.col-sm-3.col-form-label(for='grade') Khối
+                                label.col-sm-3.col-form-label.font-weight-bold(for='grade') Khối
                                 .col-sm-9
                                     select.form-control.h-75(id='grade', name='gradeID')
                                         option.selected --Chọn khối--

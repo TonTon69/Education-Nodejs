@@ -87,7 +87,7 @@ class SubjectController {
             let subjects = [];
             if (searchString) {
                 subjects = await Subject.find({
-                    $text: { $search: searchString },
+                    name: { $regex: searchString, $options: "$i" },
                 }).sort({ gradeID: -1 });
             } else if (option) {
                 subjects = await Subject.find({ gradeID: option });
