@@ -6,9 +6,16 @@ header.header
     .header__body
         .header__search
             ion-icon(name='search')
-            input(type='text', name='search', placeholder='Tìm kiếm')
-    //-     .header__actions--noti
-    //-         ion-icon(name='notifications')
+            input#search__all(type='text', name='search', placeholder='Tìm kiếm môn học, bài viết, ...', spellcheck='false', value='', autocomplete="off")
+            ion-icon(name='close')
+        .search__result
+            ul.tippy__wrapper.shadow
+                .search__result--list
+                    .search__result--header.d-flex.align-items-center
+                        div
+                            ion-icon(name="search")
+                        span.search__string.ms-1.fs-7
+                    .search__result--content
     .header__actions
         if user
             .header__actions--avatar
@@ -34,3 +41,47 @@ header.header
                         a.list__link(href='/logout') Đăng xuất
         else
             a.list__link.btn.btn-primary.btn-padding.fs-7(href='/login') Đăng nhập
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchAll = $("#search__all");
+            var iconClose = $("ion-icon[name=close]");
+            var searchResult = $(".search__result");
+
+            searchAll.keyup(function(e) {
+                iconClose.addClass("d-block");
+                searchResult.addClass("d-block");
+                var searchString = $(this).val();
+                $(".search__string").text(`Kết quả cho '${searchString}'`)
+
+                if ($(this).val() == "") {
+                    clearSearch();
+                }
+
+                $.ajax({
+                    method: 'POST',
+                    url: '/search',
+                    contentType: 'application/json',
+                    data: JSON.stringify({query: searchString}),
+                    success: function (data) {
+                        $(".search__result--content").replaceWith(data);
+                    }
+                });
+            });
+
+            iconClose.click(function (e) {
+                clearSearch();
+            })
+
+            $(document).click(function (e) {
+                // Nếu click bên ngoài đối tượng container thì ẩn nó đi
+                if (!searchResult.is(e.target) && searchResult.has(e.target).length === 0) {
+                    clearSearch();
+                }
+            });
+
+            function clearSearch() {
+                iconClose.removeClass("d-block");
+                searchResult.removeClass("d-block");
+                searchAll.val("");
+            }
+        });

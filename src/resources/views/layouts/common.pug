@@ -28,35 +28,7 @@ html
             main.main
                 block main
             include ../partials/footer
-        script(type='text/javascript').
-            var swiper1 = new Swiper(".swiper-container.swiper1", {
-                // Các Parameters
-                slidesPerView: 4,
-                spaceBetween: 30, //khoảng cách
-                // next, prev
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-                scrollbar: {
-                    el: ".swiper-scrollbar",
-                    draggable: true,
-                },
-            });
-            var swiper2 = new Swiper(".swiper-container.swiper2", {
-            // Các Parameters
-                slidesPerView: 4,
-                spaceBetween: 30, //khoảng cách
-                // next, prev
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-                scrollbar: {
-                    el: ".swiper-scrollbar",
-                    draggable: true,
-                },
-            });
+        
         script(src = "/vendor/jquery.stopwatch.js")
         script(type="text/javascript", src="/js/app.js")
 

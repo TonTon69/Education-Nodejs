@@ -165,6 +165,9 @@ class SiteController {
     admin(req, res) {
         res.render("admin-index");
     }
+
+    // [POST]/search
+    search(req, res) {}
 }
 
 module.exports = new SiteController();

@@ -130,6 +130,7 @@ body {
       margin: 0 0 0 16px;
       color: #333; }
   .header__body {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -143,10 +144,14 @@ body {
     border-radius: 20px;
     padding: 0 16px; }
     .header__search:focus-within {
-      border-color: #f05123; }
+      border-color: #113685; }
     .header__search ion-icon {
-      width: 1em;
       color: #a8b2b8; }
+    .header__search ion-icon[name="close"] {
+      cursor: pointer;
+      display: none; }
+      .header__search ion-icon[name="close"]:hover {
+        color: #757575; }
     .header__search input {
       font-size: 14px;
       outline: none;
@@ -154,6 +159,63 @@ body {
       padding: 0 10px;
       flex: 1 1;
       height: 100%; }
+  .header .search__result {
+    z-index: 9999;
+    position: absolute;
+    inset: 0px auto auto auto;
+    margin: 0px;
+    transform: translateY(63px);
+    display: none; }
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(-20px);
+    transform: translateY(-20px); }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0); } }
+    .header .search__result .tippy__wrapper {
+      background: #fff;
+      transition: all 0.3s ease-in-out;
+      animation: fadeIn 0.3s ease;
+      border-radius: 10px;
+      padding-left: 0;
+      margin: 0;
+      overflow: hidden;
+      color: #1d2129; }
+    .header .search__result--list {
+      width: 420px;
+      color: #0000008a;
+      min-width: 230px;
+      padding: 20px 24px;
+      min-height: 50px;
+      max-height: calc(90vh - 66px);
+      overflow-y: auto;
+      scroll-snap-type: y mandatory; }
+      .header .search__result--list::-webkit-scrollbar {
+        width: 8px; }
+      .header .search__result--list::-webkit-scrollbar-thumb {
+        background: #b4bcc3;
+        border-radius: 20px;
+        border: 3px solid #b4bcc3;
+        opacity: 0;
+        visibility: hidden; }
+      .header .search__result--list:hover::-webkit-scrollbar-thumb {
+        opacity: 1;
+        visibility: visible; }
+    .header .search__result--heading .see-more {
+      color: #0000008a; }
+    .header .search__result--item {
+      padding: 6px 0; }
+      .header .search__result--item span {
+        line-height: 1.5;
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden; }
   .header__actions {
     display: flex;
     align-items: center;

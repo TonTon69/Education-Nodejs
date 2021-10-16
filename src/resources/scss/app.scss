@@ -184,6 +184,7 @@ body {
     }
 
     &__body {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -200,12 +201,20 @@ body {
         padding: 0 16px;
 
         &:focus-within {
-            border-color: #f05123;
+            border-color: #113685;
         }
 
         ion-icon {
-            width: 1em;
             color: #a8b2b8;
+        }
+
+        ion-icon[name="close"] {
+            cursor: pointer;
+            display: none;
+
+            &:hover {
+                color: #757575;
+            }
         }
 
         input {
@@ -215,6 +224,87 @@ body {
             padding: 0 10px;
             flex: 1 1;
             height: 100%;
+        }
+    }
+
+    .search__result {
+        z-index: 9999;
+        position: absolute;
+        inset: 0px auto auto auto;
+        margin: 0px;
+        transform: translateY(63px);
+        display: none;
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                -webkit-transform: translateY(-20px);
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                -webkit-transform: translateY(0);
+                transform: translateY(0);
+            }
+        }
+
+        .tippy__wrapper {
+            background: $white-color;
+            transition: all 0.3s ease-in-out;
+            animation: fadeIn 0.3s ease;
+            border-radius: 10px;
+            padding-left: 0;
+            margin: 0;
+            overflow: hidden;
+            color: #1d2129;
+        }
+
+        &--list {
+            width: 420px;
+            color: #0000008a;
+            min-width: 230px;
+            padding: 20px 24px;
+            min-height: 50px;
+            max-height: calc(90vh - 66px);
+
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+
+            &::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: rgb(180, 188, 195);
+                border-radius: 20px;
+                border: 3px solid rgb(180, 188, 195);
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            &:hover::-webkit-scrollbar-thumb {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        &--heading {
+            .see-more {
+                color: #0000008a;
+            }
+        }
+
+        &--item {
+            padding: 6px 0;
+
+            span {
+                line-height: 1.5;
+                display: -webkit-box;
+                text-overflow: ellipsis;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
         }
     }
 
