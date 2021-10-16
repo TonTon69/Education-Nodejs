@@ -35,11 +35,6 @@ class ExerciseController {
 
                 const results = await Result.aggregate([
                     {
-                        $match: {
-                            lessionID: ObjectId(lession.id),
-                        },
-                    },
-                    {
                         $lookup: {
                             from: "users",
                             localField: "userID",
@@ -47,6 +42,23 @@ class ExerciseController {
                             as: "User",
                         },
                     },
+                    {
+                        $lookup: {
+                            from: "exercises",
+                            localField: "exerciseID",
+                            foreignField: "_id",
+                            as: "exercises",
+                        },
+                    },
+                    {
+                        $unwind: "$exercises",
+                    },
+                    {
+                        $match: {
+                            "exercises.lessionID": ObjectId(lession.id),
+                        },
+                    },
+
                     { $sort: { score: -1, time: 1 } },
                     {
                         $limit: 10,
