@@ -15,11 +15,10 @@ class AuthController {
         const user = await User.findOne({ _id: req.signedCookies.userId });
         const { passwordOld, passwordNew } = req.body;
 
-        const salt = await bcrypt.genSalt(12);
-        const passwordOldHash = await bcrypt.hash(passwordOld, salt);
-        const passwordNewHash = await bcrypt.hash(passwordNew, salt);
+        const matchPassword = await bcrypt.compare(passwordOld, user.password);
+        const passwordNewHash = await bcrypt.hash(passwordNew, 10);
 
-        if (passwordOldHash !== user.password) {
+        if (!matchPassword) {
             req.flash("error", "Mật khẩu cũ không chính xác!");
             res.render("auth/password-change", {
                 errors: req.flash("error"),

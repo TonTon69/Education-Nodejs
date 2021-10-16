@@ -65,6 +65,7 @@ module.exports = {
             );
             res.render("auth/password-change", {
                 errors: req.flash("error"),
+                values: req.body,
             });
             return;
         }
@@ -72,6 +73,7 @@ module.exports = {
             req.flash("error", "Vui lòng nhập mật khẩu cũ!");
             res.render("auth/password-change", {
                 errors: req.flash("error"),
+                values: req.body,
             });
             return;
         }
@@ -79,6 +81,7 @@ module.exports = {
             req.flash("error", "Vui lòng nhập mật khẩu mới!");
             res.render("auth/password-change", {
                 errors: req.flash("error"),
+                values: req.body,
             });
             return;
         }
@@ -86,6 +89,7 @@ module.exports = {
             req.flash("error", "Vui lòng nhập lại mật khẩu mới để xác nhận!");
             res.render("auth/password-change", {
                 errors: req.flash("error"),
+                values: req.body,
             });
             return;
         }
