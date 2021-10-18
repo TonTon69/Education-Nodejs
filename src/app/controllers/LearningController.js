@@ -25,12 +25,48 @@ class LearningController {
                     unitID: { $in: unitIdArray },
                 });
 
+                const results = await Result.aggregate([
+                    {
+                        $match: {
+                            userID: ObjectId(req.signedCookies.userId),
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "exercises",
+                            localField: "exerciseID",
+                            foreignField: "_id",
+                            as: "exercises",
+                        },
+                    },
+                    {
+                        $unwind: "$exercises",
+                    },
+                    {
+                        $match: {
+                            "exercises.lessionID": ObjectId(lession.id),
+                        },
+                    },
+                ]);
+
+                var totalAnswerTrue = 0;
+                var totalAnswerFalse = 0;
+                results.forEach(async function (result) {
+                    if (result.option === result.exercises.answer) {
+                        totalAnswerTrue++;
+                    }
+                });
+                totalAnswerFalse = results.length - totalAnswerTrue;
+
                 res.render("learning/learning", {
                     lession,
                     theory,
                     subject,
                     units,
                     lessions,
+                    results,
+                    totalAnswerTrue,
+                    totalAnswerFalse,
                 });
             } else {
                 res.render("error");
@@ -51,7 +87,6 @@ class LearningController {
                             userID: ObjectId(req.signedCookies.userId),
                         },
                     },
-
                     {
                         $lookup: {
                             from: "users",
@@ -112,7 +147,7 @@ class LearningController {
 
                     res.render("learning/result-detail", {
                         results,
-                        totalScore,
+                        totalScore: Math.ceil(totalScore),
                         totalAnswerTrue,
                         time,
                         subject,

@@ -1,49 +1,50 @@
 extends ../layouts/common
 block main
-    h4.infor__title.mb-4.fw-bold Thông tin cá nhân
-    .section__infor.shadow
-        .row
-            .col-sm-4
-                .Boxchange__avatar.mt-5
-                    .change__avatar
-                        img.avatar__profile.w-100(src=user.avatar, alt='')
-            .col-sm-8
-                .box__infor    
-                    form(action=`/infor/${user.id}?_method=PUT`, method="POST")
-                        div
-                            p(style='margin-bottom: 1.2rem')
-                                label Tên tài khoản:
-                                span @#{user.username}
-                            p
-                                label Họ tên 
-                                    span.text-danger (*):
-                                input.infor__input(maxlength='30', type='text', name='fullname', placeholder='Nhập họ và tên', value=user.fullname, required)
-                        div
-                            p
-                                label Số điện thoại 
-                                    span.text-danger (*):
-                                input.infor__input(maxlength='10', type='text', name='phone', placeholder='Nhập số điện thoại', value=user.phone, required)
-                        div
-                            p
-                                label Ngày sinh 
-                                    span.text-danger (*):
-                                input#birthday.infor__input(type='date', value=moment(user.birthDay).format("YYYY-MM-DD"), name='birthDay', required)
-                        div
-                            p
-                                label Địa chỉ 
-                                    span.text-danger (*):
-                                input#address.infor__input(type='text', placeholder='Nhập địa chỉ hiện tại', value=user.address, name='address', required)
-                        div
-                            p(style='margin: 1.4rem 0 1.8rem 0')
-                                label Email:
-                                span= user.email
-                            p
-                                | Hãy nhập chính xác 
-                                span(style='color: red') số điện thoại của bạn hoặc người thân 
-                                | để được thầy cô hỗ trợ nhanh chóng!
-                        p.box__update
-                            button.btn__update(type='submit')
-                                | Cập nhật
+    .container
+        h4.infor__title.mb-4.fw-bold Thông tin cá nhân
+        .section__infor.shadow
+            .row
+                .col-sm-4
+                    .Boxchange__avatar.mt-5
+                        .change__avatar
+                            img.avatar__profile.w-100(src=user.avatar, alt='')
+                .col-sm-8
+                    .box__infor    
+                        form(action=`/infor/${user.id}?_method=PUT`, method="POST")
+                            div
+                                p(style='margin-bottom: 1.2rem')
+                                    label Tên tài khoản:
+                                    span @#{user.username}
+                                p
+                                    label Họ tên 
+                                        span.text-danger (*):
+                                    input.infor__input(maxlength='30', type='text', name='fullname', placeholder='Nhập họ và tên', value=user.fullname, required)
+                            div
+                                p
+                                    label Số điện thoại 
+                                        span.text-danger (*):
+                                    input.infor__input(maxlength='10', type='text', name='phone', placeholder='Nhập số điện thoại', value=user.phone, required)
+                            div
+                                p
+                                    label Ngày sinh 
+                                        span.text-danger (*):
+                                    input#birthday.infor__input(type='date', value=moment(user.birthDay).format("YYYY-MM-DD"), name='birthDay', required)
+                            div
+                                p
+                                    label Địa chỉ 
+                                        span.text-danger (*):
+                                    input#address.infor__input(type='text', placeholder='Nhập địa chỉ hiện tại', value=user.address, name='address', required)
+                            div
+                                p(style='margin: 1.4rem 0 1.8rem 0')
+                                    label Email:
+                                    span= user.email
+                                p
+                                    | Hãy nhập chính xác 
+                                    span(style='color: red') số điện thoại của bạn hoặc người thân 
+                                    | để được thầy cô hỗ trợ nhanh chóng!
+                            p.box__update
+                                button.btn__update(type='submit')
+                                    | Cập nhật
     if  success.length > 0
         - var msgSuccess = success 
     script.

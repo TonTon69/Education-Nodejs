@@ -33,6 +33,39 @@ class ExerciseController {
                     },
                 ]);
 
+                // làm lại tất cả
+                const resultsUser = await Result.aggregate([
+                    {
+                        $match: {
+                            userID: ObjectId(req.signedCookies.userId),
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "exercises",
+                            localField: "exerciseID",
+                            foreignField: "_id",
+                            as: "exercises",
+                        },
+                    },
+                    {
+                        $unwind: "$exercises",
+                    },
+                    {
+                        $match: {
+                            "exercises.lessionID": ObjectId(lession.id),
+                        },
+                    },
+                ]);
+
+                const resultsUserIdArray = resultsUser.map(({ _id }) => _id);
+                if (resultsUser.length > 0) {
+                    await Result.deleteMany({
+                        _id: { $in: resultsUserIdArray },
+                    });
+                }
+
+                // bảng xếp hạng
                 const results = await Result.aggregate([
                     {
                         $lookup: {

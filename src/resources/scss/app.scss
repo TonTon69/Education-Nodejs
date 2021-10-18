@@ -952,6 +952,24 @@ body {
             padding: 20px;
             border-radius: 8px;
 
+            #exerciseModal {
+                .modal-dialog {
+                    max-width: 600px;
+
+                    .results {
+                        .border {
+                            border-width: 10px !important;
+                            width: 132px;
+                            height: 132px;
+
+                            span {
+                                display: block;
+                            }
+                        }
+                    }
+                }
+            }
+
             .title {
                 font-weight: 600;
             }

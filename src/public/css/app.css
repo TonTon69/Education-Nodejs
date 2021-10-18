@@ -748,6 +748,14 @@ body {
       background: #fff;
       padding: 20px;
       border-radius: 8px; }
+      .main .learning__content #exerciseModal .modal-dialog {
+        max-width: 600px; }
+        .main .learning__content #exerciseModal .modal-dialog .results .border {
+          border-width: 10px !important;
+          width: 132px;
+          height: 132px; }
+          .main .learning__content #exerciseModal .modal-dialog .results .border span {
+            display: block; }
       .main .learning__content .title {
         font-weight: 600; }
       .main .learning__content .report {
