@@ -81,6 +81,9 @@ class LearningController {
         try {
             const lession = await Lession.findOne({ slug: req.query.name });
             if (lession) {
+                const exercises = await Exercise.find({
+                    lessionID: lession._id,
+                });
                 const results = await Result.aggregate([
                     {
                         $match: {
@@ -135,7 +138,7 @@ class LearningController {
 
                     var totalScore = 0;
                     var totalAnswerTrue = 0;
-                    var score = 100 / results.length;
+                    var score = 100 / exercises.length;
                     var time = results[results.length - 1].time;
 
                     results.forEach(async function (result) {
@@ -152,6 +155,7 @@ class LearningController {
                         time,
                         subject,
                         nextLession,
+                        exercises,
                     });
                 } else {
                     res.render("error");

@@ -21,7 +21,7 @@ block main
                                     th.pt-3.pb-3(scope='row')= count
                                     td.pt-3.pb-3= lession.unit.subject[0].name  + ' ' + lession.unit.subject[0].gradeID
                                     td.pt-3.pb-3= lession.unit.name
-                                    td.pt-3.pb-3= lession.name
+                                    td.pt-3.pb-3 Bài #{lession.lessionNumber}. #{lession.name}
                                     td.pt-3.pb-3
                                         a.text-primary(href=`/learning/result?name=${lession.slug}`) Xem chi tiết
                         else

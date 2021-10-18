@@ -141,7 +141,6 @@ class SiteController {
 
     // [POST]/report
     async report(req, res) {
-        const url = req.originalUrl;
         const user = await User.findOne({ _id: req.signedCookies.userId });
         const report = new Report({
             userID: user.id,
@@ -150,7 +149,7 @@ class SiteController {
         });
         await report.save();
         req.flash("success", "Bạn đã báo cáo thành công. Cảm ơn!");
-        res.redirect(`${url}`);
+        res.redirect("back");
     }
 
     // [GET]/password/reset

@@ -333,10 +333,33 @@ body {
     height: 178px;
     background-color: #fff;
     border-radius: 50%;
+    border: 10px solid rgba(0, 0, 0, 0.1);
     margin: auto;
-    overflow: hidden;
     position: relative;
     cursor: pointer; }
+    .main .Boxchange__avatar .change__avatar img {
+      border-radius: inherit;
+      object-fit: cover; }
+      .main .Boxchange__avatar .change__avatar img:hover {
+        opacity: 0.9; }
+    .main .Boxchange__avatar .change__avatar .avatar__upload {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      background: #3a3b3c;
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      bottom: 20px;
+      right: 20px;
+      transform: translate(50%, 50%); }
+      .main .Boxchange__avatar .change__avatar .avatar__upload:hover {
+        opacity: 0.9; }
+      .main .Boxchange__avatar .change__avatar .avatar__upload ion-icon {
+        color: #fff;
+        font-size: 22px; }
   .main .infor__title {
     margin-left: 40px;
     margin-top: 15px;
@@ -750,6 +773,8 @@ body {
       border-radius: 8px; }
       .main .learning__content #exerciseModal .modal-dialog {
         max-width: 600px; }
+        .main .learning__content #exerciseModal .modal-dialog .btn-close {
+          box-shadow: unset; }
         .main .learning__content #exerciseModal .modal-dialog .results .border {
           border-width: 10px !important;
           width: 132px;

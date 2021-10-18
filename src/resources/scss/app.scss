@@ -956,6 +956,10 @@ body {
                 .modal-dialog {
                     max-width: 600px;
 
+                    .btn-close {
+                        box-shadow: unset;
+                    }
+
                     .results {
                         .border {
                             border-width: 10px !important;

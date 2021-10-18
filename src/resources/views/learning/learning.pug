@@ -8,9 +8,8 @@ block main
                         .col-sm-9
                             h4.title.mb-0= lession.name
                         .col-sm-3.text-end
-                            if theory
-                                a.btn.btn-exercise.btn-padding.rounded-pill.fs-7(type="button" data-bs-toggle="modal" data-bs-target="#exerciseModal")
-                                    span.ms-1 Bài tập vận dụng
+                            a.btn.btn-exercise.btn-padding.rounded-pill.fs-7(type="button" data-bs-toggle="modal" data-bs-target="#exerciseModal")
+                                span.ms-1 Bài tập vận dụng
                     #exerciseModal.modal.fade(tabindex='-1', aria-labelledby='exerciseModalLabel', aria-hidden='true')
                         .modal-dialog(style= "transition: all 0.3s ease")
                             .modal-content
@@ -33,10 +32,10 @@ block main
                                                     span.fs-1.fw-bold= results.length
                                                     span.fs-7.mt-2 Đã làm
                                     .description
-                                        p Làm xong biết đáp án, phương pháp giải chi tiết.
-                                        p Học sinh có thể hỏi và trao đổi nếu không hiểu.
-                                        p Xem lại lý thuyết.
-                                        p Biết điểm yếu và có hướng giải pháp cải thiện.
+                                        p 1. Làm xong biết đáp án, phương pháp giải chi tiết.
+                                        p 2. Học sinh có thể hỏi và trao đổi nếu không hiểu.
+                                        p 3. Xem lại lý thuyết.
+                                        p 4. Biết điểm yếu và có hướng giải pháp cải thiện.
                                 .modal-footer
                                     button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Hủy bỏ
                                     if results.length > 0
@@ -49,9 +48,8 @@ block main
                     else
                         .mt-4.mb-4 Nội dung bài học đang cập nhật. Vui lòng thử lại sau!
                     .text-center.mt-4.mb-4
-                        if theory
-                            a.btn.btn-exercise.rounded-pill(type="button" data-bs-toggle="modal" data-bs-target="#exerciseModal")
-                                | Luyện bài tập vận dụng tại đây
+                        a.btn.btn-exercise.rounded-pill(type="button" data-bs-toggle="modal" data-bs-target="#exerciseModal")
+                            | Luyện bài tập vận dụng tại đây
                     hr
                     .report
                         button.report__btn(type='button', data-bs-toggle='modal', data-bs-target='#reportModal')
@@ -67,7 +65,7 @@ block main
                                         .modal-body
                                             .mb-3
                                                 label.col-form-label(for='message-text')
-                                                    | V&#x1EA5;n &dstrok;&#x1EC1; b&#x1EA1;n g&#x1EB7;p ph&#x1EA3;i l&agrave; g&igrave;?
+                                                    | Vấn đề bạn gặp phải là gì?
                                                 .form-check.d-flex.align-items-center.mt-1.mb-1
                                                     input#flexRadioReport1.form-check-input.mt-0.me-2(type='radio', name='content', value='Sai nội dung')
                                                     label.form-check-label(for='flexRadioReport1')

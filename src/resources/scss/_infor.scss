@@ -10,10 +10,43 @@
         height: 178px;
         background-color: #fff;
         border-radius: 50%;
+        border: 10px solid rgba(0, 0, 0, 0.1);
         margin: auto;
-        overflow: hidden;
         position: relative;
         cursor: pointer;
+
+        img {
+            border-radius: inherit;
+            object-fit: cover;
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+
+        .avatar__upload {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            background: #3a3b3c;
+            color: $white-color;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            bottom: 20px;
+            right: 20px;
+            transform: translate(50%, 50%);
+
+            &:hover {
+                opacity: 0.9;
+            }
+
+            ion-icon {
+                color: $white-color;
+                font-size: 22px;
+            }
+        }
     }
 }
 
