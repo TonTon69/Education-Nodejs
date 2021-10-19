@@ -33,8 +33,6 @@ class InforController {
                     res.redirect("back");
                 }
             });
-        } else {
-            console.log(123);
         }
     }
 }

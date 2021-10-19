@@ -22,22 +22,22 @@ block main
                                 p
                                     label Họ tên 
                                         span.text-danger (*):
-                                    input.infor__input(maxlength='30', type='text', name='fullname', placeholder='Nhập họ và tên', value=user.fullname, required)
+                                    input.infor__input(maxlength='30', type='text', name='fullname', placeholder='Nhập họ và tên', value=user.fullname, required, autocomplete="off")
                             div
                                 p
                                     label Số điện thoại 
                                         span.text-danger (*):
-                                    input.infor__input(maxlength='10', type='text', name='phone', placeholder='Nhập số điện thoại', value=user.phone, required)
+                                    input.infor__input(maxlength='10', type='text', name='phone', placeholder='Nhập số điện thoại', value=user.phone, required, autocomplete="off")
                             div
                                 p
                                     label Ngày sinh 
                                         span.text-danger (*):
-                                    input#birthday.infor__input(type='date', value=moment(user.birthDay).format("YYYY-MM-DD"), name='birthDay', required)
+                                    input#birthday.infor__input(type='date', value=moment(user.birthDay).format("YYYY-MM-DD"), name='birthDay', required, autocomplete="off")
                             div
                                 p
                                     label Địa chỉ 
                                         span.text-danger (*):
-                                    input#address.infor__input(type='text', placeholder='Nhập địa chỉ hiện tại', value=user.address, name='address', required)
+                                    input#address.infor__input(type='text', placeholder='Nhập địa chỉ hiện tại', value=user.address, name='address', required, autocomplete="off")
                             div
                                 p(style='margin: 1.4rem 0 1.8rem 0')
                                     label Email:

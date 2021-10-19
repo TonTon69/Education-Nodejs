@@ -58,6 +58,10 @@ class LearningController {
                 });
                 totalAnswerFalse = results.length - totalAnswerTrue;
 
+                const exercises = await Exercise.find({
+                    lessionID: lession._id,
+                });
+
                 res.render("learning/learning", {
                     lession,
                     theory,
@@ -67,6 +71,7 @@ class LearningController {
                     results,
                     totalAnswerTrue,
                     totalAnswerFalse,
+                    exercises,
                 });
             } else {
                 res.render("error");

@@ -152,14 +152,6 @@ class SiteController {
         res.redirect("back");
     }
 
-    // [GET]/password/reset
-    passwordReset(req, res) {
-        res.render("password-reset", {
-            errors: req.flash("error"),
-            success: req.flash("success"),
-        });
-    }
-
     // [GET]/admin
     admin(req, res) {
         res.render("admin-index");
