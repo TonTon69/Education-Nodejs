@@ -25,7 +25,10 @@ class InforController {
                 if (err) {
                     console.log(err);
                 } else {
-                    await User.updateOne({ _id: user.id }, result.url);
+                    await User.updateOne(
+                        { _id: user.id },
+                        { avatar: result.url }
+                    );
                     req.flash("success", "Cập nhật ảnh đại diện thành công!");
                     res.redirect("back");
                 }
