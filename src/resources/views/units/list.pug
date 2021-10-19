@@ -8,15 +8,15 @@ block content
                     .d-flex.align-items-center
                         .form-group.mb-0
                             .input-group
-                                input.form-control(type='text', placeholder="Nhập từ khóa", name='search')
+                                input.form-control(type='text', placeholder="Nhập từ khóa", name='search', autocomplete="off")
                                 .input-group-append
                                     button.btn.btn-sm.btn-primary(type='submit') Tìm kiếm
                         .form-group.mb-0.ml-4
-                            select.form-control(name='gradeID').text-dark.p-2
-                                option(value='').selected.disabled -- Tìm kiếm theo khối --
-                                option(value='12') Khối 12
-                                option(value='11') Khối 11
-                                option(value='10') Khối 10
+                            select.form-control(name='subjectID').text-dark.p-2
+                                option(value='').selected.disabled -- Tìm kiếm theo môn học --
+                                each subject in subjects
+                                    option(value=subject._id)= subject.name + " " + subject.gradeID
+                               
                         a.btn.btn-outline-success.btn-icon-text.ml-auto(href='/units/create') 
                             i.mdi.mdi-upload.btn-icon-prepend
                             | Thêm mới
@@ -39,7 +39,7 @@ block content
                                         td= unit.subject[0].name
                                         td= unit.subject[0].gradeID
                                         td.text-center(style='width: 15%')
-                                            a.btn.btn-secondary.mr-2(href=`/units/${unit.id}/edit`) Sửa
+                                            a.btn.btn-secondary.mr-2(href=`/units/${unit._id}/edit`) Sửa
                                             button.btn.btn-danger(data-toggle="modal" data-target="#deleteUnitModal", data-id=unit._id) Xóa
                                 form(name="delete-unit-form", method="POST")
                                 #deleteUnitModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteUnitModalLabel', aria-hidden='true')
@@ -65,7 +65,7 @@ block content
                                             span.sr-only Previous
                                 else
                                     li.page-item
-                                        a.page-link(href=`/subjects/list`, aria-label='Previous')
+                                        a.page-link(href=`/units/list`, aria-label='Previous')
                                             span(aria-hidden='true') &laquo;
                                             span.sr-only Previous
                                 - var i = (Number(current) > 3 ? Number(current) - 2 : 1);
@@ -75,10 +75,10 @@ block content
                                 - for(; i <= (Number(current) + 2) && i <= pages; i++)
                                     if i == current
                                         li.page-item.active
-                                            a.page-link(href=`/subjects/list/${i}`)= i
+                                            a.page-link(href=`/units/list/${i}`)= i
                                     else
                                         li.page-item
-                                            a.page-link(href=`/subjects/list/${i}`)= i
+                                            a.page-link(href=`/units/list/${i}`)= i
                                     if i == Number(current) + 2 && i < pages
                                         li.page-item.disabled
                                             a.page-link(href='#') ...
@@ -89,7 +89,7 @@ block content
                                             span.sr-only Next
                                 else
                                     li.page-item
-                                        a.page-link(href=`/subjects/list/${pages}`, aria-label='Next')
+                                        a.page-link(href=`/units/list/${pages}`, aria-label='Next')
                                             span(aria-hidden='true') &raquo;
                                             span.sr-only Next
                     
@@ -100,9 +100,9 @@ block content
     script.
         document.addEventListener('DOMContentLoaded', function() {
             var deleteUnitModal = $("#deleteUnitModal");
-            var subjectId;
-            var deleteSubjectForm = $('form[name="delete-subject-form"]');
-            var btnDeleteSubject = $("#btn-delete-unit");
+            var unitId;
+            var deleteUnitForm = $('form[name="delete-unit-form"]');
+            var btnDeleteUnit = $("#btn-delete-unit");
             
             let msgToastSuccess = '#{msgSuccess}';
             if(msgToastSuccess != '') {
@@ -126,30 +126,30 @@ block content
 
             deleteUnitModal.on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
-                subjectId = button.data('id');
+                unitId = button.data('id');
             });
 
              //When delete subject btn clicked
-            btnDeleteSubject.click(function () {
-                deleteSubjectForm.attr("action", "/subjects/" + subjectId + "?_method=DELETE");
-                deleteSubjectForm.submit();
+            btnDeleteUnit.click(function () {
+                deleteUnitForm.attr("action", "/units/" + unitId + "?_method=DELETE");
+                deleteUnitForm.submit();
             });
 
             //Search
             $('.input-group-append button').click(function (e) {
                 e.preventDefault();
-                showSubjects();
+                showUnits();
             });
 
             $('input[name=search]').keyup(function(e) {
-                showSubjects();
+                showUnits();
             });
 
-            function showSubjects() {
+            function showUnits() {
                 var searchString = $('input[name=search]').val();
                 $.ajax({
                     method: 'POST',
-                    url: '/subjects/list',
+                    url: '/units/list',
                     contentType: 'application/json',
                     data: JSON.stringify({query: searchString}),
                     success: function (data) {
@@ -158,12 +158,12 @@ block content
                 });
             };
 
-            $("select[name=gradeID]").change(function (e) {
+            $("select[name=subjectID]").change(function (e) {
                 e.preventDefault();
                 var option = $(this).val();
                 $.ajax({
                     method: 'POST',
-                    url: '/subjects/list',
+                    url: '/units/list',
                     contentType: 'application/json',
                     data: JSON.stringify({option: option}),
                     success: function (data) {

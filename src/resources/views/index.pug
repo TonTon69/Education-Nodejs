@@ -7,10 +7,9 @@ block main
                     .carousel-indicators
                         button.active(type='button', data-bs-target='#carouselBannerCaptions', data-bs-slide-to='0', aria-current='true', aria-label='Slide 1')
                         button(type='button', data-bs-target='#carouselBannerCaptions', data-bs-slide-to='1', aria-label='Slide 2')
-                        button(type='button', data-bs-target='#carouselBannerCaptions', data-bs-slide-to='2', aria-label='Slide 3')
                     .carousel-inner
                         each banner in banners
-                            .carousel-item.active
+                            .carousel-item
                                 .carousel-caption.d-none.d-md-block.text-start
                                     h2.fw-bold= banner.title
                                     p.fs-6= banner.description
@@ -130,27 +129,31 @@ block main
                         .swiper-button-next
                         .swiper-scrollbar
     script(type='text/javascript').
-        var swiper1 = new Swiper(".swiper-container.swiper1", {
-            slidesPerView: 4,
-            spaceBetween: 30,
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            scrollbar: {
-                el: ".swiper-scrollbar",
-                draggable: true,
-            },
-        });
-        var swiper2 = new Swiper(".swiper-container.swiper2", {
-            slidesPerView: 4,
-            spaceBetween: 30,
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            scrollbar: {
-                el: ".swiper-scrollbar",
-                draggable: true,
-            },
-        });
+        document.addEventListener('DOMContentLoaded', function() {
+            $(".carousel-item").first().addClass("active");
+
+            var swiper1 = new Swiper(".swiper-container.swiper1", {
+                slidesPerView: 4,
+                spaceBetween: 30,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                scrollbar: {
+                    el: ".swiper-scrollbar",
+                    draggable: true,
+                },
+            });
+            var swiper2 = new Swiper(".swiper-container.swiper2", {
+                slidesPerView: 4,
+                spaceBetween: 30,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                scrollbar: {
+                    el: ".swiper-scrollbar",
+                    draggable: true,
+                },
+            });
+        })

@@ -1,37 +1,32 @@
 extends ../layouts/admin
 block content
-    section.subject__edit
+    section.unit__edit
         .row
             .col-md-6.grid-margin.stretch-card.mx-auto
                 .card
                     .card-body
                         .d-flex.align-items-center.justify-content-between
-                            h4.card-title Chỉnh sửa môn học
-                            a.btn.btn-outline-warning.btn-icon-text(href='/subjects/list') 
+                            h4.card-title Chỉnh sửa chuyên đề
+                            a.btn.btn-outline-warning.btn-icon-text(href='/units/list') 
                                 i.mdi.mdi-reload.btn-icon-prepend
                                 | Quay lại
-                        p.card-description Nhập thông tin bên dưới để chỉnh sửa 1 môn học
-                        form.mt-4(action=`/subjects/${subject._id}?_method=PUT`, method='POST')
+                        p.card-description Nhập thông tin bên dưới để chỉnh sửa 1 chuyên đề
+                        form.mt-4(action=`/units/${unit._id}?_method=PUT`, method='POST')
                             .form-group.row
-                                label.col-sm-3.col-form-label.font-weight-bold(for='name') Tên môn học
+                                label.col-sm-3.col-form-label.font-weight-bold(for='name') Tên chuyên đề
                                 .col-sm-9
-                                    input#name.form-control(type='text', placeholder='Nhập tên môn học', name='name', value=subject.name)
+                                    input#name.form-control(type='text', placeholder='Nhập tên chuyên đề', name='name', required, value=unit.name)
                             .form-group.row
-                                label.col-sm-3.col-form-label.font-weight-bold(for='icon') Biểu tượng
+                                label.col-sm-3.col-form-label.font-weight-bold(for='subject') Môn học
                                 .col-sm-9
-                                    input#icon.form-control(type='text', placeholder='Nhập tên biểu tượng', name='icon', value=subject.icon)
-                            .form-group.row
-                                label.col-sm-3.col-form-label.font-weight-bold(for='grade') Khối
-                                .col-sm-9
-                                    select.form-control.h-75(id='grade', name='gradeID')
-                                        option.selected --Chọn khối--
-                                        option(value='12', selected= subject.gradeID == 12) 12
-                                        option(value='11', selected= subject.gradeID == 11) 11
-                                        option(value='10', selected= subject.gradeID == 10) 10
-                            a.btn.btn-light(href='/subjects/list') Hủy bỏ
+                                    select.form-control.h-75(id='subject', name='subjectID', required)
+                                        option.selected --Chọn môn học--
+                                        each item in subjects
+                                            option(value=item._id, selected= item.id ==unit.subjectID)= item.name + " " + item.gradeID
+                            a.btn.btn-light(href='/units/list') Hủy bỏ
                             button.btn.btn-primary.ml-2(type='submit') Lưu lại
     if  success.length > 0
-        - var msgSuccess = success 
+    - var msgSuccess = success 
     script.
         let msgToastSuccess = '#{msgSuccess}';
         if(msgToastSuccess != ''){

@@ -42,7 +42,7 @@ block content
                                             ion-icon(name=subject.icon)
                                         td.w-25= subject.slug
                                         td.text-center(style='width: 15%')
-                                            a.btn.btn-secondary.mr-2(href=`/subjects/${subject.id}/edit`) Sửa
+                                            a.btn.btn-secondary.mr-2(href=`/subjects/${subject._id}/edit`) Sửa
                                             button.btn.btn-danger(data-toggle="modal" data-target="#deleteSubjectModal", data-id=subject._id) Xóa
                                 form(name="delete-subject-form", method="POST")
                                 #deleteSubjectModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteSubjectModalLabel', aria-hidden='true')
