@@ -30,6 +30,26 @@ class SubjectController {
             const userIdArray = results.map(({ userID }) => userID);
             const users = await User.find({ _id: { $in: userIdArray } });
 
+            // const ranks = await Statistical.aggregate([
+            //         {
+            //             $match: {
+            //                 lessionID: ObjectId(lession._id),
+            //             },
+            //         },
+            //         {
+            //             $lookup: {
+            //                 from: "users",
+            //                 localField: "userID",
+            //                 foreignField: "_id",
+            //                 as: "user",
+            //             },
+            //         },
+            //         { $sort: { score: -1, time: 1 } },
+            //         {
+            //             $limit: 10,
+            //         },
+            //     ]);
+
             res.render("subjects/show", {
                 subject,
                 units,

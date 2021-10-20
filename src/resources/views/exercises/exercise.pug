@@ -45,16 +45,18 @@ block main
                                     th(scope='col') Điểm
                                     th(scope='col') Thời gian làm
                             tbody
-                                each result in results
+                                each rank in ranks
                                     tr.align-middle
                                         th(scope='row')
                                             img(src='../img/gold.png', alt='')
                                         td
                                             .d-flex.align-items-center
-                                                //- img.rounded-circle(src=result.User[0].avatar, alt='', width='30')
-                                                //- span.ms-2= result.User[0].fullname
-                                        td= result.score
-                                        td= result.time
+                                                img.rounded-circle(src=rank.user[0].avatar, alt='', width='30')
+                                                span.ms-2.fs-7= rank.user[0].fullname
+                                        td
+                                            span.fs-7= Math.round(rank.score)
+                                        td
+                                            span.fs-7= rank.time
                     #help.tab-pane.fade(role='tabpanel', aria-labelledby='help-tab')
                         | 3
             .col-sm-7

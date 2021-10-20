@@ -116,13 +116,15 @@ class LearningController {
                     },
                 ]);
 
+                console.log(statistical);
+
                 const unit = await Unit.findById({ _id: lession.unitID });
                 const subject = await Subject.findById({
                     _id: unit.subjectID,
                 });
 
                 const nextLession = await Lession.findOne({
-                    _id: { $gt: lession.id },
+                    _id: { $gt: lession._id },
                 })
                     .sort({ _id: 1 })
                     .limit(1);

@@ -52,33 +52,21 @@ class ExerciseController {
                     }
                 }
 
-                // bảng xếp hạng
-                const results = await Result.aggregate([
+                // bảng xếp hạng theo bài học
+                const ranks = await Statistical.aggregate([
+                    {
+                        $match: {
+                            lessionID: ObjectId(lession._id),
+                        },
+                    },
                     {
                         $lookup: {
                             from: "users",
                             localField: "userID",
                             foreignField: "_id",
-                            as: "User",
+                            as: "user",
                         },
                     },
-                    {
-                        $lookup: {
-                            from: "exercises",
-                            localField: "exerciseID",
-                            foreignField: "_id",
-                            as: "exercises",
-                        },
-                    },
-                    {
-                        $unwind: "$exercises",
-                    },
-                    {
-                        $match: {
-                            "exercises.lessionID": ObjectId(lession.id),
-                        },
-                    },
-
                     { $sort: { score: -1, time: 1 } },
                     {
                         $limit: 10,
@@ -89,7 +77,7 @@ class ExerciseController {
                     lession,
                     subject,
                     exercises,
-                    results,
+                    ranks,
                 });
             } else {
                 res.render("error");
