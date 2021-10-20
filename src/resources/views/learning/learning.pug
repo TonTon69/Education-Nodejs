@@ -18,15 +18,15 @@ block main
                                     h5#exerciseModalLabel.modal-title Luyện bài tập vận dụng
                                     button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
                                 .modal-body
-                                    if results.length > 0
+                                    if statistical
                                         .results.d-flex.align-items-center.justify-content-around.mb-5.mt-4
                                             .text-center.border.border-5.border-success.rounded-circle.text-success.d-flex.align-items-center.justify-content-center
                                                 div
-                                                    span.fs-1.fw-bold= totalAnswerTrue
+                                                    span.fs-1.fw-bold= statistical.totalAnswerTrue
                                                     span.fs-7.mt-2 Câu đúng
                                             .text-center.border.border-5.border-info.rounded-circle.text-info.d-flex.align-items-center.justify-content-center
                                                 div
-                                                    span.fs-1.fw-bold= totalAnswerFalse
+                                                    span.fs-1.fw-bold= results.length - statistical.totalAnswerTrue
                                                     span.fs-7.mt-2 Câu sai
                                             .text-center.border.border-5.border-warning.rounded-circle.text-warning.d-flex.align-items-center.justify-content-center
                                                 div
@@ -39,7 +39,7 @@ block main
                                         p 4. Biết điểm yếu và có hướng giải pháp cải thiện.
                                 .modal-footer
                                     button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Hủy bỏ
-                                    if results.length > 0
+                                    if statistical
                                         a.btn.btn-primary(href=`/exercise/${subject.slug}?name=${lession.slug}`) Làm lại tất cả
                                     else
                                         a.btn.btn-primary(href=`/exercise/${subject.slug}?name=${lession.slug}`) Bắt đầu

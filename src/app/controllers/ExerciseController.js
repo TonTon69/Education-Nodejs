@@ -3,8 +3,8 @@ const Lession = require("../models/Lession");
 const ExerciseCategory = require("../models/ExerciseCategory");
 const Exercise = require("../models/Exercise");
 const Result = require("../models/Result");
-const ResultDetail = require("../models/ResultDetail");
 const User = require("../models/User");
+const Statistical = require("../models/Statistical");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 class ExerciseController {
@@ -34,35 +34,22 @@ class ExerciseController {
                 ]);
 
                 // làm lại tất cả
-                const resultsUser = await Result.aggregate([
-                    {
-                        $match: {
-                            userID: ObjectId(req.signedCookies.userId),
-                        },
-                    },
-                    {
-                        $lookup: {
-                            from: "exercises",
-                            localField: "exerciseID",
-                            foreignField: "_id",
-                            as: "exercises",
-                        },
-                    },
-                    {
-                        $unwind: "$exercises",
-                    },
-                    {
-                        $match: {
-                            "exercises.lessionID": ObjectId(lession.id),
-                        },
-                    },
-                ]);
+                const statistical = await Statistical.findOne({
+                    userID: ObjectId(req.signedCookies.userId),
+                    lessionID: lession._id,
+                });
 
-                const resultsUserIdArray = resultsUser.map(({ _id }) => _id);
-                if (resultsUser.length > 0) {
-                    await Result.deleteMany({
-                        _id: { $in: resultsUserIdArray },
+                if (statistical) {
+                    const results = await Result.find({
+                        statisticalID: statistical._id,
                     });
+                    const resultsUserIdArray = results.map(({ _id }) => _id);
+                    if (results.length > 0) {
+                        await Result.deleteMany({
+                            _id: { $in: resultsUserIdArray },
+                        });
+                        await Statistical.deleteOne({ _id: statistical._id });
+                    }
                 }
 
                 // bảng xếp hạng
@@ -115,27 +102,96 @@ class ExerciseController {
     // [POST]/exercise/:slug?name=lession
     async postExercise(req, res, next) {
         try {
+            const lession = await Lession.findOne({ slug: req.query.name });
+
             const myJsonData = req.body.objectData;
             const myJsonObj = Object.assign({}, ...myJsonData);
             const myTime = req.body.time;
             const myExercise = req.body.exercise;
 
-            if (Object.keys(myJsonObj).length === 0) {
-                const result = new Result({
-                    userID: req.signedCookies.userId,
-                    exerciseID: myExercise,
-                    option: "",
-                    time: myTime,
-                });
-                await result.save();
+            var score = 0;
+            var totalAnswerTrue = 0;
+            const exercises = await Exercise.find({ lessionID: lession._id });
+            exercises.forEach(function (exercise) {
+                if (
+                    myJsonObj.name == exercise._id &&
+                    myJsonObj.value == exercise.answer
+                ) {
+                    score += 100 / exercises.length;
+                    totalAnswerTrue++;
+                }
+            });
+            const findStatistical = await Statistical.findOne({
+                userID: ObjectId(req.signedCookies.userId),
+                lessionID: lession._id,
+            });
+            if (findStatistical) {
+                if (myJsonObj.name == exercises[exercises.length - 1]._id) {
+                    await Statistical.updateOne(
+                        { _id: findStatistical._id },
+                        {
+                            time: myTime,
+                            $inc: {
+                                totalAnswerTrue: totalAnswerTrue,
+                                score: score,
+                            },
+                            isDone: true,
+                        }
+                    );
+                } else {
+                    await Statistical.updateOne(
+                        { _id: findStatistical._id },
+                        {
+                            time: myTime,
+                            $inc: {
+                                totalAnswerTrue: totalAnswerTrue,
+                                score: score,
+                            },
+                        }
+                    );
+                }
+
+                if (Object.keys(myJsonObj).length === 0) {
+                    const result = new Result({
+                        statisticalID: findStatistical._id,
+                        exerciseID: myExercise,
+                        option: "",
+                    });
+                    await result.save();
+                } else {
+                    const result = new Result({
+                        statisticalID: findStatistical._id,
+                        exerciseID: myJsonObj.name,
+                        option: myJsonObj.value,
+                    });
+                    await result.save();
+                }
             } else {
-                const result = new Result({
+                const statistical = new Statistical({
+                    lessionID: lession._id,
                     userID: req.signedCookies.userId,
-                    exerciseID: myJsonObj.name,
-                    option: myJsonObj.value,
+                    totalAnswerTrue: totalAnswerTrue,
+                    score: score,
                     time: myTime,
+                    isDone: false,
                 });
-                await result.save();
+                await statistical.save();
+
+                if (Object.keys(myJsonObj).length === 0) {
+                    const result = new Result({
+                        statisticalID: statistical._id,
+                        exerciseID: myExercise,
+                        option: "",
+                    });
+                    await result.save();
+                } else {
+                    const result = new Result({
+                        statisticalID: statistical._id,
+                        exerciseID: myJsonObj.name,
+                        option: myJsonObj.value,
+                    });
+                    await result.save();
+                }
             }
         } catch (error) {
             console.log(error);

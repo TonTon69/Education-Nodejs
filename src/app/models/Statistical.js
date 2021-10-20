@@ -2,11 +2,14 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const ResultDetail = new Schema(
+const Statistical = new Schema(
     {
+        userID: { type: Schema.Types.ObjectId, ref: "User" },
         resultID: { type: Schema.Types.ObjectId, ref: "Result" },
         lessionID: { type: Schema.Types.ObjectId, ref: "Lession" },
-        score: { type: String },
+        score: { type: Number },
+        totalAnswerTrue: { type: Number },
+        time: { type: String },
         isDone: { type: Boolean },
     },
     {
@@ -14,4 +17,4 @@ const ResultDetail = new Schema(
     }
 );
 
-module.exports = mongoose.model("Result-Detail", ResultDetail);
+module.exports = mongoose.model("Statistical", Statistical);

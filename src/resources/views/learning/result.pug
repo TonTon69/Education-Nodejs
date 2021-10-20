@@ -11,19 +11,21 @@ block main
                             th(scope='col') Môn học
                             th(scope='col') Tên chuyên đề
                             th(scope='col') Nội dung luyện tập
+                            th(scope='col') Kết quả
                             th(scope='col') 
                     tbody
-                        if lessions.length > 0
+                        if statisticals.length > 0
                             - var count = 0;
-                            each lession in lessions
+                            each item in statisticals
                                 - count++;
                                 tr.align-middle
                                     th.pt-3.pb-3(scope='row')= count
-                                    td.pt-3.pb-3= lession.unit.subject[0].name  + ' ' + lession.unit.subject[0].gradeID
-                                    td.pt-3.pb-3= lession.unit.name
-                                    td.pt-3.pb-3 Bài #{lession.lessionNumber}. #{lession.name}
+                                    td.pt-3.pb-3= item.lession.unit.subject[0].name  + ' ' + item.lession.unit.subject[0].gradeID
+                                    td.pt-3.pb-3= item.lession.unit.name
+                                    td.pt-3.pb-3 Bài #{item.lession.lessionNumber}. #{item.lession.name}
+                                    td.pt-3.pb-3= Math.round(item.score) + " điểm"
                                     td.pt-3.pb-3
-                                        a.text-primary(href=`/learning/result?name=${lession.slug}`) Xem chi tiết
+                                        a.text-primary(href=`/learning/result?name=${item.lession.slug}`) Xem chi tiết
                         else
                             tr
                                 td.text-center(colspan='5')

@@ -5,7 +5,7 @@ const Theory = require("../models/Theory");
 const Exercise = require("../models/Exercise");
 const User = require("../models/User");
 const Result = require("../models/Result");
-const ResultDetail = require("../models/ResultDetail");
+const Statistical = require("../models/Statistical");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 class LearningController {
@@ -15,64 +15,48 @@ class LearningController {
             const subject = await Subject.findOne({ slug: req.params.slug });
             if (subject) {
                 const lession = await Lession.findOne({ slug: req.query.name });
-                const theory = await Theory.findOne({ lessionID: lession.id });
+                if (lession) {
+                    const theory = await Theory.findOne({
+                        lessionID: lession.id,
+                    });
 
-                const units = await Unit.find({ id: lession.unitID });
+                    const units = await Unit.find({ id: lession.unitID });
 
-                // mục lục môn học
-                const unitIdArray = units.map(({ _id }) => _id);
-                const lessions = await Lession.find({
-                    unitID: { $in: unitIdArray },
-                });
+                    // mục lục môn học
+                    const unitIdArray = units.map(({ _id }) => _id);
+                    const lessions = await Lession.find({
+                        unitID: { $in: unitIdArray },
+                    });
 
-                const results = await Result.aggregate([
-                    {
-                        $match: {
-                            userID: ObjectId(req.signedCookies.userId),
-                        },
-                    },
-                    {
-                        $lookup: {
-                            from: "exercises",
-                            localField: "exerciseID",
-                            foreignField: "_id",
-                            as: "exercises",
-                        },
-                    },
-                    {
-                        $unwind: "$exercises",
-                    },
-                    {
-                        $match: {
-                            "exercises.lessionID": ObjectId(lession.id),
-                        },
-                    },
-                ]);
+                    const exercises = await Exercise.find({
+                        lessionID: lession._id,
+                    });
 
-                var totalAnswerTrue = 0;
-                var totalAnswerFalse = 0;
-                results.forEach(async function (result) {
-                    if (result.option === result.exercises.answer) {
-                        totalAnswerTrue++;
+                    const statistical = await Statistical.findOne({
+                        userID: ObjectId(req.signedCookies.userId),
+                        lessionID: lession._id,
+                    });
+
+                    let results = [];
+                    if (statistical) {
+                        results = await Result.find({
+                            statisticalID: statistical._id,
+                        });
                     }
-                });
-                totalAnswerFalse = results.length - totalAnswerTrue;
 
-                const exercises = await Exercise.find({
-                    lessionID: lession._id,
-                });
-
-                res.render("learning/learning", {
-                    lession,
-                    theory,
-                    subject,
-                    units,
-                    lessions,
-                    results,
-                    totalAnswerTrue,
-                    totalAnswerFalse,
-                    exercises,
-                });
+                    res.render("learning/learning", {
+                        lession,
+                        theory,
+                        subject,
+                        units,
+                        lessions,
+                        statistical,
+                        exercises,
+                        results,
+                    });
+                } else {
+                    res.render("error");
+                }
             } else {
                 res.render("error");
             }
@@ -89,160 +73,105 @@ class LearningController {
                 const exercises = await Exercise.find({
                     lessionID: lession._id,
                 });
-                const results = await Result.aggregate([
+                const statistical = await Statistical.aggregate([
                     {
                         $match: {
                             userID: ObjectId(req.signedCookies.userId),
                         },
                     },
                     {
-                        $lookup: {
-                            from: "users",
-                            localField: "userID",
-                            foreignField: "_id",
-                            as: "user",
+                        $match: {
+                            lessionID: ObjectId(lession._id),
                         },
+                    },
+                    {
+                        $lookup: {
+                            from: "results",
+                            localField: "_id",
+                            foreignField: "statisticalID",
+                            as: "results",
+                        },
+                    },
+                    {
+                        $unwind: "$results",
                     },
                     {
                         $lookup: {
                             from: "exercises",
-                            localField: "exerciseID",
+                            localField: "results.exerciseID",
                             foreignField: "_id",
-                            as: "exercises",
+                            as: "results.exercise",
                         },
                     },
                     {
-                        $unwind: "$exercises",
+                        $unwind: "$results.exercise",
                     },
                     {
                         $lookup: {
                             from: "exercise-categories",
-                            localField: "exercises.ceID",
+                            localField: "results.exercise.ceID",
                             foreignField: "_id",
-                            as: "exercises.category",
-                        },
-                    },
-                    {
-                        $match: {
-                            "exercises.lessionID": ObjectId(lession.id),
+                            as: "results.exercise.category",
                         },
                     },
                 ]);
 
-                if (results.length > 0) {
-                    const unit = await Unit.findById({ _id: lession.unitID });
-                    const subject = await Subject.findById({
-                        _id: unit.subjectID,
-                    });
+                const unit = await Unit.findById({ _id: lession.unitID });
+                const subject = await Subject.findById({
+                    _id: unit.subjectID,
+                });
 
-                    const nextLession = await Lession.find({
-                        _id: { $gt: lession.id },
-                    })
-                        .sort({ _id: 1 })
-                        .limit(1);
-
-                    var totalScore = 0;
-                    var totalAnswerTrue = 0;
-                    var score = 100 / exercises.length;
-                    var time = results[results.length - 1].time;
-
-                    results.forEach(async function (result) {
-                        if (result.option === result.exercises.answer) {
-                            totalScore += score;
-                            totalAnswerTrue++;
-                        }
-                    });
-
-                    res.render("learning/result-detail", {
-                        results,
-                        totalScore: Math.ceil(totalScore),
-                        totalAnswerTrue,
-                        time,
-                        subject,
-                        nextLession,
-                        exercises,
-                    });
-                } else {
-                    res.render("error");
-                }
+                const nextLession = await Lession.findOne({
+                    _id: { $gt: lession.id },
+                })
+                    .sort({ _id: 1 })
+                    .limit(1);
+                res.render("learning/result-detail", {
+                    subject,
+                    statistical,
+                    nextLession,
+                    exercises,
+                });
             } else {
-                const results = await Result.aggregate([
+                const statisticals = await Statistical.aggregate([
                     {
                         $match: {
                             userID: ObjectId(req.signedCookies.userId),
-                        },
-                    },
-                    {
-                        $lookup: {
-                            from: "users",
-                            localField: "userID",
-                            foreignField: "_id",
-                            as: "user",
-                        },
-                    },
-                    {
-                        $lookup: {
-                            from: "exercises",
-                            localField: "exerciseID",
-                            foreignField: "_id",
-                            as: "exercises",
-                        },
-                    },
-                    {
-                        $unwind: "$exercises",
-                    },
-                    {
-                        $lookup: {
-                            from: "exercise-categories",
-                            localField: "exercises.ceID",
-                            foreignField: "_id",
-                            as: "exercises.category",
                         },
                     },
                     {
                         $lookup: {
                             from: "lessions",
-                            localField: "exercises.lessionID",
+                            localField: "lessionID",
                             foreignField: "_id",
                             as: "lession",
                         },
                     },
-                ]);
-
-                const resultExerciseArray = results.map(
-                    ({ exercises }) => exercises
-                );
-                const resultLessionIdArray = resultExerciseArray.map(
-                    ({ lessionID }) => lessionID
-                );
-                const lessions = await Lession.aggregate([
                     {
-                        $match: {
-                            _id: { $in: resultLessionIdArray },
-                        },
+                        $unwind: "$lession",
                     },
                     {
                         $lookup: {
                             from: "units",
-                            localField: "unitID",
+                            localField: "lession.unitID",
                             foreignField: "_id",
-                            as: "unit",
+                            as: "lession.unit",
                         },
                     },
                     {
-                        $unwind: "$unit",
+                        $unwind: "$lession.unit",
                     },
                     {
                         $lookup: {
                             from: "subjects",
-                            localField: "unit.subjectID",
+                            localField: "lession.unit.subjectID",
                             foreignField: "_id",
-                            as: "unit.subject",
+                            as: "lession.unit.subject",
                         },
                     },
                 ]);
 
-                res.render("learning/result", { lessions });
+                res.render("learning/result", { statisticals });
             }
         } catch (error) {
             console.log(error);
