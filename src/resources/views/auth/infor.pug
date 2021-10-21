@@ -7,7 +7,7 @@ block main
                 .col-sm-4
                     .Boxchange__avatar.mt-5
                         .change__avatar
-                            img.avatar__profile.w-100(src=user.avatar, alt='')
+                            img.avatar__profile.w-100.h-100(src=user.avatar, alt='')
                             div.avatar__upload
                                 ion-icon(name="camera")
                             form(name="form-change-avatar", action=`/infor/${user.id}/avatar?_method=PUT`, enctype="multipart/form-data", method="POST")
@@ -49,10 +49,22 @@ block main
                             p.box__update
                                 button.btn__update(type='submit')
                                     | Cập nhật
-    if  success.length > 0
-        - var msgSuccess = success 
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
     script.
         $(document).ready(function () {
+            let msgToastError = '#{msgError}';
+            if(msgToastError != ''){
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            }
+
             let msgToastSuccess = '#{msgSuccess}';
             if(msgToastSuccess != ''){
                 Eggy({

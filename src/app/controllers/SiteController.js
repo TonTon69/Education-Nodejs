@@ -45,6 +45,7 @@ class SiteController {
             res.render("auth/infor", {
                 user,
                 success: req.flash("success"),
+                errors: req.flash("error"),
             });
         } catch (error) {
             res.render("error");

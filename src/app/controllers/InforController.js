@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const slugify = require("slugify");
 
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
@@ -10,8 +11,32 @@ cloudinary.config({
 class InforController {
     // [PUT]/infor/:id
     async update(req, res, next) {
-        const user = await User.findOne({ _id: req.signedCookies.userId });
-        await User.updateOne({ _id: user.id }, req.body);
+        const { fullname, phone, birthDay, address } = req.body;
+        const user = await User.findOne({
+            fullname,
+            phone,
+            birthDay,
+            address,
+        });
+        if (user) {
+            req.flash("error", "Vui lòng cập nhật thông tin mới!");
+            res.redirect("back");
+            return;
+        }
+        await User.updateOne(
+            { _id: req.signedCookies.userId },
+            {
+                fullname,
+                phone,
+                birthDay,
+                address,
+                username: slugify(
+                    fullname.toLowerCase() +
+                        "-" +
+                        Math.floor(1000 + Math.random() * 9000)
+                ),
+            }
+        );
         req.flash("success", "Cập nhật thông tin thành công!");
         res.redirect("back");
     }

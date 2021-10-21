@@ -144,6 +144,19 @@ class UnitController {
 
     // [POST]/units/create
     async postCreate(req, res) {
+        const { name, subjectID } = req.body;
+        const findUnit = await Unit.findOne({
+            name: name,
+            subjectID: subjectID,
+        });
+        if (findUnit) {
+            req.flash(
+                "error",
+                "Chuyên đề này đã tồn tại... Vui lòng nhập chuyên đề khác!"
+            );
+            res.redirect("back");
+            return;
+        }
         const unit = new Unit(req.body);
         await unit.save();
         req.flash("success", "Thêm mới thành công!");
@@ -164,6 +177,19 @@ class UnitController {
 
     // [PUT]/units/:id
     async update(req, res, next) {
+        const { name, subjectID } = req.body;
+        const findUnit = await Unit.findOne({
+            name: name,
+            subjectID: subjectID,
+        });
+        if (findUnit) {
+            req.flash(
+                "error",
+                "Chuyên đề này đã tồn tại... Vui lòng nhập chuyên đề khác!"
+            );
+            res.redirect("back");
+            return;
+        }
         await Unit.updateOne({ _id: req.params.id }, req.body);
         req.flash("success", "Cập nhật thành công!");
         res.redirect("back");
