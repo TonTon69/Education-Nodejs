@@ -76,12 +76,10 @@ class LearningController {
                 const statistical = await Statistical.aggregate([
                     {
                         $match: {
-                            userID: ObjectId(req.signedCookies.userId),
-                        },
-                    },
-                    {
-                        $match: {
-                            lessionID: ObjectId(lession._id),
+                            $and: [
+                                { userID: ObjectId(req.signedCookies.userId) },
+                                { lessionID: ObjectId(lession._id) },
+                            ],
                         },
                     },
                     {
@@ -115,8 +113,6 @@ class LearningController {
                         },
                     },
                 ]);
-
-                console.log(statistical);
 
                 const unit = await Unit.findById({ _id: lession.unitID });
                 const subject = await Subject.findById({

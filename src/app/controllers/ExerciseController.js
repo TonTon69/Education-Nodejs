@@ -29,7 +29,7 @@ class ExerciseController {
                         },
                     },
                     {
-                        $project: { answer: 0 },
+                        $project: { answer: 0, explain: 0 },
                     },
                 ]);
 
