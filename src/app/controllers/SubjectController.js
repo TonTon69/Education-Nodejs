@@ -6,6 +6,7 @@ const Result = require("../models/Result");
 const User = require("../models/User");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const slugify = require("slugify");
 class SubjectController {
     // [GET]/subjects/:slug
     async show(req, res, next) {
@@ -125,11 +126,26 @@ class SubjectController {
     async create(req, res) {
         res.render("subjects/create", {
             success: req.flash("success"),
+            errors: req.flash("error"),
         });
     }
 
     // [POST]/subjects/create
     async postCreate(req, res) {
+        const { name, gradeID } = req.body;
+        const findSubject = await Subject.findOne({
+            name: name,
+            gradeID: gradeID,
+        });
+        if (findSubject) {
+            req.flash(
+                "error",
+                "Môn học này đã tồn tại... Vui lòng nhập môn học khác!"
+            );
+            res.redirect("back");
+            return;
+        }
+
         const subject = new Subject(req.body);
         await subject.save();
         req.flash("success", "Thêm mới thành công!");
@@ -142,12 +158,34 @@ class SubjectController {
         res.render("subjects/edit", {
             subject,
             success: req.flash("success"),
+            errors: req.flash("error"),
         });
     }
 
     // [PUT]/subjects/:id
     async update(req, res, next) {
-        await Subject.updateOne({ _id: req.params.id }, req.body);
+        const { name, gradeID } = req.body;
+        const findSubject = await Subject.findOne({
+            name: name,
+            gradeID: gradeID,
+        });
+        if (findSubject) {
+            req.flash(
+                "error",
+                "Môn học này đã tồn tại... Vui lòng nhập môn học khác!"
+            );
+            res.redirect("back");
+            return;
+        }
+
+        await Subject.updateOne(
+            { _id: req.params.id },
+            {
+                name: name,
+                gradeID: gradeID,
+                slug: slugify(name.toLowerCase() + "-" + gradeID.toLowerCase()),
+            }
+        );
         req.flash("success", "Cập nhật thành công!");
         res.redirect("back");
     }

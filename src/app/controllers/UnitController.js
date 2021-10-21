@@ -138,6 +138,7 @@ class UnitController {
         res.render("units/create", {
             subjects,
             success: req.flash("success"),
+            errors: req.flash("error"),
         });
     }
 
@@ -157,6 +158,7 @@ class UnitController {
             subjects,
             unit,
             success: req.flash("success"),
+            errors: req.flash("error"),
         });
     }
 

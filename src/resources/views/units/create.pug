@@ -25,9 +25,21 @@ block content
                                             option(value=subject._id)= subject.name + " " + subject.gradeID
                             a.btn.btn-light(href='/units/list') Hủy bỏ
                             button.btn.btn-primary.ml-2(type='submit') Lưu lại
-    if  success.length > 0
-    - var msgSuccess = success 
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
     script.
+        let msgToastError = '#{msgError}';
+        if(msgToastError != ''){
+            Eggy({
+                title: 'Oops... Có gì đó không đúng',
+                message:  msgToastError,
+                type: 'warning',
+                duration: 5000,
+            });
+        }
+
         let msgToastSuccess = '#{msgSuccess}';
         if(msgToastSuccess != ''){
             Eggy({
@@ -36,5 +48,5 @@ block content
                 type: 'success',
                 duration: 5000,
             });
-        }  
+        }
     
