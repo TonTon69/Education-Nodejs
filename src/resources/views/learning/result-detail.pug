@@ -5,89 +5,89 @@ block main
             .col-sm-9
                 .tab-content
                     - var count = 0;
-                    each item in statistical
+                    each item in statistical[0].res
                         - count++;
                         .exercise-item.mb-5.shadow.tab-pane.fade(id=`item-${count}`,role="tabpanel" aria-labelledby=`tab-${count}`)
                             .d-flex.align-items-center.justify-content-between
                                 strong.d-block.fw-bold.mb-0 Câu 
                                     span.index-qa= count
-                                button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= item.results.exercise.category[0].type
-                            .question.mt-2= item.results.exercise.question
+                                button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= item.exercise.category[0].type
+                            .question.mt-2= item.exercise.question
                             .options.mt-3.row
                                 .col-sm-6.form-check.d-flex.align-items-center
                                     input.form-check-input.ms-0.mt-0.me-3(id="option1", type='radio', disabled)
                                     label.form-check-label(for="option1")
-                                        | A. #{item.results.exercise.option1}
+                                        | A. #{item.exercise.option1}
                                 .col-sm-6.form-check.d-flex.align-items-center
                                     input.form-check-input.ms-0.mt-0.me-3(id="option2", type='radio', disabled)
                                     label.form-check-label(for="option2")
-                                        | B. #{item.results.exercise.option2}
+                                        | B. #{item.exercise.option2}
                                 .col-sm-6.form-check.d-flex.align-items-center
                                     input.form-check-input.ms-0.mt-0.me-3(id="option3", type='radio', disabled)
                                     label.form-check-label(for="option3")
-                                        | C. #{item.results.exercise.option3}
+                                        | C. #{item.exercise.option3}
                                 .col-sm-6.form-check.d-flex.align-items-center
                                     input.form-check-input.ms-0.mt-0.me-3(id="option4", type='radio', disabled)
                                     label.form-check-label(for="option4")
-                                        | D. #{item.results.exercise.option4}
+                                        | D. #{item.exercise.option4}
 
-                            if  item.results.option == item.results.exercise.answer
+                            if  item.option == item.exercise.answer
                                 .check-result.valid.mb-4.mt-2.d-flex.align-items-center
                                     ion-icon(name="checkmark-circle").text-success.fs-4
                                     span.message.ms-2 Bạn đã chọn: 
-                                        if item.results.option === item.results.exercise.option1
+                                        if item.option === item.exercise.option1
                                             span A
-                                        else if item.results.option === item.results.exercise.option2
+                                        else if item.option === item.exercise.option2
                                             span B
-                                        else if item.results.option === item.results.exercise.option3
+                                        else if item.option === item.exercise.option3
                                             span C
-                                        else if item.results.option === item.results.exercise.option4
+                                        else if item.option === item.exercise.option4
                                             span D
                                     span.ms-2.me-2 ~
                                     span.answer-true Đáp án đúng: 
-                                        if item.results.exercise.answer === item.results.exercise.option1
+                                        if item.exercise.answer === item.exercise.option1
                                             span A
-                                        else if item.results.exercise.answer === item.results.exercise.option2
+                                        else if item.exercise.answer === item.exercise.option2
                                             span B
-                                        else if item.results.exercise.answer === item.results.exercise.option3
+                                        else if item.exercise.answer === item.exercise.option3
                                             span C
-                                        else if item.results.exercise.answer === item.results.exercise.option4
+                                        else if item.exercise.answer === item.exercise.option4
                                             span D
-                            else if item.results.option == ""
+                            else if item.option == ""
                                 .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
                                     ion-icon(name="alert").text-danger.fs-4
                                     span.message.ms-2 Bạn đã bỏ qua câu này
                                     span.ms-2.me-2 ~
                                     span.answer-true Đáp án đúng: 
-                                        if item.results.exercise.answer === item.results.exercise.option1
+                                        if item.exercise.answer === item.exercise.option1
                                             span A
-                                        else if item.results.exercise.answer === item.results.exercise.option2
+                                        else if item.exercise.answer === item.exercise.option2
                                             span B
-                                        else if item.results.exercise.answer === item.results.exercise.option3
+                                        else if item.exercise.answer === item.exercise.option3
                                             span C
-                                        else if item.results.exercise.answer === item.results.exercise.option4
+                                        else if item.exercise.answer === item.exercise.option4
                                             span D
                             else
                                 .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
                                     ion-icon(name="close-circle").text-danger.fs-4
                                     span.message.ms-2 Bạn đã chọn: 
-                                        if item.results.option === item.results.exercise.option1
+                                        if item.option === item.exercise.option1
                                             span A
-                                        else if item.results.option === item.results.exercise.option2
+                                        else if item.option === item.exercise.option2
                                             span B
-                                        else if item.results.option === item.results.exercise.option3
+                                        else if item.option === item.exercise.option3
                                             span C
-                                        else if item.results.option === item.results.exercise.option4
+                                        else if item.option === item.exercise.option4
                                             span D
                                     span.ms-2.me-2 ~
                                     span.answer-true Đáp án đúng: 
-                                        if item.results.exercise.answer === item.results.exercise.option1
+                                        if item.exercise.answer === item.exercise.option1
                                             span A
-                                        else if item.results.exercise.answer === item.results.exercise.option2
+                                        else if item.exercise.answer === item.exercise.option2
                                             span B
-                                        else if item.results.exercise.answer === item.results.exercise.option3
+                                        else if item.exercise.answer === item.exercise.option3
                                             span C
-                                        else if item.results.exercise.answer === item.results.exercise.option4
+                                        else if item.exercise.answer === item.exercise.option4
                                             span D
                             .explain
                                 .explain-header.text-primary.d-inline-flex.align-items-center
@@ -95,10 +95,10 @@ block main
                                     ion-icon(name='sunny')
                                 .explain-body.mt-4
                                     span.fw-bold Phương pháp giải
-                                    .mt-2.explain-content= item.results.exercise.recommend
+                                    .mt-2.explain-content= item.exercise.recommend
                                     hr
                                     span.fw-bold Lời giải
-                                    .mt-2.explain-content= item.results.exercise.explain
+                                    .mt-2.explain-content= item.exercise.explain
                 .result
                     .animate
                     .score
@@ -130,12 +130,12 @@ block main
                     hr
                     ul.d-block.ps-0.pb-2.nav.nav-tabs(role="tablist")
                         - var i = 0;
-                        each item in statistical
+                        each item in statistical[0].res
                             - i++;
                             li.nav-item(role="presentation")
-                                if item.results.exercise.answer == item.results.option
+                                if item.exercise.answer == item.option
                                     button.correct(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i
-                                else if item.results.option == ""
+                                else if item.option == ""
                                     button(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i
                                 else
                                     button.not-correct(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i

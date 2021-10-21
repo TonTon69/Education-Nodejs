@@ -73,6 +73,7 @@ class LearningController {
                 const exercises = await Exercise.find({
                     lessionID: lession._id,
                 });
+
                 const statistical = await Statistical.aggregate([
                     {
                         $match: {
@@ -87,29 +88,58 @@ class LearningController {
                             from: "results",
                             localField: "_id",
                             foreignField: "statisticalID",
-                            as: "results",
+                            as: "res",
                         },
                     },
                     {
-                        $unwind: "$results",
+                        $unwind: "$res",
                     },
                     {
                         $lookup: {
                             from: "exercises",
-                            localField: "results.exerciseID",
+                            localField: "res.exerciseID",
                             foreignField: "_id",
-                            as: "results.exercise",
+                            as: "res.exercise",
                         },
                     },
                     {
-                        $unwind: "$results.exercise",
+                        $unwind: "$res.exercise",
                     },
                     {
                         $lookup: {
                             from: "exercise-categories",
-                            localField: "results.exercise.ceID",
+                            localField: "res.exercise.ceID",
                             foreignField: "_id",
-                            as: "results.exercise.category",
+                            as: "res.exercise.category",
+                        },
+                    },
+                    {
+                        $group: {
+                            _id: "$_id",
+                            res: {
+                                $push: "$res",
+                            },
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "statisticals",
+                            localField: "_id",
+                            foreignField: "_id",
+                            as: "stat",
+                        },
+                    },
+                    {
+                        $unwind: "$stat",
+                    },
+                    {
+                        $addFields: {
+                            "stat.res": "$res",
+                        },
+                    },
+                    {
+                        $replaceRoot: {
+                            newRoot: "$stat",
                         },
                     },
                 ]);
