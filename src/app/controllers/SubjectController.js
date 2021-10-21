@@ -4,6 +4,7 @@ const Lession = require("../models/Lession");
 const RatingRegulation = require("../models/RatingRegulation");
 const Result = require("../models/Result");
 const User = require("../models/User");
+const Statistical = require("../models/Statistical");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const slugify = require("slugify");
@@ -11,53 +12,57 @@ class SubjectController {
     // [GET]/subjects/:slug
     async show(req, res, next) {
         try {
+            const ratingRegulation = await RatingRegulation.find({});
             const subject = await Subject.findOne({ slug: req.params.slug });
-            const units = await Unit.find({ subjectID: subject.id });
+            const units = await Unit.find({ subjectID: subject._id });
             const unitIdArray = units.map(({ _id }) => _id);
             const lessions = await Lession.find({
                 unitID: { $in: unitIdArray },
             });
-            const ratingRegulation = await RatingRegulation.find({});
-
-            const lessionIdArray = lessions.map(({ id }) => id);
-            const results = await Result.find({
-                lessionID: { $in: lessionIdArray },
-            })
-                .sort([
-                    ["score", -1],
-                    ["time", 1],
-                ])
-                .limit(10);
-            const userIdArray = results.map(({ userID }) => userID);
-            const users = await User.find({ _id: { $in: userIdArray } });
-
-            // const ranks = await Statistical.aggregate([
-            //         {
-            //             $match: {
-            //                 lessionID: ObjectId(lession._id),
-            //             },
-            //         },
-            //         {
-            //             $lookup: {
-            //                 from: "users",
-            //                 localField: "userID",
-            //                 foreignField: "_id",
-            //                 as: "user",
-            //             },
-            //         },
-            //         { $sort: { score: -1, time: 1 } },
-            //         {
-            //             $limit: 10,
-            //         },
-            //     ]);
+            const lessionIdArray = lessions.map(({ _id }) => _id);
+            // bảng xếp hạng theo môn học
+            const ranks = await Statistical.aggregate([
+                {
+                    $match: {
+                        lessionID: { $in: lessionIdArray },
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$userID",
+                        totalScore: { $sum: "$score" },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "_id",
+                        foreignField: "_id",
+                        as: "user",
+                    },
+                },
+                {
+                    $project: {
+                        "user.birthDay": 0,
+                        "user.email": 0,
+                        "user.active": 0,
+                        "user.password": 0,
+                        "user.phone": 0,
+                        "user.roleID": 0,
+                        "user.address": 0,
+                        "user.username": 0,
+                    },
+                },
+                { $sort: { totalScore: -1 } },
+                { $limit: 10 },
+            ]);
 
             res.render("subjects/show", {
                 subject,
                 units,
                 lessions,
                 ratingRegulation,
-                results,
-                users,
+                ranks,
             });
         } catch (error) {
             res.render("error");

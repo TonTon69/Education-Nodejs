@@ -909,6 +909,35 @@ body {
                 display: flex;
                 align-items: center;
 
+                &.top_1,
+                &.top_2,
+                &.top_3 {
+                    .icon-top {
+                        position: absolute;
+                        left: 0;
+                        top: -6px;
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                        width: 20px;
+                        height: 20px;
+                    }
+                }
+                &.top_1 {
+                    .icon-top {
+                        background-image: url(../img/gold.png);
+                    }
+                }
+                &.top_2 {
+                    .icon-top {
+                        background-image: url(../img/silver.png);
+                    }
+                }
+                &.top_3 {
+                    .icon-top {
+                        background-image: url(../img/bronze.png);
+                    }
+                }
+
                 img {
                     margin-right: 12px;
                 }
@@ -918,6 +947,7 @@ body {
                     height: 42px;
                     object-fit: cover;
                     border-radius: 50%;
+                    opacity: 0.9;
                 }
 
                 .name {

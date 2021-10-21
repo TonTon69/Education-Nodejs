@@ -33,9 +33,6 @@ block main
             .col-sm-4
                 .d-flex.align-items-center.flex-column.ps-4
                     h3 Miễn phí
-                    div
-                        //- a.btn.btn-primary.rounded-pill.mt-3(href=`/learning/${subject.slug}?id=${lession.id}`)
-                            span.text-uppercase ôn lý thuyết
                     ul.ps-0.mb-0.pt-4.subject__detail--list
                         li
                             ion-icon(name='barcode-outline')
@@ -65,15 +62,19 @@ block main
                                                 each instruct in ratingRegulation
                                                     | #{instruct.content}
                             ul.ps-0.mb-0.mt-4
-                                each result in results
+                                each rank in ranks
                                     li.chart__item
-                                        each user in users
-                                            if (user.id == result.userID)
-                                                .position-relative
-                                                    img.avatar(src=user.avatar, alt='')
-                                                    img.position-absolute.top-0.start-0(src='../img/gold.png', alt='')
-                                                span.name= user.fullname
+                                        .position-relative
+                                            img.avatar(src=rank.user[0].avatar, alt='')
+                                            .icon-top
+                                        span.name= rank.user[0].fullname
                                         .d-flex.align-items-center
-                                            span.me-1= result.score
+                                            span.me-1= Math.round(rank.totalScore)
                                             ion-icon(name='heart-circle')
                                     hr
+    script.
+        $(document).ready(function() {
+            $(".chart__item:nth-child(1)").addClass("top_1");
+            $(".chart__item:nth-child(2)").addClass("top_2");
+            $(".chart__item:nth-child(3)").addClass("top_3");
+        })

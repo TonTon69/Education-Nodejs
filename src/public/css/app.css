@@ -747,13 +747,28 @@ body {
       .main .subject__detail .chart__item {
         display: flex;
         align-items: center; }
+        .main .subject__detail .chart__item.top_1 .icon-top, .main .subject__detail .chart__item.top_2 .icon-top, .main .subject__detail .chart__item.top_3 .icon-top {
+          position: absolute;
+          left: 0;
+          top: -6px;
+          background-repeat: no-repeat;
+          background-size: cover;
+          width: 20px;
+          height: 20px; }
+        .main .subject__detail .chart__item.top_1 .icon-top {
+          background-image: url(../img/gold.png); }
+        .main .subject__detail .chart__item.top_2 .icon-top {
+          background-image: url(../img/silver.png); }
+        .main .subject__detail .chart__item.top_3 .icon-top {
+          background-image: url(../img/bronze.png); }
         .main .subject__detail .chart__item img {
           margin-right: 12px; }
         .main .subject__detail .chart__item .avatar {
           width: 42px;
           height: 42px;
           object-fit: cover;
-          border-radius: 50%; }
+          border-radius: 50%;
+          opacity: 0.9; }
         .main .subject__detail .chart__item .name {
           display: flex;
           flex: 1 1;

@@ -97,8 +97,8 @@ class ExerciseController {
             const myTime = req.body.time;
             const myExercise = req.body.exercise;
 
-            var score = 0;
-            var totalAnswerTrue = 0;
+            let score = 0;
+            let totalAnswerTrue = 0;
             const exercises = await Exercise.find({ lessionID: lession._id });
             exercises.forEach(function (exercise) {
                 if (
