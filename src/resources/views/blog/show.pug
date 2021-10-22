@@ -6,7 +6,7 @@ block main
                 .blog-wrap
                     h3.fw-bold.mb-4= blog.title
                     .author.d-flex.align-items-center
-                        img.rounded-pill(src=user.avatar, width='48', alt='')
+                        img.rounded-pill(src=user.avatar, width=48, height=48)
                         .ms-3
                             span.name(style='font-weight: 600')= user.fullname
                             span.d-block.mt-2.fs-8.text-secondary= moment(blog.updatedAt).locale("vi").fromNow()

@@ -14,24 +14,22 @@ class AuthController {
 
     // [PUT]/password/change/:id
     async putPasswordChange(req, res, next) {
-        const user = await User.findOne({ _id: req.signedCookies.userId });
+        const user = await User.findById({ _id: req.signedCookies.userId });
         const { passwordOld, passwordNew } = req.body;
 
         const matchPassword = await bcrypt.compare(passwordOld, user.password);
-        const passwordNewHash = await bcrypt.hash(passwordNew, 10);
-
         if (!matchPassword) {
             req.flash("error", "Mật khẩu cũ không chính xác!");
-            res.render("auth/password-change", {
-                errors: req.flash("error"),
-                values: req.body,
-            });
-            return;
+            res.redirect("back");
+        } else {
+            const passwordNewHash = await bcrypt.hash(passwordNew, 10);
+            await User.findByIdAndUpdate(
+                { _id: req.signedCookies.userId },
+                { password: passwordNewHash }
+            );
+            req.flash("success", "Đổi mật khẩu thành công!");
+            res.redirect("back");
         }
-
-        await User.updateOne({ _id: user.id }, { password: passwordNewHash });
-        req.flash("success", "Đổi mật khẩu thành công!");
-        res.redirect("back");
     }
 
     // [GET]/password/reset

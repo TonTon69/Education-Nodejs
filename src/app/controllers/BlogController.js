@@ -25,9 +25,7 @@ class BlogController {
                     },
                 },
                 { $sort: { view: -1 } },
-                {
-                    $limit: 5,
-                },
+                { $limit: 5 },
             ]);
 
             res.render("blog/show", {
