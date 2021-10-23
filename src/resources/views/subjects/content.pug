@@ -1,0 +1,28 @@
+extends ../layouts/admin
+block content
+    section.subject__content
+        .col-lg-12.grid-margin.stretch-card
+            .card
+                .card-body
+                    .card-title Nội dung môn học - #{subject.name} #{subject.gradeID}
+                    .d-flex.align-items-center.justify-content-between
+                        .form-group.mb-0.text-dark
+                            span #{units.length} chương - #{lessions.length} bài học
+                        a.btn.btn-outline-warning.btn-icon-text(href='/subjects/list') 
+                            i.mdi.mdi-reload.btn-icon-prepend
+                            | Quay lại
+                    .mt-4
+                        each unit in units
+                            div
+                                - var count = 0;
+                                    each lession in lessions
+                                        if (lession.unitID == unit.id)
+                                            - count++;
+                                    p.text-dark.font-weight-bold= unit.name
+                                        span.ml-2.font-weight-normal (#{count} bài học)
+                                div.ml-4.text-dark
+                                    each lession in lessions
+                                        if lession.unitID == unit.id
+                                            p Bài #{lession.lessionNumber}. #{lession.name}
+                    
+                   

@@ -13,14 +13,14 @@ block content
                         p.card-description Nhập thông tin bên dưới để chỉnh sửa 1 chuyên đề
                         form.mt-4(action=`/units/${unit._id}?_method=PUT`, method='POST')
                             .form-group.row
-                                label.col-sm-3.col-form-label.font-weight-bold(for='name') Tên chuyên đề
+                                label.col-sm-3.col-form-label.text-dark(for='name') Tên chuyên đề
                                 .col-sm-9
                                     input#name.form-control(type='text', placeholder='Nhập tên chuyên đề', name='name', required, value=unit.name)
                             .form-group.row
-                                label.col-sm-3.col-form-label.font-weight-bold(for='subject') Môn học
+                                label.col-sm-3.col-form-label.text-dark(for='subject') Môn học
                                 .col-sm-9
                                     select.form-control.h-75(id='subject', name='subjectID', required)
-                                        option.selected --Chọn môn học--
+                                        option.selected(value='') --Chọn môn học--
                                         each item in subjects
                                             option(value=item._id, selected= item.id ==unit.subjectID)= item.name + " " + item.gradeID
                             a.btn.btn-light(href='/units/list') Hủy bỏ

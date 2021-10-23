@@ -13,21 +13,21 @@ block content
                         p.card-description Nhập thông tin bên dưới để thêm mới 1 môn học
                         form.mt-4(action='/subjects/create', method='POST')
                             .form-group.row
-                                label.col-sm-3.col-form-label.font-weight-bold(for='name') Tên môn học
+                                label.col-sm-3.col-form-label.text-dark(for='name') Tên môn học
                                 .col-sm-9
-                                    input#name.form-control(type='text', placeholder='Nhập tên môn học', name='name')
+                                    input#name.form-control(type='text', placeholder='Nhập tên môn học', name='name', required)
                             .form-group.row
-                                label.col-sm-3.col-form-label.font-weight-bold(for='icon') Biểu tượng
+                                label.col-sm-3.col-form-label.text-dark(for='icon') Biểu tượng
                                 .col-sm-9
-                                    input#icon.form-control(type='text', placeholder='Nhập tên biểu tượng', name='icon')
+                                    input#icon.form-control(type='text', placeholder='Nhập tên biểu tượng', name='icon', required)
                             .form-group.row
-                                label.col-sm-3.col-form-label.font-weight-bold(for='grade') Khối
+                                label.col-sm-3.col-form-label.text-dark(for='grade') Khối
                                 .col-sm-9
-                                    select.form-control.h-75(id='grade', name='gradeID')
-                                        option.selected --Chọn khối--
-                                        option(value='12') 12
-                                        option(value='11') 11
-                                        option(value='10') 10
+                                    select.form-control.h-75(id='grade', name='gradeID', required)
+                                        option.selected(value='') --Chọn khối--
+                                        option(value='12') Khối 12
+                                        option(value='11') Khối 11
+                                        option(value='10') Khối 10
                             a.btn.btn-light(href='/subjects/list') Hủy bỏ
                             button.btn.btn-primary.ml-2(type='submit') Lưu lại
     if errors.length > 0

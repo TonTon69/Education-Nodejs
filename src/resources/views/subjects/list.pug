@@ -41,7 +41,8 @@ block content
                                         td
                                             ion-icon(name=subject.icon)
                                         td.w-25= subject.slug
-                                        td.text-center(style='width: 15%')
+                                        td.text-center
+                                            a.btn.btn-primary.mr-2(href=`/subjects/${subject._id}/content`) Nội dung
                                             a.btn.btn-secondary.mr-2(href=`/subjects/${subject._id}/edit`) Sửa
                                             button.btn.btn-danger(data-toggle="modal" data-target="#deleteSubjectModal", data-id=subject._id) Xóa
                                 form(name="delete-subject-form", method="POST")
@@ -58,6 +59,18 @@ block content
                                             .modal-footer
                                                 button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
                                                 button.btn.btn-danger#btn-delete-subject(type='button') Chắc chắn
+                                //- #contentSubjectModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='contentSubjectModalLabel', aria-hidden='true')
+                                //-     .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 900px;')
+                                //-         .modal-content
+                                //-             .modal-header
+                                //-                 strong#contentSubjectModalLabel.modal-title.font-weight-bold.text-danger.text-uppercase Nội dung môn học
+                                //-                 button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                //-                 span(aria-hidden='true') &times;
+                                //-             .modal-body.text-dark
+                                //-                 .mt-2
+                                //-                     span 2 + " chương"
+                                //-                     span  - 
+                                //-                     span 4 + " bài học"
                     if pages > 0
                         nav.d-flex.align-items-center.justify-content-center
                             ul.pagination.mt-4

@@ -206,6 +206,17 @@ class SubjectController {
             res.redirect("back");
         }
     }
+
+    // [GET]/subjects/:id/content
+    async content(req, res) {
+        const subject = await Subject.findById(req.params.id);
+        const units = await Unit.find({ subjectID: subject._id });
+        const unitIdArray = units.map(({ _id }) => _id);
+        const lessions = await Lession.find({
+            unitID: { $in: unitIdArray },
+        });
+        res.render("subjects/content", { subject, units, lessions });
+    }
 }
 
 module.exports = new SubjectController();
