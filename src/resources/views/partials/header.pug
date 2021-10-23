@@ -17,16 +17,21 @@ header.header
                         span.search__string.ms-2.fs-7
                     .search__result--content
     .header__actions
-        if user
+        if user.length > 0
             .header__actions--avatar
-                img(src=user.avatar, alt='')
+                img(src=user[0].avatar, alt='')
             .header__actions--userMenu.shadow
                 .user
                     .user__avatar
-                        img(src=user.avatar, alt='')
+                        img(src=user[0].avatar, alt='')
                     .user__info
-                        .name= user.fullname
-                        .username @#{user.username}
+                        .name= user[0].fullname
+                        .username @#{user[0].username}
+                if user[0].role.length > 0 && user[0].role[0].roleName == 'admin'
+                    hr
+                    ul.list
+                        li.list__item
+                            a.list__link(href='/admin') Quản lý hệ thống
                 hr
                 ul.list
                     li.list__item

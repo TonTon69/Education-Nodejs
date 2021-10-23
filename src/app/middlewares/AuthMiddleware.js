@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 module.exports = {
     requireAuth: async function (req, res, next) {
@@ -6,13 +8,24 @@ module.exports = {
             res.redirect("/login");
             return;
         }
-        const user = await User.findOne({ _id: req.signedCookies.userId });
-        if (!user) {
+        // const user = await User.findOne({ _id: req.signedCookies.userId });
+        const user = await User.aggregate([
+            { $match: { _id: ObjectId(req.signedCookies.userId) } },
+            {
+                $lookup: {
+                    from: "roles",
+                    localField: "roleID",
+                    foreignField: "_id",
+                    as: "role",
+                },
+            },
+        ]);
+        if (user.length > 0) {
+            res.locals.user = user;
+            next();
+        } else {
             res.redirect("/login");
-            return;
         }
-        res.locals.user = user;
-        next();
     },
 
     authValidate: function (req, res, next) {

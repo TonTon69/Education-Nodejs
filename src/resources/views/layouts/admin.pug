@@ -33,3 +33,14 @@ html
         script(src='/admin/vendors/justgage/raphael-2.1.4.min.js')
         script(src='/admin/vendors/justgage/justgage.js')
         script(src='/admin/js/dashboard.js')
+        script.
+            $(document).ready(function () {
+                $(function () {
+                    var path = window.location.href;
+                     $(".horizontal-menu .nav.page-navigation li a").each(function () {
+                        if (this.href === path) {
+                            $(this).parent().addClass("active");
+                        }
+                    });
+                });
+            })

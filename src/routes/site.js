@@ -11,9 +11,10 @@ const {
 } = require("../app/middlewares/AuthMiddleware");
 const { search } = require("../app/middlewares/LocalMiddleware");
 
-router.get("/password/change", authController.passwordChange);
+router.get("/password/change", requireAuth, authController.passwordChange);
 router.put(
     "/password/change/:id",
+    requireAuth,
     changePassValidate,
     authController.putPasswordChange
 );
@@ -27,12 +28,12 @@ router.post(
     authController.postResetConfirm
 );
 
-router.get("/admin", siteController.admin);
-router.post("/report", siteController.report);
+router.get("/admin", requireAuth, siteController.admin);
+router.post("/report", requireAuth, siteController.report);
 router.get("/subjects", siteController.subjects);
 router.get("/infor", requireAuth, siteController.infor);
 router.get("/blog", siteController.blog);
-router.get("/logout", siteController.logout);
+router.get("/logout", requireAuth, siteController.logout);
 router.get("/login", siteController.login);
 router.post("/login", authValidate, siteController.postLogin);
 router.post("/search", search);

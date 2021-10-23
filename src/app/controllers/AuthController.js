@@ -5,7 +5,7 @@ const crypto = require("crypto");
 const { sendEmail } = require("../../utils/send-email");
 class AuthController {
     // [GET]/password/change
-    passwordChange(req, res) {
+    async passwordChange(req, res) {
         res.render("auth/password-change", {
             errors: req.flash("error"),
             success: req.flash("success"),
@@ -14,7 +14,7 @@ class AuthController {
 
     // [PUT]/password/change/:id
     async putPasswordChange(req, res, next) {
-        const user = await User.findById({ _id: req.signedCookies.userId });
+        const user = await User.findById(req.signedCookies.userId);
         const { passwordOld, passwordNew } = req.body;
 
         const matchPassword = await bcrypt.compare(passwordOld, user.password);
@@ -23,7 +23,7 @@ class AuthController {
             res.redirect("back");
         } else {
             const passwordNewHash = await bcrypt.hash(passwordNew, 10);
-            await User.findByIdAndUpdate(
+            await User.updateOne(
                 { _id: req.signedCookies.userId },
                 { password: passwordNewHash }
             );

@@ -41,9 +41,7 @@ class SiteController {
     // [GET]/infor
     async infor(req, res, next) {
         try {
-            const user = await User.findOne({ _id: req.signedCookies.userId });
             res.render("auth/infor", {
-                user,
                 success: req.flash("success"),
                 errors: req.flash("error"),
             });

@@ -4,7 +4,7 @@
             .navbar-menu-wrapper.d-flex.align-items-center.justify-content-between
                 ul.navbar-nav.navbar-nav-left(style="flex: 1 1")
                     li.nav-item.ml-0.mr-5.d-lg-flex.d-none
-                        a.nav-link.horizontal-nav-left-menu(href='#')
+                        a.nav-link.horizontal-nav-left-menu(href='/', target="_blank")
                             i.mdi.mdi-format-list-bulleted
                     li
                         span.text-dark.font-weight-bold Trường THPT Phù Cát 3
@@ -15,7 +15,7 @@
                         a#profileDropdown.nav-link.dropdown-toggle(href='#', data-toggle='dropdown')
                             span.nav-profile-name Johnson
                             span.online-status
-                            img(src='https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-6/p843x403/245742418_1588156591551620_7312094953014591537_n.jpg?_nc_cat=1&ccb=1-5&_nc_sid=730e14&_nc_ohc=_nkxy-td6sUAX-HKe1N&_nc_ht=scontent.fdad2-1.fna&oh=13ca60484aada593dde9ba0782a20b79&oe=616C759D', alt='profile')
+                            img(src='http://res.cloudinary.com/din6v2it9/image/upload/v1634646688/zkozzmp9fkzlhxawpsly.jpg', alt='profile')
                         .dropdown-menu.dropdown-menu-right.navbar-dropdown(aria-labelledby='profileDropdown')
                             a.dropdown-item
                                 i.mdi.mdi-settings.text-primary
@@ -29,28 +29,16 @@
         .container
             ul.nav.page-navigation
                 li.nav-item
-                    a.nav-link(href='/admin')
+                    a.nav-link(href='/admin/')
                         i.mdi.mdi-file-document-box.menu-icon
                         span.menu-title Dashboard
                 li.nav-item
-                    a.nav-link(href='#')
+                    a.nav-link(href='/subjects/list')
                         i.mdi.mdi-book.menu-icon
                         span.menu-title Quản lý môn học
                         i.menu-arrow
-                    .submenu
-                        ul
-                            li.nav-item
-                                a.nav-link(href='/subjects/list') Danh sách
-                            li.nav-item
-                                a.nav-link(href='/subjects/create') Thêm mới
                 li.nav-item
-                    a.nav-link(href='#')
+                    a.nav-link(href='/units/list')
                         i.mdi.mdi-file-document-box-outline.menu-icon
                         span.menu-title Quản lý chuyên đề
                         i.menu-arrow
-                    .submenu
-                        ul
-                            li.nav-item
-                                a.nav-link(href='/units/list') Danh sách
-                            li.nav-item
-                                a.nav-link(href='/units/create') Thêm mới

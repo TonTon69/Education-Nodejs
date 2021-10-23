@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     $(document).click(function (e) {
         // Nếu click bên ngoài đối tượng container thì ẩn nó đi
-        if (!userAva.is(e.target) && userAva.has(e.target).length === 0) {
+        if (!userAva.is(e.target) && userAva.has(e.target).length == 0) {
             userMenu.removeClass("show");
         }
     });

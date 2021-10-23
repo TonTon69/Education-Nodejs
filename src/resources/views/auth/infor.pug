@@ -7,41 +7,41 @@ block main
                 .col-sm-4
                     .Boxchange__avatar.mt-5
                         .change__avatar
-                            img.avatar__profile.w-100.h-100(src=user.avatar, alt='')
+                            img.avatar__profile.w-100.h-100(src=user[0].avatar, alt='')
                             div.avatar__upload
                                 ion-icon(name="camera")
-                            form(name="form-change-avatar", action=`/infor/${user.id}/avatar?_method=PUT`, enctype="multipart/form-data", method="POST")
+                            form(name="form-change-avatar", action=`/infor/${user[0]._id}/avatar?_method=PUT`, enctype="multipart/form-data", method="POST")
                                 input.file-upload(type="file" name="avatar" accept="image/*" hidden)
                 .col-sm-8
                     .box__infor    
-                        form(action=`/infor/${user.id}?_method=PUT`, method="POST")
+                        form(action=`/infor/${user[0]._id}?_method=PUT`, method="POST")
                             div
                                 p(style='margin-bottom: 1.2rem')
                                     label Tên tài khoản:
-                                    span @#{user.username}
+                                    span @#{user[0].username}
                                 p
                                     label Họ tên 
                                         span.text-danger (*):
-                                    input.infor__input(maxlength='30', type='text', name='fullname', placeholder='Nhập họ và tên', value=user.fullname, required, autocomplete="off")
+                                    input.infor__input(maxlength='30', type='text', name='fullname', placeholder='Nhập họ và tên', value=user[0].fullname, required, autocomplete="off")
                             div
                                 p
                                     label Số điện thoại 
                                         span.text-danger (*):
-                                    input.infor__input(maxlength='10', type='text', name='phone', placeholder='Nhập số điện thoại', value=user.phone, required, autocomplete="off")
+                                    input.infor__input(maxlength='10', type='text', name='phone', placeholder='Nhập số điện thoại', value=user[0].phone, required, autocomplete="off")
                             div
                                 p
                                     label Ngày sinh 
                                         span.text-danger (*):
-                                    input#birthday.infor__input(type='date', value=moment(user.birthDay).format("YYYY-MM-DD"), name='birthDay', required, autocomplete="off")
+                                    input#birthday.infor__input(type='date', value=moment(user[0].birthDay).format("YYYY-MM-DD"), name='birthDay', required, autocomplete="off")
                             div
                                 p
                                     label Địa chỉ 
                                         span.text-danger (*):
-                                    input#address.infor__input(type='text', placeholder='Nhập địa chỉ hiện tại', value=user.address, name='address', required, autocomplete="off")
+                                    input#address.infor__input(type='text', placeholder='Nhập địa chỉ hiện tại', value=user[0].address, name='address', required, autocomplete="off")
                             div
                                 p(style='margin: 1.4rem 0 1.8rem 0')
                                     label Email:
-                                    span= user.email
+                                    span= user[0].email
                                 p
                                     | Hãy nhập chính xác 
                                     span(style='color: red') số điện thoại của bạn hoặc người thân 
