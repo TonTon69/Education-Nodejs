@@ -1,0 +1,66 @@
+extends ../layouts/admin
+block content
+    .container
+        .col-12.grid-margin.stretch-card
+            .card
+                .card-body
+                    h4.card-title
+                        | Th&ecirc;m b&agrave;i vi&#x1EBF;t m&#x1EDB;i
+                    p.card-description
+                        | Nhập thông tin bên dưới để thêm mới 1 bài viết
+                    form.forms-sample(method='POST' action='/blog/post')
+                        .form-group
+                            label(for='exampleInputName1') Ti&ecirc;u &Dstrok;&#x1EC1;
+                            input#exampleInputName1.form-control(type='text' placeholder='Tiêu đề' name='title')
+                        .form-group
+                            label(for='exampleSelectGender') Th&#x1EC3; lo&#x1EA1;i
+                            .form-group-category(style="display: flex; align-items: center;")
+                                .category
+                                    select#exampleSelectGender.form-control(name= 'bcID')
+                                        each category in categories
+                                            option(value= category._id)
+                                                span= category.category
+                                .add-category(style="margin-left: 20px;")
+                                    .btn.btn-outline-secondary.btn-icon-text.ml-auto( id="btn-add-category" data-toggle='modal' data-target='#add-blog-category-modal')
+                                        i.mdi.mdi-upload.btn-icon-prepend
+                                        | Thêm mới thể loại
+                        .form-group
+                            label(for='exampleTextarea1') N&#x1ED9;i dung
+                            textarea#ckeditor-content.form-control(name='content')
+                        //.form-group
+                            label H&igrave;nh &#x1EA3;nh
+                            input.file-upload-default(type='file' name='img[]')
+                            .input-group.col-xs-12
+                                input.form-control.file-upload-info(type='text' disabled='' placeholder='chọn file ảnh')
+                                span.input-group-append
+                                    button.file-upload-browse.btn.btn-primary(type='button')
+                                        | &Dstrok;&abreve;ng &#x1EA2;nh
+                        .form-group
+                            label(for='exampleInputName1') Hình ảnh
+                            input#exampleInputName1.form-control(type='text' placeholder='link hình ảnh' name='image')
+                        button.btn.btn-primary.mr-2(type='submit')
+                            | &Dstrok;&abreve;ng b&agrave;i
+                        button.btn.btn-light
+                            | H&#x1EE7;y b&#x1ECF;
+    //form add category
+    #add-blog-category-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                form(method="POST" action="/blog/add-category")
+                    .modal-header
+                        h5#exampleModalLabel.modal-title(style='font-weight: bold;') Thêm thể loại bài viết mới
+                        button.close(type='button' data-dismiss='modal' aria-label='Close')
+                            span(aria-hidden='true') &times;
+                    .modal-body
+                        .row(style="flex-wrap: nowrap; height: 40px; margin-right: 0px; margin-left: -15px")
+                            label.col-form-label(style="width: 20%; margin-left: 10px;") Tên thể loại
+                            input.form-control(type="text" name="category" style="width: 85%; margin-left: 10px;")
+                    .modal-footer
+                        button.btn.btn-secondary(type='button' data-dismiss='modal') H&#x1EE7;y
+                        button#btn-delete-blog.btn.btn-success(type='submit') Thêm mới
+    script.
+        ClassicEditor
+            .create(document.querySelector('#ckeditor-content'))
+            .catch( error => {
+                console.error(error);
+            });

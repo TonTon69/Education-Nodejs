@@ -12,26 +12,37 @@
                     a.navbar-brand.brand-logo(href='/admin', style='font-weight: bold; background: linear-gradient(315deg, #2a2a72 0%, #009ffd 74%);  -webkit-background-clip: text; -webkit-text-fill-color: transparent;') PC3 Admin
                 ul.navbar-nav.navbar-nav-right.justify-content-end(style="flex: 1 1")
                     li.nav-item.nav-profile.dropdown
-                        a#profileDropdown.nav-link.dropdown-toggle(href='#', data-toggle='dropdown')
-                            span.nav-profile-name Johnson
-                            span.online-status
-                            img(src='http://res.cloudinary.com/din6v2it9/image/upload/v1634646688/zkozzmp9fkzlhxawpsly.jpg', alt='profile')
+                        if user.length > 0
+                            a#profileDropdown.nav-link.dropdown-toggle(href='#', data-toggle='dropdown')
+                                span.nav-profile-name= user[0].fullname
+                                span.online-status
+                                img(src=user[0].avatar, alt='profile')
                         .dropdown-menu.dropdown-menu-right.navbar-dropdown(aria-labelledby='profileDropdown')
                             a.dropdown-item
                                 i.mdi.mdi-settings.text-primary
-                                | Settings
-                            a.dropdown-item
+                                | Cài đặt
+                            a.dropdown-item(href='/logout')
                                 i.mdi.mdi-logout.text-primary
-                                | Logout
+                                | Đăng xuất
                 button.navbar-toggler.navbar-toggler-right.d-lg-none.align-self-center(type='button', data-toggle='horizontal-menu-toggle')
                     span.mdi.mdi-menu
     nav.bottom-navbar
-        .container
+        .container-fluid
             ul.nav.page-navigation
                 li.nav-item
                     a.nav-link(href='/admin/')
                         i.mdi.mdi-file-document-box.menu-icon
                         span.menu-title Dashboard
+                li.nav-item
+                    a.nav-link(href='/user/list-user')
+                        i.mdi.mdi-account-multiple.menu-icon
+                        span.menu-title Quản lý người dùng
+                        i.menu-arrow
+                li.nav-item
+                    a.nav-link(href='/blog/list-blog')
+                        i.mdi.mdi-blogger.menu-icon
+                        span.menu-title Quản lý blog
+                        i.menu-arrow
                 li.nav-item
                     a.nav-link(href='/subjects/list')
                         i.mdi.mdi-book.menu-icon
@@ -41,4 +52,14 @@
                     a.nav-link(href='/units/list')
                         i.mdi.mdi-file-document-box-outline.menu-icon
                         span.menu-title Quản lý chuyên đề
+                        i.menu-arrow
+                li.nav-item
+                    a.nav-link(href='/banners/list')
+                        i.mdi.mdi-file-image.menu-icon
+                        span.menu-title Quản lý banner
+                        i.menu-arrow
+                li.nav-item
+                    a.nav-link(href='/reports/list')
+                        i.mdi.mdi-bug.menu-icon
+                        span.menu-title Quản lý báo lỗi
                         i.menu-arrow

@@ -17,35 +17,36 @@ header.header
                         span.search__string.ms-2.fs-7
                     .search__result--content
     .header__actions
-        if user.length > 0
-            .header__actions--avatar
-                img(src=user[0].avatar, alt='')
-            .header__actions--userMenu.shadow
-                .user
-                    .user__avatar
-                        img(src=user[0].avatar, alt='')
-                    .user__info
-                        .name= user[0].fullname
-                        .username @#{user[0].username}
-                if user[0].role.length > 0 && user[0].role[0].roleName == 'admin'
+        .header__actions--user
+            if user.length > 0
+                .header__actions--avatar
+                    img(src=user[0].avatar, alt='')
+                .header__actions--userMenu.shadow
+                    .user
+                        .user__avatar
+                            img(src=user[0].avatar, alt='')
+                        .user__info
+                            .name= user[0].fullname
+                            .username @#{user[0].username}
+                    if user[0].role.length > 0 && user[0].role[0].roleName == 'admin'
+                        hr
+                        ul.list
+                            li.list__item
+                                a.list__link(href='/admin') Quản lý hệ thống
                     hr
                     ul.list
                         li.list__item
-                            a.list__link(href='/admin') Quản lý hệ thống
-                hr
-                ul.list
-                    li.list__item
-                        a.list__link(href='/infor') Thông tin cá nhân
-                    li.list__item
-                        a.list__link(href='/password/change') Đổi mật khẩu
-                    li.list__item
-                        a.list__link(href='/learning/result') Kết quả học tập
-                hr
-                ul.list
-                    li.list__item
-                        a.list__link(href='/logout') Đăng xuất
-        else
-            a.list__link.btn.btn-primary.btn-padding.fs-7(href='/login') Đăng nhập
+                            a.list__link(href='/infor') Thông tin cá nhân
+                        li.list__item
+                            a.list__link(href='/password/change') Đổi mật khẩu
+                        li.list__item
+                            a.list__link(href='/learning/result') Kết quả học tập
+                    hr
+                    ul.list
+                        li.list__item
+                            a.list__link(href='/logout') Đăng xuất
+            else
+                a.list__link.btn.btn-primary.btn-padding.fs-7(href='/login') Đăng nhập
     script.
         document.addEventListener('DOMContentLoaded', function() {
             var searchAll = $("#search__all");

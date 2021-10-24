@@ -10,7 +10,7 @@ block main
                         .ms-3
                             span.name(style='font-weight: 600')= user.fullname
                             span.d-block.mt-2.fs-8.text-secondary= moment(blog.updatedAt).locale("vi").fromNow()
-                    .blog-content.mt-4(style='line-height: 2')= blog.content
+                    .blog-content.mt-4(style='line-height: 2') !{blog.content}
             .col-sm-3
                 .blog-related
                     .blog-related-heading.fw-bold

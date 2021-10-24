@@ -1,0 +1,49 @@
+extends ../layouts/admin
+block content
+    .container
+        .col-12.grid-margin.stretch-card
+            .card
+                .card-body
+                    h4.card-title
+                        | Th&ecirc;m b&agrave;i vi&#x1EBF;t m&#x1EDB;i
+                    p.card-description
+                        | B&agrave;i Vi&#x1EBF;t
+                    form.forms-sample(method='POST' action=`/blog/${blog.id}/update?_method=PUT`)
+                        .form-group
+                            label(for='exampleInputName1') Ti&ecirc;u &Dstrok;&#x1EC1;
+                            input#exampleInputName1.form-control(type='text' placeholder='Tiêu đề' name='title' value=`${blog.title}`)
+                        .form-group
+                            label(for='exampleSelectGender') Th&#x1EC3; lo&#x1EA1;i
+                            select#exampleSelectGender.form-control( name= 'bcID')
+                                each category in categories
+                                    //- option(value=category._id selected=category.id==blog.bcID)= category.category
+                                    if (category.id == blog.bcID)
+                                        option(value=category._id selected)
+                                            span= category.category
+                                    else 
+                                        option(value=category.id )
+                                            span= category.category
+                        .form-group
+                            label(for='exampleTextarea1') N&#x1ED9;i dung
+                            textarea#ckeditor-content.form-control(name='content')=blog.content
+                        //.form-group
+                            label H&igrave;nh &#x1EA3;nh
+                            input.file-upload-default(type='file' name='img[]')
+                            .input-group.col-xs-12
+                                input.form-control.file-upload-info(type='text' disabled='' placeholder='chọn file ảnh')
+                                span.input-group-append
+                                    button.file-upload-browse.btn.btn-primary(type='button')
+                                        | &Dstrok;&abreve;ng &#x1EA2;nh
+                        .form-group
+                            label(for='exampleInputName1') Hình ảnh
+                            input#exampleInputName1.form-control(type='text' placeholder='link hình ảnh' name='image' value=`${blog.image}`)
+                        button.btn.btn-primary.mr-2(type='submit')
+                            | Lưu cập nhật
+                        button.btn.btn-light
+                            | H&#x1EE7;y b&#x1ECF;
+    script.
+        ClassicEditor
+            .create(document.querySelector('#ckeditor-content'))
+            .catch( error => {
+                console.error(error);
+            });

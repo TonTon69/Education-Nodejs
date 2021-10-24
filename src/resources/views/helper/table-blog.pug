@@ -1,0 +1,26 @@
+tbody
+    - var count = 0;
+    each blog in blogs
+        - count++;
+        tr
+            td= count
+            td.py-1
+                img(src=`${blog.image}` alt='image')
+            td.w-25= blog.title
+            td= blog.BlogCategory[0].category
+            td= blog.User[0].fullname
+            td= blog.createdAt.getDate()+"/"+blog.createdAt.getMonth()+"/"+blog.createdAt.getFullYear()
+            td= blog.view
+            td
+                a.btn.btn-primary.mr-2(href=`/blog/${blog._id}/update`) Sửa
+                button.btn.btn-danger(type='button' data-id=`${blog._id}` data-toggle='modal' data-target='#delete-blog-modal') Xóa 
+
+        //- td= count
+        //- td.w-25= subject.name
+        //- td= subject.gradeID
+        //- td
+        //-     ion-icon(name=subject.icon)
+        //- td.w-25= subject.slug
+        //- td.text-center(style='width: 15%')
+        //-     a.btn.btn-secondary.mr-2(href=`/subjects/${subject.id}/edit`) Sửa
+        //-     button.btn.btn-danger(data-toggle="modal" data-target="#deleteSubjectModal", data-id=subject._id) Xóa

@@ -1,0 +1,99 @@
+extends ../layouts/admin
+block content
+    .container  
+        .col-12.grid-margin
+            .card
+                .card-body
+                    h4.card-title
+                        | Chỉnh sửa tài khoản người dùng
+                    form.form-sample(method='POST' action=`/user/${user._id}/update?_method=PUT`)
+                        p.card-description(style='font-weight: bold;')
+                        | Th&ocirc;ng tin c&aacute; nh&acirc;n 
+                        .row(style="margin-top:15px;")
+                            .col-md-12
+                                .form-group.row
+                                    label.col-sm-2.col-form-label(style="margin-right: -44px;") Họ vả tên
+                                    .col-sm-9
+                                        input.form-control(type='text' name="fullname" value=`${user.fullname}`)
+                        .row
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label Ch&#x1EE9;c v&#x1EE5;
+                                    .col-sm-9
+                                        select.form-control(name= "roleID")
+                                            each role in roles
+                                                option(value=role._id selected=role.id==user.roleID)= role.description
+                            .add-role
+                                .btn.btn-outline-secondary.btn-icon-text.ml-auto( id="btn-add-role" data-toggle='modal' data-target='#add-role-modal')
+                                    i.mdi.mdi-upload.btn-icon-prepend
+                                    | Thêm mới chức vụ
+
+                        .row
+                            //code hrer
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label Ng&agrave;y sinh
+                                    .col-sm-9
+                                        - var birthDay=  user.birthDay.getFullYear()+"-"+user.birthDay.getMonth()+"-"+user.birthDay.getDate()
+                                        input.form-control(placeholder='30/01/2000' name="birthDay" value=`${birthDay}`)
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label &Dstrok;&#x1ECB;a ch&#x1EC9;
+                                    .col-sm-9
+                                        input.form-control(type='text' name="address" value=`${user.address}`)
+
+                        p.card-description(style='font-weight: bold')
+                            | Th&ocirc;ng tin t&agrave;i kho&#x1EA3;n
+                        .row
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label
+                                        | Email
+                                    .col-sm-9
+                                        input.form-control(type='text' name="email" value=`${user.email}`)
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label
+                                        | S&#x1ED1; &dstrok;i&#x1EC7;n
+                                        | tho&#x1EA1;i
+                                    .col-sm-9
+                                        input.form-control(type='text' name="phone" value=`${user.phone}`)
+                        .row
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label M&#x1EAD;t Kh&#x1EA9;u
+                                    .col-sm-9
+                                        input.form-control(type='password' name="password" value=`${user.password}`)
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label
+                                        | X&aacute;c nh&#x1EAD;n m&#x1EAD;t
+                                        | kh&#x1EA9;u
+                                    .col-sm-9
+                                        input.form-control(type='password' name="confirmPassword" value=`${user.password}` )
+                        div(style='\
+                        display: flex;\
+                        width: 100%;\
+                        justify-content: space-around;\
+                        ')
+                            button.btn.btn-primary(type='submit')
+                                | Cập nhật
+    //form add role
+    #add-role-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                form(method="POST" action="/user/add-role")
+                    .modal-header
+                        h5#exampleModalLabel.modal-title(style='font-weight: bold;') Thêm mới chức vụ
+                        button.close(type='button' data-dismiss='modal' aria-label='Close')
+                            span(aria-hidden='true') &times;
+                    .modal-body
+                        .row(style="flex-wrap: nowrap; height: 40px; margin-right: 0px; margin-left: -15px;  margin-bottom: 10px")
+                            label.col-form-label(style="width: 20%; margin-left: 10px;") Mã chức vụ
+                            input.form-control(type="text" name="roleName" style="width: 85%; margin-left: 10px;")
+                        .row(style="flex-wrap: nowrap; height: 40px; margin-right: 0px; margin-left: -15px")
+                            label.col-form-label(style="width: 20%; margin-left: 10px;") Mô tả
+                            input.form-control(type="text" name="description" style="width: 85%; margin-left: 10px;")
+                    .modal-footer
+                        button.btn.btn-secondary(type='button' data-dismiss='modal') H&#x1EE7;y
+                        button#btn-delete-blog.btn.btn-success(type='submit') Thêm mới

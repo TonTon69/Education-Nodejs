@@ -1,0 +1,45 @@
+extends ../layouts/admin
+block content
+    section.subject__edit
+        .row
+            .col-md-6.grid-margin.stretch-card.mx-auto
+                .card
+                    .card-body
+                        .d-flex.align-items-center.justify-content-between
+                            h4.card-title Chỉnh sửa ảnh bìa
+                            a.btn.btn-outline-warning.btn-icon-text(href='/banners/list') 
+                                i.mdi.mdi-reload.btn-icon-prepend
+                                | Quay lại
+                        p.card-description Nhập thông tin bên dưới để chỉnh sửa 1 ảnh bìa
+                        form.mt-4(action=`/banners/${banner._id}?_method=PUT`, method='POST')
+                            .form-group.row
+                                label.col-sm-3.col-form-label.text-dark(for='title') Tiêu đề
+                                .col-sm-9
+                                    input#title.form-control(type='text', placeholder='Nhập tiêu đề', name='title', required, value=banner.title)
+                            .form-group.row
+                                label.col-sm-3.col-form-label.text-dark(for='image') Ảnh bìa
+                                .col-sm-9
+                                    input#image.form-control(type='text', placeholder='Chọn ảnh bìa', name='image', required, value=banner.image)
+                            .form-group.row
+                                label.col-sm-3.col-form-label.text-dark(for='description') Mô tả
+                                .col-sm-9
+                                    textarea#description.form-control(type='text', placeholder='Nhập mô tả', name='description', rows=5, required)= banner.description
+                            .form-group.row
+                                label.col-sm-3.col-form-label.text-dark(for='url') Đường dẫn
+                                .col-sm-9
+                                    input#url.form-control(type='text', placeholder='Nhập đường dẫn', name='url', required, value=banner.url)
+                            a.btn.btn-light(href='/banners/list') Hủy bỏ
+                            button.btn.btn-primary.ml-2(type='submit') Lưu lại
+    if  success.length > 0
+        - var msgSuccess = success 
+    script.
+        let msgToastSuccess = '#{msgSuccess}';
+        if(msgToastSuccess != ''){
+            Eggy({
+                title: 'Thành công',
+                message:  msgToastSuccess,
+                type: 'success',
+                duration: 5000,
+            });
+        }  
+    

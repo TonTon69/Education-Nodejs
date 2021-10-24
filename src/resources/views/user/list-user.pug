@@ -1,0 +1,151 @@
+extends ../layouts/admin
+block content
+    section.users__list     
+        .col-lg-12.grid-margin.stretch-card
+            .card
+                .card-body
+                    h4.card-title
+                        | Danh s&aacute;ch ng&#x1B0;&#x1EDD;i d&ugrave;ng
+                    //- each role in roles
+                    //-     .btn-group(role='group' aria-label='Basic example')
+                    //-         button.btn.btn-secondary(type='button')= role.description   
+                    .d-flex.align-items-center
+                        .form-group.mb-0
+                            .input-group
+                                input.form-control(type='text' placeholder='Nhập từ khóa' name='search')
+                                .input-group-append
+                                    button.btn.btn-sm.btn-primary(type='submit') T&igrave;m ki&#x1EBF;m
+                        .form-group.mb-0.ml-4
+                            select.form-control.text-dark.p-2(name='role')
+                                option.selected.disabled(value='') -- Tìm kiếm theo chức vụ --
+                                each role in roles
+                                    option(value=`${role._id}`)=role.description
+                        a.btn.btn-outline-success.btn-icon-text.ml-auto(href='/user/create')
+                            i.mdi.mdi-upload.btn-icon-prepend
+                            | Thêm mới người dùng
+                    .table-responsive.pt-3
+                        table.table.table-hover.text-dark
+                            thead
+                                tr
+                                    th.font-weight-bold Ảnh
+                                    th.font-weight-bold H&#x1ECD; v&agrave; t&ecirc;n
+                                    th.font-weight-bold Ch&#x1EE9;c v&#x1EE5;
+                                    th.font-weight-bold S&#x1ED1; &dstrok;i&#x1EC7;n tho&#x1EA1;i
+                                    th.font-weight-bold Ng&agrave;y sinh
+                                    th.font-weight-bold Hành động
+                            tbody
+                                each user in users
+                                    tr
+                                        td.py-1
+                                            img(src=`${user.avatar}` alt='image')
+                                        td= user.fullname
+                                        td= user.Role[0].description
+                                        td= user.phone
+                                        td= user.birthDay.getDate()+"-"+user.birthDay.getMonth()+"-"+user.birthDay.getFullYear()
+                                        td  
+                                            a.btn.btn-success.mr-2(href=`/user/${user._id}/update`) Sửa
+                                            button.btn.btn-danger(type='button' data-id=`${user._id}` data-toggle='modal' data-target='#delete-user-modal') X&oacute;a
+    // Confirm delete
+    // Button trigger modal
+
+    //button.btn.btn-primary(type='button' data-toggle='modal' data-target='#delete-blog-modal')
+        | Launch demo modal
+    // Modal
+    #delete-user-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#exampleModalLabel.modal-title(style='font-weight: bold;') Xác nhận xóa người dùng
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                        span(aria-hidden='true') &times;
+                .modal-body
+                    | B&#x1EA1;n &dstrok;&atilde; ch&#x1EAF;c ch&#x1EAF;n mu&#x1ED1;n x&oacute;a!
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') H&#x1EE7;y
+                    button#btn-delete-user.btn.btn-danger(type='button') X&aacute;c nh&#x1EAD;n x&oacute;a
+    // Confirm delete
+    form(method='POST' name='delete-user-form')
+
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
+    script.
+        // toast message
+        let msgToastError = '#{msgError}';
+        if(msgToastError != ''){
+            Eggy({
+                title: 'Oops... Có gì đó không đúng',
+                message:  msgToastError,
+                type: 'warning',
+                duration: 5000,
+            });
+        }
+
+        let msgToastSuccess = '#{msgSuccess}';
+        if(msgToastSuccess != ''){
+            Eggy({
+                title: 'Thành công',
+                message:  msgToastSuccess,
+                type: 'success',
+                duration: 5000,
+            });
+        }  
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+
+        //Delete
+        var userID;
+        var deleteForm = document.forms["delete-user-form"];
+        var btnDeleteUser = document.getElementById('btn-delete-user');
+        $('#delete-user-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); 
+            var recipient = button.data('id');  
+            userID = recipient;     
+            //- console.log("blogID: "+ blogID);
+        });
+        btnDeleteUser.onclick= function(){
+            deleteForm.action = '/user/'+userID+'/delete?_method=DELETE';
+            deleteForm.submit();
+        }
+
+
+
+            //Search
+            $('.input-group-append button').click(function (e) {
+                e.preventDefault();
+                showUsers();
+            });
+
+            $('input[name=search]').keyup(function(e) {
+                showUsers();
+            });
+
+            function showUsers() {
+                var searchString = $('input[name=search]').val();
+                $.ajax({
+                    method: 'POST',
+                    url: '/user/list-user',
+                    contentType: 'application/json',
+                    data: JSON.stringify({query: searchString}),
+                    success: function (data) {
+                        $("table tbody").replaceWith(data);
+                    }
+                });
+            };
+
+            $("select[name=role]").change(function (e) {
+                e.preventDefault();
+                var option = $(this).val();
+                $.ajax({
+                    method: 'POST',
+                    url: '/user/list-user',
+                    contentType: 'application/json',
+                    data: JSON.stringify({option: option}),
+                    success: function (data) {
+                        $("table tbody").replaceWith(data);
+                    }
+                });
+            });
+        });
+

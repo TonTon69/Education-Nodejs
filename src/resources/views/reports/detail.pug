@@ -1,0 +1,30 @@
+extends ../layouts/admin
+block content
+    section.subject__edit
+        .row
+            .col-md-6.grid-margin.stretch-card.mx-auto
+                .card
+                    .card-body
+                        .d-flex.align-items-center.justify-content-between
+                            h4.card-title Chi tiết báo cáo lỗi
+                            a.btn.btn-outline-warning.btn-icon-text(href='/reports/list') 
+                                i.mdi.mdi-reload.btn-icon-prepend
+                                | Quay lại
+                        .mt-4
+                            .form-group.row.align-items-center
+                                label.col-sm-3.col-form-label.text-dark.mb-0 Người báo cáo lỗi
+                                .col-sm-9
+                                    span.text-dark #{report[0].User[0].fullname} - #{report[0].User[0].email}
+                            .form-group.row
+                                label.col-sm-3.col-form-label.text-dark(for='content') Mục lỗi
+                                .col-sm-9
+                                    input#name.form-control(type='text', name='content', value=report[0].content, disabled)
+                            .form-group.row
+                                label.col-sm-3.col-form-label.text-dark(for='summary') Nội dụng báo cáo
+                                .col-sm-9
+                                    input#icon.form-control(type='text', name='summary', value=report[0].summary, disabled)
+                            .form-group.row
+                                label.col-sm-3.col-form-label.text-dark(for='createdAt') Ngày báo cáo
+                                .col-sm-9
+                                    input#icon.form-control(type='date', name='createdAt', value=moment(report[0].createdAt).format("YYYY-MM-DD"), disabled)        
+                            

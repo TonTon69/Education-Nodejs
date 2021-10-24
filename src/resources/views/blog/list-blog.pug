@@ -1,0 +1,150 @@
+extends ../layouts/admin
+block content
+    .section.blog__list
+        .col-lg-12.grid-margin.stretch-card
+            .card
+                .card-body
+                    h4.card-title
+                        | Danh s&aacute;ch b&agrave;i vi&#x1EBF;t
+                        p.card-description
+                        //- each category in categories
+                        //-     .btn-group(role='group' aria-label='Basic example')
+                        //-         button.btn.btn-secondary(type='button') 
+                        //-             span= category.category
+                    .d-flex.align-items-center
+                        .form-group.mb-0
+                            .input-group
+                                input.form-control(type='text' placeholder='Nhập từ khóa' name='search')
+                                .input-group-append
+                                    button.btn.btn-sm.btn-primary(type='submit') T&igrave;m ki&#x1EBF;m
+                        .form-group.mb-0.ml-4
+                            select.form-control.text-dark.p-2(name='category')
+                                option.selected.disabled(value='') -- Tìm kiếm theo thể loại --
+                                each category in categories
+                                    option(value=`${category._id}`)=category.category
+
+                        a.btn.btn-outline-success.btn-icon-text.ml-auto(href='/blog/create')
+                            i.mdi.mdi-upload.btn-icon-prepend
+                            | Th&ecirc;m m&#x1EDB;i
+                    .table-responsive.pt-3
+                        table.table.table-hover.text-dark
+                            thead
+                                tr
+                                    th.font-weight-bold #
+                                    th.font-weight-bold Ảnh bìa
+                                    th.font-weight-bold Ti&ecirc;u &dstrok;&#x1EC1;
+                                    th.font-weight-bold Th&#x1EC3; lo&#x1EA1;i
+                                    th.font-weight-bold Tác giả
+                                    th.font-weight-bold Ng&agrave;y &dstrok;&abreve;ng
+                                    th.font-weight-bold Lượt xem
+                                    th.font-weight-bold Hành động
+                            tbody
+                                - var count = 0;
+                                each blog in blogs
+                                    - count++;
+                                    tr
+                                        td= count
+                                        td.py-1
+                                            img(src=`${blog.image}` alt='image')
+                                        td.w-25= blog.title
+                                        td= blog.BlogCategory[0].category
+                                        td= blog.User[0].fullname
+                                        td= blog.createdAt.getDate()+"/"+blog.createdAt.getMonth()+"/"+blog.createdAt.getFullYear()
+                                        td= blog.view
+                                        td
+                                            a.btn.btn-primary.mr-2(href=`/blog/${blog._id}/update`) Sửa
+                                            button.btn.btn-danger(type='button' data-id=`${blog._id}` data-toggle='modal' data-target='#delete-blog-modal') Xóa 
+    // Confirm delete
+    #delete-blog-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#exampleModalLabel.modal-title(style='font-weight: bold;') Xác nhận xóa bài viết
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                        span(aria-hidden='true') &times;
+                .modal-body
+                    | B&#x1EA1;n &dstrok;&atilde; ch&#x1EAF;c ch&#x1EAF;n mu&#x1ED1;n x&oacute;a!
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') H&#x1EE7;y
+                    button#btn-delete-blog.btn.btn-danger(type='button') X&aacute;c nh&#x1EAD;n x&oacute;a
+    // Confirm delete
+    form(method='POST' name='delete-blog-form')
+
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            // toast message
+            let msgToastError = '#{msgError}';
+            if(msgToastError != ''){
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            }
+
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != ''){
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            }
+
+            //Delete
+            var blogID;
+            var deleteForm = document.forms["delete-blog-form"];
+            var btnDeleteBlog = document.getElementById('btn-delete-blog');
+            $('#delete-blog-modal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); 
+                var recipient = button.data('id');  
+                blogID = recipient;     
+                //- console.log("blogID: "+ blogID);
+            });
+            btnDeleteBlog.onclick= function(){
+                deleteForm.action = '/blog/'+blogID+'/delete?_method=DELETE';
+                deleteForm.submit();
+            }
+            //Search
+            $('.input-group-append button').click(function (e) {
+                e.preventDefault();
+                showBLogs();
+            });
+
+            $('input[name=search]').keyup(function(e) {
+                showBLogs();
+            });
+
+            function showBLogs() {
+                var searchString = $('input[name=search]').val();
+                $.ajax({
+                    method: 'POST',
+                    url: '/blog/list-blog',
+                    contentType: 'application/json',
+                    data: JSON.stringify({query: searchString}),
+                    success: function (data) {
+                        $("table tbody").replaceWith(data);
+                    }
+                });
+            };
+
+            $("select[name=category]").change(function (e) {
+                e.preventDefault();
+                var option = $(this).val();
+                $.ajax({
+                    method: 'POST',
+                    url: '/blog/list-blog',
+                    contentType: 'application/json',
+                    data: JSON.stringify({option: option}),
+                    success: function (data) {
+                        $("table tbody").replaceWith(data);
+                    }
+                });
+            });
+        });

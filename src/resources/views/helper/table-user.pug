@@ -1,0 +1,44 @@
+tbody
+    each user in users
+        tr
+            td.py-1
+                img(src=`${user.avatar}` alt='image')
+            td= user.fullname
+            each role in roles
+                if role.id == user.roleID
+                    td=role.description
+                     
+            td= user.phone
+            td= user.birthDay.getDate()+"/"+user.birthDay.getMonth()+"/"+user.birthDay.getFullYear()
+            td
+                button.btn.btn-success(type='button') Chi ti&#x1EBF;t
+            td
+                button.btn.btn-danger(type='button') X&oacute;a
+//- tbody
+//-     - var count = 0;
+//-     each blog in blogs
+//-         - count++;
+//-         tr
+//-             td.py-1
+//-                 img(src=`${blog.image}` alt='image')
+//-             td= blog.title
+//-             each category in categories
+//-                 if category._id == blog.bcID
+//-                     td= category.category
+//-             td= blog.createdAt
+//-             td
+//-                 button.btn.btn-secondary(type='button') Xem
+//-             td
+//-                 button.btn.btn-primary(type='button') Sửa
+//-             td
+//-                 button.btn.btn-danger(type='button') Xóa
+
+    //- td= count
+    //- td.w-25= subject.name
+    //- td= subject.gradeID
+    //- td
+    //-     ion-icon(name=subject.icon)
+    //- td.w-25= subject.slug
+    //- td.text-center(style='width: 15%')
+    //-     a.btn.btn-secondary.mr-2(href=`/subjects/${subject.id}/edit`) Sửa
+    //-     button.btn.btn-danger(data-toggle="modal" data-target="#deleteSubjectModal", data-id=subject._id) Xóa

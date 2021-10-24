@@ -1,0 +1,103 @@
+extends ../layouts/admin
+block content
+    .container  
+        .col-12.grid-margin
+            .card
+                .card-body
+                    h4.card-title
+                        | Th&ecirc;m m&#x1EDB;i t&agrave;i kho&#x1EA3;n
+                    form.form-sample(method='POST' action='/user/create')
+                        p.card-description(style='font-weight: bold')
+                        | Th&ocirc;ng tin c&aacute; nh&acirc;n
+                        .row
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label H&#x1ECD;
+                                    .col-sm-9
+                                        input.form-control(type='text' name="firstName" style="w")
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label T&ecirc;n
+                                    .col-sm-9
+                                        input.form-control(type='text' name="lastName")
+                        .row
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label Ch&#x1EE9;c v&#x1EE5;
+                                    .col-sm-9
+                                        select.form-control(name= "roleID")
+                                            each role in roles
+                                                option(value=`${role._id}`)= role.description
+                            .add-role
+                                .btn.btn-outline-secondary.btn-icon-text.ml-auto( id="btn-add-role" data-toggle='modal' data-target='#add-role-modal')
+                                    i.mdi.mdi-upload.btn-icon-prepend
+                                    | Thêm mới chức vụ
+
+                        .row
+                            //code hrer
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label Ng&agrave;y sinh
+                                    .col-sm-9
+                                        input.form-control(placeholder='30/01/2000' name="birthDay")
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label &Dstrok;&#x1ECB;a ch&#x1EC9;
+                                    .col-sm-9
+                                        input.form-control(type='text' name="address")
+
+                        p.card-description(style='font-weight: bold')
+                            | Th&ocirc;ng tin t&agrave;i kho&#x1EA3;n
+                        .row
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label
+                                        | Email
+                                    .col-sm-9
+                                        input.form-control(type='text' name="email")
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label
+                                        | S&#x1ED1; &dstrok;i&#x1EC7;n
+                                        | tho&#x1EA1;i
+                                    .col-sm-9
+                                        input.form-control(type='text' name="phone")
+                        .row
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label M&#x1EAD;t Kh&#x1EA9;u
+                                    .col-sm-9
+                                        input.form-control(type='password' name="password")
+                            .col-md-6
+                                .form-group.row
+                                    label.col-sm-3.col-form-label
+                                        | X&aacute;c nh&#x1EAD;n m&#x1EAD;t
+                                        | kh&#x1EA9;u
+                                    .col-sm-9
+                                        input.form-control(type='password' name="confirmPassword")
+                        div(style='\
+                        display: flex;\
+                        width: 100%;\
+                        justify-content: space-around;\
+                        ')
+                            button.btn.btn-primary(type='submit')
+                                | &Dstrok;&abreve;ng k&yacute;
+    //form add role
+    #add-role-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                form(method="POST" action="/user/add-role")
+                    .modal-header
+                        h5#exampleModalLabel.modal-title(style='font-weight: bold;') Thêm mới chức vụ
+                        button.close(type='button' data-dismiss='modal' aria-label='Close')
+                            span(aria-hidden='true') &times;
+                    .modal-body
+                        .row(style="flex-wrap: nowrap; height: 40px; margin-right: 0px; margin-left: -15px;  margin-bottom: 10px")
+                            label.col-form-label(style="width: 20%; margin-left: 10px;") Mã chức vụ
+                            input.form-control(type="text" name="roleName" style="width: 85%; margin-left: 10px;")
+                        .row(style="flex-wrap: nowrap; height: 40px; margin-right: 0px; margin-left: -15px")
+                            label.col-form-label(style="width: 20%; margin-left: 10px;") Mô tả
+                            input.form-control(type="text" name="description" style="width: 85%; margin-left: 10px;")
+                    .modal-footer
+                        button.btn.btn-secondary(type='button' data-dismiss='modal') H&#x1EE7;y
+                        button#btn-delete-blog.btn.btn-success(type='submit') Thêm mới
