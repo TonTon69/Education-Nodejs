@@ -17,3 +17,8 @@ body::-webkit-scrollbar-thumb {
 table tbody tr td {
     line-height: 1.5 !important;
 }
+
+input::placeholder,
+textarea::placeholder {
+    color: #495057 !important;
+}

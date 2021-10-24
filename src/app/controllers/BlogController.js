@@ -8,7 +8,7 @@ class BlogController {
     async show(req, res, next) {
         try {
             const blog = await Blog.findOne({ slug: req.params.slug });
-            const user = await User.findOne({ _id: blog.userID });
+            const userBlog = await User.findOne({ _id: blog.userID });
 
             const blogRelated = await Blog.aggregate([
                 {
@@ -30,7 +30,7 @@ class BlogController {
 
             res.render("blog/show", {
                 blog,
-                user,
+                userBlog,
                 blogRelated,
             });
         } catch (err) {
