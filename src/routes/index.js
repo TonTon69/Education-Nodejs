@@ -8,6 +8,8 @@ const unitsRouter = require("./units");
 const userRouter = require("./user");
 const bannersRouter = require("./banners");
 const reportsRouter = require("./reports");
+const lessionsRouter = require("./lessions");
+const theoriesRouter = require("./theories");
 
 function route(app) {
     app.use("/", siteRouter);
@@ -20,6 +22,8 @@ function route(app) {
     app.use("/user", userRouter);
     app.use("/reports", reportsRouter);
     app.use("/banners", bannersRouter);
+    app.use("/lessions", lessionsRouter);
+    app.use("/theories", theoriesRouter);
 }
 
 module.exports = route;

@@ -20,24 +20,56 @@ block content
                                             - count++;
                                     p.text-dark.font-weight-bold= unit.name
                                         span.ml-2.font-weight-normal (#{count} bài học)
+                                        //- a(href='javascript:void(0)').ml-2.text-primary Chỉnh sửa
                                 div.ml-4.text-dark
                                     each lession in lessions
                                         if lession.unitID == unit.id
-                                            p Bài #{lession.lessionNumber}. #{lession.name}
+                                            .d-flex.align-items-center.justify-content-between.mb-2
+                                                span Bài #{lession.lessionNumber}. #{lession.name}
+                                                div
+                                                    a.text-primary(href=`/theories/${lession._id}`).ml-4 Lý thuyết
+                                                    a.text-primary(href='').ml-4 Bài tập vận dụng
                                 p.ml-4
-                                    a(href='javascript:void(0)' data-toggle="modal" data-target="#addLessionModal" data-id=unit._id)
+                                    a.text-primary(href='javascript:void(0)' data-toggle="modal" data-target="#addLessionModal" data-id=unit._id data-name=unit.name)
                                         i.mdi.mdi-auto-upload
                                         span.ml-2 Thêm mới bài học
+                        p
+                            a.text-primary(href='javascript:void(0)' data-toggle="modal" data-target="#addUnitModal" data-id=subject._id)
+                                i.mdi.mdi-auto-upload
+                                span.ml-2 Thêm mới chuyên đề
+                        #addUnitModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addUnitModalLabel', aria-hidden='true')
+                            .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 800px')
+                                .modal-content
+                                    .modal-header
+                                        strong#addUnitModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase #{subject.name} #{subject.gradeID} - Thêm mới chuyên đề
+                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                        span(aria-hidden='true') &times;
+                                    .modal-body.text-dark
+                                        p.card-description Nhập thông tin bên dưới để thêm mới 1 chuyên đề
+                                        form.mt-4(action="/units/create", method='post')
+                                            .form-group.row
+                                                input.form-control(type='text', name='subjectID', hidden)
+                                            .form-group.row
+                                                label.col-sm-3.col-form-label.text-dark(for='name') Tên chuyên đề
+                                                .col-sm-9
+                                                    input#name.form-control(type='text', placeholder='Nhập tên chuyên đề', name='name', required)
+                                            .float-right
+                                                button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
+                                                button.btn.btn-primary.ml-2#btn-add-lession(type='submit') Lưu lại
+
                         #addLessionModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addLessionModalLabel', aria-hidden='true')
                             .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 800px')
                                 .modal-content
                                     .modal-header
-                                        strong#addLessionModalLabel.modal-title.font-weight-bold.text-danger.text-uppercase Thêm mới môn học
+                                        strong#addLessionModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase #{subject.name} #{subject.gradeID} - Thêm mới bài học
                                         button.close(type='button', data-dismiss='modal', aria-label='Close')
                                         span(aria-hidden='true') &times;
                                     .modal-body.text-dark
                                         p.card-description Nhập thông tin bên dưới để thêm mới 1 bài học
-                                        .mt-4
+                                        form.mt-4(action="/lessions/create", method='post')
+                                            .form-group.row
+                                                label.col-sm-12.col-form-label.text-dark.label-unit-name.font-weight-bold
+                                                input.form-control(type='text', name='unitID', hidden)
                                             .form-group.row
                                                 label.col-sm-3.col-form-label.text-dark(for='name') Tên bài học
                                                 .col-sm-9
@@ -49,29 +81,49 @@ block content
                                             .float-right
                                                 button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
                                                 button.btn.btn-primary.ml-2#btn-add-lession(type='submit') Lưu lại
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
     script.
         document.addEventListener('DOMContentLoaded', function() {
             var addLessionModal = $("#addLessionModal");
-            var unitId;
+            var addUnitModal = $("#addUnitModal");
+            var unitId, unitName, subjectId;
             var btnAddLession = $("#btn-add-lession");
 
             addLessionModal.on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 unitId = button.data('id');
+                unitName = button.data('name');
+                $(".label-unit-name").text(unitName);
+                $("input[name='unitID']").val(unitId);
             });
 
-            btnAddLession.click(function () {
-                var nameLession = $("input[name=name]").val();
-                var numberLession = $("input[name=lessionNumber]").val();
-                $.ajax({
-                    method: 'POST',
-                    url: '/lessions/create',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        nameLession: nameLession, 
-                        numberLession: numberLession, 
-                        unitId: unitId,
-                    }),
-                });
+            addUnitModal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                subjectId = button.data('id');
+                $("input[name='subjectID']").val(subjectId);
             });
-        });
+
+            // toast message
+            let msgToastError = '#{msgError}';
+            if(msgToastError != ''){
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            }
+
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != ''){
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            }
+        }); 

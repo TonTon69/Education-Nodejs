@@ -70,22 +70,18 @@ class LearningController {
         try {
             const lession = await Lession.findOne({ slug: req.query.name });
             if (lession) {
-                const unit = await Unit.findById({
-                    _id: lession.unitID,
+                const exercises = await Exercise.find({
+                    lessionID: lession._id,
                 });
-                const subject = await Subject.findById({
-                    _id: unit.subjectID,
-                });
+
+                const unit = await Unit.findById(lession.unitID);
+                const subject = await Subject.findById(unit.subjectID);
 
                 const nextLession = await Lession.findOne({
                     _id: { $gt: lession._id },
                 })
                     .sort({ _id: 1 })
                     .limit(1);
-
-                const exercises = await Exercise.find({
-                    lessionID: lession._id,
-                });
 
                 const statistical = await Statistical.aggregate([
                     {

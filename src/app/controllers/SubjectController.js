@@ -215,7 +215,13 @@ class SubjectController {
         const lessions = await Lession.find({
             unitID: { $in: unitIdArray },
         });
-        res.render("subjects/content", { subject, units, lessions });
+        res.render("subjects/content", {
+            subject,
+            units,
+            lessions,
+            success: req.flash("success"),
+            errors: req.flash("error"),
+        });
     }
 }
 
