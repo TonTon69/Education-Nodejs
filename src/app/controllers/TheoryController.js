@@ -46,13 +46,24 @@ class TheoryController {
                         },
                     },
                 ]);
-                res.render("theories/detail", { theory });
+                res.render("theories/detail", {
+                    theory,
+                    success: req.flash("success"),
+                    errors: req.flash("error"),
+                });
             } else {
                 res.render("error");
             }
         } catch (error) {
             console.log(error);
         }
+    }
+
+    // [PUT]/theories/:id
+    async update(req, res, next) {
+        await Theory.updateOne({ _id: req.params.id }, req.body);
+        req.flash("success", "Cập nhật thành công!");
+        res.redirect("back");
     }
 }
 

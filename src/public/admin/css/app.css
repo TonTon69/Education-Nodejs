@@ -36,3 +36,7 @@ textarea::placeholder {
     background-color: #fb5533 !important;
     color: #fff !important;
 }
+
+.ck-editor__editable {
+    min-height: 200px;
+}

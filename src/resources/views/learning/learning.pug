@@ -45,7 +45,7 @@ block main
                                         a.btn.btn-primary(href=`/exercise/${subject.slug}?name=${lession.slug}`) Bắt đầu
                     hr
                     if theory
-                        .mt-4.mb-4= theory.content
+                        .mt-4.mb-4 !{theory.content}
                     else
                         .mt-4.mb-4 Nội dung bài học đang cập nhật. Vui lòng thử lại sau!
                     .text-center.mt-4.mb-4

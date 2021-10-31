@@ -16,5 +16,40 @@ block content
                                 a.btn.btn-outline-primary(href=`/exercises/detail?lession=${theory[0].lession._id}`).ml-4
                                     i.mdi.mdi-book-open-page-variant.mr-2
                                     | Bài tập vận dụng
-                        hr
-                        .text-dark !{theory[0].content}
+                        .text-dark.mt-4
+                            form(action=`/theories/${theory[0]._id}?_method=PUT` method="post")
+                                textarea#explain.form-control(type='text', placeholder='Nhập nội dung lý thuyết ở đây', required, name='content', rows=10) !{theory[0].content}
+                                .text-center.mt-4
+                                    button.btn.btn-primary.ml-2(type='submit') Lưu lại
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
+    script.
+        $(document).ready(function () {
+            ClassicEditor
+                .create( document.querySelector( '#explain' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+
+            let msgToastError = '#{msgError}';
+            if(msgToastError != ''){
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            }
+
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != ''){
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            }  
+        })
