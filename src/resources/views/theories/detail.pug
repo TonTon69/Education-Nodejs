@@ -7,13 +7,13 @@ block content
                     .card-body
                         .d-flex.align-items-center.justify-content-between
                             div
-                                .card-title #{theory[0].lession.unit.subject[0].name} #{theory[0].lession.unit.subject[0].gradeID} - #{theory[0].lession.unit.name}
+                                .card-title.text-uppercase #{theory[0].lession.unit.subject[0].name} #{theory[0].lession.unit.subject[0].gradeID} - #{theory[0].lession.unit.name}
                                 .card-title Lý thuyết "#{theory[0].lession.name}"
                             div
                                 a.btn.btn-outline-warning.btn-icon-text(href=`/subjects/${theory[0].lession.unit.subject[0]._id}/content`) 
                                     i.mdi.mdi-reload.btn-icon-prepend
                                     | Quay lại
-                                a.btn.btn-outline-primary(href='').ml-4
+                                a.btn.btn-outline-primary(href=`/exercises/detail?lession=${theory[0].lession._id}`).ml-4
                                     i.mdi.mdi-book-open-page-variant.mr-2
                                     | Bài tập vận dụng
                         hr

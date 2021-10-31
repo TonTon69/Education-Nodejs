@@ -20,7 +20,7 @@ block content
                                             - count++;
                                     p.text-dark.font-weight-bold= unit.name
                                         span.ml-2.font-weight-normal (#{count} bài học)
-                                        a(href='javascript:void(0)' data-toggle="modal" data-target="#editUnitModal").ml-2.text-primary.btn-edit-unit
+                                        a(href='javascript:void(0)' data-toggle="modal" data-target="#editUnitModal" data-name=unit.name data-id=unit._id data-subject=unit.subjectID).ml-4.text-primary.btn-edit-unit
                                             i.mdi.mdi-lead-pencil.mr-2
                                             | Chỉnh sửa
                                 div.ml-4.text-dark
@@ -34,7 +34,7 @@ block content
                                                             i.mdi.mdi-book-open-variant.mr-2
                                                             | Lý thuyết
                                                     if lession.exercises.length > 0
-                                                        a.text-primary(href='').ml-5
+                                                        a.text-primary(href=`/exercises/detail?lession=${lession._id}`).ml-5
                                                             i.mdi.mdi-book-open-page-variant.mr-2
                                                             | Bài tập vận dụng
                                 p.ml-4
@@ -55,16 +55,17 @@ block content
                                         span(aria-hidden='true') &times;
                                     .modal-body.text-dark
                                         p.card-description Nhập thông tin bên dưới để chỉnh sửa 1 chuyên đề
-                                        form.mt-4(action="/units/create", method='post')
-                                            .form-group.row
-                                                input.form-control(type='text', name='subjectID', hidden)
-                                            .form-group.row
-                                                label.col-sm-3.col-form-label.text-dark(for='name') Tên chuyên đề
-                                                .col-sm-9
-                                                    input#name.form-control(type='text', placeholder='Nhập tên chuyên đề', name='name', required)
-                                            .float-right
-                                                button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
-                                                button.btn.btn-primary.ml-2(type='submit') Lưu lại
+                                        form(name='edit-unit-form', method='post')
+                                            .mt-4
+                                                .form-group.row
+                                                    input.form-control(type='text', name='subjectID', hidden)
+                                                .form-group.row
+                                                    label.col-sm-3.col-form-label.text-dark(for='name') Tên chuyên đề
+                                                    .col-sm-9
+                                                        input#name.form-control(type='text', placeholder='Nhập tên chuyên đề', name='name', required)
+                                                .float-right
+                                                    button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
+                                                    button.btn.btn-primary.ml-2#btn-submit-edit-unit(type='submit') Lưu lại
                         
                         #addUnitModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addUnitModalLabel', aria-hidden='true')
                             .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 800px')
@@ -118,7 +119,10 @@ block content
         document.addEventListener('DOMContentLoaded', function() {
             var addLessionModal = $("#addLessionModal");
             var addUnitModal = $("#addUnitModal");
+            var editUnitModal = $("#editUnitModal");
             var unitId, unitName, subjectId;
+            var editUnitForm = $("form[name='edit-unit-form']");
+            var btnSubmitEditUnit = $("#btn-submit-edit-unit");
 
             addLessionModal.on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
@@ -133,6 +137,20 @@ block content
                 subjectId = button.data('id');
                 $("#addUnitModal input[name='subjectID']").val(subjectId);
             });
+
+            editUnitModal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                subjectId = button.data('subject');
+                unitId = button.data('id');
+                unitName = button.data('name');
+                $("#editUnitModal input[name='subjectID']").val(subjectId);
+                $("#editUnitModal input[name='name']").val(unitName);
+            });
+
+            btnSubmitEditUnit.click(function (e) {
+                editUnitForm.attr("action", "/units/" + unitId + "?_method=PUT");
+                editUnitForm.submit();
+            })
 
             // toast message
             let msgToastError = '#{msgError}';

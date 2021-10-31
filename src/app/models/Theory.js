@@ -3,7 +3,6 @@ const slug = require("mongoose-slug-generator");
 mongoose.plugin(slug);
 
 const Schema = mongoose.Schema;
-const mongooseDelete = require("mongoose-delete");
 
 const Theory = new Schema(
     {
@@ -14,7 +13,5 @@ const Theory = new Schema(
         timestamps: true,
     }
 );
-
-Theory.plugin(mongooseDelete, { deletedAt: true, overrideMethods: "all" });
 
 module.exports = mongoose.model("Theory", Theory);

@@ -13,9 +13,6 @@ class TheoryController {
     async detail(req, res, next) {
         try {
             if (ObjectId.isValid(req.query.lession)) {
-                // const theory = await Theory.findOne({
-                //     lessionID: req.query.lession,
-                // });
                 const theory = await Theory.aggregate([
                     { $match: { lessionID: ObjectId(req.query.lession) } },
                     {

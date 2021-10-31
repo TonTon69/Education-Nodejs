@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const slug = require("mongoose-slug-generator");
 
 const Schema = mongoose.Schema;
-const mongooseDelete = require("mongoose-delete");
 
 const Exercise = new Schema(
     {
@@ -21,7 +20,5 @@ const Exercise = new Schema(
         timestamps: true,
     }
 );
-
-Exercise.plugin(mongooseDelete, { deletedAt: true, overrideMethods: "all" });
 
 module.exports = mongoose.model("Exercise", Exercise);

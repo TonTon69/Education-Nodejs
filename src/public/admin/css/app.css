@@ -22,3 +22,17 @@ input::placeholder,
 textarea::placeholder {
     color: #495057 !important;
 }
+
+.exercise__detail nav .nav-tabs a {
+    width: 38px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.exercise__detail nav .nav-tabs a.active {
+    background-color: #fb5533 !important;
+    color: #fff !important;
+}

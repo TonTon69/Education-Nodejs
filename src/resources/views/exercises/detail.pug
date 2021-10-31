@@ -1,0 +1,100 @@
+extends ../layouts/admin
+block content
+    section.exercise__detail
+        .col-lg-12.grid-margin.stretch-card
+            .card
+                if exercises.length > 0
+                    .card-body
+                        .d-flex.align-items-center.justify-content-between
+                            div
+                                .card-title.text-uppercase #{exercises[0].lession.unit.subject[0].name} #{exercises[0].lession.unit.subject[0].gradeID} - #{exercises[0].lession.unit.name}
+                                .card-title Bài tập vận dụng "#{exercises[0].lession.name}"
+                            div
+                                a.btn.btn-outline-warning.btn-icon-text(href=`/subjects/${exercises[0].lession.unit.subject[0]._id}/content`) 
+                                    i.mdi.mdi-reload.btn-icon-prepend
+                                    | Quay lại
+                                a.btn.btn-outline-primary(href=`/theories/detail?lession=${exercises[0].lession._id}`).ml-4
+                                    i.mdi.mdi-book-open-variant.mr-2
+                                    | Lý thuyết
+                        .text-dark 
+                            .row 
+                                .col-md-3.grid-margin.stretch-card
+                                    .card
+                                        .card-header.text-center.bg-secondary Nhấn vào câu hỏi để xem chi tiết
+                                        .card-body
+                                            nav
+                                                .d-flex.align-items-center.nav.nav-tabs.border-0(role="tablist")
+                                                    - var count = 0;
+                                                    each exercise in exercises
+                                                        - count++;
+                                                        a.nav-item.nav-link.rounded-circle.bg-secondary.mr-3.mb-3(id=`exercise-tab-${count}` data-toggle="tab" href=`#nav-${count}` role="tab" aria-controls=`nav-${count}` aria-selected="fasle")= count
+                                .col-md-9.grid-margin.stretch-card
+                                    .card
+                                        .card-body
+                                            .tab-content.border-0.p-0
+                                                - var i = 0;
+                                                each exercise in exercises
+                                                    - i++;
+                                                    .tab-pane.fade(id=`nav-${i}`, role="tabpanel", aria-labelledby=`exercise-tab-${i}`)
+                                                        h4.card-title Câu #{i}
+                                                        form.mt-4(action=`/exercises/${exercise._id}?_method=PUT`, method='POST')
+                                                            .form-group.row
+                                                                label.col-sm-3.col-form-label.text-dark(for='question') Câu hỏi
+                                                                .col-sm-9
+                                                                    textarea#question.form-control(type='text', placeholder='Nhập câu hỏi', required, name='question', rows=5)= exercise.question
+                                                            .form-group.row
+                                                                label.col-sm-3.col-form-label.text-dark(for='option1') Option 1
+                                                                .col-sm-9
+                                                                    input#option1.form-control(type='text', placeholder='Nhập option 1', required, name='option1', value=exercise.option1)
+                                                            .form-group.row
+                                                                label.col-sm-3.col-form-label.text-dark(for='option2') Option 2
+                                                                .col-sm-9
+                                                                    input#option2.form-control(type='text', placeholder='Nhập option 2', required, name='option2', value=exercise.option2)
+                                                            .form-group.row
+                                                                label.col-sm-3.col-form-label.text-dark(for='option3') Option 3
+                                                                .col-sm-9
+                                                                    input#option3.form-control(type='text', placeholder='Nhập option 3', required, name='option3', value=exercise.option3)
+                                                            .form-group.row
+                                                                label.col-sm-3.col-form-label.text-dark(for='option4') Option 4
+                                                                .col-sm-9
+                                                                    input#option4.form-control(type='text', placeholder='Nhập option 4', required, name='option4', value=exercise.option4)
+                                                            .form-group.row
+                                                                label.col-sm-3.col-form-label.text-dark(for='recommend') Gợi ý
+                                                                .col-sm-9
+                                                                    input#recommend.form-control(type='text', placeholder='Nhập gợi ý', required, name='recommend', value=exercise.recommend)
+                                                            .form-group.row
+                                                                label.col-sm-3.col-form-label.text-dark(for='explain') Lời giải
+                                                                .col-sm-9
+                                                                    textarea#explain.form-control(type='text', placeholder='Nhập lời giải', required, name='explain', rows=5)=exercise.explain
+                                                            .text-center
+                                                                button.btn.btn-primary.ml-2(type='submit') Lưu lại
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
+    script.
+        $(document).ready(function () {
+            $("#exercise-tab-1").addClass("active");
+            $("#exercise-tab-1").attr("aria-selected", true);
+            $(".tab-content .tab-pane.fade").first().addClass("show active");
+
+            let msgToastError = '#{msgError}';
+            if(msgToastError != ''){
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            }
+
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != ''){
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            }
+        })

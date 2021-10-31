@@ -198,6 +198,7 @@ class UnitController {
     // [DELETE]/units/:id
     async delete(req, res, next) {
         try {
+            await Lession.deleteMany({ unitID: req.params.id });
             await Unit.deleteOne({ _id: req.params.id });
             req.flash("success", "Xóa thành công!");
             res.redirect("back");

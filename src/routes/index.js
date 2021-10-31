@@ -2,6 +2,7 @@ const siteRouter = require("./site");
 const subjectsRouter = require("./subjects");
 const learningRouter = require("./learning");
 const exerciseRouter = require("./exercise");
+const exercisesRouter = require("./exercises");
 const blogRouter = require("./blog");
 const inforRouter = require("./infor");
 const unitsRouter = require("./units");
@@ -24,6 +25,7 @@ function route(app) {
     app.use("/banners", bannersRouter);
     app.use("/lessions", lessionsRouter);
     app.use("/theories", theoriesRouter);
+    app.use("/exercises", exercisesRouter);
 }
 
 module.exports = route;
