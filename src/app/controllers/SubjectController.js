@@ -212,9 +212,25 @@ class SubjectController {
         const subject = await Subject.findById(req.params.id);
         const units = await Unit.find({ subjectID: subject._id });
         const unitIdArray = units.map(({ _id }) => _id);
-        const lessions = await Lession.find({
-            unitID: { $in: unitIdArray },
-        });
+        const lessions = await Lession.aggregate([
+            { $match: { unitID: { $in: unitIdArray } } },
+            {
+                $lookup: {
+                    from: "theories",
+                    localField: "_id",
+                    foreignField: "lessionID",
+                    as: "theory",
+                },
+            },
+            {
+                $lookup: {
+                    from: "exercises",
+                    localField: "_id",
+                    foreignField: "lessionID",
+                    as: "exercises",
+                },
+            },
+        ]);
         res.render("subjects/content", {
             subject,
             units,

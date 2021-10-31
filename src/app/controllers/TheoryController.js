@@ -9,10 +9,53 @@ const Statistical = require("../models/Statistical");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 class TheoryController {
-    // [GET]/theories/:slug
+    // [GET]/theories?lession
     async detail(req, res, next) {
-        const theory = await Theory.findById(req.params.slug);
-        res.render("theories/detail", { theory });
+        try {
+            if (ObjectId.isValid(req.query.lession)) {
+                // const theory = await Theory.findOne({
+                //     lessionID: req.query.lession,
+                // });
+                const theory = await Theory.aggregate([
+                    { $match: { lessionID: ObjectId(req.query.lession) } },
+                    {
+                        $lookup: {
+                            from: "lessions",
+                            localField: "lessionID",
+                            foreignField: "_id",
+                            as: "lession",
+                        },
+                    },
+                    {
+                        $unwind: "$lession",
+                    },
+                    {
+                        $lookup: {
+                            from: "units",
+                            localField: "lession.unitID",
+                            foreignField: "_id",
+                            as: "lession.unit",
+                        },
+                    },
+                    {
+                        $unwind: "$lession.unit",
+                    },
+                    {
+                        $lookup: {
+                            from: "subjects",
+                            localField: "lession.unit.subjectID",
+                            foreignField: "_id",
+                            as: "lession.unit.subject",
+                        },
+                    },
+                ]);
+                res.render("theories/detail", { theory });
+            } else {
+                res.render("error");
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

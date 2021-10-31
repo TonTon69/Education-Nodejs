@@ -3,6 +3,6 @@ const router = express.Router();
 
 const theoryController = require("../app/controllers/TheoryController");
 
-router.get("/:slug", theoryController.detail);
+router.get("/detail", theoryController.detail);
 
 module.exports = router;
