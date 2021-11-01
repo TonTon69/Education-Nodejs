@@ -12,7 +12,7 @@ block main
                                 strong.d-block.fw-bold.mb-0 Câu 
                                     span.index-qa= count
                                 button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= item.exercise.category[0].type
-                            .question.mt-2= item.exercise.question
+                            .question.mt-2 !{item.exercise.question}
                             .options.mt-3.row
                                 .col-sm-6.form-check.d-flex.align-items-center
                                     input.form-check-input.ms-0.mt-0.me-3(id="option1", type='radio', disabled)
@@ -95,10 +95,10 @@ block main
                                     ion-icon(name='sunny')
                                 .explain-body.mt-4
                                     span.fw-bold Phương pháp giải
-                                    .mt-2.explain-content= item.exercise.recommend
+                                    .mt-2.explain-content !{item.exercise.recommend}
                                     hr
                                     span.fw-bold Lời giải
-                                    .mt-2.explain-content= item.exercise.explain
+                                    .mt-2.explain-content !{item.exercise.explain}
                 .result
                     .animate
                     .score

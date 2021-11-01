@@ -74,6 +74,17 @@ block content
         - var msgSuccess = success
     script.
         $(document).ready(function () {
+            var allEditorsQuestion = document.querySelectorAll('#question');
+            var allEditorsExplain = document.querySelectorAll('#explain');
+            
+            for (var i = 0; i < allEditorsQuestion.length; ++i) {
+                ClassicEditor.create(allEditorsQuestion[i]);
+            }
+
+            for (var i = 0; i < allEditorsExplain.length; ++i) {
+                ClassicEditor.create(allEditorsExplain[i]);
+            }
+
             $("#exercise-tab-1").addClass("active");
             $("#exercise-tab-1").attr("aria-selected", true);
             $(".tab-content .tab-pane.fade").first().addClass("show active");
