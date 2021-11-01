@@ -18,16 +18,20 @@ block content
                                     each lession in lessions
                                         if (lession.unitID == unit.id)
                                             - count++;
-                                    p.text-dark.font-weight-bold= unit.name
+                                    .text-dark.d-flex.align-items-center.mb-2
+                                        span.font-weight-bold= unit.name
                                         span.ml-2.font-weight-normal (#{count} bài học)
-                                        a(href='javascript:void(0)' data-toggle="modal" data-target="#editUnitModal" data-name=unit.name data-id=unit._id data-subject=unit.subjectID).ml-4.text-primary.btn-edit-unit
-                                            i.mdi.mdi-lead-pencil.mr-2
-                                            | Chỉnh sửa
+                                        button.ml-4.text-primary.p-1.btn.border.border-primary(data-toggle="modal" data-target="#editUnitModal" data-name=unit.name data-id=unit._id data-subject=unit.subjectID)
+                                            i.mdi.mdi-lead-pencil
+                                        button.ml-4.text-orange.p-1.btn.border.border-danger(data-toggle="modal" data-target="#deleteUnitModal" data-id=unit._id)
+                                            i.mdi.mdi-delete
                                 div.ml-4.text-dark
                                     each lession in lessions
                                         if lession.unitID == unit.id
                                             .d-flex.align-items-center.justify-content-between.mb-2
                                                 span Bài #{lession.lessionNumber}. #{lession.name}
+                                                    button.p-1.btn.border.border-danger(data-toggle="modal" data-target="#editLessionModal" data-id=lession._id data-lession=lession.name data-number=lession.lessionNumber data-name=unit.name data-unit=unit._id).ml-4.text-orange
+                                                        i.mdi.mdi-lead-pencil
                                                 div
                                                     if lession.theory.length > 0
                                                         a.text-primary(href=`/theories/detail?lession=${lession._id}`).ml-4 
@@ -45,7 +49,31 @@ block content
                             a.text-primary(href='javascript:void(0)' data-toggle="modal" data-target="#addUnitModal" data-id=subject._id)
                                 i.mdi.mdi-auto-upload
                                 span.ml-2 Thêm mới chuyên đề
-                        
+                        #editLessionModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editLessionModalLabel', aria-hidden='true')
+                            .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 800px')
+                                .modal-content
+                                    .modal-header
+                                        strong#editLessionModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase #{subject.name} #{subject.gradeID} - Chỉnh sửa bài học
+                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                        span(aria-hidden='true') &times;
+                                    .modal-body.text-dark
+                                        p.card-description Nhập thông tin bên dưới để chỉnh sửa 1 bài học
+                                        form(name='edit-lession-form', method='post')
+                                            .mt-4
+                                                .form-group.row
+                                                    label.col-sm-12.col-form-label.text-dark.label-unit-name.font-weight-bold
+                                                    input.form-control(type='text', name='unitID', hidden)
+                                                .form-group.row
+                                                    label.col-sm-3.col-form-label.text-dark(for='name-lession-edit') Tên bài học
+                                                    .col-sm-9
+                                                        input#name-lession-edit.form-control(type='text', placeholder='Nhập tên bài học', name='name', required)
+                                                .form-group.row
+                                                    label.col-sm-3.col-form-label.text-dark(for='lession-number') Bài học số
+                                                    .col-sm-9
+                                                        input#lession-number.form-control(type='number', placeholder='Nhập bài học số', name='lessionNumber', required)
+                                                .float-right
+                                                    button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
+                                                    button.btn.btn-primary.ml-2#btn-submit-edit-lession(type='submit') Lưu lại
                         #editUnitModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editUnitModalLabel', aria-hidden='true')
                             .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 800px')
                                 .modal-content
@@ -111,6 +139,20 @@ block content
                                             .float-right
                                                 button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
                                                 button.btn.btn-primary.ml-2(type='submit') Lưu lại
+                        #deleteUnitModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteUnitModalLabel', aria-hidden='true')
+                            .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 650px')
+                                .modal-content
+                                    .modal-header
+                                        strong#deleteUnitModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase #{subject.name} #{subject.gradeID} - Xóa chuyên đề !!!
+                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                        span(aria-hidden='true') &times;
+                                    .modal-body.text-dark
+                                        p Hành động này sẽ xóa tất cả các bài học, nội dung lý thuyết và bài tập vận dụng của chuyên đề này !!!
+                                        p Hành động này rất nguy hiểm, không thể khôi phục lại dữ liệu.
+                                        p Bạn có chắc chắn muốn xóa chuyên đề này ???
+                                    .modal-footer
+                                        button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
+                                        button.btn.btn-danger.ml-2#btn-submit-delete-unit(type='submit') Chắc chắn xóa
     if errors.length > 0
         - var msgError = errors
     else if success.length > 0
@@ -120,9 +162,12 @@ block content
             var addLessionModal = $("#addLessionModal");
             var addUnitModal = $("#addUnitModal");
             var editUnitModal = $("#editUnitModal");
-            var unitId, unitName, subjectId;
+            var editLessionModal = $("#editLessionModal");
+            var unitId, unitName, subjectId, lessionName, lessionNumber, lessionId;
             var editUnitForm = $("form[name='edit-unit-form']");
+            var editLessionForm = $("form[name='edit-lession-form']");
             var btnSubmitEditUnit = $("#btn-submit-edit-unit");
+            var btnSubmitEditLession = $("#btn-submit-edit-lession");
 
             addLessionModal.on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
@@ -147,10 +192,59 @@ block content
                 $("#editUnitModal input[name='name']").val(unitName);
             });
 
+            editLessionModal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                unitName = button.data('name');
+                unitId = button.data('unit');
+                lessionId = button.data('id');
+                lessionName = button.data('lession');
+                lessionNumber = button.data('number');
+                $("#editLessionModal .label-unit-name").text(unitName);
+                $("#editLessionModal input[name='name']").val(lessionName);
+                $("#editLessionModal input[name='lessionNumber']").val(lessionNumber);
+                $("#editLessionModal input[name='unitID']").val(unitId);
+            });
+
             btnSubmitEditUnit.click(function (e) {
-                editUnitForm.attr("action", "/units/" + unitId + "?_method=PUT");
-                editUnitForm.submit();
-            })
+                e.preventDefault();
+                if ($("#editUnitModal input[name='name']").val() === "") {
+                    Eggy({
+                        title: 'Oops... Có gì đó không đúng',
+                        message:  'Vui lòng nhập tên chuyên đề!',
+                        type: 'warning',
+                        duration: 5000,
+                    });
+                } else {
+                    editUnitForm.attr("action", "/units/" + unitId + "?_method=PUT");
+                    editUnitForm.submit();
+                }
+            });
+
+            btnSubmitEditLession.click(function (e) {
+                e.preventDefault();
+                if ($("#editLessionModal input[name='name']").val() === "") {
+                    Eggy({
+                        title: 'Oops... Có gì đó không đúng',
+                        message:  'Vui lòng nhập tên bài học!',
+                        type: 'warning',
+                        duration: 5000,
+                    });
+                    return;
+                };
+
+                if ($("#editLessionModal input[name='lessionNumber']").val() === "") {
+                    Eggy({
+                        title: 'Oops... Có gì đó không đúng',
+                        message:  'Vui lòng nhập bài học số!',
+                        type: 'warning',
+                        duration: 5000,
+                    });
+                    return;
+                };
+
+                editLessionForm.attr("action", "/lessions/" + lessionId + "?_method=PUT");
+                editLessionForm.submit();
+            });
 
             // toast message
             let msgToastError = '#{msgError}';

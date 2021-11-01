@@ -38,5 +38,17 @@ textarea::placeholder {
 }
 
 .ck-editor__editable {
-    min-height: 200px;
+    min-height: 150px;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.text-orange {
+    color: #fb5533 !important;
+}
+
+p {
+    line-height: 1.5 !important;
 }

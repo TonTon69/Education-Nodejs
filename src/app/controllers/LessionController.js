@@ -23,6 +23,16 @@ class LessionController {
 
     // [POST]/banners/create
     async postCreate(req, res) {
+        const { name } = req.body;
+        const findLession = await Lession.findOne({ name });
+        if (findLession) {
+            req.flash(
+                "error",
+                "Bài học này đã tồn tại... Vui lòng nhập học này khác!"
+            );
+            res.redirect("back");
+            return;
+        }
         const lession = new Lession(req.body);
         await lession.save();
         req.flash("success", "Thêm mới bài học thành công!");
@@ -38,12 +48,22 @@ class LessionController {
     //     });
     // }
 
-    // //   // [PUT]/banners/:id
-    // async update(req, res, next) {
-    //     await Banner.updateOne({ _id: req.params.id }, req.body);
-    //     req.flash("success", "Cập nhật thành công!");
-    //     res.redirect("back");
-    // }
+    //   // [PUT]/lessions/:id
+    async update(req, res, next) {
+        const { name } = req.body;
+        const findLession = await Lession.findOne({ name });
+        if (findLession) {
+            req.flash(
+                "error",
+                "Bài học này đã tồn tại... Vui lòng nhập học này khác!"
+            );
+            res.redirect("back");
+            return;
+        }
+        await Lession.updateOne({ _id: req.params.id }, req.body);
+        req.flash("success", "Cập nhật thành công!");
+        res.redirect("back");
+    }
 
     // //   // [DELETE]/banners/:id
     // async delete(req, res, next) {

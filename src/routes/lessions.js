@@ -5,5 +5,6 @@ const lessionController = require("../app/controllers/LessionController");
 
 // router.get("/create", lessionController.create);
 router.post("/create", lessionController.postCreate);
+router.put("/:id", lessionController.update);
 
 module.exports = router;
