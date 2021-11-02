@@ -65,6 +65,44 @@ class TheoryController {
         req.flash("success", "Cập nhật thành công!");
         res.redirect("back");
     }
+
+    // [GET]/theories/create
+    async create(req, res, next) {
+        if (ObjectId.isValid(req.query.lession)) {
+            const lession = await Lession.findOne({ _id: req.query.lession });
+            const unit = await Unit.findOne({ _id: lession.unitID });
+            const subject = await Subject.findOne({ _id: unit.subjectID });
+            const theory = await Theory.findOne({ lessionID: lession._id });
+            if (theory) {
+                res.redirect(`/theories/detail?lession=${lession._id}`);
+                return;
+            }
+            res.render("theories/create", {
+                lession,
+                subject,
+                unit,
+                errors: req.flash("error"),
+            });
+        } else {
+            res.render("error");
+        }
+    }
+
+    // [POST]/theories/create
+    async postCreate(req, res, next) {
+        if (req.body.content === "") {
+            req.flash(
+                "error",
+                "Vui lòng nhập nội dung lý thuyết cho môn học này!"
+            );
+            res.redirect("back");
+            return;
+        }
+        const theory = new Theory(req.body);
+        await theory.save();
+        req.flash("success", "Thêm mới thành công!");
+        res.redirect("back");
+    }
 }
 
 module.exports = new TheoryController();

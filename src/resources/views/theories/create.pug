@@ -1,0 +1,37 @@
+extends ../layouts/admin
+block content
+    section.theory__create
+        .col-md-9.grid-margin.stretch-card.mx-auto
+            .card
+                .card-body
+                    .d-flex.align-items-center.justify-content-between
+                        h4.card-title Thêm mới lý thuyết
+                        a.btn.btn-outline-warning.btn-icon-text(href=`/subjects/${subject._id}/content`) 
+                            i.mdi.mdi-reload.btn-icon-prepend
+                            | Quay lại
+                    hr
+                    div
+                        .card-title.text-uppercase #{subject.name} #{subject.gradeID} - #{unit.name}
+                        .card-title Bài #{lession.lessionNumber}. #{lession.name}
+                    p.card-description Nhập thông tin bên dưới để thêm mới nội dung lý thuyết
+                    form.mt-4(name='add-theory-form', action='/theories/create', method='post')
+                        input(type='text', name='lessionID', value=lession._id, hidden)
+                        textarea#content.form-control(type='text', placeholder='Nhập nội dung lý thuyết ở đây', name='content')
+                        .text-center.mt-4
+                            button.btn.btn-primary.ml-2#btn-add-theory(type='submit') Lưu lại
+    if errors.length > 0
+        - var msgError = errors
+    script.
+        $(document).ready(function () {
+            ClassicEditor.create( document.querySelector( '#content' ) );
+            
+            let msgToastError = '#{msgError}';
+            if(msgToastError != ''){
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            }
+        })

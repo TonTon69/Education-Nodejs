@@ -3,6 +3,8 @@ const router = express.Router();
 
 const theoryController = require("../app/controllers/TheoryController");
 
+router.get("/create", theoryController.create);
+router.post("/create", theoryController.postCreate);
 router.get("/detail", theoryController.detail);
 router.put("/:id", theoryController.update);
 

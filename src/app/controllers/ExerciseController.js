@@ -196,6 +196,14 @@ class ExerciseController {
                 { $match: { lessionID: ObjectId(req.query.lession) } },
                 {
                     $lookup: {
+                        from: "exercise-categories",
+                        localField: "ceID",
+                        foreignField: "_id",
+                        as: "category",
+                    },
+                },
+                {
+                    $lookup: {
                         from: "lessions",
                         localField: "lessionID",
                         foreignField: "_id",
@@ -225,8 +233,12 @@ class ExerciseController {
                     },
                 },
             ]);
+
+            const categories = await ExerciseCategory.find({});
+
             res.render("exercises/detail", {
                 exercises,
+                categories,
                 success: req.flash("success"),
                 errors: req.flash("error"),
             });
@@ -235,11 +247,25 @@ class ExerciseController {
         }
     }
 
-    // [PUT]/exercise/:id/edit
+    // [PUT]/exercises/:id
     async update(req, res, next) {
-        console.log(req.params.id);
         await Exercise.updateOne({ _id: req.params.id }, req.body);
         req.flash("success", "Cập nhật thành công!");
+        res.redirect("back");
+    }
+
+    // [POST]/exercises/create
+    async postCreate(req, res, next) {
+        const exercise = new Exercise(req.body);
+        await exercise.save();
+        req.flash("success", "Thêm mới thành công!");
+        res.redirect("back");
+    }
+
+    // [DELETE]/exercises
+    async delete(req, res, next) {
+        await Exercise.deleteOne({ _id: req.params.id });
+        req.flash("success", "Xóa thành công!");
         res.redirect("back");
     }
 }
