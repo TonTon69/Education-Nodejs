@@ -3,6 +3,7 @@ const Lession = require("../models/Lession");
 const ExerciseCategory = require("../models/ExerciseCategory");
 const Exercise = require("../models/Exercise");
 const Result = require("../models/Result");
+const Unit = require("../models/Unit");
 const User = require("../models/User");
 const Statistical = require("../models/Statistical");
 const mongoose = require("mongoose");
@@ -234,14 +235,18 @@ class ExerciseController {
                 },
             ]);
 
-            const categories = await ExerciseCategory.find({});
+            if (exercises.length > 0) {
+                const categories = await ExerciseCategory.find({});
 
-            res.render("exercises/detail", {
-                exercises,
-                categories,
-                success: req.flash("success"),
-                errors: req.flash("error"),
-            });
+                res.render("exercises/detail", {
+                    exercises,
+                    categories,
+                    success: req.flash("success"),
+                    errors: req.flash("error"),
+                });
+            } else {
+                res.redirect(`/exercises/create?lession=${req.query.lession}`);
+            }
         } else {
             res.render("error");
         }
@@ -252,6 +257,25 @@ class ExerciseController {
         await Exercise.updateOne({ _id: req.params.id }, req.body);
         req.flash("success", "Cập nhật thành công!");
         res.redirect("back");
+    }
+
+    // [GET]/exercises/create
+    async create(req, res, next) {
+        if (ObjectId.isValid(req.query.lession)) {
+            const lession = await Lession.findOne({ _id: req.query.lession });
+            const unit = await Unit.findOne({ _id: lession.unitID });
+            const subject = await Subject.findOne({ _id: unit.subjectID });
+            const categories = await ExerciseCategory.find({});
+            res.render("exercises/create", {
+                lession,
+                unit,
+                subject,
+                categories,
+                success: req.flash("success"),
+            });
+        } else {
+            res.render("error");
+        }
     }
 
     // [POST]/exercises/create

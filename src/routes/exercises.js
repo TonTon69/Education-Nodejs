@@ -5,6 +5,7 @@ const exerciseController = require("../app/controllers/ExerciseController");
 
 const { requireAuth } = require("../app/middlewares/AuthMiddleware");
 
+router.get("/create", requireAuth, exerciseController.create);
 router.post("/create", requireAuth, exerciseController.postCreate);
 router.get("/detail", requireAuth, exerciseController.detail);
 router.delete("/:id", requireAuth, exerciseController.delete);

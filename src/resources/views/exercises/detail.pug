@@ -28,7 +28,7 @@ block content
                                                     each exercise in exercises
                                                         - count++;
                                                         a.nav-item.nav-link.rounded-circle.bg-secondary.mr-3.mb-3(id=`exercise-tab-${count}` data-toggle="tab" href=`#nav-${count}` role="tab" aria-controls=`nav-${count}` aria-selected="fasle")= count
-                                                    button.btn.border.border-danger.text-orange.p-2.mb-3.mr-3(data-toggle="modal" data-target="#addExerciseModal" data-lession=exercises[0].lession._id)
+                                                    a.btn.border.border-danger.text-orange.p-2.mb-3.mr-3(href=`/exercises/create?lession=${exercises[0].lession._id}`)
                                                         i.mdi.mdi-upload
                                                     
                                 .col-md-9.grid-margin.stretch-card
@@ -86,62 +86,7 @@ block content
                                                                             option(value=category._id selected=category.id==exercise.ceID)= category.type
                                                             .text-center
                                                                 button.btn.btn-primary.ml-2(type='submit') Lưu lại
-    #addExerciseModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addExerciseModalLabel', aria-hidden='true')
-        .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 900px')
-            .modal-content
-                .modal-header
-                    strong#addExerciseModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase Thêm mới câu hỏi
-                    button.close(type='button', data-dismiss='modal', aria-label='Close')
-                    span(aria-hidden='true') &times;
-                .modal-body.text-dark
-                    .font-weight-bold
-                        .card-title.text-uppercase #{exercises[0].lession.unit.subject[0].name} #{exercises[0].lession.unit.subject[0].gradeID} - #{exercises[0].lession.unit.name}
-                        .card-title Bài tập vận dụng "#{exercises[0].lession.name}"
-                    p.card-description Nhập thông tin bên dưới để thêm mới 1 câu hỏi
-                    form.mt-4(action="/exercises/create", method='post')
-                        input(type='text', name='lessionID', hidden)
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='exercise-question') Câu hỏi
-                            .col-sm-9
-                                textarea#exercise-question.form-control(type='text', placeholder='Nhập câu hỏi', name='question')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='option1') Option 1
-                            .col-sm-9
-                                input#option1.form-control(type='text', placeholder='Nhập option 1', required, name='option1')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='option2') Option 2
-                            .col-sm-9
-                                input#option2.form-control(type='text', placeholder='Nhập option 2', required, name='option2')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='option3') Option 3
-                            .col-sm-9
-                                input#option3.form-control(type='text', placeholder='Nhập option 3', required, name='option3')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='option4') Option 4
-                            .col-sm-9
-                                input#option4.form-control(type='text', placeholder='Nhập option 4', required, name='option4')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='answer') Đáp án đúng
-                            .col-sm-9
-                                input#answer.form-control(type='text', placeholder='Nhập đáp án đúng', required, name='answer')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='recommend') Gợi ý
-                            .col-sm-9
-                                input#recommend.form-control(type='text', placeholder='Nhập gợi ý', required, name='recommend')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='exercise-explain') Lời giải
-                            .col-sm-9
-                                textarea#exercise-explain.form-control(type='text', placeholder='Nhập lời giải', name='explain')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='category') Loại câu hỏi
-                            .col-sm-9
-                                select.form-control.h-75(id='category', name='ceID', required)
-                                    option.selected(value='') --Chọn loại câu hỏi--
-                                    each category in categories
-                                        option(value=category._id)= category.type
-                        .float-right
-                            button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
-                            button.btn.btn-primary.ml-2(type='submit') Lưu lại
+    
     form(name='delete-exercise-form', method='post')
     #deleteExerciseModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteExerciseModalLabel', aria-hidden='true')
         .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 650px')
@@ -164,11 +109,10 @@ block content
         $(document).ready(function () {
             var allEditorsQuestion = document.querySelectorAll('#question');
             var allEditorsExplain = document.querySelectorAll('#explain');
-            var addExerciseModal = $("#addExerciseModal");
             var deleteExerciseModal = $("#deleteExerciseModal");
             var deleteExerciseForm = $("form[name=delete-exercise-form]");
             var btnSubmitDeleteExercise = $("#btn-submit-delete-exercise");
-            var lessionId, exerciseId;
+            var exerciseId;
 
             ClassicEditor.create(document.querySelector('#exercise-question'));
             ClassicEditor.create(document.querySelector('#exercise-explain'));
@@ -184,12 +128,6 @@ block content
             $("#exercise-tab-1").addClass("active");
             $("#exercise-tab-1").attr("aria-selected", true);
             $(".tab-content .tab-pane.fade").first().addClass("show active");
-
-            addExerciseModal.on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget);
-                lessionId = button.data('lession');
-                $("#addExerciseModal input[name='lessionID']").val(lessionId);
-            });
 
             deleteExerciseModal.on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
