@@ -16,22 +16,51 @@ block content
                                 a.btn.btn-outline-primary(href=`/exercises/detail?lession=${theory[0].lession._id}`).ml-4
                                     i.mdi.mdi-book-open-page-variant.mr-2
                                     | Bài tập vận dụng
+                        .text-right
+                            button.btn.btn-outline-danger(data-toggle="modal" data-target="#deleteTheoryModal" data-id=theory[0]._id)
+                                i.mdi.mdi-delete 
+                                span Xóa
                         .text-dark.mt-4
                             form(action=`/theories/${theory[0]._id}?_method=PUT` method="post")
-                                textarea#explain.form-control(type='text', placeholder='Nhập nội dung lý thuyết ở đây', required, name='content', rows=10) !{theory[0].content}
+                                textarea#explain.form-control(type='text', placeholder='Nhập nội dung lý thuyết ở đây', name='content') !{theory[0].content}
                                 .text-center.mt-4
                                     button.btn.btn-primary.ml-2(type='submit') Lưu lại
+    form.mt-4(name='delete-theory-form', method='post')
+    #deleteTheoryModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteTheoryModalLabel', aria-hidden='true')
+        .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 650px')
+            .modal-content
+                .modal-header
+                    strong#deleteTheoryModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase Xóa nội dung lý thuyết !!!
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body.text-dark
+                    p Hành động này không thể khôi phục lại dữ liệu.
+                    p Bạn có chắc chắn muốn xóa bài học này ???
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
+                    button.btn.btn-danger.ml-2#btn-submit-delete-theory(type='submit') Chắc chắn xóa
     if errors.length > 0
         - var msgError = errors
     else if success.length > 0
         - var msgSuccess = success
     script.
         $(document).ready(function () {
-            ClassicEditor
-                .create( document.querySelector( '#explain' ) )
-                .catch( error => {
-                    console.error( error );
-                } );
+            ClassicEditor.create( document.querySelector( '#explain' ) );
+            var deleteTheoryModal = $("#deleteTheoryModal");
+            var deleteTheoryForm = $("form[name='delete-theory-form']");
+            var btnSubmitDeleteTheory = $("#btn-submit-delete-theory");
+            var theoryId;
+
+            deleteTheoryModal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                theoryId = button.data('id');
+            });
+
+            btnSubmitDeleteTheory.click(function (e) {
+                e.preventDefault();
+                deleteTheoryForm.attr("action", "/theories/" + theoryId + "?_method=DELETE");
+                deleteTheoryForm.submit();
+            })
 
             let msgToastError = '#{msgError}';
             if(msgToastError != ''){

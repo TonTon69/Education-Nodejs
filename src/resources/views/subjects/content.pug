@@ -30,8 +30,10 @@ block content
                                         if lession.unitID == unit.id
                                             .d-flex.align-items-center.justify-content-between.mb-2
                                                 span Bài #{lession.lessionNumber}. #{lession.name}
-                                                    button.p-1.btn.border.border-danger(data-toggle="modal" data-target="#editLessionModal" data-id=lession._id data-lession=lession.name data-number=lession.lessionNumber data-name=unit.name data-unit=unit._id).ml-4.text-orange
+                                                    button.ml-4.text-primary.p-1.btn.border.border-primary(data-toggle="modal" data-target="#editLessionModal" data-id=lession._id data-lession=lession.name data-number=lession.lessionNumber data-name=unit.name data-unit=unit._id)
                                                         i.mdi.mdi-lead-pencil
+                                                    button.ml-4.text-orange.p-1.btn.border.border-danger(data-toggle="modal" data-target="#deleteLessionModal" data-id=lession._id)
+                                                        i.mdi.mdi-delete
                                                 div
                                                     if lession.theory.length > 0
                                                         a.text-primary(href=`/theories/detail?lession=${lession._id}`).ml-4 
@@ -161,6 +163,21 @@ block content
                                     .modal-footer
                                         button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
                                         button.btn.btn-danger.ml-2#btn-submit-delete-unit(type='submit') Chắc chắn xóa
+                        form.mt-4(name='delete-lession-form', method='post')
+                        #deleteLessionModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteLessionModalLabel', aria-hidden='true')
+                            .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 650px')
+                                .modal-content
+                                    .modal-header
+                                        strong#deleteLessionModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase #{subject.name} #{subject.gradeID} - Xóa bài học !!!
+                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                        span(aria-hidden='true') &times;
+                                    .modal-body.text-dark
+                                        p Hành động này sẽ xóa tất cả nội dung lý thuyết và bài tập vận dụng của bài học này !!!
+                                        p Hành động này rất nguy hiểm, không thể khôi phục lại dữ liệu.
+                                        p Bạn có chắc chắn muốn xóa bài học này ???
+                                    .modal-footer
+                                        button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
+                                        button.btn.btn-danger.ml-2#btn-submit-delete-lession(type='submit') Chắc chắn xóa
     if errors.length > 0
         - var msgError = errors
     else if success.length > 0
@@ -171,11 +188,14 @@ block content
             var addUnitModal = $("#addUnitModal");
             var editUnitModal = $("#editUnitModal");
             var editLessionModal = $("#editLessionModal");
+            var deleteLessionModal = $("#deleteLessionModal");
             var unitId, unitName, subjectId, lessionName, lessionNumber, lessionId;
             var editUnitForm = $("form[name='edit-unit-form']");
             var editLessionForm = $("form[name='edit-lession-form']");
+            var deleteLessionForm = $("form[name='delete-lession-form']");
             var btnSubmitEditUnit = $("#btn-submit-edit-unit");
             var btnSubmitEditLession = $("#btn-submit-edit-lession");
+            var btnSubmitDeleteLession = $("#btn-submit-delete-lession");
 
             addLessionModal.on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
@@ -253,6 +273,17 @@ block content
                 editLessionForm.attr("action", "/lessions/" + lessionId + "?_method=PUT");
                 editLessionForm.submit();
             });
+
+            deleteLessionModal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                lessionId = button.data('id');
+                $("#addUnitModal input[name='subjectID']").val(subjectId);
+            });
+
+            btnSubmitDeleteLession.click(function (e) {
+                deleteLessionForm.attr("action", "/lessions/" + lessionId + "?_method=DELETE");
+                deleteLessionForm.submit();
+            })
 
             // toast message
             let msgToastError = '#{msgError}';

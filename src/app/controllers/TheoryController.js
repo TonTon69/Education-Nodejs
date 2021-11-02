@@ -61,6 +61,14 @@ class TheoryController {
 
     // [PUT]/theories/:id
     async update(req, res, next) {
+        if (req.body.content === "") {
+            req.flash(
+                "error",
+                "Vui lòng nhập nội dung lý thuyết cho môn học này!"
+            );
+            res.redirect("back");
+            return;
+        }
         await Theory.updateOne({ _id: req.params.id }, req.body);
         req.flash("success", "Cập nhật thành công!");
         res.redirect("back");
@@ -102,6 +110,17 @@ class TheoryController {
         await theory.save();
         req.flash("success", "Thêm mới thành công!");
         res.redirect("back");
+    }
+
+    // [DELETE]/theories/:id
+    async delete(req, res, next) {
+        const theory = await Theory.findById(req.params.id);
+        const lession = await Lession.findById(theory.lessionID);
+        const unit = await Unit.findById(lession.unitID);
+        const subject = await Subject.findById(unit.subjectID);
+        await theory.delete();
+        req.flash("success", "Xóa thành công!");
+        res.redirect(`/subjects/${subject._id}/content`);
     }
 }
 

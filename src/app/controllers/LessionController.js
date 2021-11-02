@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const Lession = require("../models/Lession");
+const Theory = require("../models/Theory");
+const Exercise = require("../models/Exercise");
 const Subject = require("../models/Subject");
 const Unit = require("../models/Unit");
-
+const slugify = require("slugify");
 class LessionController {
     // // [GET]/banners/list
     // async list(req, res) {
@@ -50,7 +52,7 @@ class LessionController {
 
     //   // [PUT]/lessions/:id
     async update(req, res, next) {
-        const { name } = req.body;
+        const { name, lessionNumber, unitID } = req.body;
         const findLession = await Lession.findOne({ name });
         if (findLession) {
             req.flash(
@@ -60,22 +62,27 @@ class LessionController {
             res.redirect("back");
             return;
         }
-        await Lession.updateOne({ _id: req.params.id }, req.body);
+        await Lession.updateOne(
+            { _id: req.params.id },
+            {
+                name,
+                lessionNumber,
+                unitID,
+                slug: slugify(name.toLowerCase()),
+            }
+        );
         req.flash("success", "Cập nhật thành công!");
         res.redirect("back");
     }
 
-    // //   // [DELETE]/banners/:id
-    // async delete(req, res, next) {
-    //     try {
-    //         await Banner.deleteOne({ _id: req.params.id });
-    //         req.flash("success", "Xóa thành công!");
-    //         res.redirect("back");
-    //     } catch (error) {
-    //         req.flash("error", "Xóa thất bại!");
-    //         res.redirect("back");
-    //     }
-    // }
+    //   // [DELETE]/lessions/:id
+    async delete(req, res, next) {
+        await Theory.deleteOne({ lessionID: req.params.id });
+        await Exercise.deleteMany({ lessionID: req.params.id });
+        await Lession.deleteOne({ _id: req.params.id });
+        req.flash("success", "Xóa thành công!");
+        res.redirect("back");
+    }
 }
 
 module.exports = new LessionController();
