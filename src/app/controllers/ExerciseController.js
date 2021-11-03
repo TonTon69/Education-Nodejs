@@ -8,6 +8,9 @@ const User = require("../models/User");
 const Statistical = require("../models/Statistical");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const readXlsxFile = require("read-excel-file/node");
+const path = require("path");
+
 class ExerciseController {
     // [GET]/exercise/:slug?name=lession
     async exercise(req, res, next) {
@@ -291,6 +294,67 @@ class ExerciseController {
         await Exercise.deleteOne({ _id: req.params.id });
         req.flash("success", "Xóa thành công!");
         res.redirect("back");
+    }
+
+    // [POST]/exercises/upload
+    async upload(req, res) {
+        try {
+            if (req.file == undefined) {
+                req.flash("error", "Vui lòng tải lên một tệp excel!");
+                res.redirect("back");
+                return;
+            }
+            let fileExcel = path.resolve(
+                __dirname,
+                "../../public/uploads/" + req.file.filename
+            );
+
+            readXlsxFile(fileExcel).then((rows) => {
+                rows.shift();
+                let exercises = [];
+
+                rows.forEach(async (row) => {
+                    let category = await ExerciseCategory.findOne({
+                        type: row[9],
+                    });
+
+                    let exercise = new Exercise({
+                        question: row[1],
+                        option1: row[2],
+                        option2: row[3],
+                        option3: row[4],
+                        option4: row[5],
+                        answer: row[6],
+                        recommend: row[7],
+                        explain: row[8],
+                        ceID: category._id,
+                        lessionID: req.body.lessionID,
+                    });
+
+                    exercises.push(exercise);
+                });
+
+                console.log(exercises);
+                req.flash("success", "Thêm mới thành công!");
+                res.redirect("back");
+                // Tutorial.bulkCreate(tutorials)
+                //     .then(() => {
+                //         res.status(200).send({
+                //             message:
+                //                 "Uploaded the file successfully: " +
+                //                 req.file.originalname,
+                //         });
+                //     })
+                //     .catch((error) => {
+                //         res.status(500).send({
+                //             message: "Fail to import data into database!",
+                //             error: error.message,
+                //         });
+                //     });
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

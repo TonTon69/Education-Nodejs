@@ -5,7 +5,17 @@ block content
             .card
                 .card-body
                     .d-flex.align-items-center.justify-content-between
-                        h4.card-title Thêm mới câu hỏi
+                        div
+                            h4.card-title Thêm mới câu hỏi
+                            form.forms-sample(action='/exercises/upload', method='post', enctype="multipart/form-data")
+                                .form-group
+                                    input(type="text", name="lessionID", value=lession._id, hidden)
+                                    input(type='file' name='file').file-upload-default
+                                    .input-group
+                                        input(type='text' disabled placeholder='Thêm bằng file excel').form-control.file-upload-info
+                                        span.input-group-append
+                                        button.file-upload-browse.btn.btn-sm.btn-primary(type="button") Tải lên
+                                    button.mt-2.btn.btn-sm.btn-primary#btn-submit-add-excel(type="submit") Thêm
                         a.btn.btn-outline-warning.btn-icon-text(href=`/subjects/${subject._id}/content`) 
                             i.mdi.mdi-reload.btn-icon-prepend
                             | Quay lại
@@ -64,6 +74,10 @@ block content
         $(document).ready(function () {
             ClassicEditor.create(document.querySelector('#exercise-question'));
             ClassicEditor.create(document.querySelector('#exercise-explain'));
+
+            $(".file-upload-default").change(function () {
+                $(".forms-sample").submit();
+            })
 
             let msgToastSuccess = '#{msgSuccess}';
             if(msgToastSuccess != ''){

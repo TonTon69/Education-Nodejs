@@ -63,3 +63,31 @@ p {
     padding: 1.25rem 0.9375rem;
     height: 75px;
 }
+
+#btn-submit-add-excel {
+    display: none;
+}
+
+/* .exercise__create input[type="file"] {
+    cursor: pointer;
+    width: 250px;
+    height: 34px;
+    overflow: hidden;
+}
+
+.exercise__create input[type="file"]:before {
+    width: 100%;
+    height: 32px;
+    font-size: 16px;
+    line-height: 30px;
+    content: "Thêm câu hỏi bằng file excel";
+    display: inline-block;
+    background: white;
+    border: 1px solid #000;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.exercise__create input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+} */
