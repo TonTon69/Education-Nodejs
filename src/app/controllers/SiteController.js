@@ -5,6 +5,9 @@ const Banner = require("../models/Banner");
 const Blog = require("../models/Blog");
 const BlogCategory = require("../models/BlogCategory");
 const Report = require("../models/Report");
+const System = require("../models/System");
+const Unit = require("../models/Unit");
+const Exercise = require("../models/Exercise");
 const bcrypt = require("bcrypt");
 class SiteController {
     // [GET]/
@@ -156,8 +159,23 @@ class SiteController {
         res.render("admin-index");
     }
 
-    // [POST]/search
-    search(req, res) {}
+    // [GET]/about
+    async about(req, res, next) {
+        try {
+            const systems = await System.find({});
+            const countUsers = await User.countDocuments({});
+            const countExercises = await Exercise.countDocuments({});
+            const countUnits = await Unit.countDocuments({});
+            res.render("about", {
+                systems,
+                countUsers,
+                countExercises,
+                countUnits,
+            });
+        } catch (err) {
+            res.render("error");
+        }
+    }
 }
 
 module.exports = new SiteController();

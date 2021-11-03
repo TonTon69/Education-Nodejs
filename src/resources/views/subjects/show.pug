@@ -58,9 +58,7 @@ block main
                                                 | Cách tính điểm và quy định xếp hạng
                                             button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
                                         .modal-body
-                                            .mb-3
-                                                each instruct in ratingRegulation
-                                                    | #{instruct.content}
+                                            .mb-3.text-start !{ratingRegulation.value}
                             ul.ps-0.mb-0.mt-4
                                 each rank in ranks
                                     li.chart__item

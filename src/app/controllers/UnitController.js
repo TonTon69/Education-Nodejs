@@ -1,7 +1,6 @@
 const Subject = require("../models/Subject");
 const Unit = require("../models/Unit");
 const Lession = require("../models/Lession");
-const RatingRegulation = require("../models/RatingRegulation");
 const Result = require("../models/Result");
 const User = require("../models/User");
 const mongoose = require("mongoose");

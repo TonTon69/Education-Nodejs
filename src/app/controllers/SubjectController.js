@@ -1,7 +1,7 @@
 const Subject = require("../models/Subject");
 const Unit = require("../models/Unit");
 const Lession = require("../models/Lession");
-const RatingRegulation = require("../models/RatingRegulation");
+const System = require("../models/System");
 const Result = require("../models/Result");
 const User = require("../models/User");
 const Statistical = require("../models/Statistical");
@@ -12,7 +12,9 @@ class SubjectController {
     // [GET]/subjects/:slug
     async show(req, res, next) {
         try {
-            const ratingRegulation = await RatingRegulation.find({});
+            const ratingRegulation = await System.findOne({
+                field: "rating_regulations",
+            });
             const subject = await Subject.findOne({ slug: req.params.slug });
             const units = await Unit.find({ subjectID: subject._id });
             const unitIdArray = units.map(({ _id }) => _id);

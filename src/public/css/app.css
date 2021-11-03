@@ -1,9 +1,9 @@
+@charset "UTF-8";
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  text-decoration: none;
-  list-style-type: none; }
+  text-decoration: none; }
 
 html {
   scroll-behavior: smooth; }
@@ -27,6 +27,12 @@ body {
     background: #b4bcc3;
     border-radius: 20px;
     border: 3px solid #b4bcc3; }
+
+ul {
+  list-style-type: none; }
+
+blockquote {
+  border-left: 5px solid #fb5533; }
 
 .btn.btn-primary,
 .btn.btn-secondary,
@@ -1167,7 +1173,6 @@ body {
 .about .method {
   width: 100%;
   height: auto;
-  background-color: #f0c83c;
   min-width: 1200px; }
   .about .method__center {
     max-width: 1152px;
@@ -1180,18 +1185,18 @@ body {
     text-transform: uppercase;
     font-size: 22px;
     text-align: center;
-    color: #fff; }
+    font-weight: 600; }
   .about .method ul {
     padding-left: 0; }
-  .about .method ul li {
-    width: calc(33.33333% - 48px);
-    margin: 12px;
-    padding: 16px;
-    float: left;
-    background-color: #fff;
-    border-radius: 10px;
-    list-style: none;
-    text-align: center; }
+    .about .method ul li {
+      width: calc(33.33333% - 48px);
+      margin: 12px;
+      padding: 16px;
+      float: left;
+      background-color: #fff;
+      border-radius: 10px;
+      list-style: none;
+      text-align: center; }
   .about .method strong {
     margin: 10px 0;
     display: block;
@@ -1212,6 +1217,50 @@ body {
     margin: 0 0 10px; }
   .about .method .heigh__bottom {
     height: 100px; }
+
+.about .blockquote-wrapper {
+  display: flex;
+  height: 50vh;
+  padding: 0 20px;
+  background-color: #52acff;
+  background-image: linear-gradient(180deg, #52acff 25%, #ffe32c 100%); }
+
+.about .blockquote {
+  position: relative;
+  font-weight: 800;
+  color: #ffffff;
+  padding: 30px 0;
+  width: 100%;
+  max-width: 500px;
+  z-index: 1;
+  margin: 80px auto;
+  align-self: center;
+  border-top: solid 1px;
+  border-bottom: solid 1px; }
+  .about .blockquote h1 {
+    position: relative;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    margin: 0; }
+  .about .blockquote:after {
+    position: absolute;
+    content: "”";
+    color: white;
+    font-size: 10rem;
+    line-height: 0;
+    bottom: -43px;
+    right: 30px; }
+  .about .blockquote h4 {
+    position: relative;
+    color: #292a2b;
+    font-size: 1.4rem;
+    font-weight: normal;
+    line-height: 1;
+    margin: 0;
+    padding-top: 20px;
+    z-index: 1; }
 
 .footer {
   position: fixed;

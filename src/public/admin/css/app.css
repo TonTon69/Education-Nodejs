@@ -52,3 +52,14 @@ a {
 p {
     line-height: 1.5 !important;
 }
+
+.system__list table tbody tr .value {
+    line-height: 1.5;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    padding: 1.25rem 0.9375rem;
+    height: 75px;
+}

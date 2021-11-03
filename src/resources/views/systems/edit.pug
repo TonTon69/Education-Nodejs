@@ -1,0 +1,41 @@
+extends ../layouts/admin
+block content
+    section.subject__edit
+        .row
+            .col-md-9.grid-margin.stretch-card.mx-auto
+                .card
+                    .card-body
+                        .d-flex.align-items-center.justify-content-between
+                            h4.card-title Chỉnh sửa thông tin giới thiệu website
+                            a.btn.btn-outline-warning.btn-icon-text(href='/system/list') 
+                                i.mdi.mdi-reload.btn-icon-prepend
+                                | Quay lại
+                        p.card-description Nhập thông tin bên dưới để chỉnh sửa 
+                        form.mt-4(action=`/system/${systems._id}?_method=PUT`, method='POST')
+                            .form-group.row
+                                label.col-sm-3.col-form-label.font-weight-bold(for='imageAbout') Thuộc tính
+                                .col-sm-9
+                                    input#name.form-control(type='text', name='field', autocomplete="off", value=systems.field, required, disabled)
+                            .form-group.row
+                                label.col-sm-3.col-form-label.font-weight-bold(for='value') Giá trị
+                                .col-sm-9
+                                    textarea#value.form-control(name='value')=systems.value
+                            
+                            a.btn.btn-light(href='/system/list') Hủy bỏ
+                            button.btn.btn-primary.ml-2(type='submit') Lưu lại
+    if  success.length > 0
+        - var msgSuccess = success
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            ClassicEditor.create(document.querySelector('#value'));
+
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != ''){
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            }  
+        })

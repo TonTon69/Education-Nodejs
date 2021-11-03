@@ -1,0 +1,54 @@
+extends ../layouts/admin
+block content
+    section.system__list
+        .col-lg-12.grid-margin.stretch-card
+            .card
+                .card-body
+                    .card-title Quản lý thông tin website
+                    .d-flex.align-items-center
+                    .table-responsive.pt-3
+                        table.table.table-hover.text-dark
+                            thead
+                                tr
+                                    th.font-weight-bold #
+                                    th.font-weight-bold Thuộc tính
+                                    th.font-weight-bold Giá trị
+                                    th.font-weight-bold.text-center Hành động
+                            tbody
+                                - var count = 0;
+                                each system in systems
+                                    - count++;
+                                    tr
+                                        td= count
+                                        td= system.field
+                                        td.value.align-middle(style = "width: 650px;") !{system.value}
+                                        td.text-center(style='width: 15%')
+                                            a.btn.btn-secondary.mr-2(href=`/system/${system.id}/edit`) Sửa
+                                
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != '') {
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            };
+
+            let msgToastError = '#{msgError}';
+            if(msgToastError != '') {
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            };
+        });
+       
