@@ -25,6 +25,14 @@ block content
                                 textarea#explain.form-control(type='text', placeholder='Nhập nội dung lý thuyết ở đây', name='content') !{theory[0].content}
                                 .text-center.mt-4
                                     button.btn.btn-primary.ml-2(type='submit') Lưu lại
+                else
+                    .text-dark.p-4.text-center
+                        p Bài "#{lession.name}" chưa có nội dung lý thuyết.
+                        a.font-weight-bold.mt-2.d-inline-block.border.border-danger.text-orange.p-4.rounded(href=`/theories/create?lession=${lession._id}`) Thêm nội dung lý thuyết cho môn học này tại đây!
+                        .mt-4
+                            a.btn.btn-outline-warning.btn-icon-text(href=`/exercises/detail?lession=${lession._id}`) 
+                                i.mdi.mdi-reload.btn-icon-prepend
+                                | Quay lại
     form.mt-4(name='delete-theory-form', method='post')
     #deleteTheoryModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteTheoryModalLabel', aria-hidden='true')
         .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 650px')

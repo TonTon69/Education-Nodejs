@@ -275,6 +275,7 @@ class ExerciseController {
                 subject,
                 categories,
                 success: req.flash("success"),
+                errors: req.flash("error"),
             });
         } else {
             res.render("error");
@@ -309,13 +310,16 @@ class ExerciseController {
                 "../../public/uploads/" + req.file.filename
             );
 
-            readXlsxFile(fileExcel).then((rows) => {
+            readXlsxFile(fileExcel).then(async (rows) => {
                 rows.shift();
                 let exercises = [];
+                let categories = await ExerciseCategory.find({});
 
-                rows.forEach(async (row) => {
-                    let category = await ExerciseCategory.findOne({
-                        type: row[9],
+                rows.forEach((row) => {
+                    categories.forEach((category) => {
+                        if (row[9].toString().toLowerCase() === category.type) {
+                            row[9] = category._id;
+                        }
                     });
 
                     let exercise = new Exercise({
@@ -327,30 +331,25 @@ class ExerciseController {
                         answer: row[6],
                         recommend: row[7],
                         explain: row[8],
-                        ceID: category._id,
+                        ceID: row[9],
                         lessionID: req.body.lessionID,
                     });
 
                     exercises.push(exercise);
                 });
 
-                console.log(exercises);
-                req.flash("success", "Thêm mới thành công!");
-                res.redirect("back");
-                // Tutorial.bulkCreate(tutorials)
-                //     .then(() => {
-                //         res.status(200).send({
-                //             message:
-                //                 "Uploaded the file successfully: " +
-                //                 req.file.originalname,
-                //         });
-                //     })
-                //     .catch((error) => {
-                //         res.status(500).send({
-                //             message: "Fail to import data into database!",
-                //             error: error.message,
-                //         });
-                //     });
+                Exercise.create(exercises)
+                    .then(() => {
+                        req.flash("success", "Đã tải tệp lên thành công!");
+                        res.redirect("back");
+                    })
+                    .catch((error) => {
+                        req.flash(
+                            "error",
+                            "Không thể nhập dữ liệu vào cơ sở dữ liệu!"
+                        );
+                        res.redirect("back");
+                    });
             });
         } catch (error) {
             console.log(error);

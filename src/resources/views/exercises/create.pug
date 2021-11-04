@@ -8,14 +8,15 @@ block content
                         div
                             h4.card-title Thêm mới câu hỏi
                             form.forms-sample(action='/exercises/upload', method='post', enctype="multipart/form-data")
-                                .form-group
-                                    input(type="text", name="lessionID", value=lession._id, hidden)
-                                    input(type='file' name='file').file-upload-default
-                                    .input-group
-                                        input(type='text' disabled placeholder='Thêm bằng file excel').form-control.file-upload-info
-                                        span.input-group-append
-                                        button.file-upload-browse.btn.btn-sm.btn-primary(type="button") Tải lên
-                                    button.mt-2.btn.btn-sm.btn-primary#btn-submit-add-excel(type="submit") Thêm
+                                .d-flex.align-items-center
+                                    .file-drop-area
+                                        span.fake-btn Chọn tệp
+                                        span.file-msg hoặc kéo và thả tệp tại đây
+                                        input.file-input(type='file', name='file')
+                                        input(type="text", name="lessionID", value=lession._id, hidden)
+                                    button.ml-2.btn.btn-sm.btn-primary#btn-submit-add-excel(type="submit") Lưu
+                                    button.ml-2.btn.btn-sm.btn-secondary#btn-cancel(type="button") Hủy
+
                         a.btn.btn-outline-warning.btn-icon-text(href=`/subjects/${subject._id}/content`) 
                             i.mdi.mdi-reload.btn-icon-prepend
                             | Quay lại
@@ -68,16 +69,14 @@ block content
                         .float-right
                             a.btn.btn-secondary(href=`/exercises/detail?lession=${lession._id}`) Hủy bỏ
                             button.btn.btn-primary.ml-2(type='submit') Lưu lại
-    if success.length > 0
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
         - var msgSuccess = success
     script.
         $(document).ready(function () {
             ClassicEditor.create(document.querySelector('#exercise-question'));
             ClassicEditor.create(document.querySelector('#exercise-explain'));
-
-            $(".file-upload-default").change(function () {
-                $(".forms-sample").submit();
-            })
 
             let msgToastSuccess = '#{msgSuccess}';
             if(msgToastSuccess != ''){
@@ -88,4 +87,52 @@ block content
                     duration: 5000,
                 });
             }
+
+            let msgToastError = '#{msgError}';
+            if(msgToastError != ''){
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            }
+
+            var $fileInput = $('.file-input');
+            var $droparea = $('.file-drop-area');
+
+            // highlight drag area
+            $fileInput.on('dragenter focus click', function() {
+                $droparea.addClass('is-active');
+            });
+
+            // back to normal state
+            $fileInput.on('dragleave blur drop', function() {
+                $droparea.removeClass('is-active');
+            });
+
+            // change inner text
+            $fileInput.on('change', function() {
+                var filesCount = $(this)[0].files.length;
+                var $textContainer = $(this).prev();
+
+                if (filesCount === 1) {
+                    // if single file is selected, show file name
+                    var fileName = $(this).val().split('\\').pop();
+                    $textContainer.text(fileName);
+                    $("#btn-submit-add-excel").show();
+                    $("#btn-cancel").show();
+                } else {
+                    // otherwise show number of files
+                    $textContainer.text(filesCount + ' tệp được chọn');
+                    $("#btn-submit-add-excel").hide();
+                }
+            });
+
+            $("#btn-cancel").click(function() {
+                $(this).hide();
+                $("#btn-submit-add-excel").hide();
+                $fileInput.val("");
+                $fileInput.prev().text('hoặc kéo và thả tệp tại đây');
+            })
         })

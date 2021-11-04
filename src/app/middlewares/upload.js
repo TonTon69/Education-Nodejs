@@ -8,7 +8,7 @@ const excelFilter = (req, file, cb) => {
     ) {
         cb(null, true);
     } else {
-        cb("Vui lòng chỉ tải lên tệp excel.", false);
+        cb(null, false);
     }
 };
 

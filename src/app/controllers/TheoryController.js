@@ -13,6 +13,7 @@ class TheoryController {
     async detail(req, res, next) {
         try {
             if (ObjectId.isValid(req.query.lession)) {
+                const lession = await Lession.findById(req.query.lession);
                 const theory = await Theory.aggregate([
                     { $match: { lessionID: ObjectId(req.query.lession) } },
                     {
@@ -48,6 +49,7 @@ class TheoryController {
                 ]);
                 res.render("theories/detail", {
                     theory,
+                    lession,
                     success: req.flash("success"),
                     errors: req.flash("error"),
                 });
