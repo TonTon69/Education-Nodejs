@@ -8,6 +8,7 @@ const Report = require("../models/Report");
 const System = require("../models/System");
 const Unit = require("../models/Unit");
 const Exercise = require("../models/Exercise");
+const Lession = require("../models/Lession");
 const bcrypt = require("bcrypt");
 class SiteController {
     // [GET]/
@@ -155,8 +156,21 @@ class SiteController {
     }
 
     // [GET]/admin
-    admin(req, res) {
-        res.render("admin-index");
+    async admin(req, res) {
+        const countUsers = await User.countDocuments({});
+        const countSubjects = await Subject.countDocuments({});
+        const countUnits = await Unit.countDocuments({});
+        const countLessions = await Lession.countDocuments({});
+        const countExercises = await Exercise.countDocuments({});
+        const countBlogs = await Blog.countDocuments({});
+        res.render("admin-index", {
+            countUsers,
+            countSubjects,
+            countUnits,
+            countLessions,
+            countExercises,
+            countBlogs,
+        });
     }
 
     // [GET]/about

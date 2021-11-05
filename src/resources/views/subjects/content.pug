@@ -149,6 +149,7 @@ block content
                                             .float-right
                                                 button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
                                                 button.btn.btn-primary.ml-2(type='submit') Lưu lại
+                        form.mt-4(name='delete-unit-form', method='post')
                         #deleteUnitModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteUnitModalLabel', aria-hidden='true')
                             .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 650px')
                                 .modal-content
@@ -189,13 +190,16 @@ block content
             var editUnitModal = $("#editUnitModal");
             var editLessionModal = $("#editLessionModal");
             var deleteLessionModal = $("#deleteLessionModal");
+            var deleteUnitModal = $("#deleteUnitModal");
             var unitId, unitName, subjectId, lessionName, lessionNumber, lessionId;
             var editUnitForm = $("form[name='edit-unit-form']");
             var editLessionForm = $("form[name='edit-lession-form']");
             var deleteLessionForm = $("form[name='delete-lession-form']");
+            var deleteUnitForm = $("form[name='delete-unit-form']");
             var btnSubmitEditUnit = $("#btn-submit-edit-unit");
             var btnSubmitEditLession = $("#btn-submit-edit-lession");
             var btnSubmitDeleteLession = $("#btn-submit-delete-lession");
+            var btnSubmitDeleteUnit = $("#btn-submit-delete-unit");
 
             addLessionModal.on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
@@ -280,9 +284,19 @@ block content
                 $("#addUnitModal input[name='subjectID']").val(subjectId);
             });
 
-            btnSubmitDeleteLession.click(function (e) {
+            btnSubmitDeleteLession.click(function () {
                 deleteLessionForm.attr("action", "/lessions/" + lessionId + "?_method=DELETE");
                 deleteLessionForm.submit();
+            })
+
+            deleteUnitModal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                unitId = button.data('id');
+            });
+
+            btnSubmitDeleteUnit.click(function () {
+                deleteUnitForm.attr("action", "/units/" + unitId + "?_method=DELETE");
+                deleteUnitForm.submit();
             })
 
             // toast message

@@ -53,7 +53,7 @@ class LessionController {
     //   // [PUT]/lessions/:id
     async update(req, res, next) {
         const { name, lessionNumber, unitID } = req.body;
-        const findLession = await Lession.findOne({ name });
+        const findLession = await Lession.findOne({ name: name });
         if (findLession) {
             req.flash(
                 "error",

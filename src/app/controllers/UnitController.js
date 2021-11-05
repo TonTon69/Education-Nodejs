@@ -1,8 +1,10 @@
 const Subject = require("../models/Subject");
 const Unit = require("../models/Unit");
 const Lession = require("../models/Lession");
+const Theory = require("../models/Theory");
 const Result = require("../models/Result");
 const User = require("../models/User");
+const Exercise = require("../models/Exercise");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 class UnitController {
@@ -196,15 +198,18 @@ class UnitController {
 
     // [DELETE]/units/:id
     async delete(req, res, next) {
-        try {
-            await Lession.deleteMany({ unitID: req.params.id });
-            await Unit.deleteOne({ _id: req.params.id });
-            req.flash("success", "Xóa thành công!");
-            res.redirect("back");
-        } catch (error) {
-            req.flash("error", "Xóa thất bại!");
-            res.redirect("back");
-        }
+        const lessions = await Lession.find({ unitID: req.params.id });
+        const lessionsIdArr = lessions.map(({ _id }) => _id);
+        await Theory.deleteMany({
+            lessionID: { $in: lessionsIdArr },
+        });
+        await Exercise.deleteMany({
+            lessionID: { $in: lessionsIdArr },
+        });
+        await Lession.deleteMany({ unitID: req.params.id });
+        await Unit.deleteOne({ _id: req.params.id });
+        req.flash("success", "Xóa thành công!");
+        res.redirect("back");
     }
 }
 

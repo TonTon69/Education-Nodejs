@@ -1,7 +1,7 @@
 extends ../layouts/admin
 block content
     section.exercise__create
-        .col-md-9.grid-margin.stretch-card.mx-auto
+        .col-md-10.grid-margin.stretch-card.mx-auto
             .card
                 .card-body
                     .d-flex.align-items-center.justify-content-between
@@ -16,10 +16,13 @@ block content
                                         input(type="text", name="lessionID", value=lession._id, hidden)
                                     button.ml-2.btn.btn-sm.btn-primary#btn-submit-add-excel(type="submit") Lưu
                                     button.ml-2.btn.btn-sm.btn-secondary#btn-cancel(type="button") Hủy
-
-                        a.btn.btn-outline-warning.btn-icon-text(href=`/subjects/${subject._id}/content`) 
-                            i.mdi.mdi-reload.btn-icon-prepend
-                            | Quay lại
+                        div
+                            a.btn.btn-outline-primary.btn-icon-text(href='/files/sample-create-exercises.xlsx' download) 
+                                i.mdi.mdi-file-excel.btn-icon-prepend
+                                | Excel mẫu
+                            a.btn.btn-outline-warning.btn-icon-text.ml-2(href=`/subjects/${subject._id}/content`) 
+                                i.mdi.mdi-reload.btn-icon-prepend
+                                | Quay lại
                     hr
                     div
                         .card-title.text-uppercase #{subject.name} #{subject.gradeID} - #{unit.name}
