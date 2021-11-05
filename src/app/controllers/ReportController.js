@@ -34,9 +34,20 @@ class ReportController {
     async list(req, res) {
         let perPage = 3;
         let page = req.params.page || 1;
-        const reports = await Report.find({})
-            .skip(perPage * page - perPage)
-            .limit(perPage);
+
+        const reports = await Report.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $skip: perPage * page - perPage },
+            { $limit: perPage },
+        ]);
+
         const reportsCount = await Report.countDocuments();
         res.render("reports/list", {
             reports,

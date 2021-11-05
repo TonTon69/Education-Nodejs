@@ -20,6 +20,7 @@ block content
                                     th.font-weight-bold Mục lỗi
                                     th.font-weight-bold Nội dung chi tiết
                                     th.font-weight-bold Ngày báo cáo
+                                    th.font-weight-bold Người báo cáo lỗi
                                     th.font-weight-bold Hành động
                             tbody
                                 - var count = 0;
@@ -30,8 +31,9 @@ block content
                                         td= report.content
                                         td= report.summary
                                         td= moment(report.createdAt).format("DD-MM-YYYY")
+                                        td= report.user[0].fullname
                                         td.text-center(style='width: 15%')
-                                            a.btn.btn-secondary.mr-2(href=`/reports/${report.id}/detail`) Chi tiết
+                                            a.btn.btn-secondary.mr-2(href=`/reports/${report._id}/detail`) Chi tiết
                                             button.btn.btn-danger(data-toggle="modal" data-target="#deleteReportModal", data-id=report._id) Xóa
                                 form(name="delete-report-form", method="POST")
                                 #deleteReportModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteReportModalLabel', aria-hidden='true')
