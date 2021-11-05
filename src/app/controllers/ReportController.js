@@ -99,14 +99,9 @@ class ReportController {
 
     // [DELETE]/reports/:id
     async delete(req, res, next) {
-        try {
-            await Report.deleteOne({ _id: req.params.id });
-            req.flash("success", "Xóa thành công!");
-            res.redirect("back");
-        } catch (error) {
-            req.flash("error", "Xóa thất bại!");
-            res.redirect("back");
-        }
+        await Report.deleteOne({ _id: req.params.id });
+        req.flash("success", "Xóa thành công!");
+        res.redirect("back");
     }
 }
 

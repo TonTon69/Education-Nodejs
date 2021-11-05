@@ -14,45 +14,49 @@ class TheoryController {
         try {
             if (ObjectId.isValid(req.query.lession)) {
                 const lession = await Lession.findById(req.query.lession);
-                const theory = await Theory.aggregate([
-                    { $match: { lessionID: ObjectId(req.query.lession) } },
-                    {
-                        $lookup: {
-                            from: "lessions",
-                            localField: "lessionID",
-                            foreignField: "_id",
-                            as: "lession",
+                if (lession) {
+                    const theory = await Theory.aggregate([
+                        { $match: { lessionID: ObjectId(req.query.lession) } },
+                        {
+                            $lookup: {
+                                from: "lessions",
+                                localField: "lessionID",
+                                foreignField: "_id",
+                                as: "lession",
+                            },
                         },
-                    },
-                    {
-                        $unwind: "$lession",
-                    },
-                    {
-                        $lookup: {
-                            from: "units",
-                            localField: "lession.unitID",
-                            foreignField: "_id",
-                            as: "lession.unit",
+                        {
+                            $unwind: "$lession",
                         },
-                    },
-                    {
-                        $unwind: "$lession.unit",
-                    },
-                    {
-                        $lookup: {
-                            from: "subjects",
-                            localField: "lession.unit.subjectID",
-                            foreignField: "_id",
-                            as: "lession.unit.subject",
+                        {
+                            $lookup: {
+                                from: "units",
+                                localField: "lession.unitID",
+                                foreignField: "_id",
+                                as: "lession.unit",
+                            },
                         },
-                    },
-                ]);
-                res.render("theories/detail", {
-                    theory,
-                    lession,
-                    success: req.flash("success"),
-                    errors: req.flash("error"),
-                });
+                        {
+                            $unwind: "$lession.unit",
+                        },
+                        {
+                            $lookup: {
+                                from: "subjects",
+                                localField: "lession.unit.subjectID",
+                                foreignField: "_id",
+                                as: "lession.unit.subject",
+                            },
+                        },
+                    ]);
+                    res.render("theories/detail", {
+                        theory,
+                        lession,
+                        success: req.flash("success"),
+                        errors: req.flash("error"),
+                    });
+                } else {
+                    res.render("error");
+                }
             } else {
                 res.render("error");
             }

@@ -6,23 +6,6 @@ const Subject = require("../models/Subject");
 const Unit = require("../models/Unit");
 const slugify = require("slugify");
 class LessionController {
-    // // [GET]/banners/list
-    // async list(req, res) {
-    //     const banners = await Banner.find({});
-    //     res.render("banners/list", {
-    //         banners,
-    //         success: req.flash("success"),
-    //         errors: req.flash("error"),
-    //     });
-    // }
-
-    // // [GET]/banners/create
-    // async create(req, res) {
-    //     res.render("banners/create", {
-    //         success: req.flash("success"),
-    //     });
-    // }
-
     // [POST]/banners/create
     async postCreate(req, res) {
         const { name } = req.body;
@@ -40,15 +23,6 @@ class LessionController {
         req.flash("success", "Thêm mới bài học thành công!");
         res.redirect("back");
     }
-
-    // //   // [GET]/banners/:id/edit
-    // async edit(req, res, next) {
-    //     const banner = await Banner.findById(req.params.id);
-    //     res.render("banners/edit", {
-    //         banner,
-    //         success: req.flash("success"),
-    //     });
-    // }
 
     //   // [PUT]/lessions/:id
     async update(req, res, next) {
@@ -75,7 +49,7 @@ class LessionController {
         res.redirect("back");
     }
 
-    //   // [DELETE]/lessions/:id
+    // [DELETE]/lessions/:id
     async delete(req, res, next) {
         await Theory.deleteOne({ lessionID: req.params.id });
         await Exercise.deleteMany({ lessionID: req.params.id });

@@ -120,3 +120,29 @@ p {
 #btn-cancel {
     display: none;
 }
+
+.statistical__detail ul {
+    list-style-type: none;
+}
+
+.statistical__detail .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+}
+
+.statistical__detail nav .nav-tabs a.active {
+    background-color: #fb5533 !important;
+    color: #fff !important;
+}
+
+.bg-green {
+    background-color: #35a801;
+}
+/* 
+.statistical__detail .tab-pane.fade .form-check {
+    margin: 10px;
+} */

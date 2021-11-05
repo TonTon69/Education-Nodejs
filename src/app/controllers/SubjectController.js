@@ -237,7 +237,16 @@ class SubjectController {
                     as: "exercises",
                 },
             },
+            {
+                $lookup: {
+                    from: "statisticals",
+                    localField: "_id",
+                    foreignField: "lessionID",
+                    as: "statisticals",
+                },
+            },
         ]);
+
         res.render("subjects/content", {
             subject,
             units,

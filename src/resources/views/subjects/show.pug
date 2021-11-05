@@ -75,4 +75,8 @@ block main
             $(".chart__item:nth-child(1)").addClass("top_1");
             $(".chart__item:nth-child(2)").addClass("top_2");
             $(".chart__item:nth-child(3)").addClass("top_3");
+
+            $("#heading1 .accordion-button").removeClass("collapsed");
+            $("#heading1 .accordion-button").attr("aria-expanded", true);
+            $(".accordion-collapse.collapse").first().addClass("show");
         })

@@ -1,0 +1,41 @@
+extends ../layouts/admin
+block content
+    section.statistical__list
+        .col-lg-12.grid-margin.stretch-card
+            .card
+                .card-body
+                    .d-flex.align-items-center.justify-content-between
+                        .card-title.text-uppercase #{subject.name} #{subject.gradeID} - #{unit.name}
+                        a.btn.btn-outline-warning.btn-icon-text(href=`/subjects/${subject._id}/content`) 
+                            i.mdi.mdi-reload.btn-icon-prepend
+                            | Quay lại
+                    hr
+                    .card-title Thống kê kết quả học tập "Bài #{lession.lessionNumber}. #{lession.name}"
+                    .table-responsive.pt-3
+                        table.table.table-hover.text-dark
+                            thead
+                                tr
+                                    th.font-weight-bold #
+                                    th.font-weight-bold Thành viên
+                                    th.font-weight-bold Điểm
+                                    th.font-weight-bold Số câu đúng
+                                    th.font-weight-bold Thời gian làm bài
+                                    th.font-weight-bold Ngày làm bài
+                                    th.font-weight-bold Hành động
+                            tbody
+                                - var count = 0;
+                                each statistical in statisticals
+                                    - count++;
+                                    tr
+                                        td= count
+                                        td
+                                            img(src=statistical.user[0].avatar)
+                                            span.ml-2= statistical.user[0].fullname
+                                        td= Math.round(statistical.score)
+                                        td #{statistical.totalAnswerTrue}/#{countExercises}
+                                        td= statistical.time
+                                        td= moment(statistical.updatedAt).format("DD-MM-YYYY")
+                                        td
+                                            a.btn.btn-secondary.mr-2(href=`/statisticals/${statistical._id}/detail`) Chi tiết
+                                            a.btn.btn-danger.mr-2(href=`/statisticals/${statistical._id}/detail`) Xóa
+                                        

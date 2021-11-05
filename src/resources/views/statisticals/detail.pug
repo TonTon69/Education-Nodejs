@@ -1,0 +1,127 @@
+extends ../layouts/admin
+block content
+    section.statistical__detail
+        .col-lg-12.grid-margin.stretch-card
+            .card
+                .card-body
+                    .d-flex.align-items-center.justify-content-between
+                        .card-title.text-uppercase #{subject.name} #{subject.gradeID} - #{unit.name}
+                        a.btn.btn-outline-warning.btn-icon-text(href=`/statisticals?lession=${lession._id}`) 
+                            i.mdi.mdi-reload.btn-icon-prepend
+                            | Quay lại
+                    hr
+                    .card-title Chi tiết kết quả học tập "Bài #{lession.lessionNumber}. #{lession.name}"
+                    .row
+                        .col-md-3
+                            .card
+                                .card-body.text-dark
+                                    .text-center
+                                        img.rounded-pill(src=userSta.avatar, height=42, width=42, style='object-fit: cover')
+                                    p.card-text.font-weight-bold Học sinh:
+                                    p.card-text= userSta.fullname
+                                    p.card-text= userSta.email
+                                    p.card-text.font-weight-bold Kết quả:
+                                    p.card-text= statistical.score + " điểm"
+                                    p.card-text Thời gian làm: #{statistical.time}
+                                    p.card-text Số câu đúng: #{statistical.totalAnswerTrue}/#{results.length}
+
+                        .col-md-9
+                            nav
+                                .d-flex.align-items-center.justify-content-center.nav.nav-tabs.border-0(role="tablist")
+                                    - var count = 0;
+                                    each result in results
+                                        - count++;
+                                        a.nav-item.nav-link.rounded-circle.bg-secondary.mr-3.mb-3(id=`result-tab-${count}` data-toggle="tab" href=`#nav-${count}` role="tab" aria-controls=`nav-${count}` aria-selected="fasle")= count
+                                .text-center (Bấm vào câu hỏi để xem chi tiết)
+                            .tab-content.border-0
+                                - var i = 0;
+                                    each result in results
+                                        - i++;
+                                        .tab-pane.fade(id=`nav-${i}`, role="tabpanel", aria-labelledby=`result-tab-${i}`)
+                                            .card
+                                                .card-body
+                                                    .d-flex.align-items-center
+                                                        h4.mb-0.card-title Câu #{i}
+                                                        if result.option === ""
+                                                            .text-danger.ml-4.d-flex.align-items-center
+                                                                i.mdi.mdi-close-circle.mdi-24px
+                                                                span.ml-2 Học sinh đã bỏ qua câu này
+                                                    .text-dark.mt-4 !{result.exercise[0].question}
+                                                    .row.ml-0
+                                                        if result.exercise[0].answer === result.exercise[0].option1
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-green
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-white
+                                                                    | A. #{result.exercise[0].option1}
+                                                        else if result.option === result.exercise[0].option1
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-danger
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-white
+                                                                    | A. #{result.exercise[0].option1}
+                                                        else
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-dark
+                                                                    | A. #{result.exercise[0].option1}
+                                                        if result.exercise[0].answer === result.exercise[0].option2
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-green
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-white
+                                                                    | A. #{result.exercise[0].option2}
+                                                        else if result.option === result.exercise[0].option2
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-danger
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-white
+                                                                    | A. #{result.exercise[0].option2}
+                                                        else
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-dark
+                                                                    | A. #{result.exercise[0].option2}
+                                                        if result.exercise[0].answer === result.exercise[0].option3
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-green
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-white
+                                                                    span A. #{result.exercise[0].option3}
+                                                        else if result.option === result.exercise[0].option3
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-danger
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-white
+                                                                    | A. #{result.exercise[0].option3}
+                                                        else
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-dark
+                                                                    | A. #{result.exercise[0].option3}
+                                                        if result.exercise[0].answer === result.exercise[0].option4
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-green
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-white
+                                                                    | A. #{result.exercise[0].option4}
+                                                        else if result.option === result.exercise[0].option4
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-danger
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-white
+                                                                    | A. #{result.exercise[0].option4}
+                                                        else
+                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center
+                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                label.form-check-label.text-dark
+                                                                    | A. #{result.exercise[0].option4}
+                                                    .mt-4
+                                                        .text-dark
+                                                            div
+                                                                i.mdi.mdi-arrow-right
+                                                                span.ml-2.font-weight-bold Phương pháp giải
+                                                            div !{result.exercise[0].recommend}
+                                                        .text-dark.mt-4
+                                                            div
+                                                                i.mdi.mdi-arrow-right
+                                                                span.ml-2.font-weight-bold Lời giải
+                                                            div !{result.exercise[0].explain}
+    script.
+        $(document).ready(function () {
+            $("#result-tab-1").addClass("active");
+            $("#result-tab-1").attr("aria-selected", true);
+            $(".tab-content .tab-pane.fade").first().addClass("show active");
+        })

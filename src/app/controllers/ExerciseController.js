@@ -196,59 +196,66 @@ class ExerciseController {
     // [GET]/exercise?lession
     async detail(req, res, next) {
         if (ObjectId.isValid(req.query.lession)) {
-            const exercises = await Exercise.aggregate([
-                { $match: { lessionID: ObjectId(req.query.lession) } },
-                {
-                    $lookup: {
-                        from: "exercise-categories",
-                        localField: "ceID",
-                        foreignField: "_id",
-                        as: "category",
+            const lession = await Lession.findById(req.query.lession);
+            if (lession) {
+                const exercises = await Exercise.aggregate([
+                    { $match: { lessionID: ObjectId(req.query.lession) } },
+                    {
+                        $lookup: {
+                            from: "exercise-categories",
+                            localField: "ceID",
+                            foreignField: "_id",
+                            as: "category",
+                        },
                     },
-                },
-                {
-                    $lookup: {
-                        from: "lessions",
-                        localField: "lessionID",
-                        foreignField: "_id",
-                        as: "lession",
+                    {
+                        $lookup: {
+                            from: "lessions",
+                            localField: "lessionID",
+                            foreignField: "_id",
+                            as: "lession",
+                        },
                     },
-                },
-                {
-                    $unwind: "$lession",
-                },
-                {
-                    $lookup: {
-                        from: "units",
-                        localField: "lession.unitID",
-                        foreignField: "_id",
-                        as: "lession.unit",
+                    {
+                        $unwind: "$lession",
                     },
-                },
-                {
-                    $unwind: "$lession.unit",
-                },
-                {
-                    $lookup: {
-                        from: "subjects",
-                        localField: "lession.unit.subjectID",
-                        foreignField: "_id",
-                        as: "lession.unit.subject",
+                    {
+                        $lookup: {
+                            from: "units",
+                            localField: "lession.unitID",
+                            foreignField: "_id",
+                            as: "lession.unit",
+                        },
                     },
-                },
-            ]);
+                    {
+                        $unwind: "$lession.unit",
+                    },
+                    {
+                        $lookup: {
+                            from: "subjects",
+                            localField: "lession.unit.subjectID",
+                            foreignField: "_id",
+                            as: "lession.unit.subject",
+                        },
+                    },
+                ]);
 
-            if (exercises.length > 0) {
-                const categories = await ExerciseCategory.find({});
+                if (exercises.length > 0) {
+                    const categories = await ExerciseCategory.find({});
 
-                res.render("exercises/detail", {
-                    exercises,
-                    categories,
-                    success: req.flash("success"),
-                    errors: req.flash("error"),
-                });
+                    res.render("exercises/detail", {
+                        exercises,
+                        categories,
+                        success: req.flash("success"),
+                        errors: req.flash("error"),
+                    });
+                } else {
+                    res.redirect(
+                        `/exercises/create?lession=${req.query.lession}`
+                    );
+                }
             } else {
-                res.redirect(`/exercises/create?lession=${req.query.lession}`);
+                res.render("error");
             }
         } else {
             res.render("error");

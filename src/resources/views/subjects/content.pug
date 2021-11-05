@@ -51,6 +51,10 @@ block content
                                                         a.text-primary(href=`/exercises/create?lession=${lession._id}`).ml-5
                                                             i.mdi.mdi-auto-upload.mr-2
                                                             | Thêm bài tập
+                                                    if lession.statisticals.length > 0
+                                                        a.text-primary(href=`/statisticals?lession=${lession._id}`).ml-5
+                                                            i.mdi.mdi-chart-bar.mr-2
+                                                            | Thống kê kết quả
                                 p.ml-4
                                     a.text-primary(href='javascript:void(0)' data-toggle="modal" data-target="#addLessionModal" data-id=unit._id data-name=unit.name)
                                         i.mdi.mdi-auto-upload

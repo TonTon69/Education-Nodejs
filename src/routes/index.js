@@ -12,6 +12,7 @@ const reportsRouter = require("./reports");
 const lessionsRouter = require("./lessions");
 const theoriesRouter = require("./theories");
 const systemRouter = require("./system");
+const statisticalsRouter = require("./statisticals");
 
 function route(app) {
     app.use("/", siteRouter);
@@ -28,6 +29,7 @@ function route(app) {
     app.use("/theories", theoriesRouter);
     app.use("/exercises", exercisesRouter);
     app.use("/system", systemRouter);
+    app.use("/statisticals", statisticalsRouter);
 }
 
 module.exports = route;
