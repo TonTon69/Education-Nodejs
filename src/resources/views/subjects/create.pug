@@ -2,14 +2,28 @@ extends ../layouts/admin
 block content
     section.subject__create
         .row
-            .col-md-6.grid-margin.stretch-card.mx-auto
+            .col-md-8.grid-margin.stretch-card.mx-auto
                 .card
                     .card-body
                         .d-flex.align-items-center.justify-content-between
                             h4.card-title Thêm mới môn học
-                            a.btn.btn-outline-warning.btn-icon-text(href='/subjects/list') 
-                                i.mdi.mdi-reload.btn-icon-prepend
-                                | Quay lại
+                            div
+                                a.btn.btn-outline-primary.btn-icon-text(href='/files/sample-create-subjects.xlsx' download) 
+                                    i.mdi.mdi-file-excel.btn-icon-prepend
+                                    | Excel mẫu
+                                a.btn.btn-outline-warning.btn-icon-text.ml-2(href='/subjects/list') 
+                                    i.mdi.mdi-reload.btn-icon-prepend
+                                    | Quay lại
+                        form.forms-sample(action='/subjects/upload', method='post', enctype="multipart/form-data")
+                            .d-flex.align-items-center
+                                .file-drop-area
+                                    span.fake-btn Chọn tệp
+                                    span.file-msg hoặc kéo và thả tệp tại đây
+                                    input.file-input(type='file', name='file')
+                                button.ml-2.btn.btn-sm.btn-primary#btn-submit-add-excel(type="submit") Lưu
+                                button.ml-2.btn.btn-sm.btn-secondary#btn-cancel(type="button") Hủy
+                        .mb-4
+                            i --- hoặc ---
                         p.card-description Nhập thông tin bên dưới để thêm mới 1 môn học
                         form.mt-4(action='/subjects/create', method='POST')
                             .form-group.row
@@ -36,23 +50,64 @@ block content
     else if success.length > 0
         - var msgSuccess = success
     script.
-        let msgToastError = '#{msgError}';
-        if(msgToastError != ''){
-            Eggy({
-                title: 'Oops... Có gì đó không đúng',
-                message:  msgToastError,
-                type: 'warning',
-                duration: 5000,
-            });
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            let msgToastError = '#{msgError}';
+            if(msgToastError != ''){
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            }
 
-        let msgToastSuccess = '#{msgSuccess}';
-        if(msgToastSuccess != ''){
-            Eggy({
-                title: 'Thành công',
-                message:  msgToastSuccess,
-                type: 'success',
-                duration: 5000,
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != ''){
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            }
+
+            var $fileInput = $('.file-input');
+            var $droparea = $('.file-drop-area');
+            var btnSubmitAddSubjectExcel = $("#btn-submit-add-excel");
+            var btnCancelSubjectExcel = $("#btn-cancel");
+
+            // highlight drag area
+            $fileInput.on('dragenter focus click', function() {
+                $droparea.addClass('is-active');
             });
-        }
-    
+
+            // back to normal state
+            $fileInput.on('dragleave blur drop', function() {
+                $droparea.removeClass('is-active');
+            });
+
+            // change inner text
+            $fileInput.on('change', function() {
+                var filesCount = $(this)[0].files.length;
+                var $textContainer = $(this).prev();
+
+                if (filesCount === 1) {
+                    // if single file is selected, show file name
+                    var fileName = $(this).val().split('\\').pop();
+                    $textContainer.text(fileName);
+                    btnSubmitAddSubjectExcel.show();
+                    btnCancelSubjectExcel.show();
+                } else {
+                    // otherwise show number of files
+                    $textContainer.text(filesCount + ' tệp được chọn');
+                    btnSubmitAddSubjectExcel.hide();
+                }
+            });
+
+            btnCancelSubjectExcel.click(function() {
+                $(this).hide();
+                btnSubmitAddSubjectExcel.hide();
+                $fileInput.val("");
+                $fileInput.prev().text('hoặc kéo và thả tệp tại đây');
+            })
+        })

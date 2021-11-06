@@ -14,7 +14,7 @@ class SiteController {
     // [GET]/
     async index(req, res, next) {
         try {
-            const subjects = await Subject.find({}).limit(6);
+            const subjects = await Subject.find({});
             const banners = await Banner.find({});
 
             const blogs = await Blog.aggregate([
@@ -28,7 +28,7 @@ class SiteController {
                 },
                 { $sort: { view: -1 } },
                 {
-                    $limit: 6,
+                    $limit: 8,
                 },
             ]);
 
@@ -55,12 +55,10 @@ class SiteController {
     }
 
     // [GET]/subjects
-    subjects(req, res, next) {
-        Promise.all([Subject.find({}), Grade.find({})])
-            .then(([subjects, grades]) => {
-                res.render("subjects", { subjects, grades });
-            })
-            .catch(next);
+    async subjects(req, res, next) {
+        const subjects = await Subject.find({});
+        const grades = await Grade.find({});
+        res.render("subjects", { subjects, grades });
     }
 
     // [GET]/login

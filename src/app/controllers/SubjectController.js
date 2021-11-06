@@ -9,6 +9,8 @@ const Result = require("../models/Result");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const slugify = require("slugify");
+const readXlsxFile = require("read-excel-file/node");
+const path = require("path");
 class SubjectController {
     // [GET]/subjects/:slug
     async show(req, res, next) {
@@ -21,7 +23,7 @@ class SubjectController {
             const unitIdArray = units.map(({ _id }) => _id);
             const lessions = await Lession.find({
                 unitID: { $in: unitIdArray },
-            });
+            }).sort({ lessionNumber: 1 });
             const lessionIdArray = lessions.map(({ _id }) => _id);
             // bảng xếp hạng theo môn học
             const ranks = await Statistical.aggregate([
@@ -272,6 +274,7 @@ class SubjectController {
                     as: "statisticals",
                 },
             },
+            { $sort: { lessionNumber: 1 } },
         ]);
 
         res.render("subjects/content", {
@@ -281,6 +284,50 @@ class SubjectController {
             success: req.flash("success"),
             errors: req.flash("error"),
         });
+    }
+
+    // [POST]/subjects/upload
+    async upload(req, res) {
+        try {
+            if (req.file == undefined) {
+                req.flash("error", "Vui lòng tải lên một tệp excel!");
+                res.redirect("back");
+                return;
+            }
+            let fileExcel = path.resolve(
+                __dirname,
+                "../../public/uploads/" + req.file.filename
+            );
+
+            readXlsxFile(fileExcel).then(async (rows) => {
+                rows.shift();
+                let subjects = [];
+
+                rows.forEach((row) => {
+                    let subject = new Subject({
+                        name: row[1],
+                        gradeID: row[2],
+                        icon: row[3],
+                    });
+                    subjects.push(subject);
+                });
+
+                Subject.create(subjects)
+                    .then(() => {
+                        req.flash("success", "Đã tải tệp lên thành công!");
+                        res.redirect("back");
+                    })
+                    .catch((error) => {
+                        req.flash(
+                            "error",
+                            "Không thể nhập dữ liệu vào cơ sở dữ liệu!"
+                        );
+                        res.redirect("back");
+                    });
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

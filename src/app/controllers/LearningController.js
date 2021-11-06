@@ -25,7 +25,7 @@ class LearningController {
                     const unitIdArray = units.map(({ _id }) => _id);
                     const lessions = await Lession.find({
                         unitID: { $in: unitIdArray },
-                    });
+                    }).sort({ lessionNumber: 1 });
 
                     const exercises = await Exercise.find({
                         lessionID: lession._id,

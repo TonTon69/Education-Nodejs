@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const subjectController = require("../app/controllers/SubjectController");
+const upload = require("../app/middlewares/upload");
 
+router.post("/upload", upload.single("file"), subjectController.upload);
 router.get("/create", subjectController.create);
 router.post("/create", subjectController.postCreate);
 router.get("/list", subjectController.list);
