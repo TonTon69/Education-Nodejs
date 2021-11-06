@@ -61,40 +61,43 @@ block main
                         | 3
             .col-sm-7
                 .quiz.mb-4
-                    .exercise-item.mb-4
-                        .d-flex.align-items-center.justify-content-between
-                            strong.d-block.fw-bold.mb-0 Câu 
-                                span.index-qa 1
-                            button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= exercises[0].Cate[0].type
-                        .question.mt-2 !{exercises[0].question}
-                        .options.mt-3
-                            .form-check.d-flex.align-items-center
-                                input.form-check-input.mt-0.me-3(id="option1", type='radio', name=exercises[0]._id, value=exercises[0].option1)
-                                label.form-check-label(for="option1")
-                                    | A. #{exercises[0].option1}
-                            .form-check.d-flex.align-items-center
-                                input.form-check-input.mt-0.me-3(id="option2", type='radio', name=exercises[0]._id, value=exercises[0].option2)
-                                label.form-check-label(for="option2")
-                                    | B. #{exercises[0].option2}
-                            .form-check.d-flex.align-items-center
-                                input.form-check-input.mt-0.me-3(id="option3", type='radio', name=exercises[0]._id, value=exercises[0].option3)
-                                label.form-check-label(for="option3")
-                                    | C. #{exercises[0].option3}
-                            .form-check.d-flex.align-items-center
-                                input.form-check-input.mt-0.me-3(id="option4", type='radio', name=exercises[0]._id, value=exercises[0].option4)
-                                label.form-check-label(for="option4")
-                                    | D. #{exercises[0].option4}
-                        .check-result.mb-3.d-none
-                            span.message
-                            span.answer-true
-                        if exercises[0].recommend !== null
-                            .recommend(id="")
-                                .recommend-header.text-primary.d-inline-flex.align-items-center
-                                    span.me-1 Gợi ý
-                                    ion-icon(name='sunny')
-                                .recommend-body.mt-4
-                                    span.fw-bold Phương pháp giải
-                                    .mt-2.recommend-content= exercises[0].recommend
+                    - var i = 0;
+                    each exercise in exercises
+                        - i++;
+                        .exercise-item.mb-4
+                            .d-flex.align-items-center.justify-content-between
+                                strong.d-block.fw-bold.mb-0 Câu 
+                                    span.index-qa= i
+                                button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= exercise.Cate[0].type
+                            .question.mt-2 !{exercise.question}
+                            .options.mt-3
+                                .form-check.d-flex.align-items-center
+                                    input.form-check-input.mt-0.me-3(id=`option-1-${i}`, type='radio', name=exercise._id, value=exercise.option1)
+                                    label.form-check-label(for=`option-1-${i}`)
+                                        | A. #{exercise.option1}
+                                .form-check.d-flex.align-items-center
+                                    input.form-check-input.mt-0.me-3(id=`option-2-${i}`, type='radio', name=exercise._id, value=exercise.option2)
+                                    label.form-check-label(for=`option-2-${i}`)
+                                        | B. #{exercise.option2}
+                                .form-check.d-flex.align-items-center
+                                    input.form-check-input.mt-0.me-3(id=`option-3-${i}`, type='radio', name=exercise._id, value=exercise.option3)
+                                    label.form-check-label(for=`option-3-${i}`)
+                                        | C. #{exercise.option3}
+                                .form-check.d-flex.align-items-center
+                                    input.form-check-input.mt-0.me-3(id=`option-4-${i}`, type='radio', name=exercise._id, value=exercise.option4)
+                                    label.form-check-label(for=`option-4-${i}`)
+                                        | D. #{exercise.option4}
+                            .check-result.mb-3.d-none
+                                span.message
+                                span.answer-true
+                            if exercise.recommend !== null
+                                .recommend(id="")
+                                    .recommend-header.text-primary.d-inline-flex.align-items-center
+                                        span.me-1 Gợi ý
+                                        ion-icon(name='sunny')
+                                    .recommend-body.mt-4
+                                        span.fw-bold Phương pháp giải
+                                        .mt-2.recommend-content= exercise.recommend
                         
                 .actions.pt-4.d-flex.align-items-center
                     button#btn-next-question.btn.btn-success.btn-padding(value="submit")
@@ -110,7 +113,7 @@ block main
             var listExercise = !{JSON.stringify(exercises)};
             var currentQa = 0;
 
-            console.log(listExercise);
+            $(".exercise-item").first().addClass("show");
 
             //StopWatch
             $("#stopwatch").stopwatch().stopwatch("start");
@@ -173,20 +176,11 @@ block main
                 }
                 
                 currentQa++;
-                $(".questions__done .bottom").text(currentQa);
-                $(".index-qa").text(currentQa+1);
-                $(".question").text(listExercise[currentQa].question);
-                $(".btn-type").text(listExercise[currentQa].Cate[0].type);
-                $(".form-check-input").attr("name", listExercise[currentQa]._id);
-                $(".form-check-input[id=option1]").attr("value", listExercise[currentQa].option1);
-                $(".form-check-input[id=option2]").attr("value", listExercise[currentQa].option2);
-                $(".form-check-input[id=option3]").attr("value", listExercise[currentQa].option3);
-                $(".form-check-input[id=option4]").attr("value", listExercise[currentQa].option4);
-                $(".form-check-label[for=option1]").text(`A. ${listExercise[currentQa].option1}`);
-                $(".form-check-label[for=option2]").text(`B. ${listExercise[currentQa].option2}`);
-                $(".form-check-label[for=option3]").text(`C. ${listExercise[currentQa].option3}`);
-                $(".form-check-label[for=option4]").text(`D. ${listExercise[currentQa].option4}`);
-                $(".recommend-content").text(listExercise[currentQa].recommend);
+                var exerciseItem = $(".exercise-item");
+                for (var i = 0; i < exerciseItem.length; i++) {
+                    exerciseItem[i].className = "exercise-item";
+                }
+                exerciseItem[currentQa].className = "exercise-item show";
 
                 if (currentQa == listExercise.length - 1) {
                     $(this).hide();

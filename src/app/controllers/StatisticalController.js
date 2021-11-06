@@ -72,6 +72,7 @@ class StatisticalController {
                         },
                     },
                 ]);
+                console.log(results);
                 res.render("statisticals/detail", {
                     results,
                     userSta,

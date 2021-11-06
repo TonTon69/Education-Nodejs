@@ -773,6 +773,12 @@ blockquote {
             }
 
             .exercise-item {
+                display: none;
+
+                &.show {
+                    display: block;
+                }
+
                 .question {
                     line-height: 1.5;
                 }
