@@ -7,6 +7,8 @@ const User = require("../models/User");
 const Exercise = require("../models/Exercise");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const readXlsxFile = require("read-excel-file/node");
+const path = require("path");
 class UnitController {
     // [GET]/units/list
     async list(req, res) {
@@ -210,6 +212,51 @@ class UnitController {
         await Unit.deleteOne({ _id: req.params.id });
         req.flash("success", "Xóa thành công!");
         res.redirect("back");
+    }
+
+    // [POST]/units/upload
+    async upload(req, res) {
+        try {
+            if (req.file == undefined) {
+                req.flash("error", "Vui lòng tải lên một tệp excel!");
+                res.redirect("back");
+                return;
+            }
+            let fileExcel = path.resolve(
+                __dirname,
+                "../../public/uploads/" + req.file.filename
+            );
+
+            readXlsxFile(fileExcel).then(async (rows) => {
+                rows.shift();
+                let units = [];
+
+                rows.forEach((row) => {
+                    let unit = new Unit({
+                        name: `CHƯƠNG ${row[0]}. ${row[1]
+                            .toString()
+                            .toUpperCase()}`,
+                        subjectID: req.body.subjectID,
+                    });
+                    units.push(unit);
+                });
+
+                Unit.create(units)
+                    .then(() => {
+                        req.flash("success", "Đã tải tệp lên thành công!");
+                        res.redirect("back");
+                    })
+                    .catch((error) => {
+                        req.flash(
+                            "error",
+                            "Không thể nhập dữ liệu vào cơ sở dữ liệu!"
+                        );
+                        res.redirect("back");
+                    });
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

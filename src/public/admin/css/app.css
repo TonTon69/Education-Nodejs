@@ -117,7 +117,11 @@ p {
 }
 
 #btn-submit-add-excel,
-#btn-cancel {
+#btn-cancel,
+#addUnitModal .form-upload button[type="submit"],
+#addUnitModal .form-upload button[type="button"],
+#addLessionModal .form-upload button[type="submit"],
+#addLessionModal .form-upload button[type="button"] {
     display: none;
 }
 
@@ -142,7 +146,3 @@ p {
 .bg-green {
     background-color: #35a801;
 }
-/* 
-.statistical__detail .tab-pane.fade .form-check {
-    margin: 10px;
-} */

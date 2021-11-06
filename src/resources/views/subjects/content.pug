@@ -117,10 +117,24 @@ block content
                                         button.close(type='button', data-dismiss='modal', aria-label='Close')
                                         span(aria-hidden='true') &times;
                                     .modal-body.text-dark
+                                        .d-flex.align-items-center.justify-content-between.mb-4
+                                            form.form-upload.mb-0(action='/units/upload', method='post', enctype="multipart/form-data")
+                                                .d-flex.align-items-center
+                                                    .file-drop-area
+                                                        span.fake-btn Chọn tệp
+                                                        span.file-msg hoặc kéo và thả tệp tại đây
+                                                        input.file-input(type='file', name='file')
+                                                        input(type="text", name="subjectID", hidden)
+                                                    button.ml-2.btn.btn-sm.btn-primary(type="submit") Lưu
+                                                    button.ml-2.btn.btn-sm.btn-secondary(type="button") Hủy
+                                            a.btn.btn-outline-primary.btn-icon-text(href='/files/sample-create-units.xlsx' download) 
+                                                i.mdi.mdi-file-excel.btn-icon-prepend
+                                                | Excel mẫu
+                                        .mb-4
+                                            i --- hoặc ---
                                         p.card-description Nhập thông tin bên dưới để thêm mới 1 chuyên đề
                                         form.mt-4(action="/units/create", method='post')
-                                            .form-group.row
-                                                input.form-control(type='text', name='subjectID', hidden)
+                                            input.form-control(type='text', name='subjectID', hidden)
                                             .form-group.row
                                                 label.col-sm-3.col-form-label.text-dark(for='name-unit') Tên chuyên đề
                                                 .col-sm-9
@@ -137,11 +151,25 @@ block content
                                         button.close(type='button', data-dismiss='modal', aria-label='Close')
                                         span(aria-hidden='true') &times;
                                     .modal-body.text-dark
+                                        .label-unit-name.font-weight-bold
+                                        .d-flex.align-items-center.justify-content-between.mb-4.mt-4
+                                            form.form-upload.mb-0(action='/lessions/upload', method='post', enctype="multipart/form-data")
+                                                .d-flex.align-items-center
+                                                    .file-drop-area
+                                                        span.fake-btn Chọn tệp
+                                                        span.file-msg hoặc kéo và thả tệp tại đây
+                                                        input.file-input(type='file', name='file')
+                                                        input(type="text", name="unitID", hidden)
+                                                    button.ml-2.btn.btn-sm.btn-primary(type="submit") Lưu
+                                                    button.ml-2.btn.btn-sm.btn-secondary(type="button") Hủy
+                                            a.btn.btn-outline-primary.btn-icon-text(href='/files/sample-create-lessions.xlsx' download) 
+                                                i.mdi.mdi-file-excel.btn-icon-prepend
+                                                | Excel mẫu
+                                        .mb-4
+                                            i --- hoặc ---
                                         p.card-description Nhập thông tin bên dưới để thêm mới 1 bài học
                                         form.mt-4(action="/lessions/create", method='post')
-                                            .form-group.row
-                                                label.col-sm-12.col-form-label.text-dark.label-unit-name.font-weight-bold
-                                                input.form-control(type='text', name='unitID', hidden)
+                                            input.form-control(type='text', name='unitID', hidden)
                                             .form-group.row
                                                 label.col-sm-3.col-form-label.text-dark(for='name-lession') Tên bài học
                                                 .col-sm-9
@@ -301,6 +329,83 @@ block content
             btnSubmitDeleteUnit.click(function () {
                 deleteUnitForm.attr("action", "/units/" + unitId + "?_method=DELETE");
                 deleteUnitForm.submit();
+            })
+
+            var $fileInput = $('#addUnitModal .file-input');
+            var $droparea = $('#addUnitModal .file-drop-area');
+            var btnSubmitAddUnitExcel = $("#addUnitModal .form-upload button[type=submit]");
+            var btnCancelUnitExcel = $("#addUnitModal .form-upload button[type=button]");
+
+            var $fileInput1 = $('#addLessionModal .file-input');
+            var $droparea1 = $('#addLessionModal .file-drop-area');
+            var btnSubmitAddLessionExcel = $("#addLessionModal .form-upload button[type=submit]");
+            var btnCancelLessionExcel = $("#addLessionModal .form-upload button[type=button]");
+
+            // highlight drag area
+            $fileInput.on('dragenter focus click', function() {
+                $droparea.addClass('is-active');
+            });
+
+            $fileInput1.on('dragenter focus click', function() {
+                $droparea1.addClass('is-active');
+            });
+
+            // back to normal state
+            $fileInput.on('dragleave blur drop', function() {
+                $droparea.removeClass('is-active');
+            });
+
+            $fileInput1.on('dragleave blur drop', function() {
+                $droparea1.removeClass('is-active');
+            });
+
+            // change inner text
+            $fileInput.on('change', function() {
+                var filesCount = $(this)[0].files.length;
+                var $textContainer = $(this).prev();
+
+                if (filesCount === 1) {
+                    // if single file is selected, show file name
+                    var fileName = $(this).val().split('\\').pop();
+                    $textContainer.text(fileName);
+                    btnSubmitAddUnitExcel.show();
+                    btnCancelUnitExcel.show();
+                } else {
+                    // otherwise show number of files
+                    $textContainer.text(filesCount + ' tệp được chọn');
+                    btnSubmitAddUnitExcel.hide();
+                }
+            });
+
+            $fileInput1.on('change', function() {
+                var filesCount = $(this)[0].files.length;
+                var $textContainer = $(this).prev();
+
+                if (filesCount === 1) {
+                    // if single file is selected, show file name
+                    var fileName = $(this).val().split('\\').pop();
+                    $textContainer.text(fileName);
+                    btnSubmitAddLessionExcel.show();
+                    btnCancelLessionExcel.show();
+                } else {
+                    // otherwise show number of files
+                    $textContainer.text(filesCount + ' tệp được chọn');
+                    btnSubmitAddLessionExcel.hide();
+                }
+            });
+
+            btnCancelUnitExcel.click(function() {
+                $(this).hide();
+                btnSubmitAddUnitExcel.hide();
+                $fileInput.val("");
+                $fileInput.prev().text('hoặc kéo và thả tệp tại đây');
+            })
+
+            btnCancelLessionExcel.click(function() {
+                $(this).hide();
+                btnSubmitAddLessionExcel.hide();
+                $fileInput1.val("");
+                $fileInput1.prev().text('hoặc kéo và thả tệp tại đây');
             })
 
             // toast message

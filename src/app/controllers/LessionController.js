@@ -5,6 +5,8 @@ const Exercise = require("../models/Exercise");
 const Subject = require("../models/Subject");
 const Unit = require("../models/Unit");
 const slugify = require("slugify");
+const readXlsxFile = require("read-excel-file/node");
+const path = require("path");
 class LessionController {
     // [POST]/banners/create
     async postCreate(req, res) {
@@ -56,6 +58,50 @@ class LessionController {
         await Lession.deleteOne({ _id: req.params.id });
         req.flash("success", "Xóa thành công!");
         res.redirect("back");
+    }
+
+    // [POST]/lession/upload
+    async upload(req, res) {
+        try {
+            if (req.file == undefined) {
+                req.flash("error", "Vui lòng tải lên một tệp excel!");
+                res.redirect("back");
+                return;
+            }
+            let fileExcel = path.resolve(
+                __dirname,
+                "../../public/uploads/" + req.file.filename
+            );
+
+            readXlsxFile(fileExcel).then((rows) => {
+                rows.shift();
+                let lessions = [];
+
+                rows.forEach((row) => {
+                    let lession = new Lession({
+                        lessionNumber: row[0],
+                        name: row[1],
+                        unitID: req.body.unitID,
+                    });
+                    lessions.push(lession);
+                });
+
+                Lession.create(lessions)
+                    .then(() => {
+                        req.flash("success", "Đã tải tệp lên thành công!");
+                        res.redirect("back");
+                    })
+                    .catch((error) => {
+                        req.flash(
+                            "error",
+                            "Không thể nhập dữ liệu vào cơ sở dữ liệu!"
+                        );
+                        res.redirect("back");
+                    });
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
