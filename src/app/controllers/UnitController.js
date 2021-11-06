@@ -5,6 +5,7 @@ const Theory = require("../models/Theory");
 const Result = require("../models/Result");
 const User = require("../models/User");
 const Exercise = require("../models/Exercise");
+const Statistical = require("../models/Statistical");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const readXlsxFile = require("read-excel-file/node");
@@ -201,14 +202,31 @@ class UnitController {
     // [DELETE]/units/:id
     async delete(req, res, next) {
         const lessions = await Lession.find({ unitID: req.params.id });
-        const lessionsIdArr = lessions.map(({ _id }) => _id);
-        await Theory.deleteMany({
-            lessionID: { $in: lessionsIdArr },
-        });
-        await Exercise.deleteMany({
-            lessionID: { $in: lessionsIdArr },
-        });
-        await Lession.deleteMany({ unitID: req.params.id });
+        if (lessions.length > 0) {
+            const lessionsIdArr = lessions.map(({ _id }) => _id);
+            await Theory.deleteMany({
+                lessionID: { $in: lessionsIdArr },
+            });
+            await Exercise.deleteMany({
+                lessionID: { $in: lessionsIdArr },
+            });
+            await Lession.deleteMany({ unitID: req.params.id });
+
+            const statisticals = await Statistical.find({
+                lessionID: { $in: lessionsIdArr },
+            });
+
+            if (statisticals.length > 0) {
+                const statisticalsIdArr = statisticals.map(({ _id }) => _id);
+                await Result.deleteMany({
+                    statisticalID: { $in: statisticalsIdArr },
+                });
+                await Statistical.deleteMany({
+                    lessionID: { $in: lessionsIdArr },
+                });
+            }
+        }
+
         await Unit.deleteOne({ _id: req.params.id });
         req.flash("success", "Xóa thành công!");
         res.redirect("back");

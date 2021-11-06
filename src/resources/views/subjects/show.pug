@@ -43,6 +43,7 @@ block main
                         li
                             ion-icon(name='battery-full-outline')
                             span Học mọi lúc, mọi nơi
+                    
                     .chart.shadow.mt-4
                         .text-center
                             .d-flex.align-items-center.justify-content-center.mb-3
@@ -60,15 +61,19 @@ block main
                                         .modal-body
                                             .mb-3.text-start !{ratingRegulation.value}
                             ul.ps-0.mb-0.mt-4
-                                each rank in ranks
-                                    li.chart__item
-                                        .position-relative
-                                            img.avatar(src=rank.user[0].avatar, alt='')
-                                            .icon-top
-                                        span.name= rank.user[0].fullname
-                                        .d-flex.align-items-center
-                                            span.me-1= Math.round(rank.totalScore)
-                                            ion-icon(name='heart-circle')
+                                if ranks.length > 0
+                                    each rank in ranks
+                                        li.chart__item
+                                            .position-relative
+                                                img.avatar(src=rank.user[0].avatar, alt='')
+                                                .icon-top
+                                            span.name= rank.user[0].fullname
+                                            .d-flex.align-items-center
+                                                span.me-1= Math.round(rank.totalScore)
+                                                ion-icon(name='heart-circle')
+                                        hr
+                                else
+                                    span Bạn có muốn chinh phục môn học này?
                                     hr
     script.
         $(document).ready(function() {

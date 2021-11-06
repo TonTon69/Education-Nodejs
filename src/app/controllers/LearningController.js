@@ -20,9 +20,8 @@ class LearningController {
                         lessionID: lession.id,
                     });
 
-                    const units = await Unit.find({ id: lession.unitID });
-
                     // mục lục môn học
+                    const units = await Unit.find({ subjectID: subject._id });
                     const unitIdArray = units.map(({ _id }) => _id);
                     const lessions = await Lession.find({
                         unitID: { $in: unitIdArray },

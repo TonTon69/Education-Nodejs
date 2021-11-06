@@ -5,6 +5,7 @@ const System = require("../models/System");
 const Exercise = require("../models/Exercise");
 const Theory = require("../models/Theory");
 const Statistical = require("../models/Statistical");
+const Result = require("../models/Result");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const slugify = require("slugify");
@@ -200,14 +201,40 @@ class SubjectController {
     // [DELETE]/subjects/:id
     async delete(req, res, next) {
         const units = await Unit.find({ subjectID: req.params.id });
-        const unitsIdArr = units.map(({ _id }) => _id);
-        const lessions = await Lession.find({ unitID: { $in: unitsIdArr } });
-        const lessionsIdArr = lessions.map(({ _id }) => _id);
+        if (units.length > 0) {
+            const unitsIdArr = units.map(({ _id }) => _id);
+            const lessions = await Lession.find({
+                unitID: { $in: unitsIdArr },
+            });
 
-        await Exercise.deleteMany({ lessionID: { $in: lessionsIdArr } });
-        await Theory.deleteMany({ lessionID: { $in: lessionsIdArr } });
-        await Lession.deleteMany({ unitID: { $in: unitsIdArr } });
-        await Unit.deleteMany({ subjectID: req.params.id });
+            if (lessions.length > 0) {
+                const lessionsIdArr = lessions.map(({ _id }) => _id);
+                await Exercise.deleteMany({
+                    lessionID: { $in: lessionsIdArr },
+                });
+                await Theory.deleteMany({ lessionID: { $in: lessionsIdArr } });
+                await Lession.deleteMany({ unitID: { $in: unitsIdArr } });
+
+                const statisticals = await Statistical.find({
+                    lessionID: { $in: lessionsIdArr },
+                });
+
+                if (statisticals.length > 0) {
+                    const statisticalsIdArr = statisticals.map(
+                        ({ _id }) => _id
+                    );
+                    await Result.deleteMany({
+                        statisticalID: { $in: statisticalsIdArr },
+                    });
+                    await Statistical.deleteMany({
+                        lessionID: { $in: lessionsIdArr },
+                    });
+                }
+            }
+
+            await Unit.deleteMany({ subjectID: req.params.id });
+        }
+
         await Subject.deleteOne({ _id: req.params.id });
 
         req.flash("success", "Xóa thành công!");

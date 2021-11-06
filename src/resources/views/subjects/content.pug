@@ -69,7 +69,7 @@ block content
                                     .modal-header
                                         strong#editLessionModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase #{subject.name} #{subject.gradeID} - Chỉnh sửa bài học
                                         button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        span(aria-hidden='true') &times;
+                                            span(aria-hidden='true') &times;
                                     .modal-body.text-dark
                                         p.card-description Nhập thông tin bên dưới để chỉnh sửa 1 bài học
                                         form(name='edit-lession-form', method='post')
@@ -94,7 +94,7 @@ block content
                                     .modal-header
                                         strong#editUnitModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase #{subject.name} #{subject.gradeID} - Chỉnh sửa chuyên đề
                                         button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        span(aria-hidden='true') &times;
+                                            span(aria-hidden='true') &times;
                                     .modal-body.text-dark
                                         p.card-description Nhập thông tin bên dưới để chỉnh sửa 1 chuyên đề
                                         form(name='edit-unit-form', method='post')
@@ -115,7 +115,7 @@ block content
                                     .modal-header
                                         strong#addUnitModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase #{subject.name} #{subject.gradeID} - Thêm mới chuyên đề
                                         button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        span(aria-hidden='true') &times;
+                                            span(aria-hidden='true') &times;
                                     .modal-body.text-dark
                                         .d-flex.align-items-center.justify-content-between.mb-4
                                             form.form-upload.mb-0(action='/units/upload', method='post', enctype="multipart/form-data")
@@ -149,7 +149,7 @@ block content
                                     .modal-header
                                         strong#addLessionModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase #{subject.name} #{subject.gradeID} - Thêm mới bài học
                                         button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        span(aria-hidden='true') &times;
+                                            span(aria-hidden='true') &times;
                                     .modal-body.text-dark
                                         .label-unit-name.font-weight-bold
                                         .d-flex.align-items-center.justify-content-between.mb-4.mt-4
@@ -188,9 +188,9 @@ block content
                                     .modal-header
                                         strong#deleteUnitModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase #{subject.name} #{subject.gradeID} - Xóa chuyên đề !!!
                                         button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        span(aria-hidden='true') &times;
+                                            span(aria-hidden='true') &times;
                                     .modal-body.text-dark
-                                        p Hành động này sẽ xóa tất cả các bài học, nội dung lý thuyết và bài tập vận dụng của chuyên đề này !!!
+                                        p Hành động này sẽ xóa tất cả các bài học, nội dung lý thuyết, bài tập vận dụng và kết quả làm bài của chuyên đề này !!!
                                         p Hành động này rất nguy hiểm, không thể khôi phục lại dữ liệu.
                                         p Bạn có chắc chắn muốn xóa chuyên đề này ???
                                     .modal-footer
@@ -203,9 +203,9 @@ block content
                                     .modal-header
                                         strong#deleteLessionModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase #{subject.name} #{subject.gradeID} - Xóa bài học !!!
                                         button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        span(aria-hidden='true') &times;
+                                            span(aria-hidden='true') &times;
                                     .modal-body.text-dark
-                                        p Hành động này sẽ xóa tất cả nội dung lý thuyết và bài tập vận dụng của bài học này !!!
+                                        p Hành động này sẽ xóa tất cả nội dung lý thuyết, bài tập vận dụng và kết quả làm bài của bài học này !!!
                                         p Hành động này rất nguy hiểm, không thể khôi phục lại dữ liệu.
                                         p Bạn có chắc chắn muốn xóa bài học này ???
                                     .modal-footer

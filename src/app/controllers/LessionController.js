@@ -4,6 +4,8 @@ const Theory = require("../models/Theory");
 const Exercise = require("../models/Exercise");
 const Subject = require("../models/Subject");
 const Unit = require("../models/Unit");
+const Statistical = require("../models/Statistical");
+const Result = require("../models/Result");
 const slugify = require("slugify");
 const readXlsxFile = require("read-excel-file/node");
 const path = require("path");
@@ -53,9 +55,22 @@ class LessionController {
 
     // [DELETE]/lessions/:id
     async delete(req, res, next) {
+        const statisticals = await Statistical.find({
+            lessionID: req.params.id,
+        });
+
+        if (statisticals.length > 0) {
+            const statisticalsIdArr = statisticals.map(({ _id }) => _id);
+            await Result.deleteMany({
+                statisticalID: { $in: statisticalsIdArr },
+            });
+            await Statistical.deleteMany({ lessionID: req.params.id });
+        }
+
         await Theory.deleteOne({ lessionID: req.params.id });
         await Exercise.deleteMany({ lessionID: req.params.id });
         await Lession.deleteOne({ _id: req.params.id });
+
         req.flash("success", "Xóa thành công!");
         res.redirect("back");
     }
