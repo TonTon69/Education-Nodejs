@@ -1,0 +1,47 @@
+extends ../layouts/admin
+block content
+    section.statistical__list
+        .col-lg-12.grid-margin.stretch-card
+            .card
+                .card-body
+                    .d-flex.align-items-center.justify-content-between
+                        .card-title.text-uppercase #{subject.name} #{subject.gradeID}
+                        a.btn.btn-outline-warning.btn-icon-text(href='/subjects/list') 
+                            i.mdi.mdi-reload.btn-icon-prepend
+                            | Quay lại
+                    hr
+                    .card-title Thống kê kết quả học tập
+                    .table-responsive.pt-3
+                        table.table.table-hover.text-dark
+                            thead
+                                tr
+                                    th.font-weight-bold #
+                                    th.font-weight-bold Thành viên
+                                    th.font-weight-bold Tổng điểm tích lũy
+                                    th.font-weight-bold Tiến trình học
+                                    th.font-weight-bold Xếp loại
+                                    th.font-weight-bold Hành động
+                            tbody
+                                - var count = 0;
+                                each rank in ranks
+                                    - count++;
+                                    tr
+                                        td= count
+                                        td
+                                            img(src=rank.user[0].avatar)
+                                            span.ml-2= rank.user[0].fullname
+                                        td= Math.round(rank.totalScore) + " điểm"
+                                        td Hoàn thành #{rank.totalLessionDone}/#{countLessions} bài học (#{Math.round((rank.totalLessionDone/countLessions)*100)}%)
+                                        - var percent = Math.round((rank.totalLessionDone/countLessions)*100);
+                                        if percent > 80
+                                            td Giỏi
+                                        else if percent > 65 && percent < 80
+                                            td Khá
+                                        else if percent > 50 && percent < 65
+                                            td Trung bình
+                                        else
+                                            td Yếu
+                                        td
+                                            a.btn.btn-secondary.mr-2(href=`/statisticals/${rank._id}/detail`) Chi tiết
+                                            a.btn.btn-danger.mr-2(href=`/statisticals/${rank._id}/detail`) Xóa
+                                        

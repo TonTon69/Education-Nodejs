@@ -43,6 +43,7 @@ block content
                                         td.w-25= subject.slug
                                         td.text-center
                                             a.btn.btn-primary.mr-2(href=`/subjects/${subject._id}/content`) Nội dung
+                                            a.btn.btn-warning.mr-2(href=`/statisticals?subject=${subject._id}`) Thống kê
                                             a.btn.btn-secondary.mr-2(href=`/subjects/${subject._id}/edit`) Sửa
                                             button.btn.btn-danger(data-toggle="modal" data-target="#deleteSubjectModal", data-id=subject._id) Xóa
                                 form(name="delete-subject-form", method="POST")

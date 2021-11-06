@@ -47,6 +47,60 @@ class StatisticalController {
             } else {
                 res.render("error");
             }
+        } else if (ObjectId.isValid(req.query.subject)) {
+            const subject = await Subject.findById(req.query.subject);
+            if (subject) {
+                const units = await Unit.find({ subjectID: subject._id });
+                const unitIdArray = units.map(({ _id }) => _id);
+                const lessions = await Lession.find({
+                    unitID: { $in: unitIdArray },
+                });
+                const lessionIdArray = lessions.map(({ _id }) => _id);
+
+                const ranks = await Statistical.aggregate([
+                    {
+                        $match: {
+                            lessionID: { $in: lessionIdArray },
+                        },
+                    },
+                    {
+                        $group: {
+                            _id: "$userID",
+                            totalScore: { $sum: "$score" },
+                            totalLessionDone: { $count: {} },
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "_id",
+                            foreignField: "_id",
+                            as: "user",
+                        },
+                    },
+                    {
+                        $project: {
+                            "user.birthDay": 0,
+                            "user.email": 0,
+                            "user.active": 0,
+                            "user.password": 0,
+                            "user.phone": 0,
+                            "user.roleID": 0,
+                            "user.address": 0,
+                            "user.username": 0,
+                        },
+                    },
+                    { $sort: { totalScore: -1 } },
+                ]);
+
+                res.render("statisticals/result", {
+                    subject,
+                    ranks,
+                    countLessions: lessions.length,
+                });
+            } else {
+                res.render("error");
+            }
         } else {
             res.render("error");
         }
