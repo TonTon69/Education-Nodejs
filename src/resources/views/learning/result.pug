@@ -25,7 +25,7 @@ block main
                                     td.pt-3.pb-3 Bài #{item.lession.lessionNumber}. #{item.lession.name}
                                     td.pt-3.pb-3= Math.round(item.score) + " điểm"
                                     td.pt-3.pb-3
-                                        a.text-primary(href=`/learning/result?name=${item.lession.slug}`) Xem chi tiết
+                                        a.text-primary(href=`/learning/result?lession=${item.lession.slug}`) Xem chi tiết
                         else
                             tr
                                 td.text-center(colspan='5')

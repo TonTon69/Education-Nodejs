@@ -23,19 +23,78 @@ block content
                                     th.font-weight-bold Ngày làm bài
                                     th.font-weight-bold Hành động
                             tbody
-                                - var count = 0;
-                                each statistical in statisticals
-                                    - count++;
+                                if statisticals.length > 0
+                                    - var count = 0;
+                                    each statistical in statisticals
+                                        - count++;
+                                        tr
+                                            td= count
+                                            td
+                                                img(src=statistical.user[0].avatar)
+                                                span.ml-2= statistical.user[0].fullname
+                                            td= Math.round(statistical.score)
+                                            td #{statistical.totalAnswerTrue}/#{countExercises}
+                                            td= statistical.time
+                                            td= moment(statistical.updatedAt).format("DD-MM-YYYY")
+                                            td
+                                                a.btn.btn-secondary.mr-2(href=`/statisticals/${statistical._id}/detail`) Chi tiết
+                                                button.btn.btn-danger(data-toggle="modal" data-target="#deleteStatisticalModal", data-id=statistical._id) Xóa
+                                else
                                     tr
-                                        td= count
-                                        td
-                                            img(src=statistical.user[0].avatar)
-                                            span.ml-2= statistical.user[0].fullname
-                                        td= Math.round(statistical.score)
-                                        td #{statistical.totalAnswerTrue}/#{countExercises}
-                                        td= statistical.time
-                                        td= moment(statistical.updatedAt).format("DD-MM-YYYY")
-                                        td
-                                            a.btn.btn-secondary.mr-2(href=`/statisticals/${statistical._id}/detail`) Chi tiết
-                                            a.btn.btn-danger.mr-2(href=`/statisticals/${statistical._id}/detail`) Xóa
+                                        td.text-center(colspan='7') Không có dữ liệu!!!
+                                form(name="delete-statistical-form", method="POST")
+                                #deleteStatisticalModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteStatisticalModalLabel', aria-hidden='true')
+                                    .modal-dialog(role='document', style='transition: all 0.3s ease')
+                                        .modal-content
+                                            .modal-header
+                                                strong#deleteStatisticalModalLabel.modal-title.font-weight-bold.text-danger.text-uppercase Xóa kết quả
+                                                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                                    span(aria-hidden='true') &times;
+                                            .modal-body.text-dark
+                                                span.d-block.mb-2.mt-2 Hành động này không thể khôi phục!!!
+                                                span.d-block.mb-2 Bạn có chắc chắn muốn xóa kết quả này không???
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
+                                                button.btn.btn-danger#btn-delete-statistical(type='button') Chắc chắn
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            var deleteStatisticalModal = $("#deleteStatisticalModal");
+            var statisticalId;
+            var deleteStatisticalForm = $('form[name="delete-statistical-form"]');
+            var btnDeleteStatistical = $("#btn-delete-statistical");
+
+            deleteStatisticalModal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                statisticalId = button.data('id');
+            });
+
+            btnDeleteStatistical.click(function () {
+                deleteStatisticalForm.attr("action", "/statisticals/" + statisticalId + "?_method=DELETE");
+                deleteStatisticalForm.submit();
+            });
+
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != '') {
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            };
+
+            let msgToastError = '#{msgError}';
+            if(msgToastError != '') {
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            };
+        })                                   
                                         

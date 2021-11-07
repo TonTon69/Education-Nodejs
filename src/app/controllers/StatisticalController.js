@@ -43,6 +43,8 @@ class StatisticalController {
                     unit,
                     subject,
                     countExercises: exercises.length,
+                    errors: req.flash("error"),
+                    success: req.flash("success"),
                 });
             } else {
                 res.render("error");
@@ -126,7 +128,6 @@ class StatisticalController {
                         },
                     },
                 ]);
-                console.log(results);
                 res.render("statisticals/detail", {
                     results,
                     userSta,
@@ -141,6 +142,17 @@ class StatisticalController {
         } else {
             res.render("error");
         }
+    }
+
+    // [DELETE]/statisticals/:id
+    async delete(req, res, next) {
+        const statistical = await Statistical.findById(req.params.id);
+        if (statistical) {
+            await Result.deleteMany({ statisticalID: statistical._id });
+            statistical.delete();
+        }
+        req.flash("success", "Xóa thành công!");
+        res.redirect("back");
     }
 }
 

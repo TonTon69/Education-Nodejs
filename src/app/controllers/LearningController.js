@@ -67,7 +67,7 @@ class LearningController {
     // [GET]/learning/result
     async learningResult(req, res, next) {
         try {
-            const lession = await Lession.findOne({ slug: req.query.name });
+            const lession = await Lession.findOne({ slug: req.query.lession });
             if (lession) {
                 const exercises = await Exercise.find({
                     lessionID: lession._id,
@@ -196,6 +196,35 @@ class LearningController {
                         },
                     },
                 ]);
+
+                // const statisticalsLessionId = statisticals.map(
+                //     ({ lessionID }) => lessionID
+                // );
+
+                // const lessions = await Lession.aggregate([
+                //     { $match: { _id: { $in: statisticalsLessionId } } },
+                //     {
+                //         $lookup: {
+                //             from: "units",
+                //             localField: "unitID",
+                //             foreignField: "_id",
+                //             as: "unit",
+                //         },
+                //     },
+                //     {
+                //         $unwind: "$unit",
+                //     },
+                //     {
+                //         $lookup: {
+                //             from: "subjects",
+                //             localField: "unit.subjectID",
+                //             foreignField: "_id",
+                //             as: "unit.subject",
+                //         },
+                //     },
+                // ]);
+
+                // console.log(statisticals);
 
                 res.render("learning/result", { statisticals });
             }
