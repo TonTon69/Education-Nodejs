@@ -1,81 +1,62 @@
 extends ../layouts/admin
 block content
-    .container  
-        .col-12.grid-margin
+    section.user__edit 
+        .col-lg-10.grid-margin.stretch-card.mx-auto
             .card
                 .card-body
-                    h4.card-title
-                        | Chỉnh sửa tài khoản người dùng
+                    .d-flex.align-items-center.justify-content-between
+                        h4.card-title
+                            | Chỉnh sửa tài khoản người dùng
+                        a.btn.btn-outline-warning.btn-icon-text(href='/user/list') 
+                            i.mdi.mdi-reload.btn-icon-prepend
+                            | Quay lại
                     form.form-sample(method='POST' action=`/user/${user._id}/update?_method=PUT`)
-                        p.card-description(style='font-weight: bold;')
-                        | Th&ocirc;ng tin c&aacute; nh&acirc;n 
-                        .row(style="margin-top:15px;")
-                            .col-md-12
+                        p.card-description.text-dark.font-weight-bold Thông tin cá nhân
+                        .row
+                            .col-md-6
                                 .form-group.row
-                                    label.col-sm-2.col-form-label(style="margin-right: -44px;") Họ vả tên
+                                    label.text-dark.col-sm-3.col-form-label Họ tên
                                     .col-sm-9
                                         input.form-control(type='text' name="fullname" value=`${user.fullname}`)
-                        .row
                             .col-md-6
                                 .form-group.row
-                                    label.col-sm-3.col-form-label Ch&#x1EE9;c v&#x1EE5;
+                                    label.text-dark.col-sm-3.col-form-label Ch&#x1EE9;c v&#x1EE5;
                                     .col-sm-9
-                                        select.form-control(name= "roleID")
+                                        select.form-control.h-75(name= "roleID")
                                             each role in roles
                                                 option(value=role._id selected=role.id==user.roleID)= role.description
-                            .add-role
-                                .btn.btn-outline-secondary.btn-icon-text.ml-auto( id="btn-add-role" data-toggle='modal' data-target='#add-role-modal')
-                                    i.mdi.mdi-upload.btn-icon-prepend
-                                    | Thêm mới chức vụ
-
                         .row
-                            //code hrer
                             .col-md-6
                                 .form-group.row
-                                    label.col-sm-3.col-form-label Ng&agrave;y sinh
+                                    label.text-dark.col-sm-3.col-form-label Ng&agrave;y sinh
                                     .col-sm-9
-                                        - var birthDay=  user.birthDay.getFullYear()+"-"+user.birthDay.getMonth()+"-"+user.birthDay.getDate()
-                                        input.form-control(placeholder='30/01/2000' name="birthDay" value=`${birthDay}`)
+                                        if user.birthDay
+                                            - var birthDay= moment(user.birthDay).format("DD-MM-YYYY") 
+                                            input.form-control(placeholder='30/01/2000' name="birthDay" value=`${birthDay}`)
+                                        else 
+                                            input.form-control(placeholder='30/01/2000' name="birthDay" value=``)
                             .col-md-6
                                 .form-group.row
-                                    label.col-sm-3.col-form-label &Dstrok;&#x1ECB;a ch&#x1EC9;
+                                    label.text-dark.col-sm-3.col-form-label &Dstrok;&#x1ECB;a ch&#x1EC9;
                                     .col-sm-9
                                         input.form-control(type='text' name="address" value=`${user.address}`)
 
-                        p.card-description(style='font-weight: bold')
-                            | Th&ocirc;ng tin t&agrave;i kho&#x1EA3;n
+                        p.card-description.text-dark.font-weight-bold Thông tin tài khoản
                         .row
                             .col-md-6
                                 .form-group.row
-                                    label.col-sm-3.col-form-label
+                                    label.text-dark.col-sm-3.col-form-label
                                         | Email
                                     .col-sm-9
                                         input.form-control(type='text' name="email" value=`${user.email}`)
                             .col-md-6
                                 .form-group.row
-                                    label.col-sm-3.col-form-label
+                                    label.text-dark.col-sm-3.col-form-label
                                         | S&#x1ED1; &dstrok;i&#x1EC7;n
                                         | tho&#x1EA1;i
                                     .col-sm-9
                                         input.form-control(type='text' name="phone" value=`${user.phone}`)
-                        .row
-                            .col-md-6
-                                .form-group.row
-                                    label.col-sm-3.col-form-label M&#x1EAD;t Kh&#x1EA9;u
-                                    .col-sm-9
-                                        input.form-control(type='password' name="password" value=`${user.password}`)
-                            .col-md-6
-                                .form-group.row
-                                    label.col-sm-3.col-form-label
-                                        | X&aacute;c nh&#x1EAD;n m&#x1EAD;t
-                                        | kh&#x1EA9;u
-                                    .col-sm-9
-                                        input.form-control(type='password' name="confirmPassword" value=`${user.password}` )
-                        div(style='\
-                        display: flex;\
-                        width: 100%;\
-                        justify-content: space-around;\
-                        ')
+                        .text-center
                             button.btn.btn-primary(type='submit')
                                 | Cập nhật
     //form add role

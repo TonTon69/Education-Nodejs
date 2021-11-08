@@ -1,0 +1,67 @@
+extends ../layouts/admin
+block content
+    section.users__list     
+        .col-lg-12.grid-margin.stretch-card
+            .card
+                .card-body
+                    if usersValid.length > 0
+                        h4.card-title
+                            | Danh sách người dùng đã tạo thành công
+                        .table-responsive.pt-3.mb-5
+                            table.table.table-hover.text-dark
+                                thead
+                                    tr
+                                        th.font-weight-bold #
+                                        th.font-weight-bold Ảnh
+                                        th.font-weight-bold Họ và tên
+                                        th.font-weight-bold Số điện thoại
+                                        th.font-weight-bold Email
+                                        th.font-weight-bold Ngày sinh
+                                        th.font-weight-bold Địa chỉ
+                                tbody
+                                    - var index = 0;
+                                    each user in usersValid
+                                        - index++; 
+                                        tr
+                                            td= index
+                                            td.py-1
+                                                img(src="/img/nobody.jpg")
+                                            td= user.fullname
+                                            td= user.phone
+                                            td= user.email
+                                            td= moment(user.birthDay).format("DD-MM-YYYY")
+                                            td= user.address
+                    if usersInvalid.length > 0
+                        h4.card-title.text-danger
+                            | Danh sách người dùng "KHÔNG HỢP LỆ" (Số điện thoại hoặc email bị trùng)
+                        .table-responsive.pt-3
+                            table.table.table-hover.text-dark
+                                thead
+                                    tr
+                                        th.font-weight-bold #
+                                        th.font-weight-bold Ảnh
+                                        th.font-weight-bold Họ và tên
+                                        th.font-weight-bold Số điện thoại
+                                        th.font-weight-bold Email
+                                        th.font-weight-bold Ngày sinh
+                                        th.font-weight-bold Địa chỉ
+                                tbody
+                                    - var count = 0;
+                                    each user in usersInvalid
+                                        - count++;
+                                        tr
+                                            td= count
+                                            td.py-1
+                                                img(src="/img/nobody.jpg")
+                                            td= user.fullname
+                                            td= user.phone
+                                            td= user.email
+                                            td= moment(user.birthDay).format("DD-MM-YYYY")
+                                            td= user.address
+                        .mt-4
+                            a.btn.btn-outline-primary.btn-icon-text(href=`/exports/${fileName}` download) 
+                                i.mdi.mdi-file-excel.btn-icon-prepend
+                                | Xuất Excel
+                            a.btn.btn-outline-warning.btn-icon-text.ml-4(href='/user/list') 
+                                i.mdi.mdi-reload.btn-icon-prepend
+                                | Quay lại

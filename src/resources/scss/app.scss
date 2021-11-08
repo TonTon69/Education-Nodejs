@@ -160,7 +160,9 @@ blockquote {
 
 .header {
     position: fixed;
-    inset: 0 0 auto 0;
+    top: 0;
+    right: 0;
+    left: 0;
     height: 66px;
     background-color: $white-color;
     border-bottom: 1px solid #f0f0f0;
@@ -430,7 +432,9 @@ blockquote {
 
 .sidebar {
     position: fixed;
-    inset: 66px auto 0 0;
+    top: 66px;
+    bottom: 0;
+    left: 0;
     background-color: $white-color;
     width: 96px;
     padding: 8px 8px 0 8px;

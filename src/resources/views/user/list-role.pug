@@ -1,65 +1,27 @@
 extends ../layouts/admin
 block content
-    .container      
-        .col-lg-12.grid-margin.stretch-card
+    section.roles__list     
+        .col-lg-8.grid-margin.stretch-card.mx-auto
             .card
                 .card-body
-                    h4.card-title
-                        | Danh s&aacute;ch chức vụ
-                    //- each role in roles
-                    //-     .btn-group(role='group' aria-label='Basic example')
-                    //-         button.btn.btn-secondary(type='button')= role.description   
-                    p
-                    .d-flex.align-items-center
-                        .form-group.mb-0
-                            .input-group
-                                input.form-control(type='text' placeholder='Nhập từ khóa' name='search')
-                                .input-group-append
-                                    button.btn.btn-sm.btn-primary(type='submit') T&igrave;m ki&#x1EBF;m
-                        .form-group.mb-0.ml-4
-                            select.form-control.text-dark.p-2(name='role')
-                                option.selected.disabled(value='') -- Tiền kiếm theo mô tả --
-                                    each role in roles
-                                        option(value=`${role._id}`)=role.description
-                        .btn.btn-outline-primary.btn-icon-text.ml-auto(id="btn-add-role" data-toggle='modal' data-target='#add-role-modal')
-                            i.mdi.mdi-upload.btn-icon-prepend
-                            | Thêm mới chức vụ
-                    p
-                    .table-responsive
-                        table.table.table-striped
+                    .d-flex.align-items-center.justify-content-between
+                        h4.card-title
+                            | Danh s&aacute;ch chức vụ
+                        a.btn.btn-outline-warning.btn-icon-text(href='/user/list') 
+                            i.mdi.mdi-reload.btn-icon-prepend
+                            | Quay lại
+                    .table-responsive.pt-3
+                        table.table.table-hover.text-dark
                             thead
-                                tr(style='background-color: rgb(55, 164, 228); color: white;')
-                                    th Mã chức vụ
-                                    th Tên chức vụ
-                                    th Mô tả
-                                    th 
-                                    th
+                                tr 
+                                    th.font-weight-bold #
+                                    th.font-weight-bold Tên chức vụ
+                                    th.font-weight-bold Mô tả
                             tbody
+                                - var count=0;
                                 each role in roles
+                                    -count++;
                                     tr
-                                        td= role.id
+                                        td= count
                                         td= role.roleName 
                                         td= role.description
-                                        td 
-                                            button.btn.btn-success(type='button') Sửa
-                                        td
-                                            button.btn.btn-danger(type='button') X&oacute;a
-    //- //form add role
-    //- #add-role-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
-    //-     .modal-dialog(role='document')
-    //-         .modal-content
-    //-             form(method="POST" action="/user/add-role")
-    //-                 .modal-header
-    //-                     h5#exampleModalLabel.modal-title(style='font-weight: bold;') Thêm mới chức vụ
-    //-                     button.close(type='button' data-dismiss='modal' aria-label='Close')
-    //-                         span(aria-hidden='true') &times;
-    //-                 .modal-body
-    //-                     .row(style="flex-wrap: nowrap; height: 40px; margin-right: 0px; margin-left: -15px;  margin-bottom: 10px")
-    //-                         label.col-form-label(style="width: 20%; margin-left: 10px;") Mã chức vụ
-    //-                         input.form-control(type="text" name="roleName" style="width: 85%; margin-left: 10px;")
-    //-                     .row(style="flex-wrap: nowrap; height: 40px; margin-right: 0px; margin-left: -15px")
-    //-                         label.col-form-label(style="width: 20%; margin-left: 10px;") Mô tả
-    //-                         input.form-control(type="text" name="description" style="width: 85%; margin-left: 10px;")
-    //-                 .modal-footer
-    //-                     button.btn.btn-secondary(type='button' data-dismiss='modal') H&#x1EE7;y
-    //-                     button#btn-add-role.btn.btn-success(type='submit') Thêm mới

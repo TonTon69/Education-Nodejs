@@ -6,9 +6,7 @@ block content
                 .card-body
                     h4.card-title
                         | Danh s&aacute;ch ng&#x1B0;&#x1EDD;i d&ugrave;ng
-                    //- each role in roles
-                    //-     .btn-group(role='group' aria-label='Basic example')
-                    //-         button.btn.btn-secondary(type='button')= role.description   
+                      
                     .d-flex.align-items-center
                         .form-group.mb-0
                             .input-group
@@ -20,6 +18,10 @@ block content
                                 option.selected.disabled(value='') -- Tìm kiếm theo chức vụ --
                                 each role in roles
                                     option(value=`${role._id}`)=role.description
+                        .form-group.mb-0
+                            a.btn.btn-outline-primary.btn-icon-text.ml-4.d-flex.align-items-center(href='/user/list-role')
+                                i.mdi.mdi-format-list-bulleted
+                                span.ml-2 Danh sách chức vụ
                         a.btn.btn-outline-success.btn-icon-text.ml-auto(href='/user/create')
                             i.mdi.mdi-upload.btn-icon-prepend
                             | Thêm mới người dùng
@@ -27,35 +29,34 @@ block content
                         table.table.table-hover.text-dark
                             thead
                                 tr
-                                    th.font-weight-bold Ảnh
-                                    th.font-weight-bold H&#x1ECD; v&agrave; t&ecirc;n
+                                    th.font-weight-bold #
+                                    th.font-weight-bold Thành viên
                                     th.font-weight-bold Ch&#x1EE9;c v&#x1EE5;
-                                    th.font-weight-bold S&#x1ED1; &dstrok;i&#x1EC7;n tho&#x1EA1;i
+                                    th.font-weight-bold Email
+                                    th.font-weight-bold Số điện thoại
                                     th.font-weight-bold Ng&agrave;y sinh
                                     th.font-weight-bold Hành động
                             tbody
+                                - var count = 0;
                                 each user in users
+                                    - count++;
                                     tr
-                                        td.py-1
-                                            img(src=`${user.avatar}` alt='image')
-                                        td= user.fullname
+                                        td= count
+                                        td
+                                            img(src=`${user.avatar}`)
+                                            span.ml-2=user.fullname
                                         td= user.Role[0].description
+                                        td= user.email
                                         td= user.phone
-                                        td= user.birthDay.getDate()+"-"+user.birthDay.getMonth()+"-"+user.birthDay.getFullYear()
+                                        td= moment(user.birthDay).format("DD-MM-YYYY") 
                                         td  
-                                            a.btn.btn-success.mr-2(href=`/user/${user._id}/update`) Sửa
+                                            a.btn.btn-secondary.mr-2(href=`/user/${user._id}/update`) Sửa
                                             button.btn.btn-danger(type='button' data-id=`${user._id}` data-toggle='modal' data-target='#delete-user-modal') X&oacute;a
-    // Confirm delete
-    // Button trigger modal
-
-    //button.btn.btn-primary(type='button' data-toggle='modal' data-target='#delete-blog-modal')
-        | Launch demo modal
-    // Modal
     #delete-user-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
-        .modal-dialog(role='document')
+        .modal-dialog(role='document', style='transition: all 0.3s ease')
             .modal-content
                 .modal-header
-                    h5#exampleModalLabel.modal-title(style='font-weight: bold;') Xác nhận xóa người dùng
+                    h4#deleteUnitModalLabel.modal-title.font-weight-bold.text-danger Xác nhận xóa người dùng
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                         span(aria-hidden='true') &times;
                 .modal-body
@@ -65,7 +66,7 @@ block content
                     button#btn-delete-user.btn.btn-danger(type='button') X&aacute;c nh&#x1EAD;n x&oacute;a
     // Confirm delete
     form(method='POST' name='delete-user-form')
-
+   
     if errors.length > 0
         - var msgError = errors
     else if success.length > 0
@@ -94,22 +95,19 @@ block content
     script.
         document.addEventListener('DOMContentLoaded', function() {
 
-        //Delete
-        var userID;
-        var deleteForm = document.forms["delete-user-form"];
-        var btnDeleteUser = document.getElementById('btn-delete-user');
-        $('#delete-user-modal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); 
-            var recipient = button.data('id');  
-            userID = recipient;     
-            //- console.log("blogID: "+ blogID);
-        });
-        btnDeleteUser.onclick= function(){
-            deleteForm.action = '/user/'+userID+'/delete?_method=DELETE';
-            deleteForm.submit();
-        }
-
-
+            //Delete
+            var userID;
+            var deleteForm = document.forms["delete-user-form"];
+            var btnDeleteUser = document.getElementById('btn-delete-user');
+            $('#delete-user-modal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); 
+                var recipient = button.data('id');  
+                userID = recipient;     
+            });
+            btnDeleteUser.onclick= function(){
+                deleteForm.action = '/user/'+userID+'/delete?_method=DELETE';
+                deleteForm.submit();
+            }
 
             //Search
             $('.input-group-append button').click(function (e) {
@@ -125,7 +123,7 @@ block content
                 var searchString = $('input[name=search]').val();
                 $.ajax({
                     method: 'POST',
-                    url: '/user/list-user',
+                    url: '/user/list',
                     contentType: 'application/json',
                     data: JSON.stringify({query: searchString}),
                     success: function (data) {
@@ -139,7 +137,7 @@ block content
                 var option = $(this).val();
                 $.ajax({
                     method: 'POST',
-                    url: '/user/list-user',
+                    url: '/user/list',
                     contentType: 'application/json',
                     data: JSON.stringify({option: option}),
                     success: function (data) {

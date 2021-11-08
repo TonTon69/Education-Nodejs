@@ -118,10 +118,8 @@ p {
 
 #btn-submit-add-excel,
 #btn-cancel,
-#addUnitModal .form-upload button[type="submit"],
-#addUnitModal .form-upload button[type="button"],
-#addLessionModal .form-upload button[type="submit"],
-#addLessionModal .form-upload button[type="button"] {
+.form-upload button[type="submit"],
+.form-upload button[type="button"] {
     display: none;
 }
 

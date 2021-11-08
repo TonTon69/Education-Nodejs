@@ -54,7 +54,6 @@ block content
                                         td
                                             a.btn.btn-primary.mr-2(href=`/blog/${blog._id}/update`) Sửa
                                             button.btn.btn-danger(type='button' data-id=`${blog._id}` data-toggle='modal' data-target='#delete-blog-modal') Xóa 
-    // Confirm delete
     #delete-blog-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
         .modal-dialog(role='document')
             .modal-content
@@ -67,7 +66,6 @@ block content
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') Hủy
                     button#btn-delete-blog.btn.btn-danger(type='button') Xác nhận xóa
-    // Confirm delete
     form(method='POST' name='delete-blog-form')
 
     if errors.length > 0

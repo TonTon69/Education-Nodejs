@@ -4,12 +4,13 @@ const User = require("../models/User");
 const Role = require("../models/Role");
 const Grade = require("../models/Grade");
 const bcrypt = require("bcrypt");
-const crypto = require("crypto");
+const upload = require("express-fileupload");
 const importExcel = require("convert-excel-to-json");
 const isJson = require("is-json");
 const json2xls = require("json2xls");
 const fs = require("fs");
 const path = require("path");
+const readXlsxFile = require("read-excel-file/node");
 
 class UserController {
     async listUser(req, res, next) {
@@ -36,6 +37,7 @@ class UserController {
             res.render("error");
         }
     }
+
     async create(req, res, next) {
         const roles = await Role.find({});
         const grades = await Grade.find({});
@@ -46,59 +48,62 @@ class UserController {
             errors: req.flash("error"),
         });
     }
+
     async createUser(req, res, next) {
         const formUser = req.body;
         formUser.fullname = formUser.firstName + " " + formUser.lastName;
         formUser.active = true;
-        formUser.avatar = path.resolve(
-            __dirname,
-            "../../public/img/nobody.jpg"
-        );
+        formUser.avatar = "/img/nobody.jpg";
 
-        if (formUser.password == formUser.confirmPassword) {
-            formUser.password = await bcrypt.hash(formUser.password, 10);
-            const user = new User(formUser);
-            await user.save();
-            res.flash("success", "Đăng ký thành công tài khoản mới!");
-            res.redirect("/user/list-user");
-        } else {
-            res.flash("error", "Mật khẩu nhập lại không khớp!");
-            res.redirect("/user/create");
-            return;
-        }
+        formUser.password = formUser.phone;
+        formUser.password = await bcrypt.hash(formUser.password, 10);
+        const user = new User(formUser);
+        await user.save();
+        req.flash("success", "Đăng ký thành công tài khoản mới!");
+        res.redirect("back");
     }
-    // [POST]/blog/list-blog
+
+    // [POST]/user/list
     async searchFilter(req, res) {
-        try {
-            const searchString = req.body.query;
-            const option = req.body.option;
-            const roles = await Role.find({});
-            let users = [];
-            if (searchString) {
-                users = await User.find({
-                    fullname: { $regex: searchString, $options: "$i" },
-                });
-            } else if (option) {
-                users = await User.find({ roleID: option });
-            } else {
-                users = await User.find({});
-            }
-            res.render("helper/table-user", { users, roles });
-        } catch (error) {
-            req.flash("error", "Không tìm thấy kết quả!");
+        const searchString = req.body.query;
+        const option = req.body.option;
+        let users = [];
+        if (searchString) {
+            users = await User.aggregate([
+                {
+                    $match: {
+                        fullname: { $regex: searchString, $options: "$i" },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "roles",
+                        localField: "roleID",
+                        foreignField: "_id",
+                        as: "role",
+                    },
+                },
+            ]);
+        } else if (option) {
+            users = await User.aggregate([
+                {
+                    $match: {
+                        roleID: ObjectId(option),
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "roles",
+                        localField: "roleID",
+                        foreignField: "_id",
+                        as: "role",
+                    },
+                },
+            ]);
+        } else {
+            users = await User.find({});
         }
-    }
-
-    // [POST] user/add-role
-    async addRole(req, res, next) {
-        const formDate = req.body;
-        const role = new Role(formDate);
-        role.save()
-            .then(() => {
-                req.flash("success", "Đã thêm thành công 1 chức vụ!");
-                res.redirect("back");
-            })
-            .catch((error) => {});
+        res.render("helper/table-user", { users });
     }
 
     async listRole(req, res, next) {
@@ -139,101 +144,90 @@ class UserController {
 
     //[POST] user/create-list-user
     async addUserList(req, res, next) {
-        let userCheck = await User.find({});
-        const file = req.files.filename;
-        const fileName = file.name;
-        let usersInvalid = [];
-        let pathExcel = path.join(
+        if (req.file == undefined) {
+            req.flash("error", "Vui lòng tải lên một tệp excel!");
+            res.redirect("back");
+            return;
+        }
+
+        let pathExcel = path.resolve(
             __dirname,
-            "../../public/excelimport/" + fileName
+            "../../public/uploads/" + req.file.filename
         );
-        console.log(pathExcel);
-        file.mv(pathExcel, (err) => {
-            if (err) {
-                return res.status(500).send(err);
-            } else {
-                const result = importExcel({
-                    sourceFile: pathExcel,
-                    header: {
-                        rows: 1,
-                    },
-                    columnToKey: {
-                        A: "fullname",
-                        B: "birthDay",
-                        C: "phone",
-                        D: "address",
-                        E: "email",
-                    },
+
+        readXlsxFile(pathExcel).then(async (rows) => {
+            rows.shift();
+            let users = [];
+            let userCheck = await User.find({});
+
+            rows.forEach((row) => {
+                let user = new User({
+                    fullname: row[1],
+                    birthDay: row[2],
+                    phone: row[3],
+                    address: row[4],
+                    email: row[5],
+                    avatar: "/img/nobody.jpg",
                 });
-                let users = result.Sheet1;
-                let usersValid = [];
-                let usersInvalid = [];
-                for (var i = 0; i < users.length; i++) {
-                    let flag = 0;
-                    for (var j = 0; j < userCheck.length; j++) {
-                        // trùng tên hoặc trùng email sẽ đưa vào danh sách không hợp lệ
-                        if (
-                            users[i].phone == userCheck[j].phone ||
-                            users[i].email == userCheck[j].email
-                        ) {
-                            usersInvalid.push(users[i]);
-                        } else {
-                            flag++;
-                        }
-                        if (flag == userCheck.length) {
-                            usersValid.push(users[i]);
-                        }
+                users.push(user);
+            });
+
+            let usersValid = [];
+            let usersInvalid = [];
+            for (var i = 0; i < users.length; i++) {
+                let flag = 0;
+                for (var j = 0; j < userCheck.length; j++) {
+                    // trùng tên hoặc trùng email sẽ đưa vào danh sách không hợp lệ
+                    if (
+                        users[i].phone == userCheck[j].phone ||
+                        users[i].email == userCheck[j].email
+                    ) {
+                        usersInvalid.push(users[i]);
+                    } else {
+                        flag++;
+                    }
+                    if (flag == userCheck.length) {
+                        usersValid.push(users[i]);
                     }
                 }
-                // xử lý lưu các học sinh đăng ký hợp lệ
+            }
+
+            // xử lý lưu các học sinh đăng ký hợp lệ
+            if (usersValid.length > 0) {
                 for (var i = 0; i < usersValid.length; i++) {
                     let userSave = new User(usersValid[i]);
                     userSave.active = true;
                     // tạm thời mặc định là học sinh
                     userSave.roleID = "6174f53fa914b28975ebdb6d";
-                    // passworld là ngày tháng năm sinh
-                    userSave.password =
-                        userSave.birthDay.getDate() +
-                        "" +
-                        (userSave.birthDay.getMonth() + 1) +
-                        "" +
-                        userSave.birthDay.getFullYear();
-                    userSave.save();
+                    // passworld là so dien thoai
+                    userSave.password = await bcrypt.hash(userSave.phone, 10);
+                    await userSave.save();
                 }
+            }
 
-                var usersValidJson = null;
+            let fileName;
+            if (usersInvalid.length > 0) {
                 var usersInvalidJson = JSON.stringify(usersInvalid);
                 if (isJson(usersInvalidJson)) {
                     // code
-                    var fileName = "ImportStudentFail" + Date.now() + ".xlsx";
-                    var excelOutput = "src/public/excelexport/" + fileName;
-                    var downloadExcel = path.join(
-                        __dirname,
-                        "../../public/excelexport/" + fileName
-                    );
+                    fileName = "ImportStudentFail" + Date.now() + ".xlsx";
+                    var excelOutput = "src/public/exports/" + fileName;
                     var xls = json2xls(usersInvalid);
                     // save file in server
                     fs.writeFileSync(excelOutput, xls, "binary");
-
-                    // download file
-                    // console.log(path.resolve('./src/public/excelexport/'+fileName));
-
-                    // res.download(path.resolve('./src/public/excelexport/'+fileName));
-
-                    // console.log("lỗi download");
                 } else {
                     // thông báo lỗi
                     //res.send("lỗi rồi!");
                 }
-
-                res.render("user/create-list-user", {
-                    fileName,
-                    usersValid,
-                    usersInvalid,
-                    success: req.flash("success"),
-                    errors: req.flash("error"),
-                });
             }
+
+            res.render("user/create-list-user", {
+                fileName,
+                usersValid,
+                usersInvalid,
+                success: req.flash("success"),
+                errors: req.flash("error"),
+            });
         });
     }
 }
