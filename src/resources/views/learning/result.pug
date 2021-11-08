@@ -39,7 +39,7 @@ block main
         h4.fw-bold Kết quả học tập - #{subject.name} #{subject.gradeID}
         if statisticals.length > 0
             - var percent = Math.round((statisticals[0].totalLessionDone/countLessions)*100);
-            .mt-4.row
+            .mt-4.row.align-items-center
                 .col-sm-4
                     #chart
                 .col-sm-8

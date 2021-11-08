@@ -14,24 +14,27 @@ const theoriesRouter = require("./theories");
 const systemRouter = require("./system");
 const statisticalsRouter = require("./statisticals");
 
-const { checkAdmin } = require("../app/middlewares/AuthMiddleware");
+const {
+    checkAdmin,
+    requireAuth,
+} = require("../app/middlewares/AuthMiddleware");
 
 function route(app) {
     app.use("/", siteRouter);
-    app.use("/units", checkAdmin, unitsRouter);
+    app.use("/units", requireAuth, checkAdmin, unitsRouter);
     app.use("/subjects", subjectsRouter);
     app.use("/learning", learningRouter);
     app.use("/exercise", exerciseRouter);
     app.use("/blog", blogRouter);
     app.use("/infor", inforRouter);
-    app.use("/user", checkAdmin, userRouter);
-    app.use("/reports", checkAdmin, reportsRouter);
-    app.use("/banners", checkAdmin, bannersRouter);
+    app.use("/user", requireAuth, checkAdmin, userRouter);
+    app.use("/reports", requireAuth, checkAdmin, reportsRouter);
+    app.use("/banners", requireAuth, checkAdmin, bannersRouter);
     app.use("/lessions", lessionsRouter);
     app.use("/theories", theoriesRouter);
     app.use("/exercises", exercisesRouter);
-    app.use("/system", checkAdmin, systemRouter);
-    app.use("/statisticals", checkAdmin, statisticalsRouter);
+    app.use("/system", requireAuth, checkAdmin, systemRouter);
+    app.use("/statisticals", requireAuth, checkAdmin, statisticalsRouter);
 }
 
 module.exports = route;

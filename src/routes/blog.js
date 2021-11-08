@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const blogController = require("../app/controllers/BlogController");
+const {
+    checkAdmin,
+    requireAuth,
+} = require("../app/middlewares/AuthMiddleware");
 
 router.get("/list-blog", blogController.listBlog);
 router.get("/list-category", blogController.listCategory);

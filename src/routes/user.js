@@ -3,6 +3,8 @@ const router = express.Router();
 
 const userController = require("../app/controllers/UserController");
 
+// router.get("/create-list-user", userController.createListUser);
+router.post("/create-list-user", userController.addUserList);
 router.get("/list-user", userController.listUser);
 router.get("/list-role", userController.listRole);
 router.get("/create", userController.create);

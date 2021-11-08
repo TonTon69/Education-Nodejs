@@ -4,46 +4,36 @@ block content
         .col-12.grid-margin.stretch-card
             .card
                 .card-body
-                    h4.card-title
-                        | Chỉnh sửa bài viết
+                    .d-flex.align-items-center.justify-content-between
+                        h4.card-title
+                            | Chỉnh sửa bài viết
+                        a.btn.btn-outline-warning.btn-icon-text.ml-2(href='/blog/list-blog') 
+                            i.mdi.mdi-reload.btn-icon-prepend
+                            | Quay lại
                     p.card-description
                         | Nhập thông tin bên dưới để chỉnh sửa 1 bài viết
                     form.forms-sample(method='POST' action=`/blog/${blog.id}/update?_method=PUT`)
                         .form-group
-                            label(for='exampleInputName1') Ti&ecirc;u &Dstrok;&#x1EC1;
-                            input#exampleInputName1.form-control(type='text' placeholder='Tiêu đề' name='title' value=`${blog.title}`)
+                            label.text-dark(for='title') Ti&ecirc;u &Dstrok;&#x1EC1;
+                            input#title.form-control(type='text' placeholder='Tiêu đề' name='title' value=`${blog.title}`)
                         .form-group
-                            label(for='exampleSelectGender') Th&#x1EC3; lo&#x1EA1;i
-                            select#exampleSelectGender.form-control( name= 'bcID')
+                            label.text-dark(for='bcID') Th&#x1EC3; lo&#x1EA1;i
+                            select#bcID.form-control.col-md-4(name='bcID')
                                 each category in categories
-                                    //- option(value=category._id selected=category.id==blog.bcID)= category.category
-                                    if (category.id == blog.bcID)
-                                        option(value=category._id selected)
-                                            span= category.category
-                                    else 
-                                        option(value=category.id )
-                                            span= category.category
+                                    option(value=category._id selected=category.id==blog.bcID)= category.category
                         .form-group
-                            label(for='exampleTextarea1') N&#x1ED9;i dung
+                            label.text-dark(for='ckeditor-content') N&#x1ED9;i dung
                             textarea#ckeditor-content.form-control(name='content')=blog.content
-                        //.form-group
-                            label H&igrave;nh &#x1EA3;nh
-                            input.file-upload-default(type='file' name='img[]')
-                            .input-group.col-xs-12
-                                input.form-control.file-upload-info(type='text' disabled='' placeholder='chọn file ảnh')
-                                span.input-group-append
-                                    button.file-upload-browse.btn.btn-primary(type='button')
-                                        | &Dstrok;&abreve;ng &#x1EA2;nh
+                       
                         .form-group
-                            label(for='exampleInputName1') Hình ảnh
-                            input#exampleInputName1.form-control(type='text' placeholder='link hình ảnh' name='image' value=`${blog.image}`)
-                        button.btn.btn-primary.mr-2(type='submit')
+                            label.text-dark(for='image') Hình ảnh
+                            input#image.form-control(type='text' placeholder='Nhập link hình ảnh' name='image' value=`${blog.image}`)
+                        a.btn.btn-light(href='/blog/list-blog')
+                                | H&#x1EE7;y b&#x1ECF;
+                        button.btn.btn-primary.ml-2(type='submit')
                             | Lưu cập nhật
-                        button.btn.btn-light
-                            | H&#x1EE7;y b&#x1ECF;
+                        
     script.
-        ClassicEditor
-            .create(document.querySelector('#ckeditor-content'))
-            .catch( error => {
-                console.error(error);
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            ClassicEditor.create(document.querySelector('#ckeditor-content'));
+        })

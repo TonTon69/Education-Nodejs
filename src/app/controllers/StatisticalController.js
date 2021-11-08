@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const readXlsxFile = require("read-excel-file/node");
 const path = require("path");
+const XLSX = require("xlsx");
 
 class StatisticalController {
     // [GET]/statisticals
@@ -83,7 +84,6 @@ class StatisticalController {
                     {
                         $project: {
                             "user.birthDay": 0,
-                            "user.email": 0,
                             "user.active": 0,
                             "user.password": 0,
                             "user.phone": 0,
@@ -153,6 +153,63 @@ class StatisticalController {
         }
         req.flash("success", "Xóa thành công!");
         res.redirect("back");
+    }
+
+    // [POST]/statistical/:id/export
+    async export(req, res, next) {
+        const subject = await Subject.findById(req.params.id);
+        const units = await Unit.find({ subjectID: subject._id });
+        const unitIdArray = units.map(({ _id }) => _id);
+        const lessions = await Lession.find({
+            unitID: { $in: unitIdArray },
+        });
+        const lessionIdArray = lessions.map(({ _id }) => _id);
+        const statisticals = await Statistical.aggregate([
+            {
+                $match: {
+                    lessionID: { $in: lessionIdArray },
+                },
+            },
+            {
+                $group: {
+                    _id: "$userID",
+                    totalScore: { $sum: "$score" },
+                    totalLessionDone: { $count: {} },
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            {
+                $project: {
+                    "user.birthDay": 0,
+                    "user.active": 0,
+                    "user.password": 0,
+                    "user.phone": 0,
+                    "user.roleID": 0,
+                    "user.address": 0,
+                    "user.username": 0,
+                },
+            },
+            { $sort: { totalScore: -1 } },
+        ]);
+
+        var wb = XLSX.utils.book_new();
+        var temp = JSON.stringify(statisticals);
+        temp = JSON.parse(temp);
+        var ws = XLSX.utils.json_to_sheet(temp);
+        let down = path.resolve(
+            __dirname,
+            `../../public/exports/thong-ke-ket-qua-mon-${subject.slug}.xlsx`
+        );
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+        XLSX.writeFile(wb, down);
+        res.download(down);
     }
 }
 

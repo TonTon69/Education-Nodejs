@@ -6,9 +6,15 @@ block content
                 .card-body
                     .d-flex.align-items-center.justify-content-between
                         .card-title.text-uppercase #{subject.name} #{subject.gradeID}
-                        a.btn.btn-outline-warning.btn-icon-text(href='/subjects/list') 
-                            i.mdi.mdi-reload.btn-icon-prepend
-                            | Quay lại
+                        div
+                            form(action=`/statisticals/${subject._id}/export`, method='POST')
+                                button.btn.btn-outline-primary.btn-icon-text(type='submit')
+                                    i.mdi.mdi-file-excel.btn-icon-prepend
+                                    | Xuất excel
+                            a.btn.btn-outline-warning.btn-icon-text.ml-2(href='/subjects/list') 
+                                i.mdi.mdi-reload.btn-icon-prepend
+                                | Quay lại
+                            
                     hr
                     .card-title Thống kê kết quả học tập
                     .table-responsive.pt-3
@@ -17,6 +23,7 @@ block content
                                 tr
                                     th.font-weight-bold #
                                     th.font-weight-bold Thành viên
+                                    th.font-weight-bold Email
                                     th.font-weight-bold Tổng điểm tích lũy
                                     th.font-weight-bold Tiến trình học
                                     th.font-weight-bold Xếp loại
@@ -31,6 +38,7 @@ block content
                                             td
                                                 img(src=rank.user[0].avatar)
                                                 span.ml-2= rank.user[0].fullname
+                                            td= rank.user[0].email
                                             td= Math.round(rank.totalScore) + " điểm"
                                             td Hoàn thành #{rank.totalLessionDone}/#{countLessions} bài học (#{percent}%)
                                             if percent > 80

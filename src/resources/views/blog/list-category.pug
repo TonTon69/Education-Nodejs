@@ -1,69 +1,55 @@
 extends ../layouts/admin
 block content
-    .container      
-        .col-lg-12.grid-margin.stretch-card
-            .card
-                .card-body
-                    h4.card-title
-                        | Danh s&aacute;ch thể loại
-                    //- each role in roles
-                    //-     .btn-group(role='group' aria-label='Basic example')
-                    //-         button.btn.btn-secondary(type='button')= role.description   
-                    p
-                    .d-flex.align-items-center
-                        .form-group.mb-0
-                            .input-group
-                                input.form-control(type='text' placeholder='Nhập từ khóa' name='search')
-                                .input-group-append
-                                    button.btn.btn-sm.btn-primary(type='submit') T&igrave;m ki&#x1EBF;m
-                        .form-group.mb-0.ml-4
-                            select.form-control.text-dark.p-2(name='role')
-                                option.selected.disabled(value='') -- Tiền kiếm theo tên thể loại --
-                                    each category in categories
-                                        option(value=`${category._id}`)=category.category
-                        .btn.btn-outline-primary.btn-icon-text.ml-auto(id="btn-add-category" data-toggle='modal' data-target='#add-blog-category-modal')
-                            i.mdi.mdi-upload.btn-icon-prepend
-                            | Thêm mới thể loại
-                    p
-                    .table-responsive
-                        table.table.table-striped
-                            thead
-                                tr(style='background-color: rgb(55, 164, 228); color: white;')
-                                    th Mã thể loại
-                                    th Tên thể loại
-                                    th 
-                                    th
-                            tbody
-                                each category in categories
+    section.blog__category
+        .row
+            .col-md-8.grid-margin.stretch-card.mx-auto
+                .card
+                    .card-body
+                        .d-flex.align-items-center.justify-content-between
+                            h4.card-title
+                                | Danh s&aacute;ch thể loại
+                            div
+                                button.btn.btn-outline-primary.btn-icon-text.ml-auto(id="btn-add-category" data-toggle='modal' data-target='#add-blog-category-modal')
+                                    i.mdi.mdi-upload.btn-icon-prepend
+                                    | Thêm mới thể loại
+                                a.btn.btn-outline-warning.btn-icon-text.ml-2(href='/blog/list-blog') 
+                                    i.mdi.mdi-reload.btn-icon-prepend
+                                    | Quay lại
+                        .table-responsive.pt-3
+                            table.table.table-hover.text-dark
+                                thead
                                     tr
-                                        td= category.id 
-                                        td= category.category
-                                        td 
-                                            button.btn.btn-success(type='button') Sửa
-                                        td
-                                            button.btn.btn-danger(type='button' data-id=`${category._id}` data-toggle='modal' data-target='#delete-category-modal') X&oacute;a
-    //form add category
-    #add-blog-category-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
-        .modal-dialog(role='document')
+                                        th.font-weight-bold #
+                                        th.font-weight-bold Tên thể loại
+                                        th.font-weight-bold Hành động
+                                tbody
+                                    - var count = 0;
+                                    each category in categories
+                                        - count++;
+                                        tr
+                                            td= count
+                                            td= category.category
+                                            td(style="width: 15%")
+                                                button.btn.btn-danger(type='button' data-id=`${category._id}` data-toggle='modal' data-target='#delete-category-modal') X&oacute;a
+    #add-blog-category-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='addBlogCateModalLabel' aria-hidden='true')
+        .modal-dialog(role='document', style='transition: all 0.3s ease; max-width: 650px')
             .modal-content
                 form(method="POST" action="/blog/add-category")
                     .modal-header
-                        h5#exampleModalLabel.modal-title(style='font-weight: bold;') Thêm thể loại bài viết mới
+                        h4.modal-title.font-weight-bold.text-dark Thêm thể loại bài viết mới
                         button.close(type='button' data-dismiss='modal' aria-label='Close')
                             span(aria-hidden='true') &times;
-                    .modal-body
-                        .row(style="flex-wrap: nowrap; height: 40px; margin-right: 0px; margin-left: -15px")
-                            label.col-form-label(style="width: 20%; margin-left: 10px;") Tên thể loại
-                            input.form-control(type="text" name="category" style="width: 85%; margin-left: 10px;")
+                    .modal-body.mt-4.mb-4
+                        label Tên thể loại
+                        input.form-control(type="text" name="category" placeholder="Nhập tên thể loại" required)
                     .modal-footer
                         button.btn.btn-secondary(type='button' data-dismiss='modal') H&#x1EE7;y
-                        button#btn-delete-blog.btn.btn-success(type='submit') Thêm mới
-    // Confirm delete
+                        button.btn.btn-primary(type='submit') Thêm mới
     #delete-category-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
-        .modal-dialog(role='document')
+        .modal-dialog(role='document', style='transition: all 0.3s ease;')
             .modal-content
                 .modal-header
-                    h5#exampleModalLabel.modal-title(style='font-weight: bold;') Xác nhận xóa thể loại
+                    h4.modal-title.font-weight-bold.text-dark Xác nhận xóa thể loại
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                         span(aria-hidden='true') &times;
                 .modal-body
@@ -71,22 +57,45 @@ block content
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') H&#x1EE7;y
                     button#btn-delete-category.btn.btn-danger(type='button') X&aacute;c nh&#x1EAD;n x&oacute;a
-    // Confirm delete
     form(method='POST' name='delete-category-form')
-
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
     script.
         document.addEventListener('DOMContentLoaded', function() {
-        var categoryID;
-        var deleteForm = document.forms["delete-category-form"];
-        var btnDeleteCategory = document.getElementById('btn-delete-category');
-        $('#delete-category-modal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); 
-            var recipient = button.data('id');  
-            categoryID = recipient;     
-            //- console.log("categoryID: "+ categoryID);
-        });
-        btnDeleteCategory.onclick= function(){
-            deleteForm.action = '/blog/'+categoryID+'/delete-category?_method=DELETE';
-            deleteForm.submit();
-        }
+            // toast message
+            let msgToastError = '#{msgError}';
+            if(msgToastError != ''){
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 2000,
+                });
+            }
+
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != ''){
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 2000,
+                });
+            }
+
+            //delete   
+            var categoryID;
+            var deleteForm = document.forms["delete-category-form"];
+            var btnDeleteCategory = document.getElementById('btn-delete-category');
+            $('#delete-category-modal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); 
+                var recipient = button.data('id');  
+                categoryID = recipient;     
+            });
+            btnDeleteCategory.onclick= function(){
+                deleteForm.action = '/blog/'+categoryID+'/delete-category?_method=DELETE';
+                deleteForm.submit();
+            }
         })

@@ -115,6 +115,7 @@ class BlogController {
     postBlog(req, res, next) {
         const formDate = req.body;
         formDate.userID = req.signedCookies.userId;
+        formDate.view = 1;
         const blog = new Blog(formDate);
 
         blog.save()
@@ -124,6 +125,7 @@ class BlogController {
             })
             .catch((error) => {});
     }
+
     // [POST]/blog/list-blog
     async searchFilter(req, res) {
         try {
@@ -208,13 +210,16 @@ class BlogController {
     }
     // [GET]/blog/:id/update
     async update(req, res) {
-        var blog = await Blog.findOne({ _id: req.params.id });
+        const blog = await Blog.findOne({ _id: req.params.id });
         const categories = await BlogCategory.find({});
         res.render("blog/update", {
+            success: req.flash("success"),
+            errors: req.flash("error"),
             categories,
             blog,
         });
     }
+
     // [PUT]/blog/:id/update
     async putUpdate(req, res, next) {
         Blog.updateOne({ _id: req.params.id }, req.body)
@@ -223,14 +228,6 @@ class BlogController {
                 res.redirect("/blog/list-blog");
             })
             .catch(next);
-        // var blog= await Blog.findOne({ _id: req.params.id});
-        // console.log(req.params.id);
-        // console.log(blog);
-        // const categories = await BlogCategory.find({});
-        // res.render("blog/update",{
-        //     categories,
-        //     blog
-        // });
     }
 
     async deleteBlog(req, res, next) {
@@ -245,19 +242,21 @@ class BlogController {
 
     async addCategory(req, res, next) {
         const formDate = req.body;
-        // console.log(req.body.category);
         const category = new BlogCategory(formDate);
         category
             .save()
             .then(() => {
                 req.flash("success", "Đã thêm 1 thể loại!");
-                res.redirect("back");
+                res.redirect("/blog/list-category");
             })
             .catch((error) => {});
     }
+
     async listCategory(req, res, next) {
         const categories = await BlogCategory.find({});
         res.render("blog/list-category", {
+            success: req.flash("success"),
+            errors: req.flash("error"),
             categories,
         });
     }
@@ -265,6 +264,7 @@ class BlogController {
     async deleteCategory(req, res, next) {
         BlogCategory.deleteOne({ _id: req.params.id })
             .then(() => {
+                req.flash("success", "Đã xóa thành công!");
                 res.redirect("back");
             })
             .catch(next);

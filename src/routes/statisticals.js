@@ -3,10 +3,9 @@ const router = express.Router();
 
 const statisticalController = require("../app/controllers/StatisticalController");
 
-const { requireAuth } = require("../app/middlewares/AuthMiddleware");
-
-router.get("/:id/detail", requireAuth, statisticalController.detail);
-router.delete("/:id", requireAuth, statisticalController.delete);
-router.get("/", requireAuth, statisticalController.show);
+router.post("/:id/export", statisticalController.export);
+router.get("/:id/detail", statisticalController.detail);
+router.delete("/:id", statisticalController.delete);
+router.get("/", statisticalController.show);
 
 module.exports = router;

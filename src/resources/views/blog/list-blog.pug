@@ -7,10 +7,7 @@ block content
                     h4.card-title
                         | Danh s&aacute;ch b&agrave;i vi&#x1EBF;t
                         p.card-description
-                        //- each category in categories
-                        //-     .btn-group(role='group' aria-label='Basic example')
-                        //-         button.btn.btn-secondary(type='button') 
-                        //-             span= category.category
+                        
                     .d-flex.align-items-center
                         .form-group.mb-0
                             .input-group
@@ -22,10 +19,13 @@ block content
                                 option.selected.disabled(value='') -- Tìm kiếm theo thể loại --
                                 each category in categories
                                     option(value=`${category._id}`)=category.category
-
+                        .form-group.mb-0 
+                            a.btn.btn-outline-primary.btn-icon-text.ml-4.d-flex.align-items-center(href='/blog/list-category')
+                                i.mdi.mdi-format-list-bulleted
+                                span.ml-2 Danh sách thể loại
                         a.btn.btn-outline-success.btn-icon-text.ml-auto(href='/blog/create')
                             i.mdi.mdi-upload.btn-icon-prepend
-                            | Th&ecirc;m m&#x1EDB;i
+                            | Thêm mới bài viết
                     .table-responsive.pt-3
                         table.table.table-hover.text-dark
                             thead
@@ -49,7 +49,7 @@ block content
                                         td.w-25= blog.title
                                         td= blog.BlogCategory[0].category
                                         td= blog.User[0].fullname
-                                        td= blog.createdAt.getDate()+"/"+blog.createdAt.getMonth()+"/"+blog.createdAt.getFullYear()
+                                        td= moment(blog.createdAt).format("DD-MM-YYYY") 
                                         td= blog.view
                                         td
                                             a.btn.btn-primary.mr-2(href=`/blog/${blog._id}/update`) Sửa
@@ -65,8 +65,8 @@ block content
                 .modal-body
                     | B&#x1EA1;n &dstrok;&atilde; ch&#x1EAF;c ch&#x1EAF;n mu&#x1ED1;n x&oacute;a!
                 .modal-footer
-                    button.btn.btn-secondary(type='button' data-dismiss='modal') H&#x1EE7;y
-                    button#btn-delete-blog.btn.btn-danger(type='button') X&aacute;c nh&#x1EAD;n x&oacute;a
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') Hủy
+                    button#btn-delete-blog.btn.btn-danger(type='button') Xác nhận xóa
     // Confirm delete
     form(method='POST' name='delete-blog-form')
 
