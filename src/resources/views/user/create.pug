@@ -6,9 +6,13 @@ block content
                 .card-body
                     .d-flex.align-items-center.justify-content-between
                         h4.card-title Thêm mới tài khoản
-                        a.btn.btn-outline-warning.btn-icon-text(href='/user/list') 
-                            i.mdi.mdi-reload.btn-icon-prepend
-                            | Quay lại
+                        div
+                            a.btn.btn-outline-primary.btn-icon-text(href='/files/sample-create-users.xlsx' download) 
+                                i.mdi.mdi-file-excel.btn-icon-prepend
+                                | Excel mẫu
+                            a.btn.btn-outline-warning.btn-icon-text.ml-4(href='/user/list') 
+                                i.mdi.mdi-reload.btn-icon-prepend
+                                | Quay lại
                     form.form-upload(action='/user/upload', method='post', enctype="multipart/form-data")
                         .d-flex.align-items-center
                             .file-drop-area

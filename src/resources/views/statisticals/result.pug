@@ -7,10 +7,11 @@ block content
                     .d-flex.align-items-center.justify-content-between
                         .card-title.text-uppercase #{subject.name} #{subject.gradeID}
                         .d-flex.align-items-center
-                            form.mb-0(action=`/statisticals/${subject._id}/export`, method='POST')
-                                button.btn.btn-outline-primary.btn-icon-text(type='submit')
-                                    i.mdi.mdi-file-excel.btn-icon-prepend
-                                    | Xuất excel
+                            if ranks.length > 0
+                                form.mb-0(action=`/statisticals/${subject._id}/export`, method='POST')
+                                    button.btn.btn-outline-primary.btn-icon-text(type='submit')
+                                        i.mdi.mdi-file-excel.btn-icon-prepend
+                                        | Xuất excel
                             a.btn.btn-outline-warning.btn-icon-text.ml-4(href='/subjects/list') 
                                 i.mdi.mdi-reload.btn-icon-prepend
                                 | Quay lại
@@ -47,5 +48,5 @@ block content
                                                 td Chưa đạt
                                 else
                                     tr
-                                        td.text-center(colspan='5') Không có dữ liệu!!!
+                                        td.text-center(colspan='6') Không có dữ liệu!!!
                                         

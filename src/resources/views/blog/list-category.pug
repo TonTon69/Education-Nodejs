@@ -12,7 +12,7 @@ block content
                                 button.btn.btn-outline-primary.btn-icon-text.ml-auto(id="btn-add-category" data-toggle='modal' data-target='#add-blog-category-modal')
                                     i.mdi.mdi-upload.btn-icon-prepend
                                     | Thêm mới thể loại
-                                a.btn.btn-outline-warning.btn-icon-text.ml-2(href='/blog/list-blog') 
+                                a.btn.btn-outline-warning.btn-icon-text.ml-4(href='/blog/list') 
                                     i.mdi.mdi-reload.btn-icon-prepend
                                     | Quay lại
                         .table-responsive.pt-3
@@ -53,7 +53,8 @@ block content
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                         span(aria-hidden='true') &times;
                 .modal-body
-                    | B&#x1EA1;n &dstrok;&atilde; ch&#x1EAF;c ch&#x1EAF;n mu&#x1ED1;n x&oacute;a!
+                    p Hành động này không thể khôi phục.
+                    p B&#x1EA1;n &dstrok;&atilde; ch&#x1EAF;c ch&#x1EAF;n mu&#x1ED1;n x&oacute;a!
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') H&#x1EE7;y
                     button#btn-delete-category.btn.btn-danger(type='button') X&aacute;c nh&#x1EAD;n x&oacute;a

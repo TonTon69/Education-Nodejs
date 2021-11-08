@@ -7,11 +7,11 @@ const {
     requireAuth,
 } = require("../app/middlewares/AuthMiddleware");
 
-router.get("/list-blog", blogController.listBlog);
+router.get("/list", blogController.listBlog);
 router.get("/list-category", blogController.listCategory);
 router.get("/create", blogController.create);
 router.post("/post", blogController.postBlog);
-router.post("/list-blog", blogController.searchFilter);
+router.post("/list", blogController.searchFilter);
 router.get("/:id/update", blogController.update);
 router.put("/:id/update", blogController.putUpdate);
 router.delete("/:id/delete", blogController.deleteBlog);

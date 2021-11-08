@@ -52,17 +52,18 @@ block content
                                         td= moment(blog.createdAt).format("DD-MM-YYYY") 
                                         td= blog.view
                                         td
-                                            a.btn.btn-primary.mr-2(href=`/blog/${blog._id}/update`) Sửa
+                                            a.btn.btn-secondary.mr-2(href=`/blog/${blog._id}/update`) Sửa
                                             button.btn.btn-danger(type='button' data-id=`${blog._id}` data-toggle='modal' data-target='#delete-blog-modal') Xóa 
     #delete-blog-modal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
-        .modal-dialog(role='document')
+        .modal-dialog(role='document', style='transition: all 0.3s ease;')
             .modal-content
                 .modal-header
-                    h5#exampleModalLabel.modal-title(style='font-weight: bold;') Xác nhận xóa bài viết
+                    h4.modal-title.font-weight-bold.text-dark Xác nhận xóa bài viết
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                         span(aria-hidden='true') &times;
                 .modal-body
-                    | B&#x1EA1;n &dstrok;&atilde; ch&#x1EAF;c ch&#x1EAF;n mu&#x1ED1;n x&oacute;a!
+                    p Hành động này không thể khôi phục.
+                    p B&#x1EA1;n &dstrok;&atilde; ch&#x1EAF;c ch&#x1EAF;n mu&#x1ED1;n x&oacute;a!
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') Hủy
                     button#btn-delete-blog.btn.btn-danger(type='button') Xác nhận xóa
@@ -123,7 +124,7 @@ block content
                 var searchString = $('input[name=search]').val();
                 $.ajax({
                     method: 'POST',
-                    url: '/blog/list-blog',
+                    url: '/blog/list',
                     contentType: 'application/json',
                     data: JSON.stringify({query: searchString}),
                     success: function (data) {
@@ -137,7 +138,7 @@ block content
                 var option = $(this).val();
                 $.ajax({
                     method: 'POST',
-                    url: '/blog/list-blog',
+                    url: '/blog/list',
                     contentType: 'application/json',
                     data: JSON.stringify({option: option}),
                     success: function (data) {

@@ -7,7 +7,7 @@ block content
                     .d-flex.align-items-center.justify-content-between
                         h4.card-title
                             | Chỉnh sửa bài viết
-                        a.btn.btn-outline-warning.btn-icon-text.ml-2(href='/blog/list-blog') 
+                        a.btn.btn-outline-warning.btn-icon-text.ml-2(href='/blog/list') 
                             i.mdi.mdi-reload.btn-icon-prepend
                             | Quay lại
                     p.card-description
@@ -28,7 +28,7 @@ block content
                         .form-group
                             label.text-dark(for='image') Hình ảnh
                             input#image.form-control(type='text' placeholder='Nhập link hình ảnh' name='image' value=`${blog.image}`)
-                        a.btn.btn-light(href='/blog/list-blog')
+                        a.btn.btn-light(href='/blog/list')
                                 | H&#x1EE7;y b&#x1ECF;
                         button.btn.btn-primary.ml-2(type='submit')
                             | Lưu cập nhật
