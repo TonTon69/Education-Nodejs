@@ -54,23 +54,12 @@ block main
                         .col-sm-9
                             span #{Math.round(statisticals[0].totalScore)} điểm
                     .row.mb-3    
-                        if percent > 80
-                            label.col-sm-3 Xếp loại: 
-                            .col-sm-9
-                                span Giỏi
-                        else if percent > 65 && percent < 80
-                            label.col-sm-3 Xếp loại: 
-                            .col-sm-9
-                                span Khá
-                        else if percent > 50 && percent < 65
-                            label.col-sm-3 Xếp loại: 
-                            .col-sm-9
-                                span Trung bình
-                        else
-                            label.col-sm-3 Xếp loại: 
-                            .col-sm-9
-                                span Yếu
-                
+                        label.col-sm-3 Đánh giá:
+                        .col-sm-9
+                            if percent <= 100 && percent >= 50
+                                span Đạt
+                            else
+                                span Chưa đạt
             .table-responsive
                 table.table.table-hover.mt-4
                     thead

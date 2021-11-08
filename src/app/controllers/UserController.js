@@ -11,6 +11,7 @@ const json2xls = require("json2xls");
 const fs = require("fs");
 const path = require("path");
 const readXlsxFile = require("read-excel-file/node");
+const moment = require("moment");
 
 class UserController {
     async listUser(req, res, next) {
@@ -207,12 +208,25 @@ class UserController {
 
             let fileName;
             if (usersInvalid.length > 0) {
-                var usersInvalidJson = JSON.stringify(usersInvalid);
+                let usersInvalidExcel = [];
+                usersInvalid.forEach((item, index) => {
+                    let user = {
+                        STT: index + 1,
+                        "Họ và tên": item.fullname,
+                        "Ngày sinh": moment(item.birthDay).format("DD-MM-YYYY"),
+                        "Số điện thoại": item.phone,
+                        "Địa chỉ hiện tại": item.address,
+                        "Địa chỉ email": item.email,
+                    };
+                    usersInvalidExcel.push(user);
+                });
+
+                var usersInvalidJson = JSON.stringify(usersInvalidExcel);
                 if (isJson(usersInvalidJson)) {
                     // code
                     fileName = "ImportStudentFail" + Date.now() + ".xlsx";
                     var excelOutput = "src/public/exports/" + fileName;
-                    var xls = json2xls(usersInvalid);
+                    var xls = json2xls(usersInvalidExcel);
                     // save file in server
                     fs.writeFileSync(excelOutput, xls, "binary");
                 } else {
