@@ -5,12 +5,15 @@ block main
             .col-sm-8
                 .learning__content.shadow
                     .row
-                        .col-sm-9
-                            h4.title.mb-0= lession.name
-                        .col-sm-3.text-end
-                            if exercises.length > 0
+                        if exercises.length > 0
+                            .col-sm-9
+                                h4.title.mb-0= lession.name
+                            .col-sm-3.text-end
                                 a.btn.btn-exercise.btn-padding.rounded-pill.fs-7(type="button" data-bs-toggle="modal" data-bs-target="#exerciseModal")
                                     span.ms-1 Bài tập vận dụng
+                        else
+                            .col-sm-12
+                                h4.title.mb-0= lession.name
                     #exerciseModal.modal.fade(tabindex='-1', aria-labelledby='exerciseModalLabel', aria-hidden='true')
                         .modal-dialog(style= "transition: all 0.3s ease")
                             .modal-content

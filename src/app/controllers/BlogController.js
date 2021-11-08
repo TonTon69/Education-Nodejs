@@ -115,13 +115,12 @@ class BlogController {
     postBlog(req, res, next) {
         const formDate = req.body;
         formDate.userID = req.signedCookies.userId;
-        formDate.view = 1;
         const blog = new Blog(formDate);
 
         blog.save()
             .then(() => {
                 req.flash("success", "Đã thêm 1 bài viết mới thành công!");
-                res.redirect("/blog/list-blog");
+                res.redirect("/blog/list");
             })
             .catch((error) => {});
     }
@@ -225,7 +224,7 @@ class BlogController {
         Blog.updateOne({ _id: req.params.id }, req.body)
             .then(() => {
                 req.flash("success", "Cập nhật bài viết thành công!");
-                res.redirect("/blog/list-blog");
+                res.redirect("/blog/list");
             })
             .catch(next);
     }

@@ -100,7 +100,16 @@ class UserController {
                 },
             ]);
         } else {
-            users = await User.find({});
+            users = await User.aggregate([
+                {
+                    $lookup: {
+                        from: "roles",
+                        localField: "roleID",
+                        foreignField: "_id",
+                        as: "role",
+                    },
+                },
+            ]);
         }
         res.render("helper/table-user", { users });
     }

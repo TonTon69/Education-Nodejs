@@ -7,7 +7,7 @@ const Blog = new Schema(
         title: { type: String },
         image: { type: String },
         slug: { type: String, slug: "title", unique: true },
-        view: { type: Number },
+        view: { type: Number, default: 1 },
         bcID: { type: Schema.Types.ObjectId, ref: "Blog-Category" },
         userID: { type: Schema.Types.ObjectId, ref: "User" },
     },

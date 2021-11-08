@@ -10,10 +10,6 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
 
-const upload = require("express-fileupload");
-const importExcel = require("convert-excel-to-json");
-const http = require("http");
-
 const { userLocal } = require("./app/middlewares/LocalMiddleware");
 
 const route = require("./routes");
