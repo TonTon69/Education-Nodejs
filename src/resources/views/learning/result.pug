@@ -39,49 +39,57 @@ block main
         h4.fw-bold Kết quả học tập - #{subject.name} #{subject.gradeID}
         if statisticals.length > 0
             - var percent = Math.round((statisticals[0].totalLessionDone/countLessions)*100);
-            .mt-4
-                .row.mb-3
-                    label.col-sm-2 Tiến trình học: 
-                    .col-sm-10
-                        span Hoàn thành #{statisticals[0].totalLessionDone}/#{countLessions} bài học (#{percent}%)
-                .row.mb-3    
-                    label.col-sm-2 Tổng điểm tích lũy: 
-                    .col-sm-10
-                        span #{Math.round(statisticals[0].totalScore)} điểm
-                .row.mb-3    
-                    if percent > 80
-                        label.col-sm-2 Xếp loại: 
-                        .col-sm-10
-                            span Giỏi
-                    else if percent > 65 && percent < 80
-                        label.col-sm-2 Xếp loại: 
-                        .col-sm-10
-                            span Khá
-                    else if percent > 50 && percent < 65
-                        label.col-sm-2 Xếp loại: 
-                        .col-sm-10
-                            span Trung bình
-                    else
-                        label.col-sm-2 Xếp loại: 
-                        .col-sm-10
-                            span Yếu
-            table.table.table-hover.mt-4
-                thead
-                    tr
-                        th(scope='col') #
-                        th(scope='col') Tên chuyên đề
-                        th(scope='col') Hành động
-                tbody
-                    - var count = 0;
-                    each item in unitsResult
-                        - count++;
+            .mt-4.row
+                .col-sm-4
+                    #chart
+                .col-sm-8
+                    .row.mb-3
+                        label.col-sm-3 Tiến trình học: 
+                        .col-sm-9
+                            span Hoàn thành 
+                            b #{statisticals[0].totalLessionDone}/#{countLessions} 
+                            span bài học (#{percent}%)
+                    .row.mb-3    
+                        label.col-sm-3 Tổng điểm tích lũy: 
+                        .col-sm-9
+                            span #{Math.round(statisticals[0].totalScore)} điểm
+                    .row.mb-3    
+                        if percent > 80
+                            label.col-sm-3 Xếp loại: 
+                            .col-sm-9
+                                span Giỏi
+                        else if percent > 65 && percent < 80
+                            label.col-sm-3 Xếp loại: 
+                            .col-sm-9
+                                span Khá
+                        else if percent > 50 && percent < 65
+                            label.col-sm-3 Xếp loại: 
+                            .col-sm-9
+                                span Trung bình
+                        else
+                            label.col-sm-3 Xếp loại: 
+                            .col-sm-9
+                                span Yếu
+                
+            .table-responsive
+                table.table.table-hover.mt-4
+                    thead
                         tr
-                            td= count
-                            td= item.name
-                            td
-                                a.text-primary(href=`/learning/result?subject=${subject.slug}&unit=${item._id}`) Xem chi tiết
+                            th(scope='col') #
+                            th(scope='col') Tên chuyên đề
+                            th(scope='col') Hành động
+                    tbody
+                        - var count = 0;
+                        each item in unitsResult
+                            - count++;
+                            tr
+                                td= count
+                                td= item.name
+                                td
+                                    a.text-primary(href=`/learning/result?subject=${subject.slug}&unit=${item._id}`) Xem chi tiết
         else
             .mt-4 Không có dữ liệu!!!
+    script(src="https://cdn.jsdelivr.net/npm/apexcharts")
     script.
         document.addEventListener('DOMContentLoaded', function() {
             var path = window.location.href;
@@ -90,4 +98,41 @@ block main
                     $(this).addClass("active");
                 }
             });
+
+            var options = {
+                chart: {
+                    height: 250,
+                    type: 'radialBar',
+                },
+                series: [#{percent}],
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            margin: 15,
+                            size: "60%"
+                        },
+                        dataLabels: {
+                            showOn: "always",
+                            name: {
+                                offsetY: -10,
+                                show: true,
+                                color: "#888",
+                                fontSize: "13px"
+                            },
+                            value: {
+                                color: "#111",
+                                fontSize: "30px",
+                                show: true
+                            }
+                        }
+                    }
+                },
+                stroke: {
+                    lineCap: 'round'
+                },
+                labels: ['Hoàn thành'],
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
         })
