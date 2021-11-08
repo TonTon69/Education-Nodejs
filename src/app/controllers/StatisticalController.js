@@ -199,8 +199,35 @@ class StatisticalController {
             { $sort: { totalScore: -1 } },
         ]);
 
+        let statisticalsExcel = [];
+        statisticals.forEach((item, index) => {
+            let percent = Math.round(
+                (item.totalLessionDone / lessions.length) * 100
+            );
+            let evaluate;
+
+            if (percent <= 100 && percent >= 50) {
+                evaluate = "Đạt";
+            } else {
+                evaluate = "Chưa đạt";
+            }
+
+            let result = {
+                STT: index + 1,
+                "Họ tên": item.user[0].fullname,
+                "Địa chỉ email": item.user[0].email,
+                "Tổng điểm tích lũy": item.totalScore,
+                "Tiến trình học": `Hoàn thành ${item.totalLessionDone}/${lessions.length} bài học (${percent}%)`,
+                "Đánh giá": evaluate,
+            };
+            statisticalsExcel.push(result);
+        });
+
+        // console.log(statisticalsExcel);
+        // res.redirect("back");
+
         var wb = XLSX.utils.book_new();
-        var temp = JSON.stringify(statisticals);
+        var temp = JSON.stringify(statisticalsExcel);
         temp = JSON.parse(temp);
         var ws = XLSX.utils.json_to_sheet(temp);
         let down = path.resolve(

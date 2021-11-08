@@ -6,12 +6,12 @@ block content
                 .card-body
                     .d-flex.align-items-center.justify-content-between
                         .card-title.text-uppercase #{subject.name} #{subject.gradeID}
-                        div
-                            form(action=`/statisticals/${subject._id}/export`, method='POST')
+                        .d-flex.align-items-center
+                            form.mb-0(action=`/statisticals/${subject._id}/export`, method='POST')
                                 button.btn.btn-outline-primary.btn-icon-text(type='submit')
                                     i.mdi.mdi-file-excel.btn-icon-prepend
                                     | Xuất excel
-                            a.btn.btn-outline-warning.btn-icon-text.ml-2(href='/subjects/list') 
+                            a.btn.btn-outline-warning.btn-icon-text.ml-4(href='/subjects/list') 
                                 i.mdi.mdi-reload.btn-icon-prepend
                                 | Quay lại
                             
@@ -26,7 +26,7 @@ block content
                                     th.font-weight-bold Email
                                     th.font-weight-bold Tổng điểm tích lũy
                                     th.font-weight-bold Tiến trình học
-                                    th.font-weight-bold Xếp loại
+                                    th.font-weight-bold Đánh giá
                             tbody
                                 if ranks.length > 0
                                     - var count = 0;
@@ -41,14 +41,10 @@ block content
                                             td= rank.user[0].email
                                             td= Math.round(rank.totalScore) + " điểm"
                                             td Hoàn thành #{rank.totalLessionDone}/#{countLessions} bài học (#{percent}%)
-                                            if percent > 80
-                                                td Giỏi
-                                            else if percent > 65 && percent < 80
-                                                td Khá
-                                            else if percent > 50 && percent < 65
-                                                td Trung bình
+                                            if percent <= 100 && percent >= 50
+                                                td Đạt
                                             else
-                                                td Yếu
+                                                td Chưa đạt
                                 else
                                     tr
                                         td.text-center(colspan='5') Không có dữ liệu!!!
