@@ -1,32 +1,93 @@
 extends ../layouts/common
 block main
     section.learning-result
-        h4.fw-bold.mt-1 Kết quả học tập
-        .row
-            .col-sm-12
-                table.table.table-hover.mt-4
-                    thead
+        ul#myTab.nav.nav-tabs(role='tablist')
+            li.nav-item(role='presentation')
+                button#grade10-tab.nav-link.active(data-bs-toggle='tab', data-bs-target='#grade10', type='button', role='tab', aria-controls='grade10', aria-selected='true')
+                    | Khối 10
+            li.nav-item(role='presentation')
+                button#grade11-tab.nav-link(data-bs-toggle='tab', data-bs-target='#grade11', type='button', role='tab', aria-controls='grade11', aria-selected='false')
+                    | Khối 11
+            li.nav-item(role='presentation')
+                button#grade12-tab.nav-link(data-bs-toggle='tab', data-bs-target='#grade12', type='button', role='tab', aria-controls='grade12', aria-selected='false')
+                    | Khối 12
+        .tab-content.mt-4.mb-4
+            #grade10.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='grade10-tab')
+                ul.d-flex.ps-0.bg-light
+                    each subject in subjects
+                        if subject.gradeID === 10
+                            li.text-center
+                                a.d-block.p-3.menu__item(href=`/learning/result?subject=${subject.slug}`)
+                                    ion-icon.fs-4(name=subject.icon)
+                                    .mt-2= subject.name
+            #grade11.tab-pane.fade(role='tabpanel', aria-labelledby='grade11-tab')
+                ul.d-flex.ps-0.bg-light
+                    each subject in subjects
+                        if subject.gradeID === 11
+                            li.text-center
+                                a.d-block.p-3.menu__item(href=`/learning/result?subject=${subject.slug}`)
+                                    ion-icon.fs-4(name=subject.icon)
+                                    .mt-2= subject.name
+            #grade12.tab-pane.fade(role='tabpanel', aria-labelledby='grade12-tab')
+                ul.d-flex.ps-0.bg-light
+                    each subject in subjects
+                        if subject.gradeID === 12
+                            li.text-center
+                                a.d-block.p-3.menu__item(href=`/learning/result?subject=${subject.slug}`)
+                                    ion-icon.fs-4(name=subject.icon)
+                                    .mt-2= subject.name
+        h4.fw-bold Kết quả học tập - #{subject.name} #{subject.gradeID}
+        if statisticals.length > 0
+            - var percent = Math.round((statisticals[0].totalLessionDone/countLessions)*100);
+            .mt-4
+                .row.mb-3
+                    label.col-sm-2 Tiến trình học: 
+                    .col-sm-10
+                        span Hoàn thành #{statisticals[0].totalLessionDone}/#{countLessions} bài học (#{percent}%)
+                .row.mb-3    
+                    label.col-sm-2 Tổng điểm tích lũy: 
+                    .col-sm-10
+                        span #{Math.round(statisticals[0].totalScore)} điểm
+                .row.mb-3    
+                    if percent > 80
+                        label.col-sm-2 Xếp loại: 
+                        .col-sm-10
+                            span Giỏi
+                    else if percent > 65 && percent < 80
+                        label.col-sm-2 Xếp loại: 
+                        .col-sm-10
+                            span Khá
+                    else if percent > 50 && percent < 65
+                        label.col-sm-2 Xếp loại: 
+                        .col-sm-10
+                            span Trung bình
+                    else
+                        label.col-sm-2 Xếp loại: 
+                        .col-sm-10
+                            span Yếu
+            table.table.table-hover.mt-4
+                thead
+                    tr
+                        th(scope='col') #
+                        th(scope='col') Tên chuyên đề
+                        th(scope='col') Hành động
+                tbody
+                    - var count = 0;
+                    each item in unitsResult
+                        - count++;
                         tr
-                            th(scope='col') #
-                            th(scope='col') Môn học
-                            th(scope='col') Tên chuyên đề
-                            th(scope='col') Nội dung luyện tập
-                            th(scope='col') Kết quả
-                            th(scope='col') 
-                    tbody
-                        if statisticals.length > 0
-                            - var count = 0;
-                            each item in statisticals
-                                - count++;
-                                tr.align-middle
-                                    th.pt-3.pb-3(scope='row')= count
-                                    td.pt-3.pb-3= item.lession.unit.subject[0].name  + ' ' + item.lession.unit.subject[0].gradeID
-                                    td.pt-3.pb-3= item.lession.unit.name
-                                    td.pt-3.pb-3 Bài #{item.lession.lessionNumber}. #{item.lession.name}
-                                    td.pt-3.pb-3= Math.round(item.score) + " điểm"
-                                    td.pt-3.pb-3
-                                        a.text-primary(href=`/learning/result?lession=${item.lession.slug}`) Xem chi tiết
-                        else
-                            tr
-                                td.text-center(colspan='5')
-                                    span.fw-bold Không có dữ liệu.!
+                            td= count
+                            td= item.name
+                            td
+                                a.text-primary(href=`/learning/result?subject=${subject.slug}&unit=${item._id}`) Xem chi tiết
+        else
+            .mt-4 Không có dữ liệu!!!
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            var path = window.location.href;
+            $(".menu__item").each(function () {
+                if (this.href === path) {
+                    $(this).addClass("active");
+                }
+            });
+        })

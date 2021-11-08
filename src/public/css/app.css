@@ -971,6 +971,19 @@ blockquote {
             .main .learning-result .result-detail ul li button.correct {
               background: #8ac53e;
               color: #fff; }
+    .main .learning-result .nav-tabs .nav-link {
+      color: #333; }
+      .main .learning-result .nav-tabs .nav-link:hover, .main .learning-result .nav-tabs .nav-link.active {
+        border-color: #fff #fff #292929 #fff; }
+      .main .learning-result .nav-tabs .nav-link.active {
+        font-weight: 600; }
+    .main .learning-result .tab-content li {
+      width: 125px; }
+      .main .learning-result .tab-content li .menu__item.active {
+        border-bottom: 5px solid #fb5533;
+        background: -webkit-linear-gradient(#fff, #f0f0f0); }
+      .main .learning-result .tab-content li .menu__item:hover {
+        background: -webkit-linear-gradient(#fff, #f0f0f0); }
   .main .blog-wrap {
     width: 100%;
     padding: 15px 40px 0;

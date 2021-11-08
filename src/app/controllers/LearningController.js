@@ -68,6 +68,13 @@ class LearningController {
     async learningResult(req, res, next) {
         try {
             const lession = await Lession.findOne({ slug: req.query.lession });
+            const subject = await Subject.findOne({ slug: req.query.subject });
+
+            let unit;
+            if (ObjectId.isValid(req.query.unit)) {
+                unit = await Unit.findById(req.query.unit);
+            }
+
             if (lession) {
                 const exercises = await Exercise.find({
                     lessionID: lession._id,
@@ -158,11 +165,78 @@ class LearningController {
                     nextLession,
                     exercises,
                 });
-            } else {
+            } else if (subject && !unit) {
+                const subjects = await Subject.find({});
+                const units = await Unit.find({ subjectID: subject._id });
+                const unitIdArray = units.map(({ _id }) => _id);
+                const lessions = await Lession.find({
+                    unitID: { $in: unitIdArray },
+                });
+                const lessionIdArray = lessions.map(({ _id }) => _id);
                 const statisticals = await Statistical.aggregate([
                     {
                         $match: {
-                            userID: ObjectId(req.signedCookies.userId),
+                            $and: [
+                                { userID: ObjectId(req.signedCookies.userId) },
+                                { lessionID: { $in: lessionIdArray } },
+                            ],
+                        },
+                    },
+                    {
+                        $group: {
+                            _id: "$userID",
+                            totalScore: { $sum: "$score" },
+                            totalLessionDone: { $count: {} },
+                        },
+                    },
+                ]);
+
+                const results = await Statistical.aggregate([
+                    {
+                        $match: {
+                            $and: [
+                                { userID: ObjectId(req.signedCookies.userId) },
+                                { lessionID: { $in: lessionIdArray } },
+                            ],
+                        },
+                    },
+                ]);
+
+                let unitsResult = [];
+                if (results.length > 0) {
+                    const resultsLessionIdArr = results.map(
+                        ({ lessionID }) => lessionID
+                    );
+                    const lessionsResult = await Lession.find({
+                        _id: { $in: resultsLessionIdArr },
+                    });
+                    const lessionsResultUnitId = lessionsResult.map(
+                        ({ unitID }) => unitID
+                    );
+                    unitsResult = await Unit.find({
+                        _id: { $in: lessionsResultUnitId },
+                    });
+                }
+
+                res.render("learning/result", {
+                    subject,
+                    subjects,
+                    statisticals,
+                    countLessions: lessions.length,
+                    unitsResult,
+                });
+            } else if (subject && unit) {
+                const lessions = await Lession.find({
+                    unitID: unit._id,
+                });
+                const lessionIdArray = lessions.map(({ _id }) => _id);
+                const statisticals = await Statistical.aggregate([
+                    {
+                        $match: {
+                            $and: [
+                                { userID: ObjectId(req.signedCookies.userId) },
+                                { lessionID: { $in: lessionIdArray } },
+                            ],
                         },
                     },
                     {
@@ -178,55 +252,21 @@ class LearningController {
                     },
                     {
                         $lookup: {
-                            from: "units",
-                            localField: "lession.unitID",
-                            foreignField: "_id",
-                            as: "lession.unit",
-                        },
-                    },
-                    {
-                        $unwind: "$lession.unit",
-                    },
-                    {
-                        $lookup: {
-                            from: "subjects",
-                            localField: "lession.unit.subjectID",
-                            foreignField: "_id",
-                            as: "lession.unit.subject",
+                            from: "exercises",
+                            localField: "lession._id",
+                            foreignField: "lessionID",
+                            as: "lession.exercises",
                         },
                     },
                 ]);
 
-                // const statisticalsLessionId = statisticals.map(
-                //     ({ lessionID }) => lessionID
-                // );
-
-                // const lessions = await Lession.aggregate([
-                //     { $match: { _id: { $in: statisticalsLessionId } } },
-                //     {
-                //         $lookup: {
-                //             from: "units",
-                //             localField: "unitID",
-                //             foreignField: "_id",
-                //             as: "unit",
-                //         },
-                //     },
-                //     {
-                //         $unwind: "$unit",
-                //     },
-                //     {
-                //         $lookup: {
-                //             from: "subjects",
-                //             localField: "unit.subjectID",
-                //             foreignField: "_id",
-                //             as: "unit.subject",
-                //         },
-                //     },
-                // ]);
-
-                // console.log(statisticals);
-
-                res.render("learning/result", { statisticals });
+                res.render("learning/result-unit", {
+                    subject,
+                    statisticals,
+                    unit,
+                });
+            } else {
+                res.render("error");
             }
         } catch (error) {
             console.log(error);

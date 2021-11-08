@@ -8,7 +8,6 @@ module.exports = {
             res.redirect("/login");
             return;
         }
-        // const user = await User.findOne({ _id: req.signedCookies.userId });
         const user = await User.aggregate([
             { $match: { _id: ObjectId(req.signedCookies.userId) } },
             {
@@ -25,6 +24,20 @@ module.exports = {
             next();
         } else {
             res.redirect("/login");
+        }
+    },
+
+    checkAdmin: async function (req, res, next) {
+        try {
+            const roleName = res.locals.user[0].role[0].roleName;
+            if (roleName === "admin") {
+                next();
+            } else {
+                req.flash("error", "Bạn không có quyền truy cập trang này!");
+                res.redirect("/error");
+            }
+        } catch (error) {
+            console.log(error);
         }
     },
 

@@ -1272,6 +1272,38 @@ blockquote {
                 }
             }
         }
+
+        .nav-tabs {
+            .nav-link {
+                color: #333;
+
+                &:hover,
+                &.active {
+                    border-color: $white-color $white-color #292929 $white-color;
+                }
+
+                &.active {
+                    font-weight: 600;
+                }
+            }
+        }
+
+        .tab-content {
+            li {
+                width: 125px;
+
+                .menu__item {
+                    &.active {
+                        border-bottom: 5px solid #fb5533;
+                        background: -webkit-linear-gradient(#fff, #f0f0f0);
+                    }
+
+                    &:hover {
+                        background: -webkit-linear-gradient(#fff, #f0f0f0);
+                    }
+                }
+            }
+        }
     }
 
     @import "./blog";

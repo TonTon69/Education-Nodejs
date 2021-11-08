@@ -101,7 +101,7 @@ class SiteController {
             return;
         }
 
-        res.cookie("userId", user.id, {
+        res.cookie("userId", user._id, {
             signed: true,
         });
         res.redirect("/");

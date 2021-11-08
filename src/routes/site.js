@@ -5,6 +5,7 @@ const siteController = require("../app/controllers/SiteController");
 const authController = require("../app/controllers/AuthController");
 const {
     requireAuth,
+    checkAdmin,
     authValidate,
     changePassValidate,
     resetPassValidate,
@@ -28,7 +29,7 @@ router.post(
     authController.postResetConfirm
 );
 
-router.get("/admin", requireAuth, siteController.admin);
+router.get("/admin", requireAuth, checkAdmin, siteController.admin);
 router.post("/report", requireAuth, siteController.report);
 router.get("/subjects", siteController.subjects);
 router.get("/infor", requireAuth, siteController.infor);

@@ -1,0 +1,42 @@
+extends ../layouts/common
+block main
+    section.learning-result
+        .d-flex.align-items-center.justify-content-between
+            h4.fw-bold Kết quả học tập - #{subject.name} #{subject.gradeID}
+            a(href=`/learning/result?subject=${subject.slug}`).d-inline-flex.align-items-center.text-primary
+                ion-icon(name="arrow-back")
+                span.ms-2 Quay lại
+        h5.fw-bold.mt-4= unit.name
+        .table-responsive
+            table.table.table-hover.mt-4
+                thead
+                    tr
+                        th(scope='col') #
+                        th(scope='col') Nội dung luyện tập
+                        th(scope='col') Kết quả
+                        th(scope='col') Điểm
+                        th(scope='col') Nhận xét
+                        th(scope='col') Hành động
+                tbody
+                    - var count = 0;
+                    each statistical in statisticals
+                        - count++;
+                        tr
+                            td= count
+                            td= statistical.lession.name
+                            td Đúng #{statistical.totalAnswerTrue}/#{statistical.lession.exercises.length} câu
+                            td #{statistical.score}/100
+                            if statistical.score === 100
+                                td Xuất sắc
+                            else if statistical.score > 80
+                                td Giỏi, cố gắng phát huy
+                            else if statistical.score > 65 && statistical.score < 80
+                                td Khá, cần cố gắng hơn
+                            else if statistical.score > 50 && statistical.score < 65
+                                td Trung bình, cần cố gắng hơn
+                            else
+                                td Yếu, cần cố gắng hơn
+                            td(style="width: 16%")
+                                a.text-primary(href=`/learning/result?lession=${statistical.lession.slug}`) Xem chi tiết
+                                span.ms-2.me-2 |
+                                a.text-primary(href=`/learning/toan-hoc-12?name=${statistical.lession.slug}`) Luyện lại
