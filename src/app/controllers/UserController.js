@@ -175,7 +175,7 @@ class UserController {
                     birthDay: row[2],
                     phone: row[3],
                     address: row[4],
-                    email: row[5],
+                    email: row[5].toString().toLowerCase(),
                     avatar: "/img/nobody.jpg",
                 });
                 users.push(user);

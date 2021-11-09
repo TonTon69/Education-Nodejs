@@ -13,7 +13,7 @@ block main
                                 .carousel-caption.d-none.d-md-block.text-start
                                     h2.fw-bold= banner.title
                                     p.fs-6= banner.description
-                                    a.btn.btn-outline-primary.rounded-pill.mt-2(href=banner.url) Truy cập nhóm
+                                    a.btn.btn-outline-primary.rounded-pill.mt-2.fs-7(href=banner.url) Truy cập nhóm
                                 .carousel-banner
                                     img.w-100(src=banner.image, alt='...')
                     button.carousel-control-prev(type='button', data-bs-target='#carouselBannerCaptions', data-bs-slide='prev')
@@ -105,7 +105,7 @@ block main
         .section__list
             .container.mt-5.pt-4
                 .title__container.d-flex.align-items-center.justify-content-between.mb-4
-                    h3.fw-bold.mb-0 Các bài viết nổi bật
+                    h3.fw-bold.mb-0 Bài viết nổi bật
                     a.d-flex.align-items-center.text-primary(href='/blog')
                         span Xem tất cả
                         ion-icon.right(name='chevron-forward-outline')

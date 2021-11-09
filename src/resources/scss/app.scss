@@ -467,7 +467,7 @@ blockquote {
 
         span {
             margin-top: 6px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
         }
     }
@@ -476,7 +476,7 @@ blockquote {
 //code main content
 .main {
     min-height: 100vh;
-    padding: 74px 28px 78px 104px;
+    padding: 66px 28px 78px 104px;
 
     @import "./infor";
 
@@ -639,7 +639,7 @@ blockquote {
     .subjects,
     .exercise {
         padding-left: 40px;
-        padding-top: 15px;
+        padding-top: 36px;
 
         .nav-link {
             color: #333;
@@ -890,7 +890,7 @@ blockquote {
 
     .subject__detail {
         padding-left: 40px;
-        padding-top: 15px;
+        padding-top: 36px;
 
         &--list {
             li {
@@ -996,7 +996,7 @@ blockquote {
 
     .learning {
         padding-left: 40px;
-        padding-top: 15px;
+        padding-top: 36px;
 
         &__content {
             background: $white-color;
@@ -1072,7 +1072,7 @@ blockquote {
 
     .learning-result {
         padding-left: 40px;
-        padding-top: 15px;
+        padding-top: 36px;
 
         .exercise-item {
             padding: 20px;

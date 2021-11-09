@@ -19,7 +19,6 @@ class InforController {
             address,
         });
         if (user) {
-            req.flash("error", "Vui lòng cập nhật thông tin mới!");
             res.redirect("back");
             return;
         }

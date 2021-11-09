@@ -332,12 +332,12 @@ blockquote {
       font-size: 20px; }
     .sidebar__link span {
       margin-top: 6px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600; }
 
 .main {
   min-height: 100vh;
-  padding: 74px 28px 78px 104px; }
+  padding: 66px 28px 78px 104px; }
   .main .section__infor {
     border-radius: 16px;
     margin-left: 40px;
@@ -376,7 +376,7 @@ blockquote {
         font-size: 22px; }
   .main .infor__title {
     margin-left: 40px;
-    margin-top: 15px;
+    margin-top: 36px;
     line-height: 1.5; }
   .main .box__infor {
     padding: 20px; }
@@ -560,7 +560,7 @@ blockquote {
   .main .subjects,
   .main .exercise {
     padding-left: 40px;
-    padding-top: 15px; }
+    padding-top: 36px; }
     .main .subjects .nav-link,
     .main .exercise .nav-link {
       color: #333; }
@@ -736,7 +736,7 @@ blockquote {
         background: rgba(0, 0, 0, 0.02); }
   .main .subject__detail {
     padding-left: 40px;
-    padding-top: 15px; }
+    padding-top: 36px; }
     .main .subject__detail--list li {
       line-height: 1.6;
       font-size: 16px;
@@ -799,7 +799,7 @@ blockquote {
           line-height: 1.5; }
   .main .learning {
     padding-left: 40px;
-    padding-top: 15px; }
+    padding-top: 36px; }
     .main .learning__content {
       background: #fff;
       padding: 20px;
@@ -841,7 +841,7 @@ blockquote {
           border-color: unset; }
   .main .learning-result {
     padding-left: 40px;
-    padding-top: 15px; }
+    padding-top: 36px; }
     .main .learning-result .exercise-item {
       padding: 20px;
       border-radius: 8px;
@@ -989,16 +989,15 @@ blockquote {
       .main .learning-result .tab-content li .menu__item:hover {
         background: -webkit-linear-gradient(#fff, #f0f0f0); }
   .main .blog-wrap {
-    width: 100%;
-    padding: 15px 40px 0;
-    overflow: hidden; }
+    height: 100%;
+    padding: 36px 40px 0;
+    border-right: 1px solid #e6e6e6; }
   .main .blog-heading {
-    width: 100%;
     border-bottom: 1px solid rgba(126, 117, 117, 0.2); }
     .main .blog-heading-title {
       width: fit-content;
       font-weight: bold;
-      font-size: 16px;
+      font-size: 14px;
       padding: 0.5rem 1rem;
       border-bottom: 1px solid #292929;
       margin: 0; }
@@ -1055,31 +1054,36 @@ blockquote {
         border-radius: 10%;
         object-fit: cover; }
   .main .topic-wrap {
-    width: 100%;
+    position: fixed;
     height: 100%;
-    padding: 15px 40px 0;
-    overflow: hidden;
-    border-left: 1px solid rgba(126, 117, 117, 0.2); }
+    padding: 36px 40px 0;
+    overflow: hidden; }
   .main .topic-wrap-heading {
-    font-weight: bold;
+    font-weight: 500;
     margin-bottom: 20px;
-    font-size: 16px; }
+    font-size: 14px;
+    color: #757575; }
   .main .toppic-wrap-content ul {
     display: flex;
     flex-wrap: wrap;
     padding-left: 0px; }
     .main .toppic-wrap-content ul li {
+      line-height: 1.8;
       padding: 8px 18px;
       margin: 5px 5px 5px 0;
       background: #f2f2f2;
-      border-radius: 20px;
-      font-size: 15px;
+      border-radius: 30px;
+      font-size: 14px;
       font-weight: 500;
       cursor: pointer; }
       .main .toppic-wrap-content ul li.active {
         background: #ffdfd8; }
   .main .blog-detail .blog-wrap {
-    border-right: 1px solid #d8d8d8; }
+    border: none; }
+    .main .blog-detail .blog-wrap .author-name {
+      font-weight: 600; }
+  .main .blog-detail .blog-content {
+    line-height: 2; }
   .main .blog-detail .blog-related {
     padding-top: 15px; }
     .main .blog-detail .blog-related-content .blog-card img {
