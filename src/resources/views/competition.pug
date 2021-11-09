@@ -1,0 +1,117 @@
+extends ./layouts/common
+block main
+    section.competition
+        .row
+            .col-sm-9
+                .card.shadow.border-0.p-2.rounded-3
+                    .card-body
+                        .d-flex.align-items-center
+                            button.btn.btn-primary(data-bs-toggle="modal" data-bs-target="#competitionModal") Tạo phòng
+                            .ms-4
+                                .input-group
+                                    span#basic-addon1.input-group-text
+                                        ion-icon(name='search')
+                                    input.form-control(type='text', placeholder='Tìm kiếm thành viên', aria-label='Username', aria-describedby='basic-addon1')
+                            .ms-4
+                                select.form-select(aria-label='Default select example')
+                                    option(selected) -- Chọn khối --
+                                    option(value='1') Khối 12
+                                    option(value='2') Khối 11
+                                    option(value='3') Khối 10
+                        .table-responsive.pt-4
+                            table.table.table-hover
+                                thead
+                                    tr
+                                        th(scope="col") STT
+                                        th(scope="col") Chủ phòng
+                                        th(scope="col") Khối
+                                        th(scope="col") Chủ đề
+                                        th(scope="col") Thành viên
+                                        th(scope="col") Trạng thái
+                                        th(scope="col")
+                                tbody
+                                    tr.align-middle
+                                        td.pt-3.pb-3(scope="row") 1
+                                        td
+                                            img.rounded-pill(src="/img/nobody.jpg" width=30 height=30)
+                                            span.ms-2 Huỳnh Hoàng
+                                        td Khối 12
+                                        td 
+                                            span.fw-bold MÔN TOÁN: 
+                                            span Cực trị của hàm số
+                                        td 1/10
+                                        td.fw-bold.text-warning Đang thi...
+                                        td
+                                            a.text-primary(href="") Tham gia
+        .chat
+            .msger
+                header.msger-header
+                    .msger-header-title.d-flex.align-items-center
+                        span
+                            ion-icon(name='chatbubble') 
+                        span.ms-2 Chat
+                    .msger-header-options
+                        span
+                            ion-icon(name="chevron-down")
+                main.msger-chat
+                    .msg.left-msg
+                        .msg-img(style='background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)')
+                        .msg-bubble
+                            .msg-info
+                                .msg-info-name BOT
+                                .msg-info-time 12:45
+                            .msg-text
+                                | Hi, welcome to SimpleChat! Go ahead and send me a message. &#x1F604;
+                    .msg.right-msg
+                        .msg-img(style='background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)')
+                        .msg-bubble
+                            .msg-info
+                                .msg-info-name Sajad
+                                .msg-info-time 12:46
+                            .msg-text
+                                | You can change your name in JS section!
+                form.msger-inputarea
+                    input.msger-input(type='text', placeholder='Nhập tin nhắn...')
+                    button.msger-send-btn(type='submit')
+                        ion-icon(name='paper-plane')
+
+    #competitionModal.modal.fade(tabindex='-1', aria-labelledby='competitionModalLabel', aria-hidden='true')
+        .modal-dialog(style="transition: all 0.3s ease")
+            .modal-content
+                .modal-header
+                    h5#competitionModalLabel.modal-title Tạo phòng đấu
+                    button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                .modal-body
+                    .row
+                        .col-sm-6 
+                            .mb-2.fw-bold Chọn khối
+                            select.form-select(aria-label='Default select example')
+                                option(selected) -- Chọn khối --
+                                option(value='1') Khối 12
+                                option(value='2') Khối 11
+                                option(value='3') Khối 10
+                        .col-sm-6
+                            .mb-2.fw-bold Chọn môn
+                            select.form-select(aria-label='Default select example')
+                                option(selected) -- Chọn môn --
+                                option(value='1') Khối 12
+                                option(value='2') Khối 11
+                                option(value='3') Khối 10
+                    .row.mt-4
+                        .col-sm-12
+                            .mb-2.fw-bold Chọn chủ đề
+                            select.form-select(aria-label='Default select example')
+                                option(selected) -- Chọn chủ đề --
+                                option(value='1') One
+                                option(value='2') Two
+                                option(value='3') Three
+
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Hủy
+                    button.btn.btn-primary(type='button') Tạo phòng
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            $(".msger-header-options").click(function () {
+                $(".chat").toggleClass("active")
+            })
+        })           

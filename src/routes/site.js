@@ -39,6 +39,7 @@ router.get("/login", siteController.login);
 router.post("/login", authValidate, siteController.postLogin);
 router.post("/search", search);
 router.get("/about", siteController.about);
+router.get("/competition", siteController.competition);
 router.get("/", siteController.index);
 
 module.exports = router;

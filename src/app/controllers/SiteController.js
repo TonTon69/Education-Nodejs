@@ -4,6 +4,7 @@ const User = require("../models/User");
 const Banner = require("../models/Banner");
 const Blog = require("../models/Blog");
 const BlogCategory = require("../models/BlogCategory");
+const Statistical = require("../models/Statistical");
 const Report = require("../models/Report");
 const System = require("../models/System");
 const Unit = require("../models/Unit");
@@ -161,6 +162,37 @@ class SiteController {
         const countLessions = await Lession.countDocuments({});
         const countExercises = await Exercise.countDocuments({});
         const countBlogs = await Blog.countDocuments({});
+
+        const top6 = await Statistical.aggregate([
+            {
+                $group: {
+                    _id: "$userID",
+                    totalScore: { $sum: "$score" },
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            {
+                $project: {
+                    "user.birthDay": 0,
+                    "user.active": 0,
+                    "user.password": 0,
+                    "user.phone": 0,
+                    "user.roleID": 0,
+                    "user.address": 0,
+                    "user.username": 0,
+                },
+            },
+            { $sort: { totalScore: -1 } },
+            { $limit: 6 },
+        ]);
+
         res.render("admin-index", {
             countUsers,
             countSubjects,
@@ -168,6 +200,7 @@ class SiteController {
             countLessions,
             countExercises,
             countBlogs,
+            top6,
         });
     }
 
@@ -187,6 +220,11 @@ class SiteController {
         } catch (err) {
             res.render("error");
         }
+    }
+
+    // [GET]/competition
+    async competition(req, res, next) {
+        res.render("competition");
     }
 }
 

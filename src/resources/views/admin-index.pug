@@ -4,245 +4,11 @@ block content
         .main-panel
             .content-wrapper
                 .row
-                    .col-sm-6.mb-4.mb-xl-0
+                    .col-sm-12.mb-4.mb-xl-0
                         .d-lg-flex.align-items-center
                             div
                                 h3.text-dark.font-weight-bold.mb-2 Hi, chào mừng trở lại!
-                            
-                    .col-sm-6
-                        .d-flex.align-items-center.justify-content-md-end
-                            .pr-1.mb-3.mb-xl-0
-                                button.btn.btn-outline-inverse-info.btn-icon-text(type='button')
-                                    | Feedback
-                                    i.mdi.mdi-message-outline.btn-icon-append
-                            .pr-1.mb-3.mb-xl-0
-                                button.btn.btn-outline-inverse-info.btn-icon-text(type='button')
-                                    | Help
-                                    i.mdi.mdi-help-circle-outline.btn-icon-append
-                            .pr-1.mb-3.mb-xl-0
-                                button.btn.btn-outline-inverse-info.btn-icon-text(type='button')
-                                    | Print
-                                    i.mdi.mdi-printer.btn-icon-append
                 .row.mt-4
-                    .col-lg-8.grid-margin.stretch-card
-                        .card
-                            .card-body
-                                .row
-                                    .col-lg-4
-                                        h4.card-title Sales Difference
-                                        canvas#salesDifference
-                                        p.mt-3.mb-4.mb-lg-0
-                                            | Lorem ipsum dolor sit amet,
-                                            | consectetur adipisicing elit.
-                                    .col-lg-5
-                                        h4.card-title Best Sellers
-                                        .row
-                                            .col-sm-4
-                                                ul.graphl-legend-rectangle
-                                                    li
-                                                        span.bg-danger
-                                                        | Automotive
-                                                    li
-                                                        span.bg-warning
-                                                        | Books
-                                                    li
-                                                        span.bg-info
-                                                        | Software
-                                                    li
-                                                        span.bg-success
-                                                        | Video games
-                                            .col-sm-8.grid-margin
-                                                canvas#bestSellers
-                                        p.mt-3.mb-4.mb-lg-0
-                                            | Lorem ipsum dolor sit amet,
-                                            | consectetur adipisicing elit.
-                                    .col-lg-3
-                                        h4.card-title Social Media Statistics
-                                        .row
-                                            .col-sm-12
-                                                .progress.progress-lg.grouped.mb-2
-                                                    .progress-bar.bg-danger(role='progressbar', style='width: 40%', aria-valuenow='25', aria-valuemin='0', aria-valuemax='100')
-                                                    .progress-bar.bg-info(role='progressbar', style='width: 10%', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100')
-                                                    .progress-bar.bg-warning(role='progressbar', style='width: 20%', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100')
-                                                    .progress-bar.bg-success(role='progressbar', style='width: 30%', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100')
-                                            .col-sm-12
-                                                ul.graphl-legend-rectangle
-                                                    li
-                                                        span.bg-danger
-                                                        | Instagram (15%)
-                                                    li
-                                                        span.bg-warning
-                                                        | Facebook (20%)
-                                                    li
-                                                        span.bg-info
-                                                        | Website (25%)
-                                                    li
-                                                        span.bg-success
-                                                        | Youtube (40%)
-                                        p.mb-0.mt-2
-                                            | Lorem ipsum dolor sit amet,
-                                            | consectetur adipisicing elit.
-                    .col-lg-4.mb-3.mb-lg-0
-                        .card.congratulation-bg.text-center
-                            .card-body.pb-0
-                                img.rounded(src=user[0].avatar, width=57, height=57, style='object-fit: cover')
-                                h2.mt-3.text-white.mb-3.font-weight-bold
-                                    | Xin chúc mừng
-                                p
-                                    | You have done 57.6% more sales today.
-                                    | Check your new badge in your profile.
-                .row
-                    .col-sm-8.flex-column.d-flex.stretch-card
-                        .row
-                            .col-lg-4.d-flex.grid-margin.stretch-card
-                                .card.bg-primary
-                                    .card-body.text-white
-                                        h3.font-weight-bold.mb-3 18,39 (75GB)
-                                        .progress.mb-3
-                                            .progress-bar.bg-warning(role='progressbar', style='width: 40%', aria-valuenow='25', aria-valuemin='0', aria-valuemax='100')
-                                        p.pb-0.mb-0 Bandwidth usage
-                            .col-lg-4.d-flex.grid-margin.stretch-card
-                                .card.sale-diffrence-border
-                                    .card-body
-                                        h2.text-dark.mb-2.font-weight-bold $6475
-                                        h4.card-title.mb-2 Sales Difference
-                                        small.text-muted APRIL 2019
-                            .col-lg-4.d-flex.grid-margin.stretch-card
-                                .card.sale-visit-statistics-border
-                                    .card-body
-                                        h2.text-dark.mb-2.font-weight-bold $3479
-                                        h4.card-title.mb-2 Visit Statistics
-                                        small.text-muted APRIL 2019
-                        .row
-                            .col-sm-12.grid-margin.d-flex.stretch-card
-                                .card
-                                    .card-body
-                                        .d-flex.align-items-center.justify-content-between
-                                            h4.card-title.mb-2 Sales Difference
-                                            .dropdown
-                                                a.text-success.btn.btn-link.px-1(href='#')
-                                                    i.mdi.mdi-refresh
-                                                a#settingsDropdownsales.text-success.btn.btn-link.px-1.dropdown-toggle.dropdown-arrow-none(href='#', data-toggle='dropdown')
-                                                    i.mdi.mdi-dots-horizontal
-                                                .dropdown-menu.dropdown-menu-right.navbar-dropdown(aria-labelledby='settingsDropdownsales')
-                                                    a.dropdown-item
-                                                        i.mdi.mdi-grease-pencil.text-primary
-                                                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Edit
-                                                    a.dropdown-item
-                                                        i.mdi.mdi-delete.text-primary
-                                                        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Delete
-                                        div
-                                            ul.nav.nav-tabs.tab-no-active-fill(role='tablist')
-                                                li.nav-item
-                                                    a#revenue-for-last-month-tab.nav-link.active.pl-2.pr-2(data-toggle='tab', href='#revenue-for-last-month', role='tab', aria-controls='revenue-for-last-month', aria-selected='true') Revenue for last month
-                                                li.nav-item
-                                                    a#server-loading-tab.nav-link.pl-2.pr-2(data-toggle='tab', href='#server-loading', role='tab', aria-controls='server-loading', aria-selected='false')
-                                                        | Server
-                                                        | loading
-                                                li.nav-item
-                                                    a#data-managed-tab.nav-link.pl-2.pr-2(data-toggle='tab', href='#data-managed', role='tab', aria-controls='data-managed', aria-selected='false')
-                                                        | Data
-                                                        | managed
-                                                li.nav-item
-                                                    a#sales-by-traffic-tab.nav-link.pl-2.pr-2(data-toggle='tab', href='#sales-by-traffic', role='tab', aria-controls='sales-by-traffic', aria-selected='false')
-                                                        | Sales
-                                                        | by traffic
-                                            .tab-content.tab-no-active-fill-tab-content
-                                                #revenue-for-last-month.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='revenue-for-last-month-tab')
-                                                    .d-lg-flex.justify-content-between
-                                                        p.mb-4 +5.2% vs last 7 days
-                                                        #revenuechart-legend.revenuechart-legend
-                                                            | f
-                                                    canvas#revenue-for-last-month-chart
-                                                #server-loading.tab-pane.fade(role='tabpanel', aria-labelledby='server-loading-tab')
-                                                    .d-flex.justify-content-between
-                                                        p.mb-4 +5.2% vs last 7 days
-                                                        #serveLoading-legend.revenuechart-legend
-                                                            | f
-                                                    canvas#serveLoading
-                                                #data-managed.tab-pane.fade(role='tabpanel', aria-labelledby='data-managed-tab')
-                                                    .d-flex.justify-content-between
-                                                        p.mb-4 +5.2% vs last 7 days
-                                                        #dataManaged-legend.revenuechart-legend
-                                                            | f
-                                                    canvas#dataManaged
-                                                #sales-by-traffic.tab-pane.fade(role='tabpanel', aria-labelledby='sales-by-traffic-tab')
-                                                    .d-flex.justify-content-between
-                                                        p.mb-4 +5.2% vs last 7 days
-                                                        #salesTrafic-legend.revenuechart-legend
-                                                            | f
-                                                    canvas#salesTrafic
-                    .col-sm-4.flex-column.d-flex.stretch-card
-                        .row.flex-grow
-                            .col-sm-12.grid-margin.stretch-card
-                                .card
-                                    .card-body
-                                        .row
-                                            .col-lg-8
-                                                h3.font-weight-bold.text-dark Canada,Ontario
-                                                p.text-dark Monday 3.00 PM
-                                                .d-lg-flex.align-items-baseline.mb-3
-                                                    h1.text-dark.font-weight-bold
-                                                        | 23
-                                                        sup.font-weight-light
-                                                            small o
-                                                            small.font-weight-medium c
-                                                    p.text-muted.ml-3 Partly cloudy
-                                            .col-lg-4
-                                                .position-relative
-                                                    img.w-100(src='images/dashboard/live.png', alt='')
-                                                    .live-info.badge.badge-success Live
-                                        .row
-                                            .col-sm-12.mt-4.mt-lg-0
-                                                .bg-primary.text-white.px-4.py-4.card
-                                                    .row
-                                                        .col-sm-6.pl-lg-5
-                                                            h2 $1635
-                                                            p.mb-0 Your Iincome
-                                                        .col-sm-6.climate-info-border.mt-lg-0.mt-2
-                                                            h2 $2650
-                                                            p.mb-0 Your Spending
-                                        .row.pt-3.mt-md-1
-                                            .col
-                                                .d-flex.purchase-detail-legend.align-items-center
-                                                    #circleProgress1.p-2
-                                                    div
-                                                        p.font-weight-medium.text-dark.text-small
-                                                            | Sessions
-                                                        h3.font-weight-bold.text-dark.mb-0 26.80%
-                                            .col
-                                                .d-flex.purchase-detail-legend.align-items-center
-                                                    #circleProgress2.p-2
-                                                    div
-                                                        p.font-weight-medium.text-dark.text-small Users
-                                                        h3.font-weight-bold.text-dark.mb-0 56.80%
-                            .col-sm-12.grid-margin.stretch-card
-                                .card
-                                    .card-body
-                                        .row
-                                            .col-sm-12
-                                                .d-flex.align-items-center.justify-content-between
-                                                    h4.card-title.mb-0 Visits Today
-                                                    .dropdown
-                                                        a.text-success.btn.btn-link.px-1(href='#')
-                                                            i.mdi.mdi-refresh
-                                                        a#profileDropdownvisittoday.text-success.btn.btn-link.px-1.dropdown-toggle.dropdown-arrow-none(href='#', data-toggle='dropdown')
-                                                            i.mdi.mdi-dots-horizontal
-                                                        .dropdown-menu.dropdown-menu-right.navbar-dropdown(aria-labelledby='profileDropdownvisittoday')
-                                                            a.dropdown-item
-                                                                i.mdi.mdi-grease-pencil.text-primary
-                                                                | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Edit
-                                                            a.dropdown-item
-                                                                i.mdi.mdi-delete.text-primary
-                                                                | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Delete
-                                                p.mt-1 Calculated in last 30 days
-                                                .d-lg-flex.align-items-center.justify-content-between
-                                                    h1.font-weight-bold.text-dark 4332
-                                                    .mb-3
-                                                        button.btn.btn-outline-light.text-dark.font-weight-normal(type='button') Day
-                                                        button.btn.btn-outline-light.text-dark.font-weight-normal(type='button') Month
-                                                canvas#visitorsToday
-                .row
                     .col-lg-2.grid-margin.stretch-card
                         .card
                             .card-body
@@ -284,8 +50,51 @@ block content
                                 .d-flex.align-items-center.justify-content-between.mb-5
                                     h2.text-primary.font-weight-bold= countBlogs
                                     i.mdi.mdi-blogger.mdi-18px.text-dark
-                                span.text-uppercase.font-weight-bold.text-dark bài viết
-                    
+                                span.text-uppercase.font-weight-bold.text-dark bài viết            
+                .row.mt-4
+                    .col-sm-12.mb-4.mb-xl-0
+                        .d-lg-flex.align-items-center
+                            div
+                                h3.text-dark.font-weight-bold.mb-2 Top 6 học sinh đạt điểm tích lũy cao
+                .row.mt-4
+                    .col-sm-8.flex-column.d-flex.stretch-card
+                        .row
+                            each item in top6
+                                .col-lg-4.d-flex.grid-margin.stretch-card
+                                    .card.top-score-border
+                                        .card-body
+                                            h2.text-dark.mb-2.font-weight-bold= item.totalScore
+                                                i.mdi.mdi-heart.text-danger.ml-2
+                                            h4.card-title.mb-2= item.user[0].fullname
+                                            small.text-muted= item.user[0].email
+                    .col-sm-4.flex-column.d-flex.stretch-card
+                        .row.flex-grow
+                            .col-sm-12.grid-margin.stretch-card
+                                .card
+                                    .card-body
+                                        .row
+                                            .col-sm-12
+                                                .d-flex.align-items-center.justify-content-between
+                                                    h4.card-title.mb-0 Visits Today
+                                                    .dropdown
+                                                        a.text-success.btn.btn-link.px-1(href='#')
+                                                            i.mdi.mdi-refresh
+                                                        a#profileDropdownvisittoday.text-success.btn.btn-link.px-1.dropdown-toggle.dropdown-arrow-none(href='#', data-toggle='dropdown')
+                                                            i.mdi.mdi-dots-horizontal
+                                                        .dropdown-menu.dropdown-menu-right.navbar-dropdown(aria-labelledby='profileDropdownvisittoday')
+                                                            a.dropdown-item
+                                                                i.mdi.mdi-grease-pencil.text-primary
+                                                                | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Edit
+                                                            a.dropdown-item
+                                                                i.mdi.mdi-delete.text-primary
+                                                                | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Delete
+                                                p.mt-1 Calculated in last 30 days
+                                                .d-lg-flex.align-items-center.justify-content-between
+                                                    h1.font-weight-bold.text-dark 4332
+                                                    .mb-3
+                                                        button.btn.btn-outline-light.text-dark.font-weight-normal(type='button') Day
+                                                        button.btn.btn-outline-light.text-dark.font-weight-normal(type='button') Month
+                                                canvas#visitorsToday
                 .row
                     .col-sm-6.grid-margin.grid-margin-md-0.stretch-card
                         .card
@@ -308,13 +117,19 @@ block content
                 
             footer.footer
                 .footer-wrap
-                    .d-sm-flex.justify-content-center.justify-content-sm-between
+                    .text-center
                         span.text-muted.d-block.text-center.text-sm-left.d-sm-inline-block
-                            | Copyright &copy;
-                            | bootstrapdash.com 2020
-                        span.float-none.float-sm-right.d-block.mt-1.mt-sm-0.text-center
-                            | Free 
-                            a(href='https://www.bootstrapdash.com/', target='_blank')
-                                | Bootstrap dashboard
-                                | templates
-                                |  from Bootstrapdash.com
+                            | Copyright &copy; 2021 -
+                            | Trường THPT Phù Cát 3
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            $(".top-score-border").each(function (index) {
+                var colorR = Math.floor(Math.random() * 256);
+                var colorG = Math.floor(Math.random() * 256);
+                var colorB = Math.floor(Math.random() * 256);
+                $(this).css(
+                    "border-bottom",
+                    "5px solid rgb(" + colorR + "," + colorG + "," + colorB + ")"
+                );
+            });
+        })
