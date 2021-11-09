@@ -8,6 +8,10 @@ const Result = require("../models/Result");
 const Statistical = require("../models/Statistical");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const fs = require("fs");
+const pdf = require("pdf-creator-node");
+const path = require("path");
+const options = require("../../utils/options");
 class TheoryController {
     // [GET]/theories?lession
     async detail(req, res, next) {
@@ -127,6 +131,59 @@ class TheoryController {
         await theory.delete();
         req.flash("success", "Xóa thành công!");
         res.redirect(`/subjects/${subject._id}/content`);
+    }
+
+    // [POST]/theories/:id/export
+    async generatePdf(req, res, next) {
+        const html = fs.readFileSync(
+            path.join(__dirname, "../../resources/views/templates/theory.html"),
+            "utf-8"
+        );
+        const lession = await Lession.findById(req.params.id);
+        if (lession) {
+            const unit = await Unit.findById(lession.unitID);
+            const subject = await Subject.findById(unit.subjectID);
+            const filename = lession.slug + "_doc" + ".pdf";
+            const theory = await Theory.aggregate([
+                { $match: { lessionID: ObjectId(lession._id) } },
+                {
+                    $lookup: {
+                        from: "lessions",
+                        localField: "lessionID",
+                        foreignField: "_id",
+                        as: "lession",
+                    },
+                },
+            ]);
+
+            let down = path.resolve(
+                __dirname,
+                `../../public/exports/${filename}`
+            );
+            const obj = {
+                theory: theory,
+                lessionName: lession.name,
+                lessionNumber: lession.lessionNumber,
+                unitName: unit.name,
+                subjectName: subject.name,
+                subjectGrade: subject.gradeID,
+            };
+            const document = {
+                html: html,
+                data: {
+                    theorys: obj,
+                },
+                path: down,
+            };
+
+            pdf.create(document, options)
+                .then(() => {
+                    res.download(document.path);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     }
 }
 
