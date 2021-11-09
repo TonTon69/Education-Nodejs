@@ -10,12 +10,13 @@ block content
                                 .card-title.text-uppercase #{theory[0].lession.unit.subject[0].name} #{theory[0].lession.unit.subject[0].gradeID} - #{theory[0].lession.unit.name}
                                 .card-title Lý thuyết "#{theory[0].lession.name}"
                             div
-                                a.btn.btn-outline-warning.btn-icon-text(href=`/subjects/${theory[0].lession.unit.subject[0]._id}/content`) 
-                                    i.mdi.mdi-reload.btn-icon-prepend
-                                    | Quay lại
-                                a.btn.btn-outline-primary(href=`/exercises/detail?lession=${theory[0].lession._id}`).ml-4
+                                a.btn.btn-outline-primary(href=`/exercises/detail?lession=${theory[0].lession._id}`)
                                     i.mdi.mdi-book-open-page-variant.mr-2
                                     | Bài tập vận dụng
+                                a.btn.btn-outline-warning.btn-icon-text.ml-4(href=`/subjects/${theory[0].lession.unit.subject[0]._id}/content`) 
+                                    i.mdi.mdi-reload.btn-icon-prepend
+                                    | Quay lại
+                                
                         .text-right
                             button.btn.btn-outline-danger(data-toggle="modal" data-target="#deleteTheoryModal" data-id=theory[0]._id)
                                 i.mdi.mdi-delete 

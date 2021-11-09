@@ -11,6 +11,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const readXlsxFile = require("read-excel-file/node");
 const path = require("path");
 const XLSX = require("xlsx");
+const moment = require("moment");
 
 class StatisticalController {
     // [GET]/statisticals
@@ -35,7 +36,7 @@ class StatisticalController {
                         },
                     },
                     {
-                        $sort: { updatedAt: 1 },
+                        $sort: { score: -1 },
                     },
                 ]);
                 res.render("statisticals/list", {
@@ -158,85 +159,127 @@ class StatisticalController {
     // [POST]/statistical/:id/export
     async export(req, res, next) {
         const subject = await Subject.findById(req.params.id);
-        const units = await Unit.find({ subjectID: subject._id });
-        const unitIdArray = units.map(({ _id }) => _id);
-        const lessions = await Lession.find({
-            unitID: { $in: unitIdArray },
-        });
-        const lessionIdArray = lessions.map(({ _id }) => _id);
-        const statisticals = await Statistical.aggregate([
-            {
-                $match: {
-                    lessionID: { $in: lessionIdArray },
+        const lession = await Lession.findById(req.params.id);
+        if (subject) {
+            const units = await Unit.find({ subjectID: subject._id });
+            const unitIdArray = units.map(({ _id }) => _id);
+            const lessions = await Lession.find({
+                unitID: { $in: unitIdArray },
+            });
+            const lessionIdArray = lessions.map(({ _id }) => _id);
+            const statisticals = await Statistical.aggregate([
+                {
+                    $match: {
+                        lessionID: { $in: lessionIdArray },
+                    },
                 },
-            },
-            {
-                $group: {
-                    _id: "$userID",
-                    totalScore: { $sum: "$score" },
-                    totalLessionDone: { $count: {} },
+                {
+                    $group: {
+                        _id: "$userID",
+                        totalScore: { $sum: "$score" },
+                        totalLessionDone: { $count: {} },
+                    },
                 },
-            },
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "_id",
-                    foreignField: "_id",
-                    as: "user",
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "_id",
+                        foreignField: "_id",
+                        as: "user",
+                    },
                 },
-            },
-            {
-                $project: {
-                    "user.birthDay": 0,
-                    "user.active": 0,
-                    "user.password": 0,
-                    "user.phone": 0,
-                    "user.roleID": 0,
-                    "user.address": 0,
-                    "user.username": 0,
+                {
+                    $project: {
+                        "user.birthDay": 0,
+                        "user.active": 0,
+                        "user.password": 0,
+                        "user.phone": 0,
+                        "user.roleID": 0,
+                        "user.address": 0,
+                        "user.username": 0,
+                    },
                 },
-            },
-            { $sort: { totalScore: -1 } },
-        ]);
+                { $sort: { totalScore: -1 } },
+            ]);
 
-        let statisticalsExcel = [];
-        statisticals.forEach((item, index) => {
-            let percent = Math.round(
-                (item.totalLessionDone / lessions.length) * 100
+            let statisticalsExcel = [];
+            statisticals.forEach((item, index) => {
+                let percent = Math.round(
+                    (item.totalLessionDone / lessions.length) * 100
+                );
+                let evaluate;
+
+                if (percent <= 100 && percent >= 50) {
+                    evaluate = "Đạt";
+                } else {
+                    evaluate = "Chưa đạt";
+                }
+
+                let result = {
+                    STT: index + 1,
+                    "Họ tên": item.user[0].fullname,
+                    "Địa chỉ email": item.user[0].email,
+                    "Tổng điểm tích lũy": item.totalScore,
+                    "Tiến trình học": `Hoàn thành ${item.totalLessionDone}/${lessions.length} bài học (${percent}%)`,
+                    "Đánh giá": evaluate,
+                };
+                statisticalsExcel.push(result);
+            });
+
+            var wb = XLSX.utils.book_new();
+            var temp = JSON.stringify(statisticalsExcel);
+            temp = JSON.parse(temp);
+            var ws = XLSX.utils.json_to_sheet(temp);
+            let down = path.resolve(
+                __dirname,
+                `../../public/exports/thong-ke-ket-qua-mon-${subject.slug}.xlsx`
             );
-            let evaluate;
-
-            if (percent <= 100 && percent >= 50) {
-                evaluate = "Đạt";
-            } else {
-                evaluate = "Chưa đạt";
-            }
-
-            let result = {
-                STT: index + 1,
-                "Họ tên": item.user[0].fullname,
-                "Địa chỉ email": item.user[0].email,
-                "Tổng điểm tích lũy": item.totalScore,
-                "Tiến trình học": `Hoàn thành ${item.totalLessionDone}/${lessions.length} bài học (${percent}%)`,
-                "Đánh giá": evaluate,
-            };
-            statisticalsExcel.push(result);
-        });
-
-        // console.log(statisticalsExcel);
-        // res.redirect("back");
-
-        var wb = XLSX.utils.book_new();
-        var temp = JSON.stringify(statisticalsExcel);
-        temp = JSON.parse(temp);
-        var ws = XLSX.utils.json_to_sheet(temp);
-        let down = path.resolve(
-            __dirname,
-            `../../public/exports/thong-ke-ket-qua-mon-${subject.slug}.xlsx`
-        );
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-        XLSX.writeFile(wb, down);
-        res.download(down);
+            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+            XLSX.writeFile(wb, down);
+            res.download(down);
+        } else if (lession) {
+            const exercises = await Exercise.find({
+                lessionID: lession._id,
+            });
+            const statisticals = await Statistical.aggregate([
+                { $match: { lessionID: ObjectId(lession._id) } },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "userID",
+                        foreignField: "_id",
+                        as: "user",
+                    },
+                },
+                {
+                    $sort: { score: -1 },
+                },
+            ]);
+            let statisticalsExcel = [];
+            statisticals.forEach((item, index) => {
+                let result = {
+                    STT: index + 1,
+                    "Họ tên": item.user[0].fullname,
+                    "Địa chỉ email": item.user[0].email,
+                    "Điểm ": item.score,
+                    "Số câu đúng": `${item.totalAnswerTrue}/${exercises.length}`,
+                    "Thời gian làm bài": item.time,
+                    "Ngày làm bài": moment(item.updatedAt).format("DD-MM-YYYY"),
+                };
+                statisticalsExcel.push(result);
+            });
+            var wb = XLSX.utils.book_new();
+            var temp = JSON.stringify(statisticalsExcel);
+            temp = JSON.parse(temp);
+            var ws = XLSX.utils.json_to_sheet(temp);
+            let down = path.resolve(
+                __dirname,
+                `../../public/exports/thong-ke-ket-qua-bai-${lession.slug}.xlsx`
+            );
+            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+            XLSX.writeFile(wb, down);
+            res.download(down);
+        }
     }
 }
 

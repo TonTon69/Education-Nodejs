@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const readXlsxFile = require("read-excel-file/node");
 const path = require("path");
+const XLSX = require("xlsx");
 
 class ExerciseController {
     // [GET]/exercise/:slug?name=lession
@@ -360,6 +361,56 @@ class ExerciseController {
             });
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    // [POST]/exercises/:id/export
+    async export(req, res) {
+        const lession = await Lession.findById(req.params.id);
+        if (lession) {
+            const exercises = await Exercise.aggregate([
+                { $match: { lessionID: ObjectId(lession._id) } },
+                {
+                    $lookup: {
+                        from: "exercise-categories",
+                        localField: "ceID",
+                        foreignField: "_id",
+                        as: "category",
+                    },
+                },
+            ]);
+
+            let exercisesExcel = [];
+            exercises.forEach((item, index) => {
+                let exercise = {
+                    STT: index + 1,
+                    "Câu hỏi": item.question,
+                    "Option 1": item.option1,
+                    "Option 2": item.option2,
+                    "Option 3": item.option3,
+                    "Option 4": item.option4,
+                    "Đáp án": item.answer,
+                    "Gợi ý": item.recommend,
+                    "Lời giải": item.explain,
+                    "Loại câu hỏi": item.category[0].type,
+                };
+                exercisesExcel.push(exercise);
+            });
+
+            var wb = XLSX.utils.book_new();
+            var temp = JSON.stringify(exercisesExcel);
+            temp = JSON.parse(temp);
+            var ws = XLSX.utils.json_to_sheet(temp);
+            let down = path.resolve(
+                __dirname,
+                `../../public/exports/thong-ke-danh-sach-cau-hoi-bai-${lession.slug}.xlsx`
+            );
+            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+            XLSX.writeFile(wb, down);
+            res.download(down);
+        } else {
+            req.flash("error", "Tải tệp không thành công. Vui lòng thử lại!");
+            res.redirect("back");
         }
     }
 }

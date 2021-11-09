@@ -9,13 +9,18 @@ block content
                             div
                                 .card-title.text-uppercase #{exercises[0].lession.unit.subject[0].name} #{exercises[0].lession.unit.subject[0].gradeID} - #{exercises[0].lession.unit.name}
                                 .card-title Bài tập vận dụng "#{exercises[0].lession.name}"
-                            div
-                                a.btn.btn-outline-warning.btn-icon-text(href=`/subjects/${exercises[0].lession.unit.subject[0]._id}/content`) 
-                                    i.mdi.mdi-reload.btn-icon-prepend
-                                    | Quay lại
-                                a.btn.btn-outline-primary(href=`/theories/detail?lession=${exercises[0].lession._id}`).ml-4
+                            .d-flex.align-items-center
+                                a.btn.btn-outline-primary(href=`/theories/detail?lession=${exercises[0].lession._id}`)
                                     i.mdi.mdi-book-open-variant.mr-2
                                     | Lý thuyết
+                                form.mb-0.ml-4(action=`/exercises/${exercises[0].lession._id}/export`, method='POST')
+                                    button.btn.btn-outline-success.btn-icon-text
+                                        i.mdi.mdi-file-excel.btn-icon-prepend
+                                        | Xuất excel
+                                a.btn.btn-outline-warning.btn-icon-text.ml-4(href=`/subjects/${exercises[0].lession.unit.subject[0]._id}/content`) 
+                                    i.mdi.mdi-reload.btn-icon-prepend
+                                    | Quay lại
+                                
                         .text-dark.mt-4
                             .row 
                                 .col-md-3.grid-margin.stretch-card

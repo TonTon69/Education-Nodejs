@@ -6,9 +6,14 @@ block content
                 .card-body
                     .d-flex.align-items-center.justify-content-between
                         .card-title.text-uppercase #{subject.name} #{subject.gradeID} - #{unit.name}
-                        a.btn.btn-outline-warning.btn-icon-text(href=`/subjects/${subject._id}/content`) 
-                            i.mdi.mdi-reload.btn-icon-prepend
-                            | Quay lại
+                        .d-flex.align-items-center
+                            form.mb-0(action=`/statisticals/${lession._id}/export`, method='POST')
+                                button.btn.btn-outline-primary.btn-icon-text
+                                    i.mdi.mdi-file-excel.btn-icon-prepend
+                                    | Xuất excel
+                            a.btn.btn-outline-warning.btn-icon-text.ml-4(href=`/subjects/${subject._id}/content`) 
+                                i.mdi.mdi-reload.btn-icon-prepend
+                                | Quay lại
                     hr
                     .card-title Thống kê kết quả học tập "Bài #{lession.lessionNumber}. #{lession.name}"
                     .table-responsive.pt-3

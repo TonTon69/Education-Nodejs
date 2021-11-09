@@ -19,9 +19,14 @@ block content
                                 each role in roles
                                     option(value=`${role._id}`)=role.description
                         .form-group.mb-0
-                            a.btn.btn-outline-primary.btn-icon-text.ml-4.d-flex.align-items-center(href='/user/list-role')
+                            a.btn.btn-outline-warning.btn-icon-text.ml-4.d-flex.align-items-center(href='/user/list-role')
                                 i.mdi.mdi-format-list-bulleted
                                 span.ml-2 Danh sách chức vụ
+                        .form-group.mb-0.ml-4
+                            form.mb-0(action=`/user/export`, method='POST')
+                                button.btn.btn-outline-primary.btn-icon-text(type='submit')
+                                    i.mdi.mdi-file-excel.btn-icon-prepend
+                                    | Xuất excel
                         a.btn.btn-outline-success.btn-icon-text.ml-auto(href='/user/create')
                             i.mdi.mdi-upload.btn-icon-prepend
                             | Thêm mới người dùng

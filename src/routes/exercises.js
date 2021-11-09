@@ -6,6 +6,7 @@ const exerciseController = require("../app/controllers/ExerciseController");
 const { requireAuth } = require("../app/middlewares/AuthMiddleware");
 const upload = require("../app/middlewares/upload");
 
+router.post("/:id/export", requireAuth, exerciseController.export);
 router.post(
     "/upload",
     requireAuth,
