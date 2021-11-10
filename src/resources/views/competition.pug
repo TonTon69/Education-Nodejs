@@ -48,14 +48,15 @@ block main
                 header.msger-header
                     .msger-header-title.d-flex.align-items-center
                         span
-                            ion-icon(name='chatbubble') 
-                        span.ms-2 Chat
+                            ion-icon(name='chatbubbles') 
+                        span.ms-2.fw-bold Chat
                     .msger-header-options
-                        span
-                            ion-icon(name="chevron-down")
+                        span.fs-5
+                            ion-icon(name="remove")
                 main.msger-chat
                     .msg.left-msg
-                        .msg-img(style='background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)')
+                        .me-2
+                            .msg-img(style='background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)')
                         .msg-bubble
                             .msg-info
                                 .msg-info-name BOT
@@ -63,7 +64,8 @@ block main
                             .msg-text
                                 | Hi, welcome to SimpleChat! Go ahead and send me a message. &#x1F604;
                     .msg.right-msg
-                        .msg-img(style='background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)')
+                        .ms-2
+                            .msg-img(style='background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)')
                         .msg-bubble
                             .msg-info
                                 .msg-info-name Sajad
@@ -71,10 +73,13 @@ block main
                             .msg-text
                                 | You can change your name in JS section!
                 form.msger-inputarea
-                    input.msger-input(type='text', placeholder='Nhập tin nhắn...')
+                    input.msger-input(type='text', placeholder='Aa')
                     button.msger-send-btn(type='submit')
                         ion-icon(name='paper-plane')
-
+        .chat-show
+            .d-flex.align-items-center.justify-content-center.h-100
+                span.text-white.fs-4
+                    ion-icon(name='chatbubbles') 
     #competitionModal.modal.fade(tabindex='-1', aria-labelledby='competitionModalLabel', aria-hidden='true')
         .modal-dialog(style="transition: all 0.3s ease")
             .modal-content
@@ -111,7 +116,17 @@ block main
                     button.btn.btn-primary(type='button') Tạo phòng
     script.
         document.addEventListener('DOMContentLoaded', function() {
-            $(".msger-header-options").click(function () {
-                $(".chat").toggleClass("active")
+            var chat = $(".chat");
+            var chatShow = $(".chat-show");
+            var closeChat = $(".msger-header-options");
+
+            closeChat.click(function () {
+                chat.hide();
+                chatShow.show();
+            })
+
+            chatShow.click(function () {
+                $(this).hide();
+                chat.show();
             })
         })           

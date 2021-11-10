@@ -564,65 +564,79 @@ blockquote {
       position: fixed;
       bottom: 34px;
       right: 28px; }
-      .main .competition .chat.active {
-        bottom: -478px; }
+      .main .competition .chat-show {
+        position: fixed;
+        bottom: 54px;
+        right: 28px;
+        background: #006097;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: none;
+        cursor: pointer; }
     .main .competition .msger {
       display: flex;
       flex-flow: column wrap;
       justify-content: space-between;
-      width: 550px;
-      height: 550px;
+      width: 328px;
+      height: 455px;
+      max-height: calc(100vh - 60px - 42px);
       border: 2px solid #ddd;
       border-radius: 5px;
       background: #fff;
       box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2); }
-    .main .competition .msger-header {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-      border-bottom: 2px solid #ddd;
-      background: #eee;
-      color: #666; }
-    .main .competition .msger-chat {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px; }
-    .main .competition .msger-chat::-webkit-scrollbar {
-      width: 6px; }
-    .main .competition .msger-chat::-webkit-scrollbar-track {
-      background: #ddd; }
-    .main .competition .msger-chat::-webkit-scrollbar-thumb {
-      background: #bdbdbd; }
+      .main .competition .msger-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 2px solid #ddd;
+        background: #eee;
+        color: #666; }
+        .main .competition .msger-header-options {
+          cursor: pointer; }
+      .main .competition .msger-chat {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px; }
+        .main .competition .msger-chat::-webkit-scrollbar {
+          width: 6px; }
+        .main .competition .msger-chat::-webkit-scrollbar-track {
+          background: #ddd; }
+        .main .competition .msger-chat::-webkit-scrollbar-thumb {
+          background: #bdbdbd; }
     .main .competition .msg {
       display: flex;
       align-items: flex-end;
       margin-bottom: 10px; }
-    .main .competition .msg:last-of-type {
-      margin: 0; }
-    .main .competition .msg-img {
-      width: 50px;
-      height: 50px;
-      margin-right: 10px;
-      background: #ddd;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      border-radius: 50%; }
-    .main .competition .msg-bubble {
-      max-width: 450px;
-      padding: 15px;
-      border-radius: 15px;
-      background: #ececec; }
-    .main .competition .msg-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px; }
-    .main .competition .msg-info-name {
-      margin-right: 10px;
-      font-weight: bold; }
-    .main .competition .msg-info-time {
-      font-size: 0.85em; }
+      .main .competition .msg:last-of-type {
+        margin: 0; }
+      .main .competition .msg-img {
+        width: 28px;
+        height: 28px;
+        background: #ddd;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        border-radius: 50%; }
+      .main .competition .msg-bubble {
+        max-width: 564px;
+        padding: 15px;
+        border-radius: 15px;
+        background: #ececec; }
+      .main .competition .msg-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px; }
+        .main .competition .msg-info-name {
+          margin-right: 10px;
+          font-weight: bold;
+          font-size: 0.6875rem; }
+        .main .competition .msg-info-time {
+          font-size: 0.65em; }
+      .main .competition .msg-text {
+        font-size: 0.9375rem;
+        line-height: 1.3333; }
     .main .competition .left-msg .msg-bubble {
       border-bottom-left-radius: 0; }
     .main .competition .right-msg {
@@ -631,8 +645,6 @@ blockquote {
       background: #579ffb;
       color: #fff;
       border-bottom-right-radius: 0; }
-    .main .competition .right-msg .msg-img {
-      margin: 0 0 0 10px; }
     .main .competition .msger-inputarea {
       display: flex;
       padding: 10px;
@@ -646,7 +658,8 @@ blockquote {
     .main .competition .msger-input {
       flex: 1;
       background: #ddd;
-      padding: 0 14px; }
+      padding: 0 14px;
+      border-radius: 20px; }
     .main .competition .msger-send-btn {
       margin-left: 10px;
       background: #00c441;
