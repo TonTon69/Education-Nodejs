@@ -11,6 +11,7 @@ const Unit = require("../models/Unit");
 const Exercise = require("../models/Exercise");
 const Lession = require("../models/Lession");
 const bcrypt = require("bcrypt");
+
 class SiteController {
     // [GET]/
     async index(req, res, next) {
@@ -90,7 +91,7 @@ class SiteController {
                 values: req.body,
                 errors: req.flash("error"),
             });
-            retrun;
+            return;
         }
 
         const isActive = user.active;

@@ -50,36 +50,22 @@ block main
                         span
                             ion-icon(name='chatbubbles') 
                         span.ms-2.fw-bold Chat
+                        span#counter
                     .msger-header-options
                         span.fs-5
                             ion-icon(name="remove")
                 main.msger-chat
-                    .msg.left-msg
-                        .me-2
-                            .msg-img(style='background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)')
-                        .msg-bubble
-                            .msg-info
-                                .msg-info-name BOT
-                                .msg-info-time 12:45
-                            .msg-text
-                                | Hi, welcome to SimpleChat! Go ahead and send me a message. &#x1F604;
-                    .msg.right-msg
-                        .ms-2
-                            .msg-img(style='background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)')
-                        .msg-bubble
-                            .msg-info
-                                .msg-info-name Sajad
-                                .msg-info-time 12:46
-                            .msg-text
-                                | You can change your name in JS section!
-                form.msger-inputarea
+                    .msg-content
+                    .msg-loading
+                .msger-inputarea
                     input.msger-input(type='text', placeholder='Aa')
-                    button.msger-send-btn(type='submit')
+                    button.msger-send-btn(type='button')
                         ion-icon(name='paper-plane')
         .chat-show
             .d-flex.align-items-center.justify-content-center.h-100
                 span.text-white.fs-4
-                    ion-icon(name='chatbubbles') 
+                    ion-icon(name='chatbubbles')
+            span.position-absolute.top-0.start-100.translate-middle.badge.rounded-pill.bg-danger#count-message
     #competitionModal.modal.fade(tabindex='-1', aria-labelledby='competitionModalLabel', aria-hidden='true')
         .modal-dialog(style="transition: all 0.3s ease")
             .modal-content
@@ -115,18 +101,135 @@ block main
                     button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Hủy
                     button.btn.btn-primary(type='button') Tạo phòng
     script.
+        const socket = io();
+
+        //- socket.on('getCounter', function (counter) {
+        //-     $("#counter").text(counter);
+        //- });
+
+        socket.on("server-send-count-message", (data) => {
+            $("#count-message").html(data);
+        });
+
+        socket.on("server-send-message", (data) => {
+            if (data.username === $(".user__info .username").text()) {
+                $(".msg-content").append(`
+                    <div class='msg right-msg'>
+                        <div class='ms-2'>
+                            <div class='msg-img' style='background-image: url(${data.avatar})'></div>
+                        </div>
+                        <div class='msg-bubble'>
+                            <div class='msg-info'>
+                                <div class='msg-info-name'>${data.name}</div>
+                                <div class='msg-info-time'>${data.time}</div>
+                            </div>
+                            <div class='msg-text'>${data.message}</div>
+                        </div>
+                    </div>
+                `);
+            } else {
+                $(".msg-content").append(`
+                    <div class='msg left-msg'>
+                        <div class='me-2'>
+                            <div class='msg-img' style='background-image: url(${data.avatar})'></div>
+                        </div>
+                        <div class='msg-bubble'>
+                            <div class='msg-info'>
+                                <div class='msg-info-name'>${data.name}</div>
+                                <div class='msg-info-time'>${data.time}</div>
+                            </div>
+                            <div class='msg-text'>${data.message}</div>
+                        </div>
+                    </div>
+                `);
+            }
+        });
+
+        socket.on("user-writing-message", (data) => {
+            if (data.username === $(".user__info .username").text()) {
+                $(".msg-loading").html("");
+            } else {
+                $(".msg-loading").html(`
+                    <div class='msg left-msg'>
+                        <div class='me-2'>
+                            <div class='msg-img' style='background-image: url(${data.avatar})'></div>
+                        </div>
+                        <div class='msg-bubble'>
+                            <img src='/img/loading.gif' width='40' />
+                        </div>
+                    </div>
+                `);
+            }
+        });
+
+        socket.on("user-stopping-message", () => {
+            $(".msg-loading").html("");
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             var chat = $(".chat");
             var chatShow = $(".chat-show");
             var closeChat = $(".msger-header-options");
 
             closeChat.click(function () {
-                chat.hide();
-                chatShow.show();
+                chat.hide(400);
+                chatShow.show(400);
             })
 
             chatShow.click(function () {
-                $(this).hide();
-                chat.show();
+                $(this).hide(400);
+                chat.show(400);
             })
+
+            $(".msger-send-btn").click(function () {
+                var dt = new Date();
+                let time;
+                if (dt.getMinutes() > 9) {
+                    time = dt.getHours() + ":" + dt.getMinutes();
+                } else {
+                    time = dt.getHours() + ":" + "0" + dt.getMinutes();
+                }
+                var data = {
+                    "name": $(".user__info .name").text(),
+                    "username": $(".user__info .username").text(),
+                    "avatar": $(".user__avatar img").attr("src"),
+                    "message": $(".msger-input").val(),
+                    "time": time,
+                }
+                socket.emit("user-send-message", data);
+                $(".msger-input").val("");
+            })
+
+            $(".msger-input").keyup(function (e) {
+                if (e.keyCode === 13) {
+                    var dt = new Date();
+                    let time;
+                    if (dt.getMinutes() > 9) {
+                        time = dt.getHours() + ":" + dt.getMinutes();
+                    } else {
+                        time = dt.getHours() + ":" + "0" + dt.getMinutes();
+                    }
+                    var data = {
+                        "name": $(".user__info .name").text(),
+                        "username": $(".user__info .username").text(),
+                        "avatar": $(".user__avatar img").attr("src"),
+                        "message": $(".msger-input").val(),
+                        "time": time,
+                    }
+                    socket.emit("user-send-message", data);
+                    $(this).val("");
+                }
+            })
+
+            $(".msger-input").focusin(function() {
+                var data = {
+                    "username": $(".user__info .username").text(),
+                    "avatar": $(".user__avatar img").attr("src"),
+                }
+                socket.emit("writing-message", data);
+            });
+
+            $(".msger-input").focusout(function() {
+                socket.emit("stopping-message");
+            });
         })           

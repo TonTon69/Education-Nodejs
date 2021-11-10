@@ -62,7 +62,46 @@ app.use(function (req, res) {
     res.status(404).render("error");
 });
 
+//socket
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
+
+let countMessage = 0;
+let counter = 0;
+var $ipsConnected = [];
+
+io.on("connection", (socket) => {
+    var $liveIpAddress = socket.handshake.address;
+    if (!$ipsConnected.hasOwnProperty($liveIpAddress)) {
+        $ipsConnected[$liveIpAddress] = 1;
+        counter++;
+        socket.emit("getCounter", counter);
+    }
+
+    socket.on("disconnect", function () {
+        if ($ipsConnected.hasOwnProperty($liveIpAddress)) {
+            delete $ipsConnected[$liveIpAddress];
+            counter--;
+            socket.emit("getCounter", counter);
+        }
+    });
+
+    socket.on("user-send-message", (data) => {
+        countMessage++;
+        io.sockets.emit("server-send-message", data);
+        io.sockets.emit("server-send-count-message", countMessage);
+    });
+
+    socket.on("writing-message", (data) => {
+        io.sockets.emit("user-writing-message", data);
+    });
+
+    socket.on("stopping-message", () => {
+        io.sockets.emit("user-stopping-message");
+    });
+});
+
 let port = process.env.PORT || 3000;
-var listener = app.listen(port, function () {
+var listener = server.listen(port, function () {
     console.log("Listening on port " + listener.address().port);
 });

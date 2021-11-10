@@ -644,16 +644,16 @@ blockquote {
             position: fixed;
             bottom: 34px;
             right: 28px;
+            display: none;
 
             &-show {
                 position: fixed;
                 bottom: 54px;
-                right: 28px;
+                right: 38px;
                 background: #006097;
                 width: 50px;
                 height: 50px;
                 border-radius: 50%;
-                display: none;
                 cursor: pointer;
             }
         }
@@ -707,6 +707,10 @@ blockquote {
 
             &:last-of-type {
                 margin: 0;
+            }
+
+            &-loading {
+                margin-top: 10px;
             }
 
             &-img {

@@ -54,6 +54,7 @@
         "pug": "^3.0.2",
         "read-excel-file": "^5.2.20",
         "slugify": "^1.6.1",
+        "socket.io": "^4.3.2",
         "xlsx": "^0.17.3"
     },
     "devDependencies": {

@@ -563,16 +563,16 @@ blockquote {
     .main .competition .chat {
       position: fixed;
       bottom: 34px;
-      right: 28px; }
+      right: 28px;
+      display: none; }
       .main .competition .chat-show {
         position: fixed;
         bottom: 54px;
-        right: 28px;
+        right: 38px;
         background: #006097;
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        display: none;
         cursor: pointer; }
     .main .competition .msger {
       display: flex;
@@ -610,6 +610,8 @@ blockquote {
       margin-bottom: 10px; }
       .main .competition .msg:last-of-type {
         margin: 0; }
+      .main .competition .msg-loading {
+        margin-top: 10px; }
       .main .competition .msg-img {
         width: 28px;
         height: 28px;
