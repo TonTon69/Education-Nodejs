@@ -76,160 +76,28 @@ block main
                     .row
                         .col-sm-6 
                             .mb-2.fw-bold Chọn khối
-                            select.form-select(aria-label='Default select example')
+                            select#select-grade.form-select(aria-label='Default select example')
                                 option(selected) -- Chọn khối --
                                 option(value='1') Khối 12
                                 option(value='2') Khối 11
                                 option(value='3') Khối 10
                         .col-sm-6
                             .mb-2.fw-bold Chọn môn
-                            select.form-select(aria-label='Default select example')
+                            select#select-subject.form-select(aria-label='Default select example')
                                 option(selected) -- Chọn môn --
-                                option(value='1') Khối 12
-                                option(value='2') Khối 11
-                                option(value='3') Khối 10
+                                option(value='1') Toán Học
+                                option(value='2') Vật Lý
+                                option(value='3') Hóa Học
                     .row.mt-4
                         .col-sm-12
                             .mb-2.fw-bold Chọn chủ đề
-                            select.form-select(aria-label='Default select example')
+                            select#select-lession.form-select(aria-label='Default select example')
                                 option(selected) -- Chọn chủ đề --
                                 option(value='1') One
                                 option(value='2') Two
                                 option(value='3') Three
 
                 .modal-footer
-                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Hủy
-                    button.btn.btn-primary(type='button') Tạo phòng
-    script.
-        const socket = io();
-
-        //- socket.on('getCounter', function (counter) {
-        //-     $("#counter").text(counter);
-        //- });
-
-        socket.on("server-send-count-message", (data) => {
-            $("#count-message").html(data);
-        });
-
-        socket.on("server-send-message", (data) => {
-            if (data.username === $(".user__info .username").text()) {
-                $(".msg-content").append(`
-                    <div class='msg right-msg'>
-                        <div class='ms-2'>
-                            <div class='msg-img' style='background-image: url(${data.avatar})'></div>
-                        </div>
-                        <div class='msg-bubble'>
-                            <div class='msg-info'>
-                                <div class='msg-info-name'>${data.name}</div>
-                                <div class='msg-info-time'>${data.time}</div>
-                            </div>
-                            <div class='msg-text'>${data.message}</div>
-                        </div>
-                    </div>
-                `);
-            } else {
-                $(".msg-content").append(`
-                    <div class='msg left-msg'>
-                        <div class='me-2'>
-                            <div class='msg-img' style='background-image: url(${data.avatar})'></div>
-                        </div>
-                        <div class='msg-bubble'>
-                            <div class='msg-info'>
-                                <div class='msg-info-name'>${data.name}</div>
-                                <div class='msg-info-time'>${data.time}</div>
-                            </div>
-                            <div class='msg-text'>${data.message}</div>
-                        </div>
-                    </div>
-                `);
-            }
-        });
-
-        socket.on("user-writing-message", (data) => {
-            if (data.username === $(".user__info .username").text()) {
-                $(".msg-loading").html("");
-            } else {
-                $(".msg-loading").html(`
-                    <div class='msg left-msg'>
-                        <div class='me-2'>
-                            <div class='msg-img' style='background-image: url(${data.avatar})'></div>
-                        </div>
-                        <div class='msg-bubble'>
-                            <img src='/img/loading.gif' width='40' />
-                        </div>
-                    </div>
-                `);
-            }
-        });
-
-        socket.on("user-stopping-message", () => {
-            $(".msg-loading").html("");
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var chat = $(".chat");
-            var chatShow = $(".chat-show");
-            var closeChat = $(".msger-header-options");
-
-            closeChat.click(function () {
-                chat.hide(400);
-                chatShow.show(400);
-            })
-
-            chatShow.click(function () {
-                $(this).hide(400);
-                chat.show(400);
-            })
-
-            $(".msger-send-btn").click(function () {
-                var dt = new Date();
-                let time;
-                if (dt.getMinutes() > 9) {
-                    time = dt.getHours() + ":" + dt.getMinutes();
-                } else {
-                    time = dt.getHours() + ":" + "0" + dt.getMinutes();
-                }
-                var data = {
-                    "name": $(".user__info .name").text(),
-                    "username": $(".user__info .username").text(),
-                    "avatar": $(".user__avatar img").attr("src"),
-                    "message": $(".msger-input").val(),
-                    "time": time,
-                }
-                socket.emit("user-send-message", data);
-                $(".msger-input").val("");
-            })
-
-            $(".msger-input").keyup(function (e) {
-                if (e.keyCode === 13) {
-                    var dt = new Date();
-                    let time;
-                    if (dt.getMinutes() > 9) {
-                        time = dt.getHours() + ":" + dt.getMinutes();
-                    } else {
-                        time = dt.getHours() + ":" + "0" + dt.getMinutes();
-                    }
-                    var data = {
-                        "name": $(".user__info .name").text(),
-                        "username": $(".user__info .username").text(),
-                        "avatar": $(".user__avatar img").attr("src"),
-                        "message": $(".msger-input").val(),
-                        "time": time,
-                    }
-                    socket.emit("user-send-message", data);
-                    $(this).val("");
-                }
-            })
-
-            $(".msger-input").focusin(function() {
-                var data = {
-                    "username": $(".user__info .username").text(),
-                    "avatar": $(".user__avatar img").attr("src"),
-                }
-                socket.emit("writing-message", data);
-            });
-
-            $(".msger-input").focusout(function() {
-                socket.emit("stopping-message");
-            });
-        })           
+                    button.btn.btn-secondary#btn-cancel-room(type='button', data-bs-dismiss='modal') Hủy
+                    button.btn.btn-primary#btn-create-room(type='button') Tạo phòng
+    script(src='/js/competition.js')          

@@ -71,21 +71,22 @@ let counter = 0;
 var $ipsConnected = [];
 
 io.on("connection", (socket) => {
-    var $liveIpAddress = socket.handshake.address;
-    if (!$ipsConnected.hasOwnProperty($liveIpAddress)) {
-        $ipsConnected[$liveIpAddress] = 1;
-        counter++;
-        socket.emit("getCounter", counter);
-    }
+    // var $liveIpAddress = socket.handshake.address;
+    // if (!$ipsConnected.hasOwnProperty($liveIpAddress)) {
+    //     $ipsConnected[$liveIpAddress] = 1;
+    //     counter++;
+    //     socket.emit("getCounter", counter);
+    // }
 
-    socket.on("disconnect", function () {
-        if ($ipsConnected.hasOwnProperty($liveIpAddress)) {
-            delete $ipsConnected[$liveIpAddress];
-            counter--;
-            socket.emit("getCounter", counter);
-        }
-    });
+    // socket.on("disconnect", function () {
+    //     if ($ipsConnected.hasOwnProperty($liveIpAddress)) {
+    //         delete $ipsConnected[$liveIpAddress];
+    //         counter--;
+    //         socket.emit("getCounter", counter);
+    //     }
+    // });
 
+    // chat all
     socket.on("user-send-message", (data) => {
         countMessage++;
         io.sockets.emit("server-send-message", data);
@@ -98,6 +99,15 @@ io.on("connection", (socket) => {
 
     socket.on("stopping-message", () => {
         io.sockets.emit("user-stopping-message");
+    });
+
+    // create room
+    socket.on("create-room", (data) => {
+        var roomId = data.username;
+        socket.join(roomId);
+        socket.room = roomId;
+
+        io.sockets.emit("server-send-rooms", data);
     });
 });
 
