@@ -66,25 +66,25 @@ app.use(function (req, res) {
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
-let countMessage = 0;
-let counter = 0;
+var countMessage = 0;
+var connected_socket = 0;
 var $ipsConnected = [];
 
-io.on("connection", (socket) => {
-    // var $liveIpAddress = socket.handshake.address;
-    // if (!$ipsConnected.hasOwnProperty($liveIpAddress)) {
-    //     $ipsConnected[$liveIpAddress] = 1;
-    //     counter++;
-    //     socket.emit("getCounter", counter);
-    // }
+io.on("connection", async (socket) => {
+    var $ipAddress = socket.handshake.address;
+    if (!$ipsConnected.hasOwnProperty($ipAddress)) {
+        $ipsConnected[$ipAddress] = 1;
+        connected_socket++;
+        socket.emit("server-send-counter", connected_socket);
+    }
 
-    // socket.on("disconnect", function () {
-    //     if ($ipsConnected.hasOwnProperty($liveIpAddress)) {
-    //         delete $ipsConnected[$liveIpAddress];
-    //         counter--;
-    //         socket.emit("getCounter", counter);
-    //     }
-    // });
+    socket.on("disconnect", () => {
+        if ($ipsConnected.hasOwnProperty($ipAddress)) {
+            delete $ipsConnected[$ipAddress];
+            connected_socket--;
+            socket.emit("server-send-counter", connected_socket);
+        }
+    });
 
     // chat all
     socket.on("user-send-message", (data) => {

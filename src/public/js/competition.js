@@ -98,7 +98,12 @@ $(document).ready(function () {
         chat.show(400);
     });
 
+    // send message when click send btn
     $(".msger-send-btn").click(function () {
+        if ($(".msger-input").val() === "") {
+            return;
+        }
+
         var dt = new Date();
         let time;
         if (dt.getMinutes() > 9) {
@@ -117,6 +122,7 @@ $(document).ready(function () {
         $(".msger-input").val("");
     });
 
+    // send message when press enter
     $(".msger-input").keyup(function (e) {
         if ($(this).val() === "") {
             return;
@@ -142,6 +148,7 @@ $(document).ready(function () {
         }
     });
 
+    // typing when chat
     $(".msger-input").focusin(function () {
         var data = {
             username: $(".user__info .username").text(),

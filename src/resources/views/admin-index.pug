@@ -75,25 +75,9 @@ block content
                                         .row
                                             .col-sm-12
                                                 .d-flex.align-items-center.justify-content-between
-                                                    h4.card-title.mb-0 Visits Today
-                                                    .dropdown
-                                                        a.text-success.btn.btn-link.px-1(href='#')
-                                                            i.mdi.mdi-refresh
-                                                        a#profileDropdownvisittoday.text-success.btn.btn-link.px-1.dropdown-toggle.dropdown-arrow-none(href='#', data-toggle='dropdown')
-                                                            i.mdi.mdi-dots-horizontal
-                                                        .dropdown-menu.dropdown-menu-right.navbar-dropdown(aria-labelledby='profileDropdownvisittoday')
-                                                            a.dropdown-item
-                                                                i.mdi.mdi-grease-pencil.text-primary
-                                                                | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Edit
-                                                            a.dropdown-item
-                                                                i.mdi.mdi-delete.text-primary
-                                                                | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Delete
-                                                p.mt-1 Calculated in last 30 days
-                                                .d-lg-flex.align-items-center.justify-content-between
-                                                    h1.font-weight-bold.text-dark 4332
-                                                    .mb-3
-                                                        button.btn.btn-outline-light.text-dark.font-weight-normal(type='button') Day
-                                                        button.btn.btn-outline-light.text-dark.font-weight-normal(type='button') Month
+                                                    h4.card-title.mb-0 Đang truy cập
+                                                .mt-4.d-lg-flex.align-items-center.justify-content-between
+                                                    h1.font-weight-bold.text-dark#visitors
                                                 canvas#visitorsToday
                 .row
                     .col-sm-6.grid-margin.grid-margin-md-0.stretch-card
@@ -121,7 +105,13 @@ block content
                         span.text-muted.d-block.text-center.text-sm-left.d-sm-inline-block
                             | Copyright &copy; 2021 -
                             | Trường THPT Phù Cát 3
+    script(src="/socket.io/socket.io.js")
     script.
+        const socket = io();
+        socket.on("server-send-counter", (data) => {
+            $("#visitors").html(data);
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             $(".top-score-border").each(function (index) {
                 var colorR = Math.floor(Math.random() * 256);
