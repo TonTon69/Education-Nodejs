@@ -15,6 +15,8 @@ const XLSX = require("xlsx");
 class UserController {
     async listUser(req, res, next) {
         try {
+            let perPage = 3;
+            let page = req.params.page || 1;
             const roles = await Role.find({});
             const users = await User.aggregate([
                 {
@@ -25,11 +27,49 @@ class UserController {
                         as: "Role",
                     },
                 },
+                { $skip: perPage * page - perPage },
+                { $limit: perPage },
             ]);
 
+            const usersCount = await User.countDocuments();
             res.render("user/list-user", {
                 roles,
                 users,
+                current: page,
+                pages: Math.ceil(usersCount / perPage),
+                success: req.flash("success"),
+                errors: req.flash("error"),
+            });
+        } catch (err) {
+            res.render("error");
+        }
+    }
+
+    // [GET]/user/list/:page
+    async pagination(req, res) {
+        try {
+            let perPage = 3;
+            let page = req.params.page || 1;
+            const roles = await Role.find({});
+            const users = await User.aggregate([
+                {
+                    $lookup: {
+                        from: "roles", // table database liên kết
+                        localField: "roleID", // thuộc tính của object
+                        foreignField: "_id", // thuộc tính được liên kết
+                        as: "Role",
+                    },
+                },
+                { $skip: perPage * page - perPage },
+                { $limit: perPage },
+            ]);
+
+            const usersCount = await User.countDocuments();
+            res.render("user/list-user", {
+                roles,
+                users,
+                current: page,
+                pages: Math.ceil(usersCount / perPage),
                 success: req.flash("success"),
                 errors: req.flash("error"),
             });

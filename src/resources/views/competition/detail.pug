@@ -1,0 +1,15 @@
+extends ../layouts/common
+block main
+    section.competition
+        .row
+            .col-sm-9
+                #master
+    script(src="/socket.io/socket.io.js")
+    script.
+        const socket = io();
+        socket.on("server-send-data-in-room", (data) => {
+            //- $("#master").append(`
+            //-     <h4>` + data + `</h4>
+            //- `);
+            alert("123");
+        });

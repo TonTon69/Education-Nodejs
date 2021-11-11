@@ -13,6 +13,9 @@ a:hover {
   color: #292929;
   text-decoration: none; }
 
+p {
+  word-break: break-all; }
+
 ::selection {
   background: rgba(200, 200, 200, 0.99); }
 
@@ -170,7 +173,10 @@ blockquote {
   .header .search__result {
     z-index: 9999;
     position: absolute;
-    inset: 0px auto auto auto;
+    top: 0;
+    left: auto;
+    right: auto;
+    bottom: auto;
     margin: 0px;
     transform: translateY(63px);
     display: none; }
@@ -254,7 +260,10 @@ blockquote {
     .header__actions--userMenu {
       background: #fff;
       position: absolute;
-      inset: 0px 0px auto auto;
+      top: 0;
+      right: 0;
+      left: auto;
+      bottom: auto;
       min-width: 265px;
       padding: 8px 24px;
       border-radius: 10px;
@@ -560,6 +569,22 @@ blockquote {
   .main .competition {
     padding-left: 40px;
     padding-top: 36px; }
+    .main .competition .table-responsive {
+      padding-right: 10px;
+      max-height: 450px;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory; }
+      .main .competition .table-responsive::-webkit-scrollbar {
+        width: 8px; }
+      .main .competition .table-responsive::-webkit-scrollbar-thumb {
+        background: #b4bcc3;
+        border-radius: 20px;
+        border: 3px solid #b4bcc3;
+        opacity: 0;
+        visibility: hidden; }
+      .main .competition .table-responsive:hover::-webkit-scrollbar-thumb {
+        opacity: 1;
+        visibility: visible; }
     .main .competition .chat {
       position: fixed;
       bottom: 34px;
@@ -765,7 +790,7 @@ blockquote {
       background: #77909b; }
   .main .exercise .quiz {
     padding-right: 10px;
-    max-height: 525px;
+    max-height: 515px;
     overflow-y: auto;
     scroll-snap-type: y mandatory; }
     .main .exercise .quiz::-webkit-scrollbar {
@@ -1406,7 +1431,10 @@ blockquote {
 
 .footer {
   position: fixed;
-  inset: auto 0 0 0;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: #fff;
   height: 34px;
   padding: 0 28px;

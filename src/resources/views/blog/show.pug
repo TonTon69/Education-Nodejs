@@ -13,7 +13,7 @@ block main
                         img.rounded-pill(src=userBlog.avatar, width=48, height=48)
                         .ms-3
                             span.author-name= userBlog.fullname
-                            span.d-block.mt-2.fs-8.text-secondary= moment(blog.updatedAt).locale("vi").fromNow()
+                            span.d-block.mt-2.fs-8.text-secondary= moment(blog.createdAt).locale("vi").fromNow()
                     .blog-content.mt-4 !{blog.content}
                     .mt-5.mb-4
                         span.bg-light.p-2.rounded.fs-7.blog-category= blogCategory.category

@@ -11,9 +11,6 @@ block main
                     li.nav-item(role='presentation')
                         button#rank-tab.nav-link(data-bs-toggle='tab', data-bs-target='#rank', type='button', role='tab', aria-controls='rank', aria-selected='false')
                             | Bảng xếp hạng
-                    li.nav-item(role='presentation')
-                        button#help-tab.nav-link(data-bs-toggle='tab', data-bs-target='#help', type='button', role='tab', aria-controls='help', aria-selected='false')
-                            | Trợ giúp
                 .tab-content
                     #description.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='description-tab')
                         .mb-4.mt-4
@@ -23,7 +20,7 @@ block main
                                     ion-icon(name='book')
                                     span.ms-2 Ôn lý thuyết
                         div
-                            blockquote Chọn đáp án đúng bên phải màn hình, bấm Kiểm tra để xem kết quả và bấm Câu tiếp theo.
+                            blockquote Chọn đáp án đúng bên phải màn hình và bấm Câu tiếp theo.
                         .mt-5.row
                             .col-sm-4
                                 .homework__time
@@ -45,20 +42,22 @@ block main
                                     th(scope='col') Điểm
                                     th(scope='col') Thời gian làm
                             tbody
-                                each rank in ranks
-                                    tr.align-middle
-                                        th(scope='row')
-                                            img(src='../img/gold.png', alt='')
-                                        td
-                                            .d-flex.align-items-center
-                                                img.rounded-circle(src=rank.user[0].avatar, alt='', width='30')
-                                                span.ms-2.fs-7= rank.user[0].fullname
-                                        td
-                                            span.fs-7= Math.round(rank.score)
-                                        td
-                                            span.fs-7= rank.time
-                    #help.tab-pane.fade(role='tabpanel', aria-labelledby='help-tab')
-                        | 3
+                                if ranks.length > 0
+                                    each rank in ranks
+                                        tr.align-middle
+                                            th(scope='row')
+                                                img(src='../img/gold.png', alt='')
+                                            td
+                                                .d-flex.align-items-center
+                                                    img.rounded-circle(src=rank.user[0].avatar, width='30', height='30')
+                                                    span.ms-2.fs-7= rank.user[0].fullname
+                                            td
+                                                span.fs-7= Math.round(rank.score)
+                                            td
+                                                span.fs-7= rank.time
+                                else
+                                    tr
+                                        td.text-center(colspan=4) Không có dữ liệu!!!
             .col-sm-7
                 .quiz.mb-4
                     - var i = 0;

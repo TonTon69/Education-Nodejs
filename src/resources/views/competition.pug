@@ -21,8 +21,8 @@ block main
                         .table-responsive.pt-4
                             table.table.table-hover
                                 thead
-                                    tr
-                                        th(scope="col") STT
+                                    tr.text-center
+                                        th(scope="col") #
                                         th(scope="col") Chủ phòng
                                         th(scope="col") Khối
                                         th(scope="col") Chủ đề
@@ -30,19 +30,19 @@ block main
                                         th(scope="col") Trạng thái
                                         th(scope="col")
                                 tbody
-                                    tr.align-middle
-                                        td.pt-3.pb-3(scope="row") 1
-                                        td
-                                            img.rounded-pill(src="/img/nobody.jpg" width=30 height=30)
-                                            span.ms-2 Huỳnh Hoàng
-                                        td Khối 12
-                                        td 
-                                            span.fw-bold MÔN TOÁN: 
-                                            span Cực trị của hàm số
-                                        td 1/10
-                                        td.fw-bold.text-warning Đang thi...
-                                        td
-                                            a.text-primary(href="") Tham gia
+                                    //- tr.align-middle
+                                    //-     td.pt-3.pb-3(scope="row") 1
+                                    //-     td
+                                    //-         img.rounded-pill(src="/img/nobody.jpg" width=30 height=30)
+                                    //-         span.ms-2 Huỳnh Hoàng
+                                    //-     td Khối 12
+                                    //-     td 
+                                    //-         span.fw-bold MÔN TOÁN: 
+                                    //-         span Cực trị của hàm số
+                                    //-     td 1/10
+                                    //-     td.fw-bold.text-warning Đang thi...
+                                    //-     td
+                                    //-         a.text-primary(href="") Tham gia
         .chat
             .msger
                 header.msger-header
@@ -76,29 +76,37 @@ block main
                     .row
                         .col-sm-6 
                             .mb-2.fw-bold Chọn khối
-                            select#select-grade.form-select(aria-label='Default select example')
-                                option(selected) -- Chọn khối --
-                                option(value='1') Khối 12
-                                option(value='2') Khối 11
-                                option(value='3') Khối 10
+                            select#select-grade.form-select
+                                option(selected value='') -- Chọn khối --
+                                option(value='12') Khối 12
+                                option(value='11') Khối 11
+                                option(value='10') Khối 10
+                            //- .btn-group.w-100#select-grade
+                            //-     button.btn.btn-outline-secondary(type='button') Chọn khối
+                            //-     button#dropdownMenuReference.btn.btn-outline-secondary.dropdown-toggle.dropdown-toggle-split(type='button', data-bs-toggle='dropdown', aria-expanded='false', data-bs-reference='parent')
+                            //-         span.visually-hidden Toggle Dropdown
+                            //-     ul.dropdown-menu(aria-labelledby='dropdownMenuReference')
+                            //-         li.dropdown-item Action
+                            //-         li.dropdown-item Another action
+                            //-         li.dropdown-item Something else here
+
                         .col-sm-6
                             .mb-2.fw-bold Chọn môn
-                            select#select-subject.form-select(aria-label='Default select example')
-                                option(selected) -- Chọn môn --
-                                option(value='1') Toán Học
-                                option(value='2') Vật Lý
-                                option(value='3') Hóa Học
+                            select#select-subject.form-select
+                                option(selected value='') -- Chọn môn --
+                    .row.mt-4
+                        .col-sm-12
+                            .mb-2.fw-bold Chọn chuyên đề
+                            select#select-unit.form-select
+                                option(selected value='') -- Chọn chuyên đề --
                     .row.mt-4
                         .col-sm-12
                             .mb-2.fw-bold Chọn chủ đề
-                            select#select-lession.form-select(aria-label='Default select example')
-                                option(selected) -- Chọn chủ đề --
-                                option(value='1') One
-                                option(value='2') Two
-                                option(value='3') Three
+                            select#select-lession.form-select
+                                option(selected value='') -- Chọn chủ đề --
 
                 .modal-footer
                     button.btn.btn-secondary#btn-cancel-room(type='button', data-bs-dismiss='modal') Hủy
                     button.btn.btn-primary#btn-create-room(type='button') Tạo phòng
     script(src="/socket.io/socket.io.js")
-    script(src='/js/competition.js')          
+    script(src='/js/competition.js')

@@ -7,6 +7,7 @@ const {
     requireAuth,
 } = require("../app/middlewares/AuthMiddleware");
 
+router.get("/list/:page", blogController.pagination);
 router.get("/list", blogController.listBlog);
 router.get("/list-category", blogController.listCategory);
 router.get("/create", blogController.create);

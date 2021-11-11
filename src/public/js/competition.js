@@ -2,7 +2,7 @@ const socket = io();
 
 // chat all
 socket.on("server-send-count-message", (data) => {
-    $("#count-message").html(data);
+    data === 0 ? $("#count-message").html("") : $("#count-message").html(data);
 });
 
 socket.on("server-send-message", (data) => {
@@ -62,25 +62,28 @@ socket.on("user-stopping-message", () => {
 
 // create-room
 socket.on("server-send-rooms", (data) => {
-    $("table tbody").append(`
-        <tr>
-            <td class='pt-3 pb-3' scope='row'>1</td>
-            <td>
-                <img class='rounded-pill' src='/img/nobody.jpg' width=30 height=30 />
-                <span class='ms-2'>${data.name}</span>
-            </td>
-            <td>${data.grade}</td>
-            <td>
-                <span class='fw-bold'>${data.subject}:</span>
-                <span>${data.lession}</span>
-            </td>
-            <td>1/10</td>
-            <td class='fw-bold text-warning'>Đang thi...</td>
-            <td>
-                <a class='text-primary' href=''>Tham gia</a>
-            </td>
-        </tr>
-    `);
+    $("table tbody").html("");
+    data.map((room, index) => {
+        $("table tbody").append(`
+            <tr class='align-middle'>
+                <td class='pt-3 pb-3' scope='row'>${index + 1}</td>
+                <td>
+                    <img class='rounded-pill' src='/img/nobody.jpg' width=30 height=30 />
+                    <span class='ms-2'>${room.name}</span>
+                </td>
+                <td>${room.grade}</td>
+                <td>
+                    <span class='fw-bold'>${room.subject}:</span>
+                    <span>${room.lession}</span>
+                </td>
+                <td class='text-center'>1/10</td>
+                <td class='fw-bold text-warning'>Đang thi...</td>
+                <td>
+                    <a class='text-primary' href=''>Tham gia</a>
+                </td>
+            </tr>
+        `);
+    });
 });
 
 $(document).ready(function () {
@@ -162,6 +165,9 @@ $(document).ready(function () {
     });
 
     // btn click create room
+    var optionGrade = $("#select-grade option:selected").text();
+    var optionSubject = $("#select-subject option:selected").text();
+    var optionLession = $("#select-lession option:selected").text();
     $("#btn-create-room").click(function () {
         var data = {
             name: $(".user__info .name").text(),
@@ -172,6 +178,52 @@ $(document).ready(function () {
             lession: $("#select-lession option:selected").text(),
         };
         socket.emit("create-room", data);
-        $("#btn-cancel-room").click();
+        socket.on("room-id", function (response) {
+            // $("#btn-cancel-room").click();
+            window.location.href = `/competition/${response}`;
+        });
+    });
+
+    $("#select-grade").change(function () {
+        socket.emit("user-send-option-grade", $(this).val());
+    });
+
+    $("#select-subject").change(function () {
+        socket.emit("user-send-option-subject", $(this).val());
+    });
+
+    $("#select-unit").change(function () {
+        socket.emit("user-send-option-unit", $(this).val());
+    });
+
+    $("#select-lession").change(function () {
+        socket.emit("user-send-option-lession", $(this).val());
+    });
+});
+
+socket.on("server-send-list-subject-of-user-grade-option", (data) => {
+    $("#select-subject").html("");
+    data.map((subject) => {
+        $("#select-subject").append(`
+            <option value=${subject._id}>${subject.name}</option>
+        `);
+    });
+});
+
+socket.on("server-send-list-unit-of-user-subject-option", (data) => {
+    $("#select-unit").html("");
+    data.map((unit) => {
+        $("#select-unit").append(`
+            <option value=${unit._id}>${unit.name}</option>
+        `);
+    });
+});
+
+socket.on("server-send-list-lession-of-user-unit-option", (data) => {
+    $("#select-lession").html("");
+    data.map((lession) => {
+        $("#select-lession").append(`
+            <option value=${lession._id}>${lession.name}</option>
+        `);
     });
 });

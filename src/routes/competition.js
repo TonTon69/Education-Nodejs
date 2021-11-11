@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const blogController = require("../app/controllers/BlogController");
+const competitionController = require("../app/controllers/CompetitionController");
 
-router.get("/", blogController.show);
+router.get("/:id", competitionController.detail);
 
 module.exports = router;

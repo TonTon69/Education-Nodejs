@@ -8,6 +8,8 @@ class BlogController {
     async show(req, res, next) {
         try {
             const blog = await Blog.findOne({ slug: req.params.slug });
+            await Blog.findByIdAndUpdate(blog._id, { $inc: { view: 1 } });
+
             const blogCategory = await BlogCategory.findById(blog.bcID);
             const userBlog = await User.findOne({ _id: blog.userID });
 
@@ -81,38 +83,7 @@ class BlogController {
             categories,
         });
     }
-    async listBlog(req, res, next) {
-        try {
-            const categories = await BlogCategory.find({});
-            const blogs = await Blog.aggregate([
-                {
-                    $lookup: {
-                        from: "users",
-                        localField: "userID",
-                        foreignField: "_id",
-                        as: "User",
-                    },
-                },
-                {
-                    $lookup: {
-                        from: "blog-categories",
-                        localField: "bcID",
-                        foreignField: "_id",
-                        as: "BlogCategory",
-                    },
-                },
-                { $sort: { view: -1 } },
-            ]);
-            res.render("blog/list-blog", {
-                success: req.flash("success"),
-                errors: req.flash("error"),
-                blogs,
-                categories,
-            });
-        } catch (err) {
-            res.render("error");
-        }
-    }
+
     //Post /blog/post
     postBlog(req, res, next) {
         const formDate = req.body;
@@ -269,6 +240,81 @@ class BlogController {
                 res.redirect("back");
             })
             .catch(next);
+    }
+
+    async listBlog(req, res, next) {
+        let perPage = 3;
+        let page = req.params.page || 1;
+        const categories = await BlogCategory.find({});
+        const blogs = await Blog.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "User",
+                },
+            },
+            {
+                $lookup: {
+                    from: "blog-categories",
+                    localField: "bcID",
+                    foreignField: "_id",
+                    as: "BlogCategory",
+                },
+            },
+            { $sort: { view: -1 } },
+            { $skip: perPage * page - perPage },
+            { $limit: perPage },
+        ]);
+
+        const blogsCount = await Blog.countDocuments();
+        res.render("blog/list-blog", {
+            success: req.flash("success"),
+            errors: req.flash("error"),
+            blogs,
+            categories,
+            current: page,
+            pages: Math.ceil(blogsCount / perPage),
+        });
+    }
+
+    // [GET]/blog/list/:page
+    async pagination(req, res) {
+        let perPage = 3;
+        let page = req.params.page || 1;
+        const categories = await BlogCategory.find({});
+        const blogs = await Blog.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "User",
+                },
+            },
+            {
+                $lookup: {
+                    from: "blog-categories",
+                    localField: "bcID",
+                    foreignField: "_id",
+                    as: "BlogCategory",
+                },
+            },
+            { $sort: { view: -1 } },
+            { $skip: perPage * page - perPage },
+            { $limit: perPage },
+        ]);
+
+        const blogsCount = await Blog.countDocuments();
+        res.render("blog/list-blog", {
+            success: req.flash("success"),
+            errors: req.flash("error"),
+            blogs,
+            categories,
+            current: page,
+            pages: Math.ceil(blogsCount / perPage),
+        });
     }
 }
 

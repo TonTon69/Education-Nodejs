@@ -13,6 +13,7 @@ const lessionsRouter = require("./lessions");
 const theoriesRouter = require("./theories");
 const systemRouter = require("./system");
 const statisticalsRouter = require("./statisticals");
+const competitionRouter = require("./competition");
 
 const {
     checkAdmin,
@@ -21,6 +22,7 @@ const {
 
 function route(app) {
     app.use("/", siteRouter);
+    app.use("/competition", competitionRouter);
     app.use("/units", requireAuth, checkAdmin, unitsRouter);
     app.use("/subjects", subjectsRouter);
     app.use("/learning", learningRouter);

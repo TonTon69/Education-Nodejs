@@ -11,6 +11,12 @@ const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
 
 const { userLocal } = require("./app/middlewares/LocalMiddleware");
+const { messages } = require("./utils/message-data");
+const Subject = require("./app/models/Subject");
+const Unit = require("./app/models/Unit");
+const Lession = require("./app/models/Lession");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 const route = require("./routes");
 const db = require("./config/db");
@@ -69,6 +75,8 @@ const io = require("socket.io")(server);
 var countMessage = 0;
 var connected_socket = 0;
 var $ipsConnected = [];
+var rooms = [];
+var messageInValid;
 
 io.on("connection", async (socket) => {
     var $ipAddress = socket.handshake.address;
@@ -78,23 +86,35 @@ io.on("connection", async (socket) => {
         socket.emit("server-send-counter", connected_socket);
     }
 
+    console.log(socket.id + " connected");
+
     socket.on("disconnect", () => {
         if ($ipsConnected.hasOwnProperty($ipAddress)) {
             delete $ipsConnected[$ipAddress];
             connected_socket--;
             socket.emit("server-send-counter", connected_socket);
         }
+
+        console.log(socket.id + " disconnected");
     });
 
     // chat all
     socket.on("user-send-message", (data) => {
         countMessage++;
+        messageInValid = data.message;
+        messages.forEach((item) => {
+            if (messageInValid.toLowerCase().includes(item)) {
+                messageInValid.replace(item, "***");
+            }
+        });
         io.sockets.emit("server-send-message", data);
-        io.sockets.emit("server-send-count-message", countMessage);
+        socket.broadcast.emit("server-send-count-message", countMessage);
     });
 
     socket.on("writing-message", (data) => {
+        countMessage = 0;
         io.sockets.emit("user-writing-message", data);
+        socket.emit("server-send-count-message", countMessage);
     });
 
     socket.on("stopping-message", () => {
@@ -107,7 +127,31 @@ io.on("connection", async (socket) => {
         socket.join(roomId);
         socket.room = roomId;
 
-        io.sockets.emit("server-send-rooms", data);
+        rooms.push(data);
+        io.sockets.emit("server-send-rooms", rooms);
+        socket.emit("room-id", roomId);
+        io.sockets.emit("server-send-data-in-room", data);
+
+        console.log(socket.adapter.rooms);
+    });
+
+    socket.on("user-send-option-grade", async (data) => {
+        const subjects = await Subject.find({ gradeID: data });
+        socket.emit("server-send-list-subject-of-user-grade-option", subjects);
+    });
+
+    socket.on("user-send-option-subject", async (data) => {
+        const units = await Unit.aggregate([
+            { $match: { subjectID: ObjectId(data) } },
+        ]);
+        socket.emit("server-send-list-unit-of-user-subject-option", units);
+    });
+
+    socket.on("user-send-option-unit", async (data) => {
+        const lessions = await Lession.aggregate([
+            { $match: { unitID: ObjectId(data) } },
+        ]);
+        socket.emit("server-send-list-lession-of-user-unit-option", lessions);
     });
 });
 
