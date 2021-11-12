@@ -65,7 +65,9 @@ socket.on("server-send-rooms", (data) => {
     $("table tbody").html("");
     data.map((room, index) => {
         $("table tbody").append(`
-            <tr class='align-middle' style='line-height: 1.5'>
+            <tr class='align-middle' style='line-height: 1.5' id='${
+                room.roomName
+            }'>
                 <td class='pt-3 pb-3' scope='row'>${index + 1}</td>
                 <td>
                     <img class='rounded-pill' src=${
@@ -78,8 +80,10 @@ socket.on("server-send-rooms", (data) => {
                     <span class='fw-bold'>${room.subject[0].name}:</span>
                     <span>${room.lession[0].name}</span>
                 </td>
-                <td class='text-center'>1/10</td>
-                <td class='fw-bold text-warning'>Đang thi...</td>
+                <td class='text-center length-members'>${
+                    room.members.length + 1
+                }</td>
+                <td class='fw-bold text-success'>Đang chờ...</td>
                 <td>
                     <a class='text-primary' href='/competition/${
                         room.roomName
@@ -210,7 +214,8 @@ $(document).ready(function () {
     // search
     $("#search-client").keyup(function () {
         socket.emit("user-search", $(this).val());
-    }, 1000);
+        console.log($(this).val());
+    });
 });
 
 socket.on("server-send-list-subject-of-user-grade-option", (data) => {

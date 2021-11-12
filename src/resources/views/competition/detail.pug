@@ -4,7 +4,7 @@ block main
         .row
             .col-sm-10.mx-auto
                 .card.shadow.border-0
-                    .card-body
+                    .card-body.p-5
                         .d-flex.align-items-center.justify-content-between
                             .master.d-flex.align-items-center
                                 img(src=room[0].avatar width=100 height=100).rounded-pill
@@ -12,10 +12,10 @@ block main
                                     span.text-warning.fw-bold Chủ phòng
                                     span.d-block.mt-2= room[0].master
                             .d-flex.align-items-center
-                                button.d-flex.align-items-center.btn.btn-primary
+                                button#btn-start.d-flex.align-items-center.btn.btn-primary
                                     ion-icon.fs-4(name="play")
                                     span.ms-2 Bắt đầu
-                                button.d-flex.align-items-center.btn.btn-secondary.ms-4
+                                button#btn-out-room.d-flex.align-items-center.btn.btn-secondary.ms-4
                                     ion-icon.fs-4(name="log-out")
                                     span.ms-2 Rời phòng
                         .text-center.mt-4
@@ -29,22 +29,60 @@ block main
                                         .card.shadow.border-0.mb-4
                                             .card-body
                                                 .d-flex.align-items-center
-                                                    img(src=member.avatar width=100 height=100).rounded-pill
+                                                    img(src=member.avatar width=100 height=100 style='object-fit: cover').rounded-pill
                                                     .ms-4
                                                         span.text-warning.fw-bold Thành viên
                                                         span.d-block.mt-2= member.userName
     script(src="/socket.io/socket.io.js")
     script.
         const socket = io();
-        var roomId = "#{room.roomName}";
+        var roomId = "#{room[0].roomName}";
+
         socket.emit("client-send-room-name", {
             roomId: roomId,
             userName: $(".user__info .username").text(),
+            fullname: $(".user__info .name").text(),
             avatar: $(".user__avatar img").attr("src"),
         });
-        //- socket.on("server-send-data-in-room", (data) => {
-        //-     //- $("#master").append(`
-        //-     //-     <h4>` + data + `</h4>
-        //-     //- `);
-        //-     alert("123");
-        //- });
+
+        socket.on("server-send-members-in-room", (data) => {
+            $(".members .row").html("");
+            data.map((member) => {
+                $(".members .row").append(`
+                    <div class='col-sm-4'>
+                        <div class='card shadow border-0 mb-4'>
+                            <div class='card-body'>
+                                <div class='d-flex align-items-center'>
+                                    <img src='${member.avatar}' class='rounded-pill' width=100 height=100 style='object-fit: cover' />
+                                    <div class='ms-4'>
+                                        <span class='text-warning fw-bold'>Thành viên</span>
+                                        <span class='d-block mt-2'>${member.userName}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            });
+        });
+
+        socket.on("master-handle-out-room", () => {
+            window.location.href = `/competition`;
+            alert("Chủ phòng đã rời phòng!")
+        })
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var currentUser = $(".user__info .username").text();
+            if (roomId !== currentUser) {
+                $("#btn-start").attr("style", "display: none !important");
+            }
+
+            $("#btn-out-room").click(function() {
+                socket.emit("client-handle-out-room", roomId);
+                window.location.href = `/competition`;
+            })
+
+            //- $("#btn-start").click(function() {
+
+            //- })
+        });

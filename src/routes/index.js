@@ -22,7 +22,7 @@ const {
 
 function route(app) {
     app.use("/", siteRouter);
-    app.use("/competition", competitionRouter);
+    app.use("/competition", requireAuth, competitionRouter);
     app.use("/units", requireAuth, checkAdmin, unitsRouter);
     app.use("/subjects", subjectsRouter);
     app.use("/learning", requireAuth, learningRouter);

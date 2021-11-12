@@ -33,7 +33,7 @@ block main
                                     - var count = 0;
                                     each room in rooms
                                         - count++;
-                                        tr.align-middle(style='line-height: 1.5')
+                                        tr.align-middle(style='line-height: 1.5' id=room.roomName)
                                             td.pt-3.pb-3(scope="row")= count
                                             td
                                                 img.rounded-pill(src=room.avatar width=30 height=30)
@@ -42,8 +42,8 @@ block main
                                             td 
                                                 span.fw-bold #{room.subject[0].name}: 
                                                 span #{room.lession[0].name}
-                                            td.text-center 1/10
-                                            td.fw-bold.text-warning Đang thi...
+                                            td.text-center.length-members #{room.members.length + 1}
+                                            td.fw-bold.text-success Đang chờ...
                                             td
                                                 a.text-primary(href=`/competition/${room.roomName}`) Tham gia
         .chat

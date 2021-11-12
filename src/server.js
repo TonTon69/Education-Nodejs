@@ -76,6 +76,7 @@ const io = require("socket.io")(server);
 var countMessage = 0;
 var connected_socket = 0;
 var $ipsConnected = [];
+let roomDisconnected = {};
 
 io.on("connection", async (socket) => {
     var $ipAddress = socket.handshake.address;
@@ -89,7 +90,85 @@ io.on("connection", async (socket) => {
 
     console.log(socket.adapter.rooms);
 
-    socket.on("disconnect", () => {
+    socket.on("client-handle-out-room", async (data) => {
+        const room = await Room.findOne({ roomName: data });
+        if (socket.id === room.socketID) {
+            io.sockets.in(data).emit("master-handle-out-room");
+            await Room.deleteOne({ roomName: data });
+
+            const rooms = await Room.aggregate([
+                {
+                    $lookup: {
+                        from: "subjects",
+                        localField: "subjectID",
+                        foreignField: "_id",
+                        as: "subject",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "units",
+                        localField: "unitID",
+                        foreignField: "_id",
+                        as: "unit",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "lessions",
+                        localField: "lessionID",
+                        foreignField: "_id",
+                        as: "lession",
+                    },
+                },
+            ]);
+            io.sockets.emit("server-send-rooms", rooms);
+        } else {
+            await Room.updateOne(
+                { roomName: data },
+                {
+                    $pull: {
+                        members: {
+                            socketID: socket.id,
+                        },
+                    },
+                }
+            );
+            const roomMembers = await Room.findOne({ roomName: data });
+            const rooms = await Room.aggregate([
+                {
+                    $lookup: {
+                        from: "subjects",
+                        localField: "subjectID",
+                        foreignField: "_id",
+                        as: "subject",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "units",
+                        localField: "unitID",
+                        foreignField: "_id",
+                        as: "unit",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "lessions",
+                        localField: "lessionID",
+                        foreignField: "_id",
+                        as: "lession",
+                    },
+                },
+            ]);
+            io.sockets.emit("server-send-rooms", rooms);
+            io.sockets
+                .in(data)
+                .emit("server-send-members-in-room", roomMembers.members);
+        }
+    });
+
+    socket.on("disconnect", async () => {
         if ($ipsConnected.hasOwnProperty($ipAddress)) {
             delete $ipsConnected[$ipAddress];
             connected_socket--;
@@ -177,6 +256,7 @@ io.on("connection", async (socket) => {
 
     socket.on("client-send-room-name", async (data) => {
         socket.join(data.roomId);
+
         const room = await Room.findOne({ roomName: data.roomId });
         if (room) {
             if (room.roomName === data.userName) {
@@ -198,8 +278,42 @@ io.on("connection", async (socket) => {
                         },
                     }
                 );
+
+                const rooms = await Room.aggregate([
+                    {
+                        $lookup: {
+                            from: "subjects",
+                            localField: "subjectID",
+                            foreignField: "_id",
+                            as: "subject",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "units",
+                            localField: "unitID",
+                            foreignField: "_id",
+                            as: "unit",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "lessions",
+                            localField: "lessionID",
+                            foreignField: "_id",
+                            as: "lession",
+                        },
+                    },
+                ]);
+                io.sockets.emit("server-send-rooms", rooms);
             }
         }
+
+        const roomMembers = await Room.findOne({ roomName: data.roomId });
+        io.sockets
+            .in(data.roomId)
+            .emit("server-send-members-in-room", roomMembers.members);
+
         console.log(socket.adapter.rooms);
     });
 
@@ -223,32 +337,105 @@ io.on("connection", async (socket) => {
     });
 
     // filter
-    socket.on("user-filter-option-grade", (data) => {
-        if (data !== "") {
-            let roomsFilter = [];
-            rooms.forEach((room) => {
-                if (room.grade === `Khối ${data}`) {
-                    roomsFilter.push(room);
-                }
-            });
-            socket.emit("server-send-rooms", roomsFilter);
-        } else {
-            socket.emit("server-send-rooms", rooms);
-        }
+    socket.on("user-filter-option-grade", async (data) => {
+        const rooms = await Room.aggregate([
+            {
+                $match: { gradeID: parseInt(data) },
+            },
+            {
+                $lookup: {
+                    from: "subjects",
+                    localField: "subjectID",
+                    foreignField: "_id",
+                    as: "subject",
+                },
+            },
+            {
+                $lookup: {
+                    from: "units",
+                    localField: "unitID",
+                    foreignField: "_id",
+                    as: "unit",
+                },
+            },
+            {
+                $lookup: {
+                    from: "lessions",
+                    localField: "lessionID",
+                    foreignField: "_id",
+                    as: "lession",
+                },
+            },
+        ]);
+
+        socket.emit("server-send-rooms", rooms);
     });
 
     // search
-    socket.on("user-search", (data) => {
+    socket.on("user-search", async (data) => {
+        console.log(data);
         if (data !== "") {
-            let roomsSearch = [];
-            rooms.forEach((room) => {
-                if (room.name.toLowerCase().includes(data.toLowerCase())) {
-                    roomsSearch.push(room);
-                }
-            });
+            const rooms = await Room.aggregate([
+                {
+                    $match: {
+                        master: { $regex: data, $options: "$i" },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "subjects",
+                        localField: "subjectID",
+                        foreignField: "_id",
+                        as: "subject",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "units",
+                        localField: "unitID",
+                        foreignField: "_id",
+                        as: "unit",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "lessions",
+                        localField: "lessionID",
+                        foreignField: "_id",
+                        as: "lession",
+                    },
+                },
+            ]);
 
-            socket.emit("server-send-rooms", roomsSearch);
+            socket.emit("server-send-rooms", rooms);
         } else {
+            const rooms = await Room.aggregate([
+                {
+                    $lookup: {
+                        from: "subjects",
+                        localField: "subjectID",
+                        foreignField: "_id",
+                        as: "subject",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "units",
+                        localField: "unitID",
+                        foreignField: "_id",
+                        as: "unit",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "lessions",
+                        localField: "lessionID",
+                        foreignField: "_id",
+                        as: "lession",
+                    },
+                },
+            ]);
+
             socket.emit("server-send-rooms", rooms);
         }
     });
