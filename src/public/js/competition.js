@@ -183,6 +183,17 @@ $(document).ready(function () {
             unit: $("#select-unit").val(),
             lession: $("#select-lession").val(),
         };
+
+        if (
+            data.grade === null ||
+            data.subject === null ||
+            data.unit === null ||
+            data.lession === null
+        ) {
+            alert("Bạn vui lòng chọn đầy đủ thông tin để tạo phòng!");
+            return;
+        }
+
         socket.emit("create-room", data);
         socket.on("room-id", function (response) {
             // $("#btn-cancel-room").click();
