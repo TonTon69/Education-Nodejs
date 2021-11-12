@@ -32,7 +32,7 @@ $(document).ready(function () {
     // Highlight the active link in a navigation menu
     $(function () {
         var path = window.location.href;
-        $(".sidebar li a").each(function () {
+        $(".sidebar li a, .sidebar__mobile li a").each(function () {
             if (this.href === path) {
                 $(this).addClass("active");
             }

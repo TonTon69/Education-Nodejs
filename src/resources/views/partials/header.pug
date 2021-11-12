@@ -3,6 +3,33 @@ header.header
         a(href='/')
             img(src='/img/logo.jpg', alt='')
         h4 Trường THPT Phù Cát 3
+    .header__menu--mobile
+        button.p-0.border-0.btn(type='button', data-bs-toggle='offcanvas', data-bs-target='#offcanvasMenuMoblie', aria-controls='offcanvasMenuMoblie')
+            ion-icon.fs-1(name='menu')
+        #offcanvasMenuMoblie.offcanvas.offcanvas-start(data-bs-scroll='true', tabindex='-1', aria-labelledby='offcanvasMenuMoblieLabel')
+            .offcanvas-body.pe-0
+                if user.length > 0
+                    img(src=user[0].avatar)
+                else
+                    img(src='/img/nobody.jpg')
+                .sidebar__mobile
+                    ul.sidebar__mobile--list.ps-0
+                        li.sidebar__mobile--item
+                            a.sidebar__mobile--link(href='/')
+                                ion-icon(name='home')
+                                span.ms-3 Home
+                        li.sidebar__mobile--item
+                            a.sidebar__mobile--link(href='/subjects')
+                                ion-icon(name='book')
+                                span.ms-3 Học
+                        li.sidebar__mobile--item
+                            a.sidebar__mobile--link(href='/competition')
+                                ion-icon(name='bulb')
+                                span.ms-3 Thi đấu
+                        li.sidebar__mobile--item
+                            a.sidebar__mobile--link(href='/blog')
+                                ion-icon(name='newspaper')
+                                span.ms-3 Blog
     .header__body
         .header__search
             ion-icon(name='search')
@@ -28,7 +55,7 @@ header.header
                         .user__info
                             .name= user[0].fullname
                             .username @#{user[0].username}
-                    if user[0].role.length > 0 && user[0].role[0].roleName == 'admin'
+                    if user[0].role.length > 0 && user[0].role[0].roleName === 'admin'
                         hr
                         ul.list
                             li.list__item

@@ -135,6 +135,12 @@ block main
             var swiper1 = new Swiper(".swiper-container.swiper1", {
                 slidesPerView: 4,
                 spaceBetween: 30,
+                breakpoints: {  
+                    '320': {
+                        slidesPerView: 1,
+                        spaceBetween: 24,
+                    },
+                },
                 navigation: {
                     nextEl: ".swiper-button-next",
                     prevEl: ".swiper-button-prev",
@@ -147,6 +153,12 @@ block main
             var swiper2 = new Swiper(".swiper-container.swiper2", {
                 slidesPerView: 4,
                 spaceBetween: 30,
+                breakpoints: {  
+                    '320': {
+                        slidesPerView: 1,
+                        spaceBetween: 24,
+                    },
+                },
                 navigation: {
                     nextEl: ".swiper-button-next",
                     prevEl: ".swiper-button-prev",

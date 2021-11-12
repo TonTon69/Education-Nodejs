@@ -15,6 +15,7 @@ const { messages } = require("./utils/message-data");
 const Subject = require("./app/models/Subject");
 const Unit = require("./app/models/Unit");
 const Lession = require("./app/models/Lession");
+const Room = require("./app/models/Room");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -75,7 +76,6 @@ const io = require("socket.io")(server);
 var countMessage = 0;
 var connected_socket = 0;
 var $ipsConnected = [];
-var rooms = [];
 
 io.on("connection", async (socket) => {
     var $ipAddress = socket.handshake.address;
@@ -86,6 +86,8 @@ io.on("connection", async (socket) => {
     }
 
     console.log(socket.id + " connected");
+
+    console.log(socket.adapter.rooms);
 
     socket.on("disconnect", () => {
         if ($ipsConnected.hasOwnProperty($ipAddress)) {
@@ -124,16 +126,80 @@ io.on("connection", async (socket) => {
     });
 
     // create room
-    socket.on("create-room", (data) => {
+    socket.on("create-room", async (data) => {
         var roomId = data.username;
         socket.join(roomId);
         socket.room = roomId;
 
-        rooms.push(data);
+        const room = new Room({
+            roomName: roomId,
+            socketID: socket.id,
+            master: data.name,
+            avatar: data.avatar,
+            gradeID: data.grade,
+            subjectID: data.subject,
+            unitID: data.unit,
+            lessionID: data.lession,
+        });
+        await room.save();
+
+        const rooms = await Room.aggregate([
+            {
+                $lookup: {
+                    from: "subjects",
+                    localField: "subjectID",
+                    foreignField: "_id",
+                    as: "subject",
+                },
+            },
+            {
+                $lookup: {
+                    from: "units",
+                    localField: "unitID",
+                    foreignField: "_id",
+                    as: "unit",
+                },
+            },
+            {
+                $lookup: {
+                    from: "lessions",
+                    localField: "lessionID",
+                    foreignField: "_id",
+                    as: "lession",
+                },
+            },
+        ]);
         io.sockets.emit("server-send-rooms", rooms);
         socket.emit("room-id", roomId);
-        io.sockets.emit("server-send-data-in-room", data);
+        // io.sockets.emit("server-send-data-in-room", data);
+        console.log(socket.adapter.rooms);
+    });
 
+    socket.on("client-send-room-name", async (data) => {
+        socket.join(data.roomId);
+        const room = await Room.findOne({ roomName: data.roomId });
+        if (room) {
+            if (room.roomName === data.userName) {
+                await room.update({ socketID: socket.id });
+            } else {
+                await Room.updateOne(
+                    { roomName: room.roomName },
+                    {
+                        $push: {
+                            members: {
+                                $each: [
+                                    {
+                                        socketID: socket.id,
+                                        userName: data.userName,
+                                        avatar: data.avatar,
+                                    },
+                                ],
+                            },
+                        },
+                    }
+                );
+            }
+        }
         console.log(socket.adapter.rooms);
     });
 
@@ -154,6 +220,37 @@ io.on("connection", async (socket) => {
             { $match: { unitID: ObjectId(data) } },
         ]);
         socket.emit("server-send-list-lession-of-user-unit-option", lessions);
+    });
+
+    // filter
+    socket.on("user-filter-option-grade", (data) => {
+        if (data !== "") {
+            let roomsFilter = [];
+            rooms.forEach((room) => {
+                if (room.grade === `Khối ${data}`) {
+                    roomsFilter.push(room);
+                }
+            });
+            socket.emit("server-send-rooms", roomsFilter);
+        } else {
+            socket.emit("server-send-rooms", rooms);
+        }
+    });
+
+    // search
+    socket.on("user-search", (data) => {
+        if (data !== "") {
+            let roomsSearch = [];
+            rooms.forEach((room) => {
+                if (room.name.toLowerCase().includes(data.toLowerCase())) {
+                    roomsSearch.push(room);
+                }
+            });
+
+            socket.emit("server-send-rooms", roomsSearch);
+        } else {
+            socket.emit("server-send-rooms", rooms);
+        }
     });
 });
 

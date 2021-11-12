@@ -5,7 +5,6 @@ const path = require("path");
 const router = express.Router();
 
 const inforController = require("../app/controllers/InforController");
-const { requireAuth } = require("../app/middlewares/AuthMiddleware");
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -19,10 +18,9 @@ const upload = multer({ storage: storage });
 
 router.put(
     "/:id/avatar",
-    requireAuth,
     upload.single("avatar"),
     inforController.changeAvatar
 );
-router.put("/:id", requireAuth, inforController.update);
+router.put("/:id", inforController.update);
 
 module.exports = router;

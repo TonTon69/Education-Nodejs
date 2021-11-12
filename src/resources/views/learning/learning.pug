@@ -50,7 +50,7 @@ block main
                     if theory
                         .mt-4.mb-4 !{theory.content}
                     else
-                        .mt-4.mb-4 Nội dung bài học đang cập nhật. Vui lòng thử lại sau!
+                        .mt-4.mb-4(style='line-height: 1.5') Nội dung bài học đang cập nhật. Vui lòng thử lại sau!
                     .text-center.mt-4.mb-4
                         if exercises.length > 0
                             a.btn.btn-exercise.rounded-pill(type="button" data-bs-toggle="modal" data-bs-target="#exerciseModal")

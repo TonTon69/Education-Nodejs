@@ -2,14 +2,49 @@ extends ../layouts/common
 block main
     section.competition
         .row
-            .col-sm-9
-                #master
+            .col-sm-10.mx-auto
+                .card.shadow.border-0
+                    .card-body
+                        .d-flex.align-items-center.justify-content-between
+                            .master.d-flex.align-items-center
+                                img(src=room[0].avatar width=100 height=100).rounded-pill
+                                .ms-4
+                                    span.text-warning.fw-bold Chủ phòng
+                                    span.d-block.mt-2= room[0].master
+                            .d-flex.align-items-center
+                                button.d-flex.align-items-center.btn.btn-primary
+                                    ion-icon.fs-4(name="play")
+                                    span.ms-2 Bắt đầu
+                                button.d-flex.align-items-center.btn.btn-secondary.ms-4
+                                    ion-icon.fs-4(name="log-out")
+                                    span.ms-2 Rời phòng
+                        .text-center.mt-4
+                            h2.text-danger.fw-bold #{room[0].subject[0].name} #{room[0].subject[0].gradeID}
+                            h4.fw-bold #{room[0].unit[0].name}
+                            h5 Bài #{room[0].lession[0].lessionNumber}. #{room[0].lession[0].name}
+                        .members.mt-5
+                            .row
+                                each member in room[0].members
+                                    .col-sm-4
+                                        .card.shadow.border-0.mb-4
+                                            .card-body
+                                                .d-flex.align-items-center
+                                                    img(src=member.avatar width=100 height=100).rounded-pill
+                                                    .ms-4
+                                                        span.text-warning.fw-bold Thành viên
+                                                        span.d-block.mt-2= member.userName
     script(src="/socket.io/socket.io.js")
     script.
         const socket = io();
-        socket.on("server-send-data-in-room", (data) => {
-            //- $("#master").append(`
-            //-     <h4>` + data + `</h4>
-            //- `);
-            alert("123");
+        var roomId = "#{room.roomName}";
+        socket.emit("client-send-room-name", {
+            roomId: roomId,
+            userName: $(".user__info .username").text(),
+            avatar: $(".user__avatar img").attr("src"),
         });
+        //- socket.on("server-send-data-in-room", (data) => {
+        //-     //- $("#master").append(`
+        //-     //-     <h4>` + data + `</h4>
+        //-     //- `);
+        //-     alert("123");
+        //- });

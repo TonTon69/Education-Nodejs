@@ -1,8 +1,27 @@
 .blog {
+    .row {
+        @include mobile {
+            flex-direction: column;
+
+            .col-md-9 {
+                order: 2;
+            }
+
+            .col-md-3 {
+                order: 1;
+            }
+        }
+    }
+
     &-wrap {
         height: 100%;
         padding: 36px 40px 0;
         border-right: 1px solid #e6e6e6;
+
+        @include mobile {
+            padding: 36px 0 0;
+            border-right: none;
+        }
     }
 
     &-heading {
@@ -59,11 +78,21 @@
             display: flex;
             align-items: center;
 
+            @include mobile {
+                flex-direction: column;
+            }
+
             &-left {
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 font-size: 15px;
+
+                @include mobile {
+                    padding-right: 0 !important;
+                    order: 2;
+                    margin-top: 16px;
+                }
 
                 p {
                     font-weight: 0;
@@ -90,11 +119,21 @@
             }
 
             &-right {
+                @include mobile {
+                    width: 100%;
+                    order: 1;
+                }
+
                 img {
                     width: 200px;
                     height: 120px;
                     border-radius: 10%;
                     object-fit: cover;
+
+                    @include mobile {
+                        width: 100%;
+                        height: 180px;
+                    }
                 }
             }
         }
@@ -107,6 +146,11 @@
         height: 100%;
         padding: 36px 40px 0;
         overflow: hidden;
+
+        @include mobile {
+            position: relative;
+            padding: 36px 0 0;
+        }
     }
 
     &-wrap-heading {
@@ -151,8 +195,18 @@
         }
     }
 
+    .blog-wrap-left {
+        @include mobile {
+            display: none;
+        }
+    }
+
     .blog-content {
-        line-height: 2;
+        line-height: 2 !important;
+
+        p {
+            line-height: 2 !important;
+        }
     }
 
     .blog-related {

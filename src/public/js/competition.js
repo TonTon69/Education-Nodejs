@@ -65,21 +65,25 @@ socket.on("server-send-rooms", (data) => {
     $("table tbody").html("");
     data.map((room, index) => {
         $("table tbody").append(`
-            <tr class='align-middle'>
+            <tr class='align-middle' style='line-height: 1.5'>
                 <td class='pt-3 pb-3' scope='row'>${index + 1}</td>
                 <td>
-                    <img class='rounded-pill' src='/img/nobody.jpg' width=30 height=30 />
-                    <span class='ms-2'>${room.name}</span>
+                    <img class='rounded-pill' src=${
+                        room.avatar
+                    } width=30 height=30 />
+                    <span class='ms-2'>${room.master}</span>
                 </td>
-                <td>${room.grade}</td>
+                <td>${room.gradeID}</td>
                 <td>
-                    <span class='fw-bold'>${room.subject}:</span>
-                    <span>${room.lession}</span>
+                    <span class='fw-bold'>${room.subject[0].name}:</span>
+                    <span>${room.lession[0].name}</span>
                 </td>
                 <td class='text-center'>1/10</td>
                 <td class='fw-bold text-warning'>Đang thi...</td>
                 <td>
-                    <a class='text-primary' href=''>Tham gia</a>
+                    <a class='text-primary' href='/competition/${
+                        room.roomName
+                    }'>Tham gia</a>
                 </td>
             </tr>
         `);
@@ -165,17 +169,15 @@ $(document).ready(function () {
     });
 
     // btn click create room
-    var optionGrade = $("#select-grade option:selected").text();
-    var optionSubject = $("#select-subject option:selected").text();
-    var optionLession = $("#select-lession option:selected").text();
     $("#btn-create-room").click(function () {
         var data = {
             name: $(".user__info .name").text(),
             avatar: $(".user__avatar img").attr("src"),
             username: $(".user__info .username").text(),
-            grade: $("#select-grade option:selected").text(),
-            subject: $("#select-subject option:selected").text(),
-            lession: $("#select-lession option:selected").text(),
+            grade: $("#select-grade").val(),
+            subject: $("#select-subject").val(),
+            unit: $("#select-unit").val(),
+            lession: $("#select-lession").val(),
         };
         socket.emit("create-room", data);
         socket.on("room-id", function (response) {
@@ -199,6 +201,16 @@ $(document).ready(function () {
     $("#select-lession").change(function () {
         socket.emit("user-send-option-lession", $(this).val());
     });
+
+    // filter select grade
+    $("#select-filter-grade").change(function () {
+        socket.emit("user-filter-option-grade", $(this).val());
+    });
+
+    // search
+    $("#search-client").keyup(function () {
+        socket.emit("user-search", $(this).val());
+    }, 1000);
 });
 
 socket.on("server-send-list-subject-of-user-grade-option", (data) => {

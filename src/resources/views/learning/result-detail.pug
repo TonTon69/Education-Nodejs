@@ -134,8 +134,8 @@ block main
                             - i++;
                             li.nav-item(role="presentation")
                                 if item.exercise.answer == item.option
-                                    button.correct(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i
+                                    button.d-inline-flex.align-items-center.justify-content-center.correct(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i
                                 else if item.option == ""
-                                    button(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i
+                                    button.d-inline-flex.align-items-center.justify-content-center(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i
                                 else
-                                    button.not-correct(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i
+                                    button.d-inline-flex.align-items-center.justify-content-center.not-correct(id=`tab-${i}` data-bs-toggle="tab" data-bs-target=`#item-${i}` type="button" role="tab" aria-controls=i aria-selected="false")= i

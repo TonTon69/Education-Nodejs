@@ -10,6 +10,7 @@ const System = require("../models/System");
 const Unit = require("../models/Unit");
 const Exercise = require("../models/Exercise");
 const Lession = require("../models/Lession");
+const Room = require("../models/Room");
 const bcrypt = require("bcrypt");
 
 class SiteController {
@@ -225,7 +226,33 @@ class SiteController {
 
     // [GET]/competition
     async competition(req, res, next) {
-        res.render("competition");
+        const rooms = await Room.aggregate([
+            {
+                $lookup: {
+                    from: "subjects",
+                    localField: "subjectID",
+                    foreignField: "_id",
+                    as: "subject",
+                },
+            },
+            {
+                $lookup: {
+                    from: "units",
+                    localField: "unitID",
+                    foreignField: "_id",
+                    as: "unit",
+                },
+            },
+            {
+                $lookup: {
+                    from: "lessions",
+                    localField: "lessionID",
+                    foreignField: "_id",
+                    as: "lession",
+                },
+            },
+        ]);
+        res.render("competition", { rooms });
     }
 }
 

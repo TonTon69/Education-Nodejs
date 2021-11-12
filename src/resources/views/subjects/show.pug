@@ -5,7 +5,7 @@ block main
             .col-sm-8
                 .mb-5
                     h2.fw-bold.mb-3=subject.name + " " + subject.gradeID
-                    span.mt-4 #{subject.name} khối #{subject.gradeID} có khó không? #{subject.name} khối #{subject.gradeID} học những gì?
+                    span(style='line-height: 1.5').mt-4 #{subject.name} khối #{subject.gradeID} có khó không? #{subject.name} khối #{subject.gradeID} học những gì?
                 div
                     h5.fw-bold Nội dung môn học
                     .mt-4
@@ -32,17 +32,18 @@ block main
                                                 a(href=`/learning/${subject.slug}?name=${lession.slug}`).lession__item Bài #{lession.lessionNumber}. #{lession.name}
             .col-sm-4
                 .d-flex.align-items-center.flex-column.ps-4
-                    h3 Miễn phí
-                    ul.ps-0.mb-0.pt-4.subject__detail--list
-                        li
-                            ion-icon(name='barcode-outline')
-                            span
-                            | Tổng số 
-                            b= lessions.length 
-                            |  bài học
-                        li
-                            ion-icon(name='battery-full-outline')
-                            span Học mọi lúc, mọi nơi
+                    .purchase-badge
+                        h3.text-center Miễn phí
+                        ul.ps-0.mb-0.pt-4.subject__detail--list
+                            li
+                                ion-icon(name='barcode-outline')
+                                span
+                                | Tổng số 
+                                b= lessions.length 
+                                |  bài học
+                            li
+                                ion-icon(name='battery-full-outline')
+                                span Học mọi lúc, mọi nơi
                     
                     .chart.shadow.mt-4
                         .text-center

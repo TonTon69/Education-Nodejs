@@ -25,10 +25,10 @@ function route(app) {
     app.use("/competition", competitionRouter);
     app.use("/units", requireAuth, checkAdmin, unitsRouter);
     app.use("/subjects", subjectsRouter);
-    app.use("/learning", learningRouter);
+    app.use("/learning", requireAuth, learningRouter);
     app.use("/exercise", exerciseRouter);
     app.use("/blog", blogRouter);
-    app.use("/infor", inforRouter);
+    app.use("/infor", requireAuth, inforRouter);
     app.use("/user", requireAuth, checkAdmin, userRouter);
     app.use("/reports", requireAuth, checkAdmin, reportsRouter);
     app.use("/banners", requireAuth, checkAdmin, bannersRouter);

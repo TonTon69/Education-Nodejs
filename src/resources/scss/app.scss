@@ -37,8 +37,10 @@ a:hover {
     text-decoration: none;
 }
 
-p {
+p,
+li {
     word-break: break-all;
+    line-height: 1.5;
 }
 
 ::selection {
@@ -176,10 +178,18 @@ blockquote {
     padding: 0 28px;
     z-index: 99;
 
+    @include mobile {
+        padding: 0 16px;
+    }
+
     &__logo {
         display: flex;
         align-items: center;
         flex: 1 1;
+
+        @include mobile {
+            display: none;
+        }
 
         img {
             width: 36px;
@@ -204,6 +214,38 @@ blockquote {
         flex: 1 1;
     }
 
+    &__menu--mobile {
+        display: none;
+
+        button {
+            &:focus {
+                box-shadow: none;
+            }
+        }
+
+        @include mobile {
+            display: block;
+        }
+
+        .offcanvas {
+            transition: all 0.3s ease;
+            border-right: none;
+
+            &-body {
+                img {
+                    width: 96px;
+                    height: 96px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+            }
+        }
+
+        .offcanvas-start {
+            width: 80%;
+        }
+    }
+
     &__search {
         display: flex;
         align-items: center;
@@ -212,6 +254,10 @@ blockquote {
         height: 40px;
         border-radius: 20px;
         padding: 0 16px;
+
+        @include mobile {
+            display: none;
+        }
 
         &:focus-within {
             border-color: #113685;
@@ -432,9 +478,10 @@ blockquote {
                 }
 
                 &__link {
+                    font-size: 15px;
                     color: #666;
                     display: block;
-                    padding: 10px 0;
+                    padding: 6px 0;
                     text-decoration: none;
                 }
             }
@@ -453,6 +500,45 @@ blockquote {
     z-index: 8;
     display: flex;
     justify-content: center;
+
+    @include mobile {
+        display: none;
+    }
+
+    &__mobile {
+        display: none;
+
+        @include mobile {
+            display: block;
+
+            &--list {
+                padding: 8px 0;
+                margin-top: 24px;
+                margin-bottom: 0;
+                font-size: 16px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.0785);
+            }
+
+            &--link {
+                padding: 16px 0 16px 16px;
+                display: flex;
+                align-items: center;
+                font-weight: 600;
+                color: #333;
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+
+                &.active {
+                    color: #292929;
+                    background-color: #f0f0f0;
+                }
+
+                ion-icon {
+                    color: #757575;
+                }
+            }
+        }
+    }
 
     &__link {
         color: #404040;
@@ -490,6 +576,10 @@ blockquote {
     min-height: 100vh;
     padding: 66px 28px 78px 104px;
 
+    @include mobile {
+        padding: 66px 16px 78px 16px;
+    }
+
     @import "./infor";
 
     .slideshow {
@@ -514,9 +604,20 @@ blockquote {
                         #04000a
                     );
 
+                    @include mobile {
+                        width: 100%;
+                        display: block !important;
+                        padding: 20px 36px 36px;
+                    }
+
                     h2,
                     p {
                         line-height: 1.5;
+                        display: -webkit-box;
+                        text-overflow: ellipsis;
+                        -webkit-line-clamp: 3;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
                     }
                 }
 
@@ -526,6 +627,10 @@ blockquote {
                     bottom: 0;
                     right: 0;
                     left: 50%;
+
+                    @include mobile {
+                        display: none;
+                    }
 
                     img {
                         height: 100%;
@@ -558,6 +663,12 @@ blockquote {
         }
 
         .section__list {
+            .container {
+                @include mobile {
+                    padding: 0;
+                }
+            }
+
             .swiper-container.swiper1,
             .swiper-container.swiper2 {
                 position: relative;
@@ -593,6 +704,18 @@ blockquote {
                         font-size: 14px;
                         font-weight: bold;
                         color: $black-color;
+                    }
+                }
+
+                .swiper-button-prev {
+                    @include mobile {
+                        left: 0;
+                    }
+                }
+
+                .swiper-button-next {
+                    @include mobile {
+                        right: 0;
                     }
                 }
 
@@ -848,6 +971,11 @@ blockquote {
         padding-left: 40px;
         padding-top: 36px;
 
+        @include mobile {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
         .nav-link {
             color: #333;
 
@@ -1047,6 +1175,12 @@ blockquote {
         }
     }
 
+    .learning__list {
+        @include mobile {
+            display: none;
+        }
+    }
+
     .subject__detail,
     .learning__list {
         .accordion {
@@ -1098,6 +1232,34 @@ blockquote {
     .subject__detail {
         padding-left: 40px;
         padding-top: 36px;
+
+        @include mobile {
+            padding-left: 0;
+
+            .accordion-button .text-lowercase {
+                display: none;
+            }
+
+            .purchase-badge {
+                width: 100%;
+                border-radius: 8px;
+                border: 1px solid #ebebeb;
+                padding: 16px;
+            }
+
+            .ps-4 {
+                padding-left: 0 !important;
+                margin-top: 20px;
+            }
+
+            .subject__detail--list {
+                text-align: center;
+
+                li {
+                    display: inline-block;
+                }
+            }
+        }
 
         &--list {
             li {
@@ -1172,6 +1334,11 @@ blockquote {
                     object-fit: cover;
                     border-radius: 50%;
                     opacity: 0.9;
+
+                    @include mobile {
+                        width: 32px;
+                        height: 32px;
+                    }
                 }
 
                 .name {
@@ -1205,10 +1372,24 @@ blockquote {
         padding-left: 40px;
         padding-top: 36px;
 
+        @include mobile {
+            padding-left: 0;
+
+            img {
+                width: 100%;
+            }
+        }
+
         &__content {
             background: $white-color;
             padding: 20px;
             border-radius: 8px;
+
+            @include mobile {
+                .text-end {
+                    display: none;
+                }
+            }
 
             #exerciseModal {
                 .modal-dialog {
@@ -1223,6 +1404,11 @@ blockquote {
                             border-width: 10px !important;
                             width: 132px;
                             height: 132px;
+
+                            @include mobile {
+                                width: 104px;
+                                height: 104px;
+                            }
 
                             span {
                                 display: block;
@@ -1776,6 +1962,10 @@ blockquote {
     display: flex;
     align-items: center;
     border-top: 1px solid #f0f0f0;
+
+    @include mobile {
+        padding: 0 16px;
+    }
 
     img {
         width: 22px;
