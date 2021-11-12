@@ -13,5 +13,10 @@ module.exports = {
         "cai lon me may",
         "con me may",
         "condi",
+        "buồi",
+        "dái",
+        "địt",
+        "lồn",
+        "cặc",
     ],
 };

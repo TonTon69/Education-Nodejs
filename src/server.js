@@ -76,7 +76,6 @@ var countMessage = 0;
 var connected_socket = 0;
 var $ipsConnected = [];
 var rooms = [];
-var messageInValid;
 
 io.on("connection", async (socket) => {
     var $ipAddress = socket.handshake.address;
@@ -101,12 +100,15 @@ io.on("connection", async (socket) => {
     // chat all
     socket.on("user-send-message", (data) => {
         countMessage++;
-        messageInValid = data.message;
+        let message = data.message;
         messages.forEach((item) => {
-            if (messageInValid.toLowerCase().includes(item)) {
-                messageInValid.replace(item, "***");
+            if (message.toLowerCase().includes(item)) {
+                message = message.replace(item, "***");
+                return;
             }
         });
+        data.message = message;
+
         io.sockets.emit("server-send-message", data);
         socket.broadcast.emit("server-send-count-message", countMessage);
     });
