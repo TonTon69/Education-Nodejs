@@ -12,11 +12,13 @@ const Room = new Schema(
         subjectID: { type: Schema.Types.ObjectId },
         unitID: { type: Schema.Types.ObjectId },
         lessionID: { type: Schema.Types.ObjectId },
+        status: { type: String, default: "Đang chờ..." },
         members: [
             {
                 socketID: { type: String },
                 userName: { type: String },
                 avatar: { type: String },
+                fullname: { type: String },
             },
         ],
     },

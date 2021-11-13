@@ -32,7 +32,11 @@ class CompetitionController {
                 },
             },
         ]);
-        res.render("competition/detail", { room });
+        if (room.length > 0) {
+            res.render("competition/detail", { room });
+        } else {
+            res.redirect("/competition");
+        }
     }
 }
 

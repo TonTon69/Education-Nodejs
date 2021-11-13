@@ -7,7 +7,7 @@ block main
                     .card-body.p-5
                         .d-flex.align-items-center.justify-content-between
                             .master.d-flex.align-items-center
-                                img(src=room[0].avatar width=100 height=100).rounded-pill
+                                img(src=room[0].avatar width=100 height=100 style='object-fit: cover').rounded-pill
                                 .ms-4
                                     span.text-warning.fw-bold Chủ phòng
                                     span.d-block.mt-2= room[0].master
@@ -15,13 +15,13 @@ block main
                                 button#btn-start.d-flex.align-items-center.btn.btn-primary
                                     ion-icon.fs-4(name="play")
                                     span.ms-2 Bắt đầu
-                                button#btn-out-room.d-flex.align-items-center.btn.btn-secondary.ms-4
+                                button.d-flex.align-items-center.btn.btn-secondary.ms-4(data-bs-toggle="modal" data-bs-target="#outRoomModal")
                                     ion-icon.fs-4(name="log-out")
                                     span.ms-2 Rời phòng
                         .text-center.mt-4
                             h2.text-danger.fw-bold #{room[0].subject[0].name} #{room[0].subject[0].gradeID}
                             h4.fw-bold #{room[0].unit[0].name}
-                            h5 Bài #{room[0].lession[0].lessionNumber}. #{room[0].lession[0].name}
+                            h5.lession(id=room[0].lession[0]._id) Bài #{room[0].lession[0].lessionNumber}. #{room[0].lession[0].name}
                         .members.mt-5
                             .row
                                 each member in room[0].members
@@ -32,12 +32,38 @@ block main
                                                     img(src=member.avatar width=100 height=100 style='object-fit: cover').rounded-pill
                                                     .ms-4
                                                         span.text-warning.fw-bold Thành viên
-                                                        span.d-block.mt-2= member.userName
+                                                        span.d-block.mt-2= member.fullname
+                        
+        #overlay
+            .d-flex.align-items-center.justify-content-center.flex-column
+                .rounded-circle.bg-white.circle-time.text-center.mt-5
+                    span.text-uppercase.fw-bold.d-block.mt-5 Bắt đầu sau
+                    .countdown.fw-bold 10
+                    span.text-uppercase.fs-7 giây
+                button.d-flex.align-items-center.btn.btn-secondary.mt-4(data-bs-toggle="modal" data-bs-target="#outRoomModal") Rời phòng
+                .notes.fw-bold.fs-5.mt-5
+                    p Nguyên tắc thi đấu:
+                    p 1. Trong vòng 30s phải hoàn thành câu hỏi.
+                    p 2. Hãy tập trung vì sau khi thành viên cuối cùng trả lời câu hỏi thì hệ thống sẽ tự động chuyển sang câu hỏi tiếp theo.
+                    p Chúc các bạn thi đấu vui vẻ.
+    #outRoomModal.modal.fade(tabindex='-1', aria-labelledby='outRoomModalLabel', aria-hidden='true')
+        .modal-dialog(style='transition: all 0.3s ease')
+            .modal-content
+                .modal-header
+                    h5#outRoomModalLabel.modal-title Xác nhận rời phòng
+                    button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                .modal-body
+                    | Bạn có muốn rời phòng thi đấu ???
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Từ chối
+                    button#btn-out-room.btn.btn-primary(type='button') Đồng ý
+
     script(src="/socket.io/socket.io.js")
     script.
         const socket = io();
         var roomId = "#{room[0].roomName}";
 
+        //- xử lý user tham gia vào phòng
         socket.emit("client-send-room-name", {
             roomId: roomId,
             userName: $(".user__info .username").text(),
@@ -45,7 +71,9 @@ block main
             avatar: $(".user__avatar img").attr("src"),
         });
 
+        //- real time thành viên khi join phòng
         socket.on("server-send-members-in-room", (data) => {
+            //- $("#btn-start").attr("disabled", false);
             $(".members .row").html("");
             data.map((member) => {
                 $(".members .row").append(`
@@ -56,7 +84,7 @@ block main
                                     <img src='${member.avatar}' class='rounded-pill' width=100 height=100 style='object-fit: cover' />
                                     <div class='ms-4'>
                                         <span class='text-warning fw-bold'>Thành viên</span>
-                                        <span class='d-block mt-2'>${member.userName}</span>
+                                        <span class='d-block mt-2'>${member.fullname}</span>
                                     </div>
                                 </div>
                             </div>
@@ -66,9 +94,34 @@ block main
             });
         });
 
+        socket.on("server-send-list-questions", (data) => {
+            $("#overlay").show();
+            var counter = 10;
+            var interval = setInterval(function() {
+                counter--;
+                if (counter <= 0) {
+                    clearInterval(interval);
+                    $("#overlay").hide();
+                    $("#btn-start").attr("style", "display: none !important");
+                    $(".master").attr("style", "display: none !important");
+                    $(".members").hide();
+                    return;
+                } else {
+                    $('.countdown').text(counter);
+                }
+            }, 1000);
+        })
+
+        // handle server send length members to click start
+        let lengthMembersInRoom = 0;
+        socket.on("server-send-length-members-in-room", (data) => {
+            lengthMembersInRoom = data;
+        })
+
+        //- chủ phòng out room
         socket.on("master-handle-out-room", () => {
+            alert("Chủ phòng đã rời phòng!");
             window.location.href = `/competition`;
-            alert("Chủ phòng đã rời phòng!")
         })
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -77,12 +130,25 @@ block main
                 $("#btn-start").attr("style", "display: none !important");
             }
 
+            //- btn out room click
             $("#btn-out-room").click(function() {
                 socket.emit("client-handle-out-room", roomId);
                 window.location.href = `/competition`;
             })
 
-            //- $("#btn-start").click(function() {
+            //- btn start room click
+            $("#btn-start").click(() => {
+                if (lengthMembersInRoom > 0) {
+                    socket.emit("start-room", roomId);
+                    return;
+                }
 
-            //- })
+                Eggy({
+                    title: 'Không đủ thành viên',
+                    message:  'Phòng phải có ít nhất 2 thành viên để bắt đầu thi đấu!!!',
+                    type: 'warning',
+                    duration: 5000,
+                });
+            })
+
         });

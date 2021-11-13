@@ -64,6 +64,7 @@ socket.on("user-stopping-message", () => {
 socket.on("server-send-rooms", (data) => {
     $("table tbody").html("");
     data.map((room, index) => {
+        var status = room.status;
         $("table tbody").append(`
             <tr class='align-middle' style='line-height: 1.5' id='${
                 room.roomName
@@ -82,12 +83,14 @@ socket.on("server-send-rooms", (data) => {
                 </td>
                 <td class='text-center length-members'>${
                     room.members.length + 1
-                }</td>
-                <td class='fw-bold text-success'>Đang chờ...</td>
+                }/2</td>
+                <td class='fw-bold text-success status'>${status}</td>
                 <td>
-                    <a class='text-primary' href='/competition/${
-                        room.roomName
-                    }'>Tham gia</a>
+                    <a class='text-primary' ${
+                        status === "Full" || status === "Đang thi..."
+                            ? `href="javascript:void(0)" style="opacity: 0.3; cursor: none"`
+                            : `href='/competition/${room.roomName}'`
+                    }>Tham gia</a>
                 </td>
             </tr>
         `);
@@ -201,6 +204,7 @@ $(document).ready(function () {
         });
     });
 
+    // select option to create a new room
     $("#select-grade").change(function () {
         socket.emit("user-send-option-grade", $(this).val());
     });

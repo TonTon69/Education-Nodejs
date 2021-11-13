@@ -42,10 +42,13 @@ block main
                                             td 
                                                 span.fw-bold #{room.subject[0].name}: 
                                                 span #{room.lession[0].name}
-                                            td.text-center.length-members #{room.members.length + 1}
-                                            td.fw-bold.text-success Đang chờ...
+                                            td.text-center.length-members #{room.members.length + 1}/2
+                                            td.fw-bold.text-success #{room.status}
                                             td
-                                                a.text-primary(href=`/competition/${room.roomName}`) Tham gia
+                                                if room.status === "Đang thi..." || room.status === "Full"
+                                                    a.text-primary(href=`javascript:void(0)` style="opacity: 0.3; cursor: none") Tham gia
+                                                else
+                                                    a.text-primary(href=`/competition/${room.roomName}`) Tham gia
         .chat
             .msger
                 header.msger-header

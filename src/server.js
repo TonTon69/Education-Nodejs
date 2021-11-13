@@ -15,6 +15,7 @@ const { messages } = require("./utils/message-data");
 const Subject = require("./app/models/Subject");
 const Unit = require("./app/models/Unit");
 const Lession = require("./app/models/Lession");
+const Exercise = require("./app/models/Exercise");
 const Room = require("./app/models/Room");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -76,7 +77,6 @@ const io = require("socket.io")(server);
 var countMessage = 0;
 var connected_socket = 0;
 var $ipsConnected = [];
-let roomDisconnected = {};
 
 io.on("connection", async (socket) => {
     var $ipAddress = socket.handshake.address;
@@ -86,12 +86,14 @@ io.on("connection", async (socket) => {
         socket.emit("server-send-counter", connected_socket);
     }
 
-    console.log(socket.id + " connected");
+    // console.log(socket.id + " connected");
 
-    console.log(socket.adapter.rooms);
+    // console.log(socket.adapter.rooms);
 
+    // handle out room
     socket.on("client-handle-out-room", async (data) => {
         const room = await Room.findOne({ roomName: data });
+        // nếu là chủ phòng
         if (socket.id === room.socketID) {
             io.sockets.in(data).emit("master-handle-out-room");
             await Room.deleteOne({ roomName: data });
@@ -124,9 +126,11 @@ io.on("connection", async (socket) => {
             ]);
             io.sockets.emit("server-send-rooms", rooms);
         } else {
+            // nếu ko phải là chủ phòng
             await Room.updateOne(
                 { roomName: data },
                 {
+                    status: "Đang chờ...",
                     $pull: {
                         members: {
                             socketID: socket.id,
@@ -161,6 +165,15 @@ io.on("connection", async (socket) => {
                     },
                 },
             ]);
+
+            const roomMembersLength = await Room.findOne({ roomName: data });
+            io.sockets
+                .in(data)
+                .emit(
+                    "server-send-length-members-in-room",
+                    roomMembersLength.members.length
+                );
+
             io.sockets.emit("server-send-rooms", rooms);
             io.sockets
                 .in(data)
@@ -168,6 +181,7 @@ io.on("connection", async (socket) => {
         }
     });
 
+    // ngắt kết nối
     socket.on("disconnect", async () => {
         if ($ipsConnected.hasOwnProperty($ipAddress)) {
             delete $ipsConnected[$ipAddress];
@@ -175,7 +189,152 @@ io.on("connection", async (socket) => {
             socket.emit("server-send-counter", connected_socket);
         }
 
-        console.log(socket.id + " disconnected");
+        const rooms = await Room.find({});
+        rooms.forEach(async (room) => {
+            if (room.socketID === socket.id) {
+                if (room.members.length > 0) {
+                    await Room.deleteOne({ socketID: socket.id });
+                    const roomsNew = await Room.aggregate([
+                        {
+                            $lookup: {
+                                from: "subjects",
+                                localField: "subjectID",
+                                foreignField: "_id",
+                                as: "subject",
+                            },
+                        },
+                        {
+                            $lookup: {
+                                from: "units",
+                                localField: "unitID",
+                                foreignField: "_id",
+                                as: "unit",
+                            },
+                        },
+                        {
+                            $lookup: {
+                                from: "lessions",
+                                localField: "lessionID",
+                                foreignField: "_id",
+                                as: "lession",
+                            },
+                        },
+                    ]);
+
+                    io.sockets.emit("server-send-rooms", roomsNew);
+                    io.sockets.in(room.roomName).emit("master-handle-out-room");
+                }
+            } else {
+                if (room.status === "Full") {
+                    room.members.forEach(async (member) => {
+                        if (member.socketID === socket.id) {
+                            await Room.updateOne(
+                                { _id: room._id },
+                                {
+                                    status: "Đang chờ...",
+                                    $pull: {
+                                        members: {
+                                            socketID: socket.id,
+                                        },
+                                    },
+                                }
+                            );
+
+                            const roomMembers = await Room.findOne({
+                                roomName: room.roomName,
+                            });
+                            const roomsNew = await Room.aggregate([
+                                {
+                                    $lookup: {
+                                        from: "subjects",
+                                        localField: "subjectID",
+                                        foreignField: "_id",
+                                        as: "subject",
+                                    },
+                                },
+                                {
+                                    $lookup: {
+                                        from: "units",
+                                        localField: "unitID",
+                                        foreignField: "_id",
+                                        as: "unit",
+                                    },
+                                },
+                                {
+                                    $lookup: {
+                                        from: "lessions",
+                                        localField: "lessionID",
+                                        foreignField: "_id",
+                                        as: "lession",
+                                    },
+                                },
+                            ]);
+
+                            io.sockets.emit("server-send-rooms", roomsNew);
+                            io.sockets
+                                .in(room.roomName)
+                                .emit(
+                                    "server-send-members-in-room",
+                                    roomMembers.members
+                                );
+                        }
+                    });
+                } else if (room.status === "Đang thi...") {
+                    room.members.forEach(async (member) => {
+                        if (member.socketID === socket.id) {
+                            await Room.updateOne(
+                                { _id: room._id },
+                                {
+                                    $pull: {
+                                        members: {
+                                            socketID: socket.id,
+                                        },
+                                    },
+                                }
+                            );
+
+                            const roomMembers = await Room.findOne({
+                                roomName: room.roomName,
+                            });
+                            const roomsNew = await Room.aggregate([
+                                {
+                                    $lookup: {
+                                        from: "subjects",
+                                        localField: "subjectID",
+                                        foreignField: "_id",
+                                        as: "subject",
+                                    },
+                                },
+                                {
+                                    $lookup: {
+                                        from: "units",
+                                        localField: "unitID",
+                                        foreignField: "_id",
+                                        as: "unit",
+                                    },
+                                },
+                                {
+                                    $lookup: {
+                                        from: "lessions",
+                                        localField: "lessionID",
+                                        foreignField: "_id",
+                                        as: "lession",
+                                    },
+                                },
+                            ]);
+
+                            io.sockets.emit("server-send-rooms", roomsNew);
+                            io.sockets
+                                .in(room.roomName)
+                                .emit(
+                                    "server-send-members-in-room",
+                                    roomMembers.members
+                                );
+                        }
+                    });
+                }
+            }
+        });
     });
 
     // chat all
@@ -194,12 +353,14 @@ io.on("connection", async (socket) => {
         socket.broadcast.emit("server-send-count-message", countMessage);
     });
 
+    // handle typing messages
     socket.on("writing-message", (data) => {
         countMessage = 0;
         io.sockets.emit("user-writing-message", data);
         socket.emit("server-send-count-message", countMessage);
     });
 
+    // handle stopping messages
     socket.on("stopping-message", () => {
         io.sockets.emit("user-stopping-message");
     });
@@ -210,6 +371,7 @@ io.on("connection", async (socket) => {
         socket.join(roomId);
         socket.room = roomId;
 
+        // save db
         const room = new Room({
             roomName: roomId,
             socketID: socket.id,
@@ -248,36 +410,85 @@ io.on("connection", async (socket) => {
                 },
             },
         ]);
+
         io.sockets.emit("server-send-rooms", rooms);
         socket.emit("room-id", roomId);
-        // io.sockets.emit("server-send-data-in-room", data);
-        console.log(socket.adapter.rooms);
+        // console.log(socket.adapter.rooms);
     });
 
+    // user tham gia vào phòng
     socket.on("client-send-room-name", async (data) => {
         socket.join(data.roomId);
 
         const room = await Room.findOne({ roomName: data.roomId });
         if (room) {
             if (room.roomName === data.userName) {
+                // user là chủ phòng
                 await room.update({ socketID: socket.id });
             } else {
-                await Room.updateOne(
-                    { roomName: room.roomName },
-                    {
-                        $push: {
-                            members: {
-                                $each: [
-                                    {
-                                        socketID: socket.id,
-                                        userName: data.userName,
-                                        avatar: data.avatar,
-                                    },
-                                ],
-                            },
-                        },
+                // user ko phải là chủ phòng
+                let flag = false;
+                room.members.forEach((member) => {
+                    if (member.userName === data.userName) {
+                        flag = true;
                     }
-                );
+                });
+
+                if (flag) {
+                    await Room.updateOne(
+                        { roomName: room.roomName },
+                        {
+                            $pull: {
+                                members: {
+                                    userName: data.userName,
+                                },
+                            },
+                        }
+                    );
+                    await Room.updateOne(
+                        { roomName: room.roomName },
+                        {
+                            $push: {
+                                members: {
+                                    $each: [
+                                        {
+                                            socketID: socket.id,
+                                            userName: data.userName,
+                                            avatar: data.avatar,
+                                            fullname: data.fullname,
+                                        },
+                                    ],
+                                },
+                            },
+                        }
+                    );
+                } else {
+                    await Room.updateOne(
+                        { roomName: room.roomName },
+                        {
+                            $push: {
+                                members: {
+                                    $each: [
+                                        {
+                                            socketID: socket.id,
+                                            userName: data.userName,
+                                            avatar: data.avatar,
+                                            fullname: data.fullname,
+                                        },
+                                    ],
+                                },
+                            },
+                        }
+                    );
+                }
+
+                const roomMembers = await Room.findOne({
+                    roomName: data.roomId,
+                });
+
+                if (roomMembers.members.length === 1) {
+                    await roomMembers.update({ status: "Full" });
+                }
 
                 const rooms = await Room.aggregate([
                     {
@@ -305,23 +516,30 @@ io.on("connection", async (socket) => {
                         },
                     },
                 ]);
+
                 io.sockets.emit("server-send-rooms", rooms);
+                io.sockets
+                    .in(data.roomId)
+                    .emit("server-send-members-in-room", roomMembers.members);
             }
+
+            const roomMembers = await Room.findOne({ roomName: data.roomId });
+            io.sockets
+                .in(data.roomId)
+                .emit(
+                    "server-send-length-members-in-room",
+                    roomMembers.members.length
+                );
         }
-
-        const roomMembers = await Room.findOne({ roomName: data.roomId });
-        io.sockets
-            .in(data.roomId)
-            .emit("server-send-members-in-room", roomMembers.members);
-
-        console.log(socket.adapter.rooms);
     });
 
+    // user chọn khối => môn học
     socket.on("user-send-option-grade", async (data) => {
         const subjects = await Subject.find({ gradeID: data });
         socket.emit("server-send-list-subject-of-user-grade-option", subjects);
     });
 
+    // user chọn môn học => chuyên đề
     socket.on("user-send-option-subject", async (data) => {
         const units = await Unit.aggregate([
             { $match: { subjectID: ObjectId(data) } },
@@ -329,6 +547,7 @@ io.on("connection", async (socket) => {
         socket.emit("server-send-list-unit-of-user-subject-option", units);
     });
 
+    // user chọn chuyên đề => bài học
     socket.on("user-send-option-unit", async (data) => {
         const lessions = await Lession.aggregate([
             { $match: { unitID: ObjectId(data) } },
@@ -336,7 +555,7 @@ io.on("connection", async (socket) => {
         socket.emit("server-send-list-lession-of-user-unit-option", lessions);
     });
 
-    // filter
+    // tìm kiếm theo khối
     socket.on("user-filter-option-grade", async (data) => {
         const rooms = await Room.aggregate([
             {
@@ -371,9 +590,8 @@ io.on("connection", async (socket) => {
         socket.emit("server-send-rooms", rooms);
     });
 
-    // search
+    // tìm kiếm theo tên chủ phòng
     socket.on("user-search", async (data) => {
-        console.log(data);
         if (data !== "") {
             const rooms = await Room.aggregate([
                 {
@@ -438,6 +656,57 @@ io.on("connection", async (socket) => {
 
             socket.emit("server-send-rooms", rooms);
         }
+    });
+
+    // start-room
+    socket.on("start-room", async (data) => {
+        const room = await Room.findOne({ roomName: data });
+        if (room) {
+            const questions = await Exercise.aggregate([
+                {
+                    $match: { lessionID: ObjectId(room.lessionID) },
+                },
+                {
+                    $lookup: {
+                        from: "exercise-categories",
+                        localField: "ceID",
+                        foreignField: "_id",
+                        as: "cate",
+                    },
+                },
+            ]);
+            io.sockets.in(data).emit("server-send-list-questions", questions);
+            await room.update({ status: "Đang thi..." });
+        }
+
+        const rooms = await Room.aggregate([
+            {
+                $lookup: {
+                    from: "subjects",
+                    localField: "subjectID",
+                    foreignField: "_id",
+                    as: "subject",
+                },
+            },
+            {
+                $lookup: {
+                    from: "units",
+                    localField: "unitID",
+                    foreignField: "_id",
+                    as: "unit",
+                },
+            },
+            {
+                $lookup: {
+                    from: "lessions",
+                    localField: "lessionID",
+                    foreignField: "_id",
+                    as: "lession",
+                },
+            },
+        ]);
+
+        io.sockets.emit("server-send-rooms", rooms);
     });
 });
 
