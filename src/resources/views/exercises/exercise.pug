@@ -34,30 +34,31 @@ block main
                                     .bottom
                                         | 0
                     #rank.tab-pane.fade(role='tabpanel', aria-labelledby='rank-tab')
-                        table.table.table-striped.mt-4
-                            thead
-                                tr
-                                    th(scope='col') #
-                                    th(scope='col') Thành viên
-                                    th(scope='col') Điểm
-                                    th(scope='col') Thời gian làm
-                            tbody
-                                if ranks.length > 0
-                                    each rank in ranks
-                                        tr.align-middle
-                                            th(scope='row')
-                                                img(src='../img/gold.png', alt='')
-                                            td
-                                                .d-flex.align-items-center
-                                                    img.rounded-circle(src=rank.user[0].avatar, width='30', height='30')
-                                                    span.ms-2.fs-7= rank.user[0].fullname
-                                            td
-                                                span.fs-7= Math.round(rank.score)
-                                            td
-                                                span.fs-7= rank.time
-                                else
+                        .table-responsive
+                            table.table.table-striped.mt-4
+                                thead
                                     tr
-                                        td.text-center(colspan=4) Không có dữ liệu!!!
+                                        th(scope='col') #
+                                        th(scope='col') Thành viên
+                                        th(scope='col') Điểm
+                                        th(scope='col') Thời gian làm
+                                tbody
+                                    if ranks.length > 0
+                                        each rank in ranks
+                                            tr.align-middle
+                                                th(scope='row')
+                                                    img(src='../img/gold.png', alt='')
+                                                td
+                                                    .d-flex.align-items-center
+                                                        img.rounded-circle(src=rank.user[0].avatar, width='30', height='30')
+                                                        span.ms-2.fs-7= rank.user[0].fullname
+                                                td
+                                                    span.fs-7= Math.round(rank.score)
+                                                td
+                                                    span.fs-7= rank.time
+                                    else
+                                        tr
+                                            td.text-center(colspan=4) Không có dữ liệu!!!
             .col-sm-7
                 .quiz.mb-4
                     - var i = 0;

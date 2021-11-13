@@ -775,6 +775,27 @@ blockquote {
         padding-left: 40px;
         padding-top: 36px;
 
+        @include mobile {
+            padding-left: 0;
+
+            .card {
+                padding: 0 !important;
+                box-shadow: none !important;
+
+                &-body {
+                    padding: 0;
+
+                    .input-group {
+                        display: none;
+                    }
+
+                    button[data-bs-target="#competitionModal"] {
+                        padding: 6px 20px;
+                    }
+                }
+            }
+        }
+
         .table-responsive {
             padding-right: 10px;
             max-height: 450px;
@@ -1037,6 +1058,27 @@ blockquote {
     }
 
     .exercise {
+        @include mobile {
+            .pe-5 {
+                padding-right: 12px !important;
+            }
+
+            .homework__time {
+                position: fixed;
+                right: 0;
+                top: 30%;
+
+                .bottom {
+                    padding: 10px !important;
+                }
+            }
+
+            .questions__done,
+            blockquote {
+                display: none;
+            }
+        }
+
         blockquote {
             background: #f7f9fa;
             border-left: 5px solid red;
@@ -1094,6 +1136,11 @@ blockquote {
             overflow-y: auto;
             scroll-snap-type: y mandatory;
 
+            @include mobile {
+                overflow-y: unset !important;
+                padding-right: 0;
+            }
+
             &::-webkit-scrollbar {
                 width: 8px;
             }
@@ -1121,6 +1168,14 @@ blockquote {
                 .question {
                     line-height: 1.5;
                 }
+
+                // .options {
+                //     @include mobile {
+                //         .form-check-label {
+                //             margin-bottom: 0 !important;
+                //         }
+                //     }
+                // }
 
                 .form-check {
                     background: #f7f9fa;
@@ -1163,6 +1218,10 @@ blockquote {
             position: fixed;
             bottom: 44px;
             right: 48px;
+
+            @include mobile {
+                right: 16px;
+            }
 
             ion-icon {
                 transform: translateY(2px);
@@ -1386,6 +1445,9 @@ blockquote {
             border-radius: 8px;
 
             @include mobile {
+                box-shadow: none !important;
+                padding: 0 !important;
+
                 .text-end {
                     display: none;
                 }
@@ -1467,6 +1529,24 @@ blockquote {
         padding-left: 40px;
         padding-top: 36px;
 
+        @include mobile {
+            padding-left: 0;
+
+            label.col-sm-3 {
+                margin-bottom: 12px;
+                font-weight: 600;
+            }
+
+            .btn-back {
+                display: none !important;
+            }
+
+            table {
+                width: 100%;
+                min-width: 50rem;
+            }
+        }
+
         .exercise-item {
             padding: 20px;
             border-radius: 8px;
@@ -1489,6 +1569,10 @@ blockquote {
                 border-radius: 8px;
                 border: 1px dashed;
                 padding: 10px;
+
+                @include mobile {
+                    flex-direction: column;
+                }
 
                 &.valid {
                     border-color: #44a500;
@@ -1543,6 +1627,10 @@ blockquote {
             border-radius: 8px;
             z-index: 1;
 
+            @include mobile {
+                height: 600px;
+            }
+
             @keyframes spinner {
                 from {
                     transform: rotate(0deg);
@@ -1562,6 +1650,11 @@ blockquote {
                 opacity: 0.3;
                 animation: spinner 10s infinite linear;
                 z-index: -1;
+
+                @include mobile {
+                    left: -44%;
+                    top: -26%;
+                }
             }
 
             .score {
@@ -1606,6 +1699,19 @@ blockquote {
             }
 
             .menu {
+                @include mobile {
+                    flex-direction: column;
+                    padding-left: 0;
+
+                    li {
+                        margin-bottom: 20px !important;
+
+                        a {
+                            display: flex !important;
+                        }
+                    }
+                }
+
                 li {
                     margin: 0 20px;
 
@@ -1629,6 +1735,13 @@ blockquote {
                         }
                     }
                 }
+            }
+        }
+
+        .ps-5 {
+            @include mobile {
+                padding-left: 12px !important;
+                margin-top: 40px !important;
             }
         }
 
@@ -1686,17 +1799,27 @@ blockquote {
         }
 
         .tab-content {
-            li {
-                width: 125px;
+            ul {
+                @include mobile {
+                    flex-direction: column;
 
-                .menu__item {
-                    &.active {
-                        border-bottom: 5px solid #fb5533;
-                        background: -webkit-linear-gradient(#fff, #f0f0f0);
+                    li {
+                        width: 100% !important;
                     }
+                }
 
-                    &:hover {
-                        background: -webkit-linear-gradient(#fff, #f0f0f0);
+                li {
+                    width: 125px;
+
+                    .menu__item {
+                        &.active {
+                            border-bottom: 5px solid #fb5533;
+                            background: -webkit-linear-gradient(#fff, #f0f0f0);
+                        }
+
+                        &:hover {
+                            background: -webkit-linear-gradient(#fff, #f0f0f0);
+                        }
                     }
                 }
             }

@@ -410,6 +410,14 @@ blockquote {
     border-radius: 16px;
     margin-left: 40px;
     margin-top: 15px; }
+    @media (max-width: 768px) {
+      .main .section__infor {
+        margin-left: 0;
+        box-shadow: none !important; } }
+  @media (max-width: 768px) {
+    .main .Boxchange__avatar {
+      margin-top: 20px !important;
+      margin-bottom: 30px !important; } }
   .main .Boxchange__avatar .change__avatar {
     width: 178px;
     height: 178px;
@@ -446,12 +454,32 @@ blockquote {
     margin-left: 40px;
     margin-top: 36px;
     line-height: 1.5; }
+    @media (max-width: 768px) {
+      .main .infor__title {
+        padding-bottom: 8px;
+        margin-left: 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1); } }
   .main .box__infor {
     padding: 20px; }
+    @media (max-width: 768px) {
+      .main .box__infor {
+        padding: 0; }
+        .main .box__infor p {
+          margin-bottom: 40px !important; }
+          .main .box__infor p .user-name,
+          .main .box__infor p .email {
+            display: block;
+            margin-top: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+          .main .box__infor p .infor__input {
+            margin-top: 8px;
+            width: 100% !important; } }
     .main .box__infor p label {
       width: 170px;
       display: inline-block;
-      vertical-align: middle; }
+      vertical-align: middle;
+      font-weight: 600; }
     .main .box__infor p .infor__input {
       padding: 0 12px;
       width: 70%;
@@ -477,11 +505,23 @@ blockquote {
     margin: 0 5px; }
     .main .btn__update:hover {
       background-color: #e29000; }
+    @media (max-width: 768px) {
+      .main .btn__update {
+        width: 100%;
+        margin: 0; } }
   .main .section__changePass {
     border-radius: 16px;
     margin-left: 40px;
-    margin-top: 15px;
-    min-height: 450px; }
+    margin-top: 15px; }
+    @media (max-width: 768px) {
+      .main .section__changePass {
+        margin-top: 0;
+        margin-left: 0;
+        box-shadow: none !important; }
+        .main .section__changePass .banner__changePass {
+          display: none !important; }
+        .main .section__changePass .form__changePass {
+          padding: 0 12px !important; } }
     .main .section__changePass .banner__changePass {
       background-image: linear-gradient(to right, #113685, #04000a);
       min-height: 450px;
@@ -500,28 +540,36 @@ blockquote {
       padding: 0 120px; }
       .main .section__changePass .form__changePass .form__wrapper {
         padding-top: 50px; }
-      .main .section__changePass .form__changePass .form__group {
-        display: block;
-        overflow: hidden;
-        margin-bottom: 15px; }
-        .main .section__changePass .form__changePass .form__group label {
-          margin-bottom: 10px;
-          padding: 0 !important; }
-        .main .section__changePass .form__changePass .form__group .col-sm-12 {
-          padding-right: 12px;
-          padding-left: 12px; }
-        .main .section__changePass .form__changePass .form__group .form-control {
+        .main .section__changePass .form__changePass .form__wrapper .form__group {
           display: block;
-          width: 100%;
-          height: 34px;
-          padding: 6px 12px;
-          font-size: 14px;
-          line-height: 1.42857143;
-          color: #555;
-          background-color: #fff;
-          background-image: none;
-          border-radius: 4px;
-          box-shadow: unset !important; }
+          overflow: hidden;
+          margin-bottom: 15px; }
+          .main .section__changePass .form__changePass .form__wrapper .form__group label {
+            margin-bottom: 10px;
+            padding: 0 !important;
+            font-weight: 600; }
+          .main .section__changePass .form__changePass .form__wrapper .form__group .col-sm-12 {
+            padding-right: 12px;
+            padding-left: 12px; }
+          .main .section__changePass .form__changePass .form__wrapper .form__group .form-control {
+            display: block;
+            width: 100%;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border-radius: 4px;
+            box-shadow: unset !important; }
+        @media (max-width: 768px) {
+          .main .section__changePass .form__changePass .form__wrapper {
+            padding-top: 30px; }
+            .main .section__changePass .form__changePass .form__wrapper .ps-0 {
+              padding-right: 0 !important; }
+            .main .section__changePass .form__changePass .form__wrapper .form__group {
+              margin-bottom: 35px !important; } }
   .main .slideshow {
     padding-top: 15px; }
     .main .slideshow .carousel-inner {
@@ -652,6 +700,18 @@ blockquote {
   .main .competition {
     padding-left: 40px;
     padding-top: 36px; }
+    @media (max-width: 768px) {
+      .main .competition {
+        padding-left: 0; }
+        .main .competition .card {
+          padding: 0 !important;
+          box-shadow: none !important; }
+          .main .competition .card-body {
+            padding: 0; }
+            .main .competition .card-body .input-group {
+              display: none; }
+            .main .competition .card-body button[data-bs-target="#competitionModal"] {
+              padding: 6px 20px; } }
     .main .competition .table-responsive {
       padding-right: 10px;
       max-height: 450px;
@@ -841,6 +901,18 @@ blockquote {
         .main .subjects__link .subject ion-icon,
         .main .exercise__link .subject ion-icon {
           font-size: 40px; }
+  @media (max-width: 768px) {
+    .main .exercise .pe-5 {
+      padding-right: 12px !important; }
+    .main .exercise .homework__time {
+      position: fixed;
+      right: 0;
+      top: 30%; }
+      .main .exercise .homework__time .bottom {
+        padding: 10px !important; }
+    .main .exercise .questions__done,
+    .main .exercise blockquote {
+      display: none; } }
   .main .exercise blockquote {
     background: #f7f9fa;
     border-left: 5px solid red;
@@ -881,6 +953,10 @@ blockquote {
     max-height: 515px;
     overflow-y: auto;
     scroll-snap-type: y mandatory; }
+    @media (max-width: 768px) {
+      .main .exercise .quiz {
+        overflow-y: unset !important;
+        padding-right: 0; } }
     .main .exercise .quiz::-webkit-scrollbar {
       width: 8px; }
     .main .exercise .quiz::-webkit-scrollbar-thumb {
@@ -925,6 +1001,9 @@ blockquote {
     position: fixed;
     bottom: 44px;
     right: 48px; }
+    @media (max-width: 768px) {
+      .main .exercise .actions {
+        right: 16px; } }
     .main .exercise .actions ion-icon {
       transform: translateY(2px); }
     .main .exercise .actions #btn-check-result,
@@ -1064,8 +1143,11 @@ blockquote {
       padding: 20px;
       border-radius: 8px; }
       @media (max-width: 768px) {
-        .main .learning__content .text-end {
-          display: none; } }
+        .main .learning__content {
+          box-shadow: none !important;
+          padding: 0 !important; }
+          .main .learning__content .text-end {
+            display: none; } }
       .main .learning__content #exerciseModal .modal-dialog {
         max-width: 600px; }
         .main .learning__content #exerciseModal .modal-dialog .btn-close {
@@ -1108,6 +1190,17 @@ blockquote {
   .main .learning-result {
     padding-left: 40px;
     padding-top: 36px; }
+    @media (max-width: 768px) {
+      .main .learning-result {
+        padding-left: 0; }
+        .main .learning-result label.col-sm-3 {
+          margin-bottom: 12px;
+          font-weight: 600; }
+        .main .learning-result .btn-back {
+          display: none !important; }
+        .main .learning-result table {
+          width: 100%;
+          min-width: 50rem; } }
     .main .learning-result .exercise-item {
       padding: 20px;
       border-radius: 8px;
@@ -1123,6 +1216,9 @@ blockquote {
         border-radius: 8px;
         border: 1px dashed;
         padding: 10px; }
+        @media (max-width: 768px) {
+          .main .learning-result .exercise-item .check-result {
+            flex-direction: column; } }
         .main .learning-result .exercise-item .check-result.valid {
           border-color: #44a500; }
           .main .learning-result .exercise-item .check-result.valid .message {
@@ -1154,6 +1250,9 @@ blockquote {
       overflow: hidden;
       border-radius: 8px;
       z-index: 1; }
+      @media (max-width: 768px) {
+        .main .learning-result .result {
+          height: 600px; } }
 
 @keyframes spinner {
   from {
@@ -1170,6 +1269,10 @@ blockquote {
         opacity: 0.3;
         animation: spinner 10s infinite linear;
         z-index: -1; }
+        @media (max-width: 768px) {
+          .main .learning-result .result .animate {
+            left: -44%;
+            top: -26%; } }
       .main .learning-result .result .score {
         width: 250px;
         height: 220px;
@@ -1199,6 +1302,14 @@ blockquote {
           color: #ffd800;
           margin-right: 4px;
           font-size: 28px; }
+      @media (max-width: 768px) {
+        .main .learning-result .result .menu {
+          flex-direction: column;
+          padding-left: 0; }
+          .main .learning-result .result .menu li {
+            margin-bottom: 20px !important; }
+            .main .learning-result .result .menu li a {
+              display: flex !important; } }
       .main .learning-result .result .menu li {
         margin: 0 20px; }
         .main .learning-result .result .menu li a {
@@ -1215,6 +1326,10 @@ blockquote {
             font-size: 14px;
             font-weight: 600;
             background: #53c4c4; }
+    @media (max-width: 768px) {
+      .main .learning-result .ps-5 {
+        padding-left: 12px !important;
+        margin-top: 40px !important; } }
     .main .learning-result .result-detail {
       border-radius: 8px; }
       .main .learning-result .result-detail ul {
@@ -1247,12 +1362,17 @@ blockquote {
         border-color: #fff #fff #292929 #fff; }
       .main .learning-result .nav-tabs .nav-link.active {
         font-weight: 600; }
-    .main .learning-result .tab-content li {
+    @media (max-width: 768px) {
+      .main .learning-result .tab-content ul {
+        flex-direction: column; }
+        .main .learning-result .tab-content ul li {
+          width: 100% !important; } }
+    .main .learning-result .tab-content ul li {
       width: 125px; }
-      .main .learning-result .tab-content li .menu__item.active {
+      .main .learning-result .tab-content ul li .menu__item.active {
         border-bottom: 5px solid #fb5533;
         background: -webkit-linear-gradient(#fff, #f0f0f0); }
-      .main .learning-result .tab-content li .menu__item:hover {
+      .main .learning-result .tab-content ul li .menu__item:hover {
         background: -webkit-linear-gradient(#fff, #f0f0f0); }
   @media (max-width: 768px) {
     .main .blog .row {

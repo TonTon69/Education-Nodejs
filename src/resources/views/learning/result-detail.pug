@@ -33,62 +33,68 @@ block main
 
                             if  item.option == item.exercise.answer
                                 .check-result.valid.mb-4.mt-2.d-flex.align-items-center
-                                    ion-icon(name="checkmark-circle").text-success.fs-4
-                                    span.message.ms-2 Bạn đã chọn: 
-                                        if item.option === item.exercise.option1
-                                            span A
-                                        else if item.option === item.exercise.option2
-                                            span B
-                                        else if item.option === item.exercise.option3
-                                            span C
-                                        else if item.option === item.exercise.option4
-                                            span D
-                                    span.ms-2.me-2 ~
-                                    span.answer-true Đáp án đúng: 
-                                        if item.exercise.answer === item.exercise.option1
-                                            span A
-                                        else if item.exercise.answer === item.exercise.option2
-                                            span B
-                                        else if item.exercise.answer === item.exercise.option3
-                                            span C
-                                        else if item.exercise.answer === item.exercise.option4
-                                            span D
+                                    .d-flex.align-items-center
+                                        ion-icon(name="checkmark-circle").text-success.fs-4
+                                        span.message.ms-2 Bạn đã chọn: 
+                                            if item.option === item.exercise.option1
+                                                span A
+                                            else if item.option === item.exercise.option2
+                                                span B
+                                            else if item.option === item.exercise.option3
+                                                span C
+                                            else if item.option === item.exercise.option4
+                                                span D
+                                    .d-flex.align-items-center
+                                        span.ms-2.me-2 ~
+                                        span.answer-true Đáp án đúng: 
+                                            if item.exercise.answer === item.exercise.option1
+                                                span A
+                                            else if item.exercise.answer === item.exercise.option2
+                                                span B
+                                            else if item.exercise.answer === item.exercise.option3
+                                                span C
+                                            else if item.exercise.answer === item.exercise.option4
+                                                span D
                             else if item.option == ""
                                 .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
-                                    ion-icon(name="alert").text-danger.fs-4
-                                    span.message.ms-2 Bạn đã bỏ qua câu này
-                                    span.ms-2.me-2 ~
-                                    span.answer-true Đáp án đúng: 
-                                        if item.exercise.answer === item.exercise.option1
-                                            span A
-                                        else if item.exercise.answer === item.exercise.option2
-                                            span B
-                                        else if item.exercise.answer === item.exercise.option3
-                                            span C
-                                        else if item.exercise.answer === item.exercise.option4
-                                            span D
+                                    .d-flex.align-items-center
+                                        ion-icon(name="alert").text-danger.fs-4
+                                        span.message.ms-2 Bạn đã bỏ qua câu này
+                                    .d-flex.align-items-center
+                                        span.ms-2.me-2 ~
+                                        span.answer-true Đáp án đúng: 
+                                            if item.exercise.answer === item.exercise.option1
+                                                span A
+                                            else if item.exercise.answer === item.exercise.option2
+                                                span B
+                                            else if item.exercise.answer === item.exercise.option3
+                                                span C
+                                            else if item.exercise.answer === item.exercise.option4
+                                                span D
                             else
                                 .check-result.invalid.mb-4.mt-2.d-flex.align-items-center
-                                    ion-icon(name="close-circle").text-danger.fs-4
-                                    span.message.ms-2 Bạn đã chọn: 
-                                        if item.option === item.exercise.option1
-                                            span A
-                                        else if item.option === item.exercise.option2
-                                            span B
-                                        else if item.option === item.exercise.option3
-                                            span C
-                                        else if item.option === item.exercise.option4
-                                            span D
-                                    span.ms-2.me-2 ~
-                                    span.answer-true Đáp án đúng: 
-                                        if item.exercise.answer === item.exercise.option1
-                                            span A
-                                        else if item.exercise.answer === item.exercise.option2
-                                            span B
-                                        else if item.exercise.answer === item.exercise.option3
-                                            span C
-                                        else if item.exercise.answer === item.exercise.option4
-                                            span D
+                                    .d-flex.align-items-center
+                                        ion-icon(name="close-circle").text-danger.fs-4
+                                        span.message.ms-2 Bạn đã chọn: 
+                                            if item.option === item.exercise.option1
+                                                span A
+                                            else if item.option === item.exercise.option2
+                                                span B
+                                            else if item.option === item.exercise.option3
+                                                span C
+                                            else if item.option === item.exercise.option4
+                                                span D
+                                    .d-flex.align-items-center
+                                        span.ms-2.me-2 ~
+                                        span.answer-true Đáp án đúng: 
+                                            if item.exercise.answer === item.exercise.option1
+                                                span A
+                                            else if item.exercise.answer === item.exercise.option2
+                                                span B
+                                            else if item.exercise.answer === item.exercise.option3
+                                                span C
+                                            else if item.exercise.answer === item.exercise.option4
+                                                span D
                             .explain
                                 .explain-header.text-primary.d-inline-flex.align-items-center
                                     span.me-1 Xem lời giải

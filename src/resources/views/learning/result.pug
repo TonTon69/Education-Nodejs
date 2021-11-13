@@ -73,7 +73,7 @@ block main
                             - count++;
                             tr
                                 td= count
-                                td= item.name
+                                td.td-unit-name= item.name
                                 td
                                     a.text-primary(href=`/learning/result?subject=${subject.slug}&unit=${item._id}`) Xem chi tiết
         else
