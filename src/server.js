@@ -709,7 +709,21 @@ io.on("connection", async (socket) => {
                     },
                 },
             ]);
-            io.sockets.in(data).emit("server-send-question", questions);
+
+            let indexNumber = 0;
+            const obj = {
+                questionsLength: questions.length,
+                question: questions[indexNumber],
+            };
+
+            io.sockets.in(data).emit("server-send-question", obj);
+        }
+    });
+
+    socket.on("user-send-option", async (data) => {
+        const room = await Room.findOne({ roomName: data.roomId });
+        if (room) {
+            console.log(data);
         }
     });
 });
