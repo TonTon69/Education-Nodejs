@@ -39,7 +39,7 @@ a:hover {
 
 p,
 li {
-    word-break: break-all;
+    word-break: break-word;
     line-height: 1.5;
 }
 
@@ -775,6 +775,8 @@ blockquote {
         padding-left: 40px;
         padding-top: 36px;
 
+        @import "./quiz";
+
         @include mobile {
             padding-left: 0;
 
@@ -1013,10 +1015,6 @@ blockquote {
             .notes {
                 max-width: 600px;
                 color: #ffd839;
-
-                p {
-                    word-break: break-word;
-                }
             }
         }
     }

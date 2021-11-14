@@ -659,25 +659,9 @@ io.on("connection", async (socket) => {
     });
 
     // start-room
-    socket.on("start-room", async (data) => {
-        const room = await Room.findOne({ roomName: data });
-        if (room) {
-            const questions = await Exercise.aggregate([
-                {
-                    $match: { lessionID: ObjectId(room.lessionID) },
-                },
-                {
-                    $lookup: {
-                        from: "exercise-categories",
-                        localField: "ceID",
-                        foreignField: "_id",
-                        as: "cate",
-                    },
-                },
-            ]);
-            io.sockets.in(data).emit("server-send-list-questions", questions);
-            await room.update({ status: "Đang thi..." });
-        }
+    socket.on("handle-start-room", async (data) => {
+        io.sockets.in(data).emit("server-send-starting", data);
+        await Room.updateOne({ roomName: data, status: "Đang thi..." });
 
         const rooms = await Room.aggregate([
             {
@@ -707,6 +691,26 @@ io.on("connection", async (socket) => {
         ]);
 
         io.sockets.emit("server-send-rooms", rooms);
+    });
+
+    socket.on("room-request-questions", async (data) => {
+        const room = await Room.findOne({ roomName: data });
+        if (room) {
+            const questions = await Exercise.aggregate([
+                {
+                    $match: { lessionID: ObjectId(room.lessionID) },
+                },
+                {
+                    $lookup: {
+                        from: "exercise-categories",
+                        localField: "ceID",
+                        foreignField: "_id",
+                        as: "cate",
+                    },
+                },
+            ]);
+            io.sockets.in(data).emit("server-send-question", questions);
+        }
     });
 });
 
