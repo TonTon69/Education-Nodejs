@@ -116,7 +116,7 @@
     .modal-container {
         display: none;
         position: fixed;
-        z-index: 1;
+        z-index: 1065;
         left: 0;
         top: 0;
         width: 100%;
@@ -132,19 +132,20 @@
     }
 
     .modal-content-container {
-        height: 20rem;
-        width: 25rem;
-        background-color: rgb(43, 42, 42);
+        height: 22rem;
+        width: 28rem;
+        background-color: #2b2a2a;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-around;
         border-radius: 25px;
+        padding: 20px;
     }
 
     .modal-content-container h1 {
         font-size: 1.3rem;
-        height: 3rem;
+        height: 5rem;
         color: lightgray;
         text-align: center;
     }
@@ -169,6 +170,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-top: 30px;
     }
 
     .modal-button-container button {
