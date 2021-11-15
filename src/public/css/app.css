@@ -386,8 +386,8 @@ blockquote {
       top: 0;
       right: 0; }
       .sidebar__item .loader-star {
-        font-size: 20px;
-        color: #ffd839;
+        font-size: 16px;
+        color: #ffcc00;
         -webkit-animation: stars-pulse 1s ease-in-out infinite;
         animation: stars-pulse 1s ease-in-out infinite; }
 
@@ -719,9 +719,11 @@ blockquote {
       margin: 0 8px; }
   .main .competition {
     padding-left: 40px;
-    padding-top: 36px; }
+    padding-top: 36px;
+    /* ORDER FIRST PLACE RESPONSIVE */ }
     .main .competition .quiz {
-      display: none; }
+      display: none;
+      justify-content: center; }
       .main .competition .quiz main {
         width: 100%;
         display: flex;
@@ -729,7 +731,7 @@ blockquote {
         justify-content: center;
         align-items: center; }
       .main .competition .quiz .game-quiz-container {
-        width: 40rem;
+        width: 100%;
         height: 30rem;
         background-color: #fafafa;
         display: flex;
@@ -738,15 +740,15 @@ blockquote {
         justify-content: space-around;
         border-radius: 30px; }
       .main .competition .quiz .game-details-container {
-        width: 80%;
+        width: 90%;
         height: 4rem;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center; }
       .main .competition .quiz .game-details-container h1 {
         font-size: 1.2rem; }
       .main .competition .quiz .game-question-container {
-        width: 80%;
+        width: 90%;
         height: 8rem;
         display: flex;
         align-items: center;
@@ -758,14 +760,14 @@ blockquote {
         text-align: center;
         padding: 3px; }
       .main .competition .quiz .game-options-container {
-        width: 80%;
+        width: 90%;
         height: 12rem;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        justify-content: space-around; }
+        justify-content: space-between; }
       .main .competition .quiz .game-options-container span {
-        width: 45%;
+        width: 48%;
         height: 3rem;
         border: 2px solid darkgray;
         border-radius: 20px;
@@ -783,8 +785,7 @@ blockquote {
       .main .competition .quiz span label:hover {
         -ms-transform: scale(1.12);
         -webkit-transform: scale(1.12);
-        transform: scale(1.12);
-        color: white; }
+        transform: scale(1.12); }
       .main .competition .quiz input[type="radio"] {
         position: relative;
         display: none; }
@@ -928,6 +929,236 @@ blockquote {
               display: none; }
             .main .competition .card-body button[data-bs-target="#competitionModal"] {
               padding: 6px 20px; } }
+    .main .competition .leaderboard {
+      display: none;
+      position: fixed;
+      bottom: 34px;
+      right: 6px;
+      width: 245px;
+      height: 308px;
+      border-radius: 10px;
+      box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3); }
+      .main .competition .leaderboard h1 {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        font-size: 18px;
+        padding: 12px 13px 18px;
+        background: #113685;
+        color: #fff;
+        margin-bottom: 0; }
+      .main .competition .leaderboard ol {
+        counter-reset: leaderboard;
+        list-style-type: none;
+        padding-left: 0; }
+        .main .competition .leaderboard ol li {
+          position: relative;
+          z-index: 1;
+          font-size: 14px;
+          counter-increment: leaderboard;
+          padding: 18px 10px 18px 50px;
+          cursor: pointer;
+          backface-visibility: hidden;
+          transform: translateZ(0) scale(1, 1);
+          border-bottom: 1px solid #9c9c9c; }
+          .main .competition .leaderboard ol li::before {
+            content: counter(leaderboard);
+            position: absolute;
+            z-index: 2;
+            top: 15px;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            color: #c24448;
+            background: #fff;
+            border-radius: 20px;
+            text-align: center; }
+          .main .competition .leaderboard ol li mark {
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 18px 10px 18px 50px;
+            margin: 0;
+            background: none; }
+            .main .competition .leaderboard ol li mark::before, .main .competition .leaderboard ol li mark::after {
+              content: "";
+              position: absolute;
+              z-index: 1;
+              bottom: -11px;
+              left: -9px;
+              border-top: 10px solid #c24448;
+              border-left: 10px solid transparent;
+              transition: all 0.1s ease-in-out;
+              opacity: 0; }
+            .main .competition .leaderboard ol li mark::after {
+              left: auto;
+              right: -9px;
+              border-left: none;
+              border-right: 10px solid transparent; }
+          .main .competition .leaderboard ol li small {
+            position: relative;
+            z-index: 2;
+            display: block;
+            text-align: right; }
+          .main .competition .leaderboard ol li::after {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fa6855;
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease-in-out;
+            opacity: 0; }
+          .main .competition .leaderboard ol li:hover {
+            background: #fafafa; }
+    .main .competition .the-most {
+      position: fixed;
+      z-index: 1;
+      bottom: 0;
+      left: 0;
+      width: 50vw;
+      max-width: 200px;
+      padding: 10px; }
+      .main .competition .the-most img {
+        max-width: 100%; }
+    .main .competition .overlay_ranking {
+      position: fixed;
+      display: none;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1059;
+      cursor: pointer; }
+      .main .competition .overlay_ranking .table_ranking {
+        padding: 50px 100px; }
+        .main .competition .overlay_ranking .table_ranking .ranking {
+          padding: 0;
+          visibility: hidden;
+          margin: 15px 0 30px 0;
+          order: 2;
+          text-align: center; }
+          .main .competition .overlay_ranking .table_ranking .ranking.slideInUp {
+            display: block;
+            visibility: visible; }
+          .main .competition .overlay_ranking .table_ranking .ranking.first {
+            background-color: white;
+            box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
+            margin: 0 0 40px 0;
+            z-index: 123; }
+            .main .competition .overlay_ranking .table_ranking .ranking.first .header-ranking {
+              background-color: #ffa409;
+              text-shadow: 1px 3px 2px rgba(0, 0, 0, 0.3); }
+            .main .competition .overlay_ranking .table_ranking .ranking.first h2 {
+              margin-bottom: 45px;
+              font-weight: 300; }
+            .main .competition .overlay_ranking .table_ranking .ranking.first .block1,
+            .main .competition .overlay_ranking .table_ranking .ranking.first .block2,
+            .main .competition .overlay_ranking .table_ranking .ranking.first .block3,
+            .main .competition .overlay_ranking .table_ranking .ranking.first .block4 {
+              background: rgba(255, 255, 255, 0.5);
+              background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.5) 0%, rgba(246, 246, 246, 0.5) 65%, rgba(242, 242, 242, 0.5) 100%);
+              background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0.5)), color-stop(65%, rgba(246, 246, 246, 0.5)), color-stop(100%, rgba(242, 242, 242, 0.5)));
+              background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.5) 0%, rgba(246, 246, 246, 0.5) 65%, rgba(242, 242, 242, 0.5) 100%);
+              background: -o-linear-gradient(top, rgba(255, 255, 255, 0.5) 0%, rgba(246, 246, 246, 0.5) 65%, rgba(242, 242, 242, 0.5) 100%);
+              background: -ms-linear-gradient(top, rgba(255, 255, 255, 0.5) 0%, rgba(246, 246, 246, 0.5) 65%, rgba(242, 242, 242, 0.5) 100%);
+              background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(246, 246, 246, 0.5) 65%, rgba(242, 242, 242, 0.5) 100%);
+              filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2', GradientType=0 );
+              padding: 20px 15px 6px 15px; }
+            .main .competition .overlay_ranking .table_ranking .ranking.first .block4 {
+              padding-top: 80px; }
+              .main .competition .overlay_ranking .table_ranking .ranking.first .block4 .place {
+                background-color: #e6353b;
+                line-height: 1.55em;
+                height: 68px;
+                font-size: 2.5em;
+                position: absolute;
+                width: 68px;
+                margin: auto;
+                top: 75px;
+                left: 0;
+                bottom: 0;
+                right: 0; }
+          .main .competition .overlay_ranking .table_ranking .ranking .header-ranking {
+            background-color: #e49000; }
+            .main .competition .overlay_ranking .table_ranking .ranking .header-ranking h3 {
+              color: white !important;
+              font-weight: 300;
+              font-size: 1.2em;
+              margin: 0;
+              padding: 12px; }
+          .main .competition .overlay_ranking .table_ranking .ranking h2 {
+            color: #122548;
+            font-size: 1.4em;
+            font-weight: 300;
+            margin-top: 20px;
+            margin-bottom: 30px; }
+          .main .competition .overlay_ranking .table_ranking .ranking p {
+            color: #333;
+            font-weight: 300;
+            font-size: 1.2em;
+            line-height: 0.9em; }
+          .main .competition .overlay_ranking .table_ranking .ranking .block1,
+          .main .competition .overlay_ranking .table_ranking .ranking .block2,
+          .main .competition .overlay_ranking .table_ranking .ranking .block3,
+          .main .competition .overlay_ranking .table_ranking .ranking .block4 {
+            background: #fafafa;
+            background: -moz-linear-gradient(top, #fafafa 0%, #f6f6f6 65%, #ececec 100%);
+            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fafafa), color-stop(65%, #f6f6f6), color-stop(100%, #ececec));
+            background: -webkit-linear-gradient(top, #fafafa 0%, #f6f6f6 65%, #ececec 100%);
+            background: -o-linear-gradient(top, #fafafa 0%, #f6f6f6 65%, #ececec 100%);
+            background: -ms-linear-gradient(top, #fafafa 0%, #f6f6f6 65%, #ececec 100%);
+            background: linear-gradient(to bottom, #fafafa 0%, #f6f6f6 65%, #ececec 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#f0f0f0', GradientType=0 );
+            padding: 20px 0 6px 0; }
+          .main .competition .overlay_ranking .table_ranking .ranking .block4 {
+            background-color: white !important;
+            padding-top: 55px;
+            position: relative; }
+            .main .competition .overlay_ranking .table_ranking .ranking .block4 .place {
+              background-color: #ce1a20;
+              border: 5px solid white;
+              border-radius: 50%;
+              color: white;
+              line-height: 1.7em;
+              height: 54px;
+              font-size: 1.7em;
+              position: absolute;
+              width: 54px;
+              margin: auto;
+              top: 45px;
+              left: 0;
+              bottom: 0;
+              right: 0; }
+    @media only screen and (max-width: 768px) {
+      .main .competition body {
+        overflow: auto; }
+      .main .competition .ta {
+        order: 2; }
+      .main .competition .table_ranking {
+        display: flex;
+        flex-wrap: wrap;
+        padding-right: 20px;
+        padding-left: 20px; }
+        .main .competition .table_ranking .ranking {
+          width: 100%; }
+      .main .competition .na {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        order: 1 !important; }
+        .main .competition .na h3 {
+          display: block !important;
+          width: 100%; } }
     .main .competition .table-responsive {
       padding-right: 10px;
       max-height: 450px;

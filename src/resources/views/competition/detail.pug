@@ -2,7 +2,7 @@ extends ../layouts/common
 block main
     section.competition
         .row
-            .col-sm-10.mx-auto
+            .col-sm-10
                 .card.shadow.border-0
                     .card-body.p-5
                         .d-flex.align-items-center.justify-content-between
@@ -34,11 +34,70 @@ block main
                                                         span.text-warning.fw-bold Thành viên
                                                         span.d-block.mt-2= member.fullname
                         .quiz.mt-4
+                        .leaderboard
+                            h1.d-flex.align-items-center.justify-content-center
+                                ion-icon.fs-4(name="trophy")
+                                span.ms-2 Bảng xếp hạng
+                            ol
+                        .overlay_ranking
+                            .table_ranking.row
+                                .col-sm-4.ranking.r2.animated
+                                    .header-ranking
+                                        h3 Hạng 2
+                                    .block1
+                                        img.rounded-circle(src="/img/nobody.jpg" width=50 height=50)
+                                        h2 Juan Pablo Jara
+                                    .block2
+                                        p
+                                            strong Điểm
+                                        p 100 điểm
+                                    .block3
+                                        p
+                                            strong Số câu đúng
+                                        p 2 câu
+                                    .block4
+                                        .place 2
+                                .col-sm-4.ranking.r1.animated.first
+                                    .header-ranking
+                                        h3 Hạng 1
+                                    .block1
+                                        img.rounded-circle(src="/img/nobody.jpg" width=50 height=50)
+                                        h2 Juan Pablo Jara
+                                    .block2
+                                        p
+                                            strong Điểm
+                                        p 100 điểm
+                                    .block3
+                                        p
+                                            strong Số câu đúng
+                                        p 2 câu
+                                    .block4
+                                        .place 1
+                                .col-sm-4.ranking.r3.animated
+                                    .header-ranking
+                                        h3 Hạng 3
+                                    .block1
+                                        img.rounded-circle(src="/img/nobody.jpg" width=50 height=50)
+                                        h2 Juan Pablo Jara
+                                    .block2
+                                        p
+                                            strong Điểm
+                                        p 100 điểm
+                                    .block3
+                                        p
+                                            strong Số câu đúng
+                                        p 2 câu
+                                    .block4
+                                        .place 3
+                            .d-flex.justify-content-center
+                                button.d-flex.align-items-center.btn.btn-secondary(data-bs-toggle="modal" data-bs-target="#outRoomModal")
+                                    ion-icon.fs-4(name="log-out")
+                                    span.ms-2 Rời phòng
         #overlay
             .d-flex.align-items-center.justify-content-center.flex-column
                 .rounded-circle.bg-white.circle-time.text-center.mt-5
                     span.text-uppercase.fw-bold.d-block.mt-5 Bắt đầu sau
-                    .countdown.fw-bold 10
+                    .countdown.fw-bold 5
                     span.text-uppercase.fs-7 giây
                 button.d-flex.align-items-center.btn.btn-secondary.mt-4(data-bs-toggle="modal" data-bs-target="#outRoomModal") Rời phòng
                 .notes.fw-bold.fs-5.mt-5
@@ -62,6 +121,7 @@ block main
     script.
         const socket = io();
         var roomId = "#{room[0].roomName}";
+        let indexQuestion = 0;
 
         //- xử lý user tham gia vào phòng
         socket.emit("client-send-room-name", {
@@ -96,32 +156,28 @@ block main
         socket.on("server-send-starting", (data) => {
             $("#overlay").show();
 
-            //- var count = 5;
-            //- var interval = setInterval(function() {
-            //-     document.getElementById('player-time').innerHTML= count;
-            //-     count--;
-            //-     if (count === 0){
-            //-         clearInterval(interval);
-            //-         handleNextQuestion();
-            //-     }
-            //- }, 1000);
-
             var counter = 5;
             var interval = setInterval(function() {
+                $('.countdown').text(counter);
                 counter--;
                 if (counter <= 0) {
-                    $("#overlay").hide();
-                    $("#btn-start").attr("style", "display: none !important");
-                    $(".master").attr("style", "display: none !important");
-                    $(".members").hide();
-                    socket.emit("room-request-questions", data);
-                    $(".quiz").show();
                     clearInterval(interval);
+                    handleShowHide();
+                    socket.emit("room-request-questions", {roomId: data, indexQuestion: 0});
                     return;
                 } else {
                     $('.countdown').text(counter);
                 }
             }, 1000);
+
+            function handleShowHide() {
+                $("#overlay").hide();
+                $("#btn-start").attr("style", "display: none !important");
+                $(".master").attr("style", "display: none !important");
+                $(".members").hide();
+                $(".leaderboard").show();
+                $(".quiz").attr("style", "display: flex");
+            }
         })
 
         socket.on("server-send-question", (data) => {
@@ -146,9 +202,8 @@ block main
 
                 <div class="game-quiz-container">
                     <div class="game-details-container">
-                        <h1>Score : <span id="player-score">0</span> / ${data.questionsLength}</h1>
                         <h1><span id="player-time"></span></h1>
-                        <h1>Question : <span id="question-number">1</span> / ${data.questionsLength}</h1>
+                        <h1>Câu hỏi : <span id="question-number">${data.indexNumberQuestion}</span> / ${data.questionsLength}</h1>
                     </div>
 
                     <div class="game-question-container">
@@ -235,142 +290,56 @@ block main
                     </div>
                 </div>
             `);
-
-            let questions = data;
-            //- let shuffledQuestions = [];
-
-            //- function handleQuestions() {
-            //-     //function to shuffle and push 10 questions to shuffledQuestions array
-            //-     while (shuffledQuestions.length <= 9) {
-            //-         const random = questions[Math.floor(Math.random() * questions.length)];
-            //-         if (!shuffledQuestions.includes(random)) {
-            //-             shuffledQuestions.push(random);
-            //-         }
-            //-     }
-            //- }
-
-            let questionNumber = 1;
-            let playerScore = 0;
-            //- let playerTime = 5;
-            let count = 10;
-            let wrongAttempt = 0;
-            let indexNumber = 0;
-
+           
+            let isClick = false;
+            let countClick = 0;
+            
             countDownTimer();
 
             $(".next-button-container button").click(function () {
-                handleNextQuestion();
+                isClick = true;
+                countClick++;
+
+                if (countClick === 1) {
+                    handleQuestion();
+                } else {
+                    Eggy({
+                        title: 'Bạn đã hoàn thành câu này',
+                        message: 'Vui lòng đợi người chơi khác hoàn thành để sang câu tiếp theo!!!',
+                        type: 'warning',
+                        duration: 5000,
+                    });
+                }
             })
 
-            $(".modal-button-container button").click(function () {
-                closeOptionModal();
-            })
+            //- $(".modal-button-container button").click(function () {
+            //-     closeOptionModal();
+            //- })
 
-            // function for displaying next question in the array to dom
-            function NextQuestion(index) {
-                //- handleQuestions();
-                const currentQuestion = questions[index];
-                document.getElementById("question-number").innerHTML = questionNumber;
-                document.getElementById("player-score").innerHTML = playerScore;
-                document.getElementById("display-question").innerHTML = currentQuestion.question;
-                document.getElementById("option-one-label").innerHTML = currentQuestion.option1;
-                document.getElementById("option-two-label").innerHTML = currentQuestion.option2;
-                document.getElementById("option-three-label").innerHTML = currentQuestion.option3;
-                document.getElementById("option-four-label").innerHTML = currentQuestion.option4;
-            }
-
-            function checkForAnswer() {
-                const currentQuestion = questions[indexNumber]; //gets current Question
-                const currentQuestionAnswer = currentQuestion.answer; //gets current Question's answer
-                const options = document.getElementsByName("option"); //gets all elements in dom with name of 'option' (in this the radio inputs)
+            function handleQuestion() {
+                const currentQuestion = data.question;
+                const currentQuestionAnswer = currentQuestion.answer;
+                const options = document.getElementsByName("option");
+                const currentUser = $(".user__info .username").text();
                 let correctOption = null;
 
                 options.forEach((option) => {
                     if (option.value === currentQuestionAnswer) {
-                        //get's correct's radio input with correct answer
                         correctOption = option.labels[0].id;
                     }
                 });
 
-                //checking to make sure a radio input has been checked or an option being chosen
                 if (
                     options[0].checked === false &&
                     options[1].checked === false &&
                     options[2].checked === false &&
                     options[3].checked === false
                 ) {
-                    //- document.getElementById("option-modal").style.display = "flex";
-                    wrongAttempt++;
-                    indexNumber++;
-                    //set to delay question number till when next question loads
-                    setTimeout(() => {
-                        questionNumber++;
-                    }, 1000);
-                }
-
-                //- var inputChecked = options.checked.length;
-                //- if (inputChecked.length === 0) {
-                //-     console.log(12311111111111111);
-                //-     wrongAttempt++;
-                //-     indexNumber++;
-                //-     //set to delay question number till when next question loads
-                //-     setTimeout(() => {
-                //-         questionNumber++;
-                //-     }, 1000);
-                //- } else {
-                //checking if checked radio button is same as answer
-                options.forEach((option) => {
-                    if (option.checked === true && option.value === currentQuestionAnswer) {
-                        document.getElementById(correctOption).style.backgroundColor = "green";
-                        playerScore++;
-                        indexNumber++;
-                        //set to delay question number till when next question loads
-                        setTimeout(() => {
-                            questionNumber++;
-                        }, 1000);
-                    } else if (option.checked && option.value !== currentQuestionAnswer) {
-                        const wrongLabelId = option.labels[0].id;
-                        document.getElementById(wrongLabelId).style.backgroundColor = "#fb5533";
-                        document.getElementById(correctOption).style.backgroundColor = "#44a500";
-                        wrongAttempt++;
-                        indexNumber++;
-                        //set to delay question number till when next question loads
-                        setTimeout(() => {
-                            questionNumber++;
-                        }, 1000);
+                    if (confirm("Bạn muốn bỏ qua câu này?") === false) {
+                        countClick = 0;
+                        return false;
                     }
-                });
-            }
 
-            //called when the next button is called
-            function handleNextQuestion() {
-                checkForAnswer();
-                unCheckRadioButtons();
-                //delays next question displaying for a second
-                console.log("indexNumber:" + indexNumber);
-                setTimeout(() => {
-                    if (indexNumber <= questions.length - 1) {
-                        NextQuestion(indexNumber);
-                        count=10;
-                        countDownTimer();
-                    } else {
-                        handleEndGame();
-                    }
-                    resetOptionBackground();
-                }, 1000);
-            }
-
-            function handleQuestion() {
-                const currentQuestion = data.question;
-                const options = document.getElementsByName("option");
-                const currentUser = $(".user__info .username").text();
-
-                if (
-                    options[0].checked === false &&
-                    options[1].checked === false &&
-                    options[2].checked === false &&
-                    options[3].checked === false
-                ) {
                     var option = null;
                     const obj = {
                         roomId: roomId,
@@ -379,44 +348,67 @@ block main
                         optionValue: option,
                     };
                     socket.emit("user-send-option", obj);
-                    return;
+                    indexQuestion++;
+                } else {
+                    let optionValue = null;
+                    options.forEach((option) => {
+                        if (option.checked === true && option.value === currentQuestionAnswer) {
+                            optionValue = option.value;
+                            document.getElementById(correctOption).style.backgroundColor = "#44a500";
+                            indexQuestion++;
+                        } else if (option.checked && option.value !== currentQuestionAnswer) {
+                            const wrongLabelId = option.labels[0].id;
+                            optionValue = option.value;
+                            document.getElementById(wrongLabelId).style.backgroundColor = "#fb5533";
+                            document.getElementById(correctOption).style.backgroundColor = "#44a500";
+                            indexQuestion++;
+                        }
+                    });
+
+                    const obj = {
+                        roomId: roomId,
+                        currentQuestion: currentQuestion,
+                        currentUser: currentUser,
+                        optionValue: optionValue,
+                    };
+                    socket.emit("user-send-option", obj);
                 }
-
-                let optionValue = null;
-                options.forEach((option) => {
-                    if (option.checked === true) {
-                        optionValue = option.value;
-                        return;
-                    }
-                });
-
-                const obj = {
-                    roomId: roomId,
-                    currentQuestion: currentQuestion,
-                    currentUser: currentUser,
-                    optionValue: optionValue,
-                };
-                socket.emit("user-send-option", obj);
             }
 
+            function nextQuestion() {
+                const objQuestion = {
+                    roomId: roomId, 
+                    indexQuestion: indexQuestion,
+                };
+                setTimeout(() => {
+                    socket.emit("room-request-questions", objQuestion);
+                },1000);
+            }
+            
             function countDownTimer() {
-                var counter = 5;
+                var counter = 10;
                 var interval = setInterval(function() {
                     $('#player-time').text(counter);
                     counter--;
                     if (counter <= 0) {
                         clearInterval(interval);
-                        handleQuestion();
 
-                        //- socket.emit("room-request-questions", data);
-                        return;
+                        if (!isClick) {
+                            handleQuestion();
+                            unCheckRadioButtons();
+                            nextQuestion();
+                            resetOptionBackground();
+                            return;
+                        }
+
+                        unCheckRadioButtons();
+                        nextQuestion();
+                        resetOptionBackground();
                     } else {
                         $('#player-time').text(counter);
                     }
                 }, 1000);
             }
-
-            
 
             //sets options background back to null after display the right/wrong colors
             function resetOptionBackground() {
@@ -460,23 +452,39 @@ block main
                 document.getElementById("right-answers").innerHTML = playerScore;
                 document.getElementById("score-modal").style.display = "flex";
             }
-
-            //closes score modal and resets game
-            function closeScoreModal() {
-                questionNumber = 1;
-                playerScore = 0;
-                wrongAttempt = 0;
-                indexNumber = 0;
-                questions = [];
-                NextQuestion(indexNumber);
-                document.getElementById("score-modal").style.display = "none";
-            }
-
-            //function to close warning modal
-            function closeOptionModal() {
-                document.getElementById("option-modal").style.display = "none";
-            }
         })
+
+        socket.on("server-send-score", (data) => {
+            //- $(".leaderboard ol").html("");
+            data.map((rank, index) => {
+                $(".leaderboard ol").append(`
+                    <li>
+                        <mark>
+                            <img src='/img/nobody.jpg' width=30 height=30 class='rounded-circle' />
+                        </mark>
+                        <mark>${rank.socketID}</mark>
+                        <small>${rank.score}</small>
+                    </li>
+                `);
+            })
+        })
+
+        //- socket.on("server-send-finished", () => {
+        //-     $(".quiz").hide();
+        //-     //- $(".table_ranking").show();
+        //-     $(".overlay_ranking").show();
+
+        //-     $('#ready').css('display', 'block').addClass('fadeIn');
+        //-     setTimeout(function(){
+        //-         $('.r3').addClass('slideInUp');
+        //-     }, 300);
+        //-     setTimeout(function(){
+        //-         $('.r2').addClass('slideInUp');
+        //-     }, 600);
+        //-     setTimeout(function(){
+        //-         $('.r1').addClass('slideInUp');
+        //-     }, 900);
+        //- })
 
         // handle server send length members to click start
         let lengthMembersInRoom = 0;

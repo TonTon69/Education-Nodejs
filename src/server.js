@@ -77,6 +77,7 @@ const io = require("socket.io")(server);
 var countMessage = 0;
 var connected_socket = 0;
 var $ipsConnected = [];
+let score = 0;
 
 io.on("connection", async (socket) => {
     var $ipAddress = socket.handshake.address;
@@ -424,7 +425,11 @@ io.on("connection", async (socket) => {
         if (room) {
             if (room.roomName === data.userName) {
                 // user là chủ phòng
-                await room.update({ socketID: socket.id });
+                // await room.update({ socketID: socket.id });
+                await Room.updateOne(
+                    { roomName: data.roomId },
+                    { socketID: socket.id }
+                );
             } else {
                 // user ko phải là chủ phòng
                 let flag = false;
@@ -487,7 +492,13 @@ io.on("connection", async (socket) => {
                 });
 
                 if (roomMembers.members.length === 1) {
-                    await roomMembers.update({ status: "Full" });
+                    // await roomMembers.update({ status: "Full" });
+                    await Room.updateOne(
+                        {
+                            roomName: data.roomId,
+                        },
+                        { status: "Full" }
+                    );
                 }
 
                 const rooms = await Room.aggregate([
@@ -694,36 +705,84 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("room-request-questions", async (data) => {
-        const room = await Room.findOne({ roomName: data });
-        if (room) {
-            const questions = await Exercise.aggregate([
-                {
-                    $match: { lessionID: ObjectId(room.lessionID) },
-                },
-                {
-                    $lookup: {
-                        from: "exercise-categories",
-                        localField: "ceID",
-                        foreignField: "_id",
-                        as: "cate",
+        try {
+            const room = await Room.findOne({ roomName: data.roomId });
+            if (room) {
+                const questions = await Exercise.aggregate([
+                    {
+                        $match: { lessionID: ObjectId(room.lessionID) },
                     },
-                },
-            ]);
+                    {
+                        $lookup: {
+                            from: "exercise-categories",
+                            localField: "ceID",
+                            foreignField: "_id",
+                            as: "cate",
+                        },
+                    },
+                ]);
 
-            let indexNumber = 0;
-            const obj = {
-                questionsLength: questions.length,
-                question: questions[indexNumber],
-            };
-
-            io.sockets.in(data).emit("server-send-question", obj);
+                if (data.indexQuestion <= questions.length - 1) {
+                    score = 20;
+                    const obj = {
+                        indexNumberQuestion: data.indexQuestion + 1,
+                        questionsLength: questions.length,
+                        question: questions[data.indexQuestion],
+                    };
+                    socket.emit("server-send-question", obj);
+                } else {
+                    socket.emit("server-send-finished");
+                }
+            }
+        } catch (error) {
+            console.log(error);
         }
     });
 
     socket.on("user-send-option", async (data) => {
+        let ranks = [];
         const room = await Room.findOne({ roomName: data.roomId });
         if (room) {
-            console.log(data);
+            if (
+                data.currentQuestion.answer === data.optionValue &&
+                score === 20
+            ) {
+                const obj = {
+                    score: 20,
+                    socketID: socket.id,
+                };
+                ranks.push(obj);
+                io.sockets.in(data.roomId).emit("server-send-score", ranks);
+                score = score - 5;
+            } else if (
+                data.currentQuestion.answer === data.optionValue &&
+                score === 15
+            ) {
+                const obj = {
+                    score: 15,
+                    socketID: socket.id,
+                };
+                ranks.push(obj);
+                io.sockets.in(data.roomId).emit("server-send-score", ranks);
+                score = score - 5;
+            } else if (
+                data.currentQuestion.answer === data.optionValue &&
+                score === 10
+            ) {
+                const obj = {
+                    score: 10,
+                    socketID: socket.id,
+                };
+                ranks.push(obj);
+                io.sockets.in(data.roomId).emit("server-send-score", ranks);
+            } else {
+                const obj = {
+                    score: 0,
+                    socketID: socket.id,
+                };
+                ranks.push(obj);
+                io.sockets.in(data.roomId).emit("server-send-score", ranks);
+            }
         }
     });
 });
