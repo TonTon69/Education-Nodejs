@@ -78,6 +78,7 @@ var countMessage = 0;
 var connected_socket = 0;
 var $ipsConnected = [];
 let score = 0;
+let ranks = [];
 
 io.on("connection", async (socket) => {
     var $ipAddress = socket.handshake.address;
@@ -491,7 +492,7 @@ io.on("connection", async (socket) => {
                     roomName: data.roomId,
                 });
 
-                if (roomMembers.members.length === 1) {
+                if (roomMembers.members.length === 2) {
                     // await roomMembers.update({ status: "Full" });
                     await Room.updateOne(
                         {
@@ -671,8 +672,23 @@ io.on("connection", async (socket) => {
 
     // start-room
     socket.on("handle-start-room", async (data) => {
-        io.sockets.in(data).emit("server-send-starting", data);
-        await Room.updateOne({ roomName: data, status: "Đang thi..." });
+        const roomsMember = await Room.findOne({ roomName: data.roomId });
+        let members = roomsMember.members;
+        let member = {
+            socketID: socket.id,
+            userName: data.username,
+            avatar: data.avatar,
+            fullname: data.fullname,
+        };
+        members.push(member);
+
+        const obj = {
+            roomId: data.roomId,
+            members: members,
+        };
+
+        io.sockets.in(data.roomId).emit("server-send-starting", obj);
+        await Room.updateOne({ roomName: data.roomId, status: "Đang thi..." });
 
         const rooms = await Room.aggregate([
             {
@@ -700,7 +716,6 @@ io.on("connection", async (socket) => {
                 },
             },
         ]);
-
         io.sockets.emit("server-send-rooms", rooms);
     });
 
@@ -731,7 +746,15 @@ io.on("connection", async (socket) => {
                     };
                     socket.emit("server-send-question", obj);
                 } else {
+                    ranks.forEach((rank, index) => {
+                        if (rank.roomId === data.roomId) {
+                            console.log("index: " + index);
+                            ranks.splice(0, 1);
+                        }
+                    });
+
                     socket.emit("server-send-finished");
+                    console.log("server-send-finished:", ranks);
                 }
             }
         } catch (error) {
@@ -740,48 +763,165 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("user-send-option", async (data) => {
-        let ranks = [];
         const room = await Room.findOne({ roomName: data.roomId });
         if (room) {
+            let ranksInRoom = [];
             if (
                 data.currentQuestion.answer === data.optionValue &&
                 score === 20
             ) {
                 const obj = {
+                    roomId: data.roomId,
                     score: 20,
                     socketID: socket.id,
+                    fullname: data.fullname,
+                    avatar: data.avatar,
                 };
                 ranks.push(obj);
-                io.sockets.in(data.roomId).emit("server-send-score", ranks);
-                score = score - 5;
+
+                ranks.forEach((rank) => {
+                    if (rank.roomId === data.roomId) {
+                        ranksInRoom.push(rank);
+                    }
+                });
+
+                let grouped = [];
+                ranksInRoom.forEach(
+                    (function (hash) {
+                        return function (item) {
+                            if (!hash[item.socketID]) {
+                                hash[item.socketID] = {
+                                    socketID: item.socketID,
+                                    score: 0,
+                                    roomId: item.roomId,
+                                    fullname: item.fullname,
+                                    avatar: item.avatar,
+                                };
+                                grouped.push(hash[item.socketID]);
+                            }
+                            hash[item.socketID].score += +item.score;
+                        };
+                    })(Object.create(null))
+                );
+
+                io.sockets.in(data.roomId).emit("server-send-score", grouped);
+                score = 15;
             } else if (
                 data.currentQuestion.answer === data.optionValue &&
                 score === 15
             ) {
                 const obj = {
+                    roomId: data.roomId,
                     score: 15,
                     socketID: socket.id,
+                    fullname: data.fullname,
+                    avatar: data.avatar,
                 };
                 ranks.push(obj);
-                io.sockets.in(data.roomId).emit("server-send-score", ranks);
-                score = score - 5;
+
+                ranks.forEach((rank) => {
+                    if (rank.roomId === data.roomId) {
+                        ranksInRoom.push(rank);
+                    }
+                });
+
+                let grouped = [];
+                ranksInRoom.forEach(
+                    (function (hash) {
+                        return function (item) {
+                            if (!hash[item.socketID]) {
+                                hash[item.socketID] = {
+                                    socketID: item.socketID,
+                                    score: 0,
+                                    roomId: item.roomId,
+                                    fullname: item.fullname,
+                                    avatar: item.avatar,
+                                };
+                                grouped.push(hash[item.socketID]);
+                            }
+                            hash[item.socketID].score += +item.score;
+                        };
+                    })(Object.create(null))
+                );
+
+                io.sockets.in(data.roomId).emit("server-send-score", grouped);
+
+                // io.sockets.in(data.roomId).emit("server-send-score", obj);
+                score = 10;
             } else if (
                 data.currentQuestion.answer === data.optionValue &&
                 score === 10
             ) {
                 const obj = {
+                    roomId: data.roomId,
                     score: 10,
                     socketID: socket.id,
+                    fullname: data.fullname,
+                    avatar: data.avatar,
                 };
                 ranks.push(obj);
-                io.sockets.in(data.roomId).emit("server-send-score", ranks);
+                ranks.forEach((rank) => {
+                    if (rank.roomId === data.roomId) {
+                        ranksInRoom.push(rank);
+                    }
+                });
+
+                let grouped = [];
+                ranksInRoom.forEach(
+                    (function (hash) {
+                        return function (item) {
+                            if (!hash[item.socketID]) {
+                                hash[item.socketID] = {
+                                    socketID: item.socketID,
+                                    score: 0,
+                                    roomId: item.roomId,
+                                    fullname: item.fullname,
+                                    avatar: item.avatar,
+                                };
+                                grouped.push(hash[item.socketID]);
+                            }
+                            hash[item.socketID].score += +item.score;
+                        };
+                    })(Object.create(null))
+                );
+
+                io.sockets.in(data.roomId).emit("server-send-score", grouped);
             } else {
                 const obj = {
+                    roomId: data.roomId,
                     score: 0,
                     socketID: socket.id,
+                    fullname: data.fullname,
+                    avatar: data.avatar,
                 };
                 ranks.push(obj);
-                io.sockets.in(data.roomId).emit("server-send-score", ranks);
+
+                ranks.forEach((rank) => {
+                    if (rank.roomId === data.roomId) {
+                        ranksInRoom.push(rank);
+                    }
+                });
+
+                let grouped = [];
+                ranksInRoom.forEach(
+                    (function (hash) {
+                        return function (item) {
+                            if (!hash[item.socketID]) {
+                                hash[item.socketID] = {
+                                    socketID: item.socketID,
+                                    score: 0,
+                                    roomId: item.roomId,
+                                    fullname: item.fullname,
+                                    avatar: item.avatar,
+                                };
+                                grouped.push(hash[item.socketID]);
+                            }
+                            hash[item.socketID].score += +item.score;
+                        };
+                    })(Object.create(null))
+                );
+
+                io.sockets.in(data.roomId).emit("server-send-score", grouped);
             }
         }
     });

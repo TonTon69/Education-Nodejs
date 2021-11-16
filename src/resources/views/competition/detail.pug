@@ -36,9 +36,10 @@ block main
                         .quiz.mt-4
                         .leaderboard
                             h1.d-flex.align-items-center.justify-content-center
-                                ion-icon.fs-4(name="trophy")
+                                ion-icon.fs-5(name="trophy")
                                 span.ms-2 Bảng xếp hạng
-                            ol
+                            div 
+                                ol
                         .overlay_ranking
                             .table_ranking.row
                                 .col-sm-4.ranking.r2.animated
@@ -163,7 +164,7 @@ block main
                 if (counter <= 0) {
                     clearInterval(interval);
                     handleShowHide();
-                    socket.emit("room-request-questions", {roomId: data, indexQuestion: 0});
+                    socket.emit("room-request-questions", {roomId: data.roomId, indexQuestion: 0});
                     return;
                 } else {
                     $('.countdown').text(counter);
@@ -177,29 +178,23 @@ block main
                 $(".members").hide();
                 $(".leaderboard").show();
                 $(".quiz").attr("style", "display: flex");
+
+                $(".leaderboard ol").html("");
+                data.members.map((member) => {
+                    $(".leaderboard ol").append(`
+                        <li id='${member.userName}'>
+                            <img src='${member.avatar}' width=30 height=30 class='rounded-circle' style='object-fit: cover' />
+                            <mark>${member.fullname}</mark>
+                            <small id='score'>0</small>
+                        </li>
+                    `);
+                })
             }
         })
 
         socket.on("server-send-question", (data) => {
             $(".quiz").html("");
             $(".quiz").append(`
-                <div class="modal-container" id="score-modal">
-                    <div class="modal-content-container">
-                        <h1>Xin chúc mừng, bạn đã hoàn thành bài thi.</h1>
-                        <div class="grade-details">
-                            <p>Số câu hỏi : ${data.questionsLength}</p>
-                            <p>Số câu sai : <span id="wrong-answers"></span></p>
-                            <p>Số câu đúng : <span id="right-answers"></span></p>
-                            <p>Điểm : <span id="grade-percentage"></span>%</p>
-                            <p><span id="remarks"></span></p>
-                        </div>
-
-                        <div class="modal-button-container">
-                            <button onclick="closeScoreModal()">Rời phòng</button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="game-quiz-container">
                     <div class="game-details-container">
                         <h1><span id="player-time"></span></h1>
@@ -211,17 +206,6 @@ block main
                     </div>
 
                     <div class="game-options-container">
-                        <div class="modal-container" id="option-modal">
-                            <div class="modal-content-container">
-                                <h1>Please Pick An Option</h1>
-                                <div class="modal-button-container">
-                                    <button>
-                                        Continue
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
                         <span>
                             <input
                                 type="radio"
@@ -285,7 +269,7 @@ block main
 
                     <div class="next-button-container">
                         <button>
-                            Câu tiếp theo
+                            Gửi kết quả
                         </button>
                     </div>
                 </div>
@@ -321,6 +305,8 @@ block main
                 const currentQuestionAnswer = currentQuestion.answer;
                 const options = document.getElementsByName("option");
                 const currentUser = $(".user__info .username").text();
+                const fullname = $(".user__info .name").text();
+                const avatar = $(".user__avatar img").attr("src");
                 let correctOption = null;
 
                 options.forEach((option) => {
@@ -341,14 +327,17 @@ block main
                     }
 
                     var option = null;
+                    indexQuestion++;
                     const obj = {
                         roomId: roomId,
+                        indexQuestion: indexQuestion,
                         currentQuestion: currentQuestion,
                         currentUser: currentUser,
+                        fullname: fullname,
+                        avatar: avatar,
                         optionValue: option,
                     };
                     socket.emit("user-send-option", obj);
-                    indexQuestion++;
                 } else {
                     let optionValue = null;
                     options.forEach((option) => {
@@ -367,8 +356,11 @@ block main
 
                     const obj = {
                         roomId: roomId,
+                        indexQuestion: indexQuestion,
                         currentQuestion: currentQuestion,
                         currentUser: currentUser,
+                        fullname: fullname,
+                        avatar: avatar,
                         optionValue: optionValue,
                     };
                     socket.emit("user-send-option", obj);
@@ -426,47 +418,58 @@ block main
                 }
             }
 
-            // function for when all questions being answered
-            function handleEndGame() {
-                let remark = null;
-                let remarkColor = null;
+            //- // function for when all questions being answered
+            //- function handleEndGame() {
+            //-     let remark = null;
+            //-     let remarkColor = null;
 
-                // condition check for player remark and remark color
-                if (playerScore <= 3) {
-                    remark = "Bad Grades, Keep Practicing.";
-                    remarkColor = "red";
-                } else if (playerScore >= 4 && playerScore < 7) {
-                    remark = "Average Grades, You can do better.";
-                    remarkColor = "orange";
-                } else if (playerScore >= 7) {
-                    remark = "Excellent, Keep the good work going.";
-                    remarkColor = "green";
-                }
-                const playerGrade = (playerScore / questions.length) * 100;
+            //-     // condition check for player remark and remark color
+            //-     if (playerScore <= 3) {
+            //-         remark = "Bad Grades, Keep Practicing.";
+            //-         remarkColor = "red";
+            //-     } else if (playerScore >= 4 && playerScore < 7) {
+            //-         remark = "Average Grades, You can do better.";
+            //-         remarkColor = "orange";
+            //-     } else if (playerScore >= 7) {
+            //-         remark = "Excellent, Keep the good work going.";
+            //-         remarkColor = "green";
+            //-     }
+            //-     const playerGrade = (playerScore / questions.length) * 100;
 
-                //data to display to score board
-                document.getElementById("remarks").innerHTML = remark;
-                document.getElementById("remarks").style.color = remarkColor;
-                document.getElementById("grade-percentage").innerHTML = playerGrade;
-                document.getElementById("wrong-answers").innerHTML = wrongAttempt;
-                document.getElementById("right-answers").innerHTML = playerScore;
-                document.getElementById("score-modal").style.display = "flex";
-            }
+            //-     //data to display to score board
+            //-     document.getElementById("remarks").innerHTML = remark;
+            //-     document.getElementById("remarks").style.color = remarkColor;
+            //-     document.getElementById("grade-percentage").innerHTML = playerGrade;
+            //-     document.getElementById("wrong-answers").innerHTML = wrongAttempt;
+            //-     document.getElementById("right-answers").innerHTML = playerScore;
+            //-     document.getElementById("score-modal").style.display = "flex";
+            //- }
         })
 
         socket.on("server-send-score", (data) => {
-            //- $(".leaderboard ol").html("");
-            data.map((rank, index) => {
+            $(".leaderboard ol").html("");
+            data.map((member) => {
+                console.log(member);
                 $(".leaderboard ol").append(`
                     <li>
-                        <mark>
-                            <img src='/img/nobody.jpg' width=30 height=30 class='rounded-circle' />
-                        </mark>
-                        <mark>${rank.socketID}</mark>
-                        <small>${rank.score}</small>
+                        <img src='${member.avatar}' width=30 height=30 class='rounded-circle' style='object-fit: cover' />
+                        <mark>${member.fullname}</mark>
+                        <small>${member.score}</small>
                     </li>
                 `);
             })
+            //- const ranks = document.querySelectorAll(".leaderboard ol li");
+            //- //- for (let i = 0; i < ranks.length; i++) {
+            //- //-     if (ranks[i].getAttribute("id") === data.userName) {
+            //- //-         ranks[i].getElementsByClassName("small").innerHTML = `<h1>${data.score}</h1>`;
+            //- //-     }
+            //- //- }
+            //- ranks.forEach((rank) => {
+            //-     var id = rank.getAttribute("id");
+            //-     if (id === data.userName) {
+            //-         rank.children.score.innerHTML = data.score;
+            //-     }
+            //- });
         })
 
         //- socket.on("server-send-finished", () => {
@@ -516,7 +519,13 @@ block main
                 //-     socket.emit("handle-start-room", roomId);
                 //-     return;
                 //- }
-                socket.emit("handle-start-room", roomId);
+                const obj = {
+                    roomId: roomId,
+                    username: $(".user__info .username").text(),
+                    avatar: $(".user__avatar img").attr("src"),
+                    fullname: $(".user__info .name").text(),
+                };
+                socket.emit("handle-start-room", obj);
 
                 //- Eggy({
                 //-     title: 'Không đủ thành viên',

@@ -84,7 +84,9 @@ socket.on("server-send-rooms", (data) => {
                 <td class='text-center length-members'>${
                     room.members.length + 1
                 }/2</td>
-                <td class='fw-bold text-success status'>${status}</td>
+                <td class='fw-bold status ${
+                    status === "Đang thi..." ? "text-warning" : "text-success"
+                }'>${status}</td>
                 <td>
                     <a class='text-primary' ${
                         status === "Full" || status === "Đang thi..."

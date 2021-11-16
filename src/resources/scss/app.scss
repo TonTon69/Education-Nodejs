@@ -847,93 +847,111 @@ blockquote {
                 margin-bottom: 0;
             }
 
-            ol {
-                counter-reset: leaderboard;
-                list-style-type: none;
-                padding-left: 0;
+            div {
+                background: $white-color;
+                overflow-x: hidden;
+                overflow-y: auto;
+                flex: 1;
 
-                li {
-                    position: relative;
-                    z-index: 1;
-                    font-size: 14px;
-                    counter-increment: leaderboard;
-                    padding: 18px 10px 18px 50px;
-                    cursor: pointer;
-                    backface-visibility: hidden;
-                    transform: translateZ(0) scale(1, 1);
-                    border-bottom: 1px solid #9c9c9c;
+                &::-webkit-scrollbar {
+                    width: 6px;
+                }
+                &::-webkit-scrollbar-track {
+                    background: #ddd;
+                }
+                &::-webkit-scrollbar-thumb {
+                    background: #bdbdbd;
+                }
 
-                    &::before {
-                        content: counter(leaderboard);
-                        position: absolute;
-                        z-index: 2;
-                        top: 15px;
-                        left: 15px;
-                        width: 20px;
-                        height: 20px;
-                        line-height: 20px;
-                        color: #c24448;
-                        background: #fff;
-                        border-radius: 20px;
-                        text-align: center;
-                    }
+                ol {
+                    counter-reset: leaderboard;
+                    list-style-type: none;
+                    padding-left: 0;
+                    margin-bottom: 0;
 
-                    mark {
-                        position: absolute;
-                        z-index: 2;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        padding: 18px 10px 18px 50px;
-                        margin: 0;
-                        background: none;
+                    li {
+                        position: relative;
+                        z-index: 1;
+                        font-size: 13px;
+                        counter-increment: leaderboard;
+                        padding: 12px 4px 4px 10px;
+                        cursor: pointer;
+                        backface-visibility: hidden;
+                        transform: translateZ(0) scale(1, 1);
+                        border-bottom: 1px solid #9c9c9c;
 
-                        &::before,
+                        &::before {
+                            content: counter(leaderboard);
+                            position: absolute;
+                            z-index: 2;
+                            top: 2px;
+                            left: 2px;
+                            width: 20px;
+                            height: 20px;
+                            line-height: 20px;
+                            color: #c24448;
+                            background: #fff;
+                            border-radius: 20px;
+                            text-align: center;
+                        }
+
+                        mark {
+                            position: absolute;
+                            z-index: 2;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            padding: 16px 10px 18px 50px;
+                            margin: 0;
+                            background: none;
+
+                            &::before,
+                            &::after {
+                                content: "";
+                                position: absolute;
+                                z-index: 1;
+                                bottom: -11px;
+                                left: -9px;
+                                border-top: 10px solid #c24448;
+                                border-left: 10px solid transparent;
+                                transition: all 0.1s ease-in-out;
+                                opacity: 0;
+                            }
+
+                            &::after {
+                                left: auto;
+                                right: -9px;
+                                border-left: none;
+                                border-right: 10px solid transparent;
+                            }
+                        }
+
+                        small {
+                            position: relative;
+                            z-index: 2;
+                            display: block;
+                            text-align: right;
+                        }
+
                         &::after {
                             content: "";
                             position: absolute;
                             z-index: 1;
-                            bottom: -11px;
-                            left: -9px;
-                            border-top: 10px solid #c24448;
-                            border-left: 10px solid transparent;
-                            transition: all 0.1s ease-in-out;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: #fa6855;
+                            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);
+                            // transform: scaleX(1.06) scaleY(1.03);
+                            transition: all 0.3s ease-in-out;
                             opacity: 0;
                         }
 
-                        &::after {
-                            left: auto;
-                            right: -9px;
-                            border-left: none;
-                            border-right: 10px solid transparent;
+                        &:hover {
+                            background: #fafafa;
                         }
-                    }
-
-                    small {
-                        position: relative;
-                        z-index: 2;
-                        display: block;
-                        text-align: right;
-                    }
-
-                    &::after {
-                        content: "";
-                        position: absolute;
-                        z-index: 1;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: #fa6855;
-                        box-shadow: 0 3px 0 rgba(0, 0, 0, 0.08);
-                        // transform: scaleX(1.06) scaleY(1.03);
-                        transition: all 0.3s ease-in-out;
-                        opacity: 0;
-                    }
-
-                    &:hover {
-                        background: #fafafa;
                     }
                 }
             }
@@ -1253,8 +1271,8 @@ blockquote {
 
             &-chat {
                 flex: 1;
-                overflow-y: auto;
                 padding: 10px;
+                overflow-y: auto;
 
                 &::-webkit-scrollbar {
                     width: 6px;
@@ -1806,8 +1824,8 @@ blockquote {
                 }
 
                 .avatar {
-                    width: 42px;
-                    height: 42px;
+                    width: 32px;
+                    height: 32px;
                     object-fit: cover;
                     border-radius: 50%;
                     opacity: 0.9;
@@ -1832,7 +1850,6 @@ blockquote {
 
             .modal-dialog {
                 max-width: 800px;
-                transition: all 0.3s ease;
 
                 .btn-close {
                     box-shadow: unset;

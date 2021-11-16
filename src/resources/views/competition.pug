@@ -43,7 +43,10 @@ block main
                                                 span.fw-bold #{room.subject[0].name}: 
                                                 span #{room.lession[0].name}
                                             td.text-center.length-members #{room.members.length + 1}/2
-                                            td.fw-bold.text-success #{room.status}
+                                            if room.status === "Đang thi..."
+                                                td.fw-bold.text-warning #{room.status}
+                                            else
+                                                td.fw-bold.text-success #{room.status}
                                             td
                                                 if room.status === "Đang thi..." || room.status === "Full"
                                                     a.text-primary(href=`javascript:void(0)` style="opacity: 0.3; cursor: none") Tham gia
