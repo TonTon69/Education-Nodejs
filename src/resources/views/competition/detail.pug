@@ -7,7 +7,7 @@ block main
                     .card-body.p-5
                         .d-flex.align-items-center.justify-content-between
                             .master.d-flex.align-items-center
-                                img(src=room[0].avatar width=100 height=100 style='object-fit: cover').rounded-pill
+                                img.rounded-circle(src=room[0].avatar width=100 height=100 style='object-fit: cover')
                                 .ms-4
                                     span.text-warning.fw-bold Chủ phòng
                                     span.d-block.mt-2= room[0].master
@@ -29,7 +29,7 @@ block main
                                         .card.shadow.border-0.mb-4
                                             .card-body
                                                 .d-flex.align-items-center
-                                                    img(src=member.avatar width=100 height=100 style='object-fit: cover').rounded-pill
+                                                    img.rounded-circle(src=member.avatar width=100 height=100 style='object-fit: cover')
                                                     .ms-4
                                                         span.text-warning.fw-bold Thành viên
                                                         span.d-block.mt-2= member.fullname
@@ -37,59 +37,15 @@ block main
                         .leaderboard
                             h1.d-flex.align-items-center.justify-content-center
                                 ion-icon.fs-5(name="trophy")
-                                span.ms-2 Bảng xếp hạng
+                                span.ms-2.me-2 Bảng xếp hạng
+                                ion-icon.fs-5(name="chevron-down")
                             div 
                                 ol
                         .overlay_ranking
                             .table_ranking.row
                                 .col-sm-4.ranking.r2.animated
-                                    .header-ranking
-                                        h3 Hạng 2
-                                    .block1
-                                        img.rounded-circle(src="/img/nobody.jpg" width=50 height=50)
-                                        h2 Juan Pablo Jara
-                                    .block2
-                                        p
-                                            strong Điểm
-                                        p 100 điểm
-                                    .block3
-                                        p
-                                            strong Số câu đúng
-                                        p 2 câu
-                                    .block4
-                                        .place 2
                                 .col-sm-4.ranking.r1.animated.first
-                                    .header-ranking
-                                        h3 Hạng 1
-                                    .block1
-                                        img.rounded-circle(src="/img/nobody.jpg" width=50 height=50)
-                                        h2 Juan Pablo Jara
-                                    .block2
-                                        p
-                                            strong Điểm
-                                        p 100 điểm
-                                    .block3
-                                        p
-                                            strong Số câu đúng
-                                        p 2 câu
-                                    .block4
-                                        .place 1
                                 .col-sm-4.ranking.r3.animated
-                                    .header-ranking
-                                        h3 Hạng 3
-                                    .block1
-                                        img.rounded-circle(src="/img/nobody.jpg" width=50 height=50)
-                                        h2 Juan Pablo Jara
-                                    .block2
-                                        p
-                                            strong Điểm
-                                        p 100 điểm
-                                    .block3
-                                        p
-                                            strong Số câu đúng
-                                        p 2 câu
-                                    .block4
-                                        .place 3
                             .d-flex.justify-content-center
                                 button.d-flex.align-items-center.btn.btn-secondary(data-bs-toggle="modal" data-bs-target="#outRoomModal")
                                     ion-icon.fs-4(name="log-out")
@@ -102,10 +58,16 @@ block main
                     span.text-uppercase.fs-7 giây
                 button.d-flex.align-items-center.btn.btn-secondary.mt-4(data-bs-toggle="modal" data-bs-target="#outRoomModal") Rời phòng
                 .notes.fw-bold.fs-5.mt-5
-                    p Nguyên tắc thi đấu:
-                    p 1. Trong vòng 30s phải hoàn thành câu hỏi.
-                    p 2. Hãy tập trung vì sau khi thành viên cuối cùng trả lời câu hỏi thì hệ thống sẽ tự động chuyển sang câu hỏi tiếp theo.
-                    p Chúc các bạn thi đấu vui vẻ.
+                    p Bạn nên biết:
+                    .ms-4
+                        p 1. Trong vòng 30s phải hoàn thành câu hỏi.
+                        p 2. Thành viên trả lời đúng đầu tiên được cộng 20 điểm, đúng thứ hai sẽ được cộng 15 điểm và từ thứ 3 trở đi sẽ được cộng 10 điểm.
+                        p 3. Hãy tập trung vì sau khi thành viên cuối cùng trả lời câu hỏi thì hệ thống sẽ tự động chuyển sang câu hỏi tiếp theo.
+                    p.d-flex.align-items-center Chúc các bạn thi đấu vui vẻ
+                        span.ms-2
+                            ion-icon.fs-5(name='happy')
+                            ion-icon.fs-5(name='happy')
+                            ion-icon.fs-5(name='happy')
     #outRoomModal.modal.fade(tabindex='-1', aria-labelledby='outRoomModalLabel', aria-hidden='true')
         .modal-dialog(style='transition: all 0.3s ease')
             .modal-content
@@ -123,6 +85,8 @@ block main
         const socket = io();
         var roomId = "#{room[0].roomName}";
         let indexQuestion = 0;
+        let checkNextQuestion = false;
+        let playerTime = 30;
 
         //- xử lý user tham gia vào phòng
         socket.emit("client-send-room-name", {
@@ -141,7 +105,7 @@ block main
                         <div class='card mb-4'>
                             <div class='card-body'>
                                 <div class='d-flex align-items-center'>
-                                    <img src='${member.avatar}' class='rounded-pill' width=100 height=100 style='object-fit: cover' />
+                                    <img src='${member.avatar}' class='rounded-circle' width=100 height=100 style='object-fit: cover' />
                                     <div class='ms-4'>
                                         <span class='text-warning fw-bold'>Thành viên</span>
                                         <span class='d-block mt-2'>${member.fullname}</span>
@@ -164,7 +128,7 @@ block main
                 if (counter <= 0) {
                     clearInterval(interval);
                     handleShowHide();
-                    socket.emit("room-request-questions", {roomId: data.roomId, indexQuestion: 0});
+                    socket.emit("room-request-questions", {roomId: data, indexQuestion: 0});
                     return;
                 } else {
                     $('.countdown').text(counter);
@@ -176,19 +140,9 @@ block main
                 $("#btn-start").attr("style", "display: none !important");
                 $(".master").attr("style", "display: none !important");
                 $(".members").hide();
+                $('button[data-bs-target="#outRoomModal"]').attr("style", "position: absolute; right: 3rem");
                 $(".leaderboard").show();
                 $(".quiz").attr("style", "display: flex");
-
-                $(".leaderboard ol").html("");
-                data.members.map((member) => {
-                    $(".leaderboard ol").append(`
-                        <li id='${member.userName}'>
-                            <img src='${member.avatar}' width=30 height=30 class='rounded-circle' style='object-fit: cover' />
-                            <mark>${member.fullname}</mark>
-                            <small id='score'>0</small>
-                        </li>
-                    `);
-                })
             }
         })
 
@@ -321,16 +275,14 @@ block main
                     options[2].checked === false &&
                     options[3].checked === false
                 ) {
-                    if (confirm("Bạn muốn bỏ qua câu này?") === false) {
-                        countClick = 0;
-                        return false;
-                    }
+                    //- if (confirm("Bạn muốn bỏ qua câu này?") === false) {
+                    //-     countClick = 0;
+                    //-     return false;
+                    //- }
 
                     var option = null;
-                    indexQuestion++;
                     const obj = {
                         roomId: roomId,
-                        indexQuestion: indexQuestion,
                         currentQuestion: currentQuestion,
                         currentUser: currentUser,
                         fullname: fullname,
@@ -338,25 +290,24 @@ block main
                         optionValue: option,
                     };
                     socket.emit("user-send-option", obj);
+                    indexQuestion++;
                 } else {
                     let optionValue = null;
                     options.forEach((option) => {
                         if (option.checked === true && option.value === currentQuestionAnswer) {
                             optionValue = option.value;
                             document.getElementById(correctOption).style.backgroundColor = "#44a500";
-                            indexQuestion++;
                         } else if (option.checked && option.value !== currentQuestionAnswer) {
                             const wrongLabelId = option.labels[0].id;
                             optionValue = option.value;
                             document.getElementById(wrongLabelId).style.backgroundColor = "#fb5533";
                             document.getElementById(correctOption).style.backgroundColor = "#44a500";
-                            indexQuestion++;
+                            
                         }
                     });
 
                     const obj = {
                         roomId: roomId,
-                        indexQuestion: indexQuestion,
                         currentQuestion: currentQuestion,
                         currentUser: currentUser,
                         fullname: fullname,
@@ -364,10 +315,12 @@ block main
                         optionValue: optionValue,
                     };
                     socket.emit("user-send-option", obj);
+                    indexQuestion++;
                 }
             }
 
             function nextQuestion() {
+                playerTime = 30;
                 const objQuestion = {
                     roomId: roomId, 
                     indexQuestion: indexQuestion,
@@ -378,11 +331,11 @@ block main
             }
             
             function countDownTimer() {
-                var counter = 10;
                 var interval = setInterval(function() {
-                    $('#player-time').text(counter);
-                    counter--;
-                    if (counter <= 0) {
+                    $('#player-time').text(playerTime);
+                    playerTime--;
+
+                    if (playerTime <= 0) {
                         clearInterval(interval);
 
                         if (!isClick) {
@@ -396,8 +349,9 @@ block main
                         unCheckRadioButtons();
                         nextQuestion();
                         resetOptionBackground();
+                        return;
                     } else {
-                        $('#player-time').text(counter);
+                        $('#player-time').text(playerTime);
                     }
                 }, 1000);
             }
@@ -446,10 +400,16 @@ block main
             //- }
         })
 
+        socket.on("server-send-next-question", (data) => {
+            playerTime = 0;
+            setTimeout(() => {
+                playerTime = 30;
+            },1000);
+        });
+
         socket.on("server-send-score", (data) => {
             $(".leaderboard ol").html("");
             data.map((member) => {
-                console.log(member);
                 $(".leaderboard ol").append(`
                     <li>
                         <img src='${member.avatar}' width=30 height=30 class='rounded-circle' style='object-fit: cover' />
@@ -458,36 +418,88 @@ block main
                     </li>
                 `);
             })
-            //- const ranks = document.querySelectorAll(".leaderboard ol li");
-            //- //- for (let i = 0; i < ranks.length; i++) {
-            //- //-     if (ranks[i].getAttribute("id") === data.userName) {
-            //- //-         ranks[i].getElementsByClassName("small").innerHTML = `<h1>${data.score}</h1>`;
-            //- //-     }
-            //- //- }
-            //- ranks.forEach((rank) => {
-            //-     var id = rank.getAttribute("id");
-            //-     if (id === data.userName) {
-            //-         rank.children.score.innerHTML = data.score;
-            //-     }
-            //- });
+        });
+
+        socket.on("server-send-finished", (data) => {
+            $(".quiz").hide();
+            //- $(".table_ranking").show();
+            $(".overlay_ranking").show();
+
+            data.map((member, index) => {
+                if (index === 1) {
+                    $(".r2").append(`
+                        <div class="header-ranking">
+                            <h3>Hạng 2</h3>
+                        </div>
+                        <div class="block1"><img class="rounded-circle" src=${member.avatar} width="50" height="50" />
+                            <h2>${member.fullname}</h2>
+                        </div>
+                        <div class="block2">
+                            <p><strong>Điểm</strong></p>
+                            <p>100 điểm</p>
+                        </div>
+                        <div class="block3">
+                            <p><strong>Số câu đúng</strong></p>
+                            <p>2 câu</p>
+                        </div>
+                        <div class="block4">
+                            <div class="place">2</div>
+                        </div>
+                    `);
+                } else if (index === 0) {
+                    $(".r1").append(`
+                        <div class="header-ranking">
+                            <h3>Hạng 1</h3>
+                        </div>
+                        <div class="block1"><img class="rounded-circle" src=${member.avatar} width="50" height="50" />
+                            <h2>${member.fullname}</h2>
+                        </div>
+                        <div class="block2">
+                            <p><strong>Điểm</strong></p>
+                            <p>100 điểm</p>
+                        </div>
+                        <div class="block3">
+                            <p><strong>Số câu đúng</strong></p>
+                            <p>2 câu</p>
+                        </div>
+                        <div class="block4">
+                            <div class="place">1</div>
+                        </div>
+                    `);
+                } else if (index === 2) {
+                    $(".r3").append(`
+                        <div class="header-ranking">
+                            <h3>Hạng 3</h3>
+                        </div>
+                        <div class="block1"><img class="rounded-circle" src=${member.avatar} width="50" height="50" />
+                            <h2>${member.fullname}</h2>
+                        </div>
+                        <div class="block2">
+                            <p><strong>Điểm</strong></p>
+                            <p>100 điểm</p>
+                        </div>
+                        <div class="block3">
+                            <p><strong>Số câu đúng</strong></p>
+                            <p>2 câu</p>
+                        </div>
+                        <div class="block4">
+                            <div class="place">3</div>
+                        </div>
+                    `);
+                }
+            })
+
+            $('#ready').css('display', 'block').addClass('fadeIn');
+            setTimeout(function(){
+                $('.r3').addClass('slideInUp');
+            }, 300);
+            setTimeout(function(){
+                $('.r2').addClass('slideInUp');
+            }, 600);
+            setTimeout(function(){
+                $('.r1').addClass('slideInUp');
+            }, 900);
         })
-
-        //- socket.on("server-send-finished", () => {
-        //-     $(".quiz").hide();
-        //-     //- $(".table_ranking").show();
-        //-     $(".overlay_ranking").show();
-
-        //-     $('#ready').css('display', 'block').addClass('fadeIn');
-        //-     setTimeout(function(){
-        //-         $('.r3').addClass('slideInUp');
-        //-     }, 300);
-        //-     setTimeout(function(){
-        //-         $('.r2').addClass('slideInUp');
-        //-     }, 600);
-        //-     setTimeout(function(){
-        //-         $('.r1').addClass('slideInUp');
-        //-     }, 900);
-        //- })
 
         // handle server send length members to click start
         let lengthMembersInRoom = 0;
@@ -501,7 +513,7 @@ block main
             window.location.href = `/competition`;
         })
 
-        document.addEventListener('DOMContentLoaded', function() {
+        $(document).ready(function () {
             var currentUser = $(".user__info .username").text();
             if (roomId !== currentUser) {
                 $("#btn-start").attr("style", "display: none !important");
@@ -533,6 +545,11 @@ block main
                 //-     type: 'warning',
                 //-     duration: 5000,
                 //- });
+            })
+
+            $(".leaderboard h1").click(function (e) {
+                $(this).parent().toggleClass("active");
+                $(".leaderboard div").slideToggle();
             })
         });
 

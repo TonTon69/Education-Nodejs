@@ -837,17 +837,23 @@ blockquote {
             border-radius: 10px;
             box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
 
+            &.active {
+                height: 44px;
+            }
+
             h1 {
                 border-top-left-radius: 10px;
                 border-top-right-radius: 10px;
-                font-size: 18px;
-                padding: 12px 13px 18px;
+                font-size: 16px;
+                padding: 12px;
                 background: $primary-color;
                 color: $white-color;
                 margin-bottom: 0;
+                cursor: pointer;
             }
 
             div {
+                height: 100%;
                 background: $white-color;
                 overflow-x: hidden;
                 overflow-y: auto;
@@ -1417,7 +1423,7 @@ blockquote {
             }
 
             .notes {
-                max-width: 600px;
+                max-width: 750px;
                 color: #ffd839;
             }
         }

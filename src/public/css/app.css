@@ -868,15 +868,19 @@ blockquote {
       height: 308px;
       border-radius: 10px;
       box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3); }
+      .main .competition .leaderboard.active {
+        height: 44px; }
       .main .competition .leaderboard h1 {
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
-        font-size: 18px;
-        padding: 12px 13px 18px;
+        font-size: 16px;
+        padding: 12px;
         background: #113685;
         color: #fff;
-        margin-bottom: 0; }
+        margin-bottom: 0;
+        cursor: pointer; }
       .main .competition .leaderboard div {
+        height: 100%;
         background: #fff;
         overflow-x: hidden;
         overflow-y: auto;
@@ -1251,7 +1255,7 @@ blockquote {
           font-size: 100px;
           color: #113685; }
       .main .competition #overlay .notes {
-        max-width: 600px;
+        max-width: 750px;
         color: #ffd839; }
   .main .subjects,
   .main .exercise {

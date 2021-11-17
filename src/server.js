@@ -79,6 +79,8 @@ var connected_socket = 0;
 var $ipsConnected = [];
 let score = 0;
 let ranks = [];
+let users_answered = [];
+let users_scored = [];
 
 io.on("connection", async (socket) => {
     var $ipAddress = socket.handshake.address;
@@ -87,10 +89,6 @@ io.on("connection", async (socket) => {
         connected_socket++;
         socket.emit("server-send-counter", connected_socket);
     }
-
-    // console.log(socket.id + " connected");
-
-    // console.log(socket.adapter.rooms);
 
     // handle out room
     socket.on("client-handle-out-room", async (data) => {
@@ -672,22 +670,7 @@ io.on("connection", async (socket) => {
 
     // start-room
     socket.on("handle-start-room", async (data) => {
-        const roomsMember = await Room.findOne({ roomName: data.roomId });
-        let members = roomsMember.members;
-        let member = {
-            socketID: socket.id,
-            userName: data.username,
-            avatar: data.avatar,
-            fullname: data.fullname,
-        };
-        members.push(member);
-
-        const obj = {
-            roomId: data.roomId,
-            members: members,
-        };
-
-        io.sockets.in(data.roomId).emit("server-send-starting", obj);
+        io.sockets.in(data.roomId).emit("server-send-starting", data.roomId);
         await Room.updateOne({ roomName: data.roomId, status: "Đang thi..." });
 
         const rooms = await Room.aggregate([
@@ -717,48 +700,99 @@ io.on("connection", async (socket) => {
             },
         ]);
         io.sockets.emit("server-send-rooms", rooms);
+
+        users_scored.push({
+            roomId: data.roomId,
+            score: 0,
+        });
     });
 
     socket.on("room-request-questions", async (data) => {
-        try {
-            const room = await Room.findOne({ roomName: data.roomId });
-            if (room) {
-                const questions = await Exercise.aggregate([
-                    {
-                        $match: { lessionID: ObjectId(room.lessionID) },
-                    },
-                    {
-                        $lookup: {
-                            from: "exercise-categories",
-                            localField: "ceID",
-                            foreignField: "_id",
-                            as: "cate",
-                        },
-                    },
-                ]);
-
-                if (data.indexQuestion <= questions.length - 1) {
-                    score = 20;
-                    const obj = {
-                        indexNumberQuestion: data.indexQuestion + 1,
-                        questionsLength: questions.length,
-                        question: questions[data.indexQuestion],
-                    };
-                    socket.emit("server-send-question", obj);
-                } else {
-                    ranks.forEach((rank, index) => {
-                        if (rank.roomId === data.roomId) {
-                            console.log("index: " + index);
-                            ranks.splice(0, 1);
-                        }
-                    });
-
-                    socket.emit("server-send-finished");
-                    console.log("server-send-finished:", ranks);
+        const room = await Room.findOne({ roomName: data.roomId });
+        if (room) {
+            //update score in room
+            users_scored.forEach((item) => {
+                if (item.roomId === room.roomName) {
+                    item.score = 20;
                 }
+            });
+
+            const questions = await Exercise.aggregate([
+                {
+                    $match: { lessionID: ObjectId(room.lessionID) },
+                },
+                {
+                    $lookup: {
+                        from: "exercise-categories",
+                        localField: "ceID",
+                        foreignField: "_id",
+                        as: "cate",
+                    },
+                },
+            ]);
+
+            if (data.indexQuestion <= questions.length - 1) {
+                const obj = {
+                    indexNumberQuestion: data.indexQuestion + 1,
+                    questionsLength: questions.length,
+                    question: questions[data.indexQuestion],
+                };
+                socket.emit("server-send-question", obj);
+            } else {
+                // load ranks when finished competition
+                let ranksClient = [];
+                ranksClient = ranks.filter(
+                    (item) => item.roomId === data.roomId
+                );
+
+                let grouped = [];
+                ranksClient.forEach(
+                    (function (hash) {
+                        return function (item) {
+                            if (!hash[item.socketID]) {
+                                hash[item.socketID] = {
+                                    socketID: item.socketID,
+                                    score: 0,
+                                    roomId: item.roomId,
+                                    fullname: item.fullname,
+                                    avatar: item.avatar,
+                                };
+                                grouped.push(hash[item.socketID]);
+                            }
+                            hash[item.socketID].score += +item.score;
+                        };
+                    })(Object.create(null))
+                );
+
+                grouped.sort(function (a, b) {
+                    return b.score - a.score;
+                });
+
+                console.log("grouped", grouped);
+
+                io.sockets
+                    .in(data.roomId)
+                    .emit("server-send-finished", grouped);
+
+                // throw multiple array away form server
+                ranks = ranks.filter(
+                    (item) =>
+                        item.roomId === data.roomId &&
+                        ranks.indexOf(item) === -1
+                );
+
+                users_scored = users_scored.filter(
+                    (item) =>
+                        item.roomId === data.roomId &&
+                        users_scored.indexOf(item) === -1
+                );
+
+                users_answered = users_answered.filter(
+                    (item) =>
+                        item.roomId === data.roomId &&
+                        users_answered.indexOf(item) === -1
+                );
             }
-        } catch (error) {
-            console.log(error);
         }
     });
 
@@ -766,9 +800,17 @@ io.on("connection", async (socket) => {
         const room = await Room.findOne({ roomName: data.roomId });
         if (room) {
             let ranksInRoom = [];
+            let totalScore = 0;
+
+            users_scored.forEach((item) => {
+                if (item.roomId === data.roomId) {
+                    totalScore = item.score;
+                }
+            });
+
             if (
                 data.currentQuestion.answer === data.optionValue &&
-                score === 20
+                totalScore === 20
             ) {
                 const obj = {
                     roomId: data.roomId,
@@ -804,11 +846,45 @@ io.on("connection", async (socket) => {
                     })(Object.create(null))
                 );
 
+                //  -- handle users answered --
+                const objTemp = {
+                    roomId: data.roomId,
+                    socketID: socket.id,
+                };
+                users_answered.push(objTemp);
+
+                let lengthUsersAnswered = users_answered.filter(
+                    (item) => item.roomId === data.roomId
+                );
+
+                if (lengthUsersAnswered.length === room.members.length + 1) {
+                    users_answered = users_answered.filter(
+                        (item) =>
+                            item.roomId === data.roomId &&
+                            users_answered.indexOf(item) === -1
+                    );
+
+                    io.sockets
+                        .in(data.roomId)
+                        .emit("server-send-next-question");
+                }
+
+                // handle sort ranks
+                grouped.sort(function (a, b) {
+                    return b.score - a.score;
+                });
+
                 io.sockets.in(data.roomId).emit("server-send-score", grouped);
-                score = 15;
+                // score = 15;
+
+                users_scored.forEach((item) => {
+                    if (item.roomId === data.roomId) {
+                        item.score = 15;
+                    }
+                });
             } else if (
                 data.currentQuestion.answer === data.optionValue &&
-                score === 15
+                totalScore === 15
             ) {
                 const obj = {
                     roomId: data.roomId,
@@ -844,13 +920,43 @@ io.on("connection", async (socket) => {
                     })(Object.create(null))
                 );
 
+                //  -- handle users answered --
+                const objTemp = {
+                    roomId: data.roomId,
+                    socketID: socket.id,
+                };
+                users_answered.push(objTemp);
+
+                let lengthUsersAnswered = users_answered.filter(
+                    (item) => item.roomId === data.roomId
+                );
+
+                if (lengthUsersAnswered.length === room.members.length + 1) {
+                    users_answered = users_answered.filter(
+                        (item) =>
+                            item.roomId === data.roomId &&
+                            users_answered.indexOf(item) === -1
+                    );
+
+                    io.sockets
+                        .in(data.roomId)
+                        .emit("server-send-next-question");
+                }
+
+                // handle sort ranks
+                grouped.sort(function (a, b) {
+                    return b.score - a.score;
+                });
                 io.sockets.in(data.roomId).emit("server-send-score", grouped);
 
-                // io.sockets.in(data.roomId).emit("server-send-score", obj);
-                score = 10;
+                users_scored.forEach((item) => {
+                    if (item.roomId === data.roomId) {
+                        item.score = 10;
+                    }
+                });
             } else if (
                 data.currentQuestion.answer === data.optionValue &&
-                score === 10
+                totalScore === 10
             ) {
                 const obj = {
                     roomId: data.roomId,
@@ -885,6 +991,33 @@ io.on("connection", async (socket) => {
                     })(Object.create(null))
                 );
 
+                //  -- handle users answered --
+                const objTemp = {
+                    roomId: data.roomId,
+                    socketID: socket.id,
+                };
+                users_answered.push(objTemp);
+
+                let lengthUsersAnswered = users_answered.filter(
+                    (item) => item.roomId === data.roomId
+                );
+
+                if (lengthUsersAnswered.length === room.members.length + 1) {
+                    users_answered = users_answered.filter(
+                        (item) =>
+                            item.roomId === data.roomId &&
+                            users_answered.indexOf(item) === -1
+                    );
+
+                    io.sockets
+                        .in(data.roomId)
+                        .emit("server-send-next-question");
+                }
+
+                // handle sort ranks
+                grouped.sort(function (a, b) {
+                    return b.score - a.score;
+                });
                 io.sockets.in(data.roomId).emit("server-send-score", grouped);
             } else {
                 const obj = {
@@ -921,6 +1054,33 @@ io.on("connection", async (socket) => {
                     })(Object.create(null))
                 );
 
+                //  -- handle users answered --
+                const objTemp = {
+                    roomId: data.roomId,
+                    socketID: socket.id,
+                };
+                users_answered.push(objTemp);
+
+                let lengthUsersAnswered = users_answered.filter(
+                    (item) => item.roomId === data.roomId
+                );
+
+                if (lengthUsersAnswered.length === room.members.length + 1) {
+                    users_answered = users_answered.filter(
+                        (item) =>
+                            item.roomId === data.roomId &&
+                            users_answered.indexOf(item) === -1
+                    );
+
+                    io.sockets
+                        .in(data.roomId)
+                        .emit("server-send-next-question");
+                }
+                // handle sort ranks
+
+                grouped.sort(function (a, b) {
+                    return b.score - a.score;
+                });
                 io.sockets.in(data.roomId).emit("server-send-score", grouped);
             }
         }
