@@ -36,7 +36,7 @@ block main
                                         tr.align-middle(style='line-height: 1.5' id=room.roomName)
                                             td.pt-3.pb-3(scope="row")= count
                                             td
-                                                img.rounded-pill(src=room.avatar width=30 height=30)
+                                                img.rounded-circle(src=room.avatar width=30 height=30)
                                                 span.ms-2= room.master
                                             td Khối #{room.gradeID}
                                             td 
@@ -52,6 +52,42 @@ block main
                                                     a.text-primary(href=`javascript:void(0)` style="opacity: 0.3; cursor: none") Tham gia
                                                 else
                                                     a.text-primary(href=`/competition/${room.roomName}`) Tham gia
+        .leaderboard.d-block
+            h1.d-flex.align-items-center.justify-content-center
+                ion-icon.fs-5(name="trophy")
+                span.ms-2.me-2 Bảng xếp hạng
+                ion-icon.fs-5(name="chevron-down")
+            div
+                ol
+                    li
+                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
+                        mark Hoang Huynh
+                        small 6900000
+                    li
+                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
+                        mark Hoang Huynh
+                        small 6900
+                    li
+                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
+                        mark Hoang Huynh
+                        small 6900
+                    li
+                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
+                        mark Hoang Huynh
+                        small 6900
+                    li
+                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
+                        mark Hoang Huynh
+                        small 6900
+                    li
+                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
+                        mark Hoang Huynh
+                        small 6900
+                    li
+                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
+                        mark Hoang Huynh
+                        small 6900
+
         .chat
             .msger
                 header.msger-header

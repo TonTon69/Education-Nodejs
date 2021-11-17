@@ -77,7 +77,6 @@ const io = require("socket.io")(server);
 var countMessage = 0;
 var connected_socket = 0;
 var $ipsConnected = [];
-let score = 0;
 let ranks = [];
 let users_answered = [];
 let users_scored = [];
@@ -764,11 +763,11 @@ io.on("connection", async (socket) => {
                     })(Object.create(null))
                 );
 
-                grouped.sort(function (a, b) {
-                    return b.score - a.score;
-                });
-
-                console.log("grouped", grouped);
+                grouped
+                    .sort(function (a, b) {
+                        return b.score - a.score;
+                    })
+                    .slice(0, 3);
 
                 io.sockets
                     .in(data.roomId)

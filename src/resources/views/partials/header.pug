@@ -25,8 +25,7 @@ header.header
                         li.sidebar__mobile--item
                             a.sidebar__mobile--link(href='/competition')
                                 ion-icon(name='bulb')
-                                span.ms-3 Thi đấu
-                            
+                                span.ms-3 Thi đấu                    
                         li.sidebar__mobile--item
                             a.sidebar__mobile--link(href='/blog')
                                 ion-icon(name='newspaper')
@@ -48,11 +47,11 @@ header.header
         .header__actions--user
             if user.length > 0
                 .header__actions--avatar
-                    img(src=user[0].avatar, alt='')
+                    img(src=user[0].avatar)
                 .header__actions--userMenu.shadow
                     .user
                         .user__avatar
-                            img(src=user[0].avatar, alt='')
+                            img(src=user[0].avatar)
                         .user__info
                             .name= user[0].fullname
                             .username @#{user[0].username}

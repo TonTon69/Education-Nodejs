@@ -16,5 +16,5 @@
         hr
         each blog in searchBlogs
             a(href=`/blog/${blog.slug}`).search__result--item.d-flex.align-items-center
-                img(src=blog.image, width=32, height=32).rounded-pill
+                img(src=blog.image, width=32, height=32).rounded-circle
                 span.ms-3.fs-7= blog.title

@@ -114,6 +114,10 @@ $(document).ready(function () {
         chat.show(400);
     });
 
+    $(".leaderboard h1").click(function (e) {
+        $(this).parent().toggleClass("active");
+    });
+
     // send message when click send btn
     $(".msger-send-btn").click(function () {
         if ($(".msger-input").val() === "") {
