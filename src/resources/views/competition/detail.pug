@@ -232,6 +232,7 @@ block main
            
             let isClick = false;
             let countClick = 0;
+            let answeredCorrect = 0;
             
             countDownTimer();
 
@@ -276,7 +277,7 @@ block main
                     //-     countClick = 0;
                     //-     return false;
                     //- }
-
+                    answeredCorrect = 0;
                     var option = null;
                     const obj = {
                         roomId: roomId,
@@ -285,6 +286,7 @@ block main
                         fullname: fullname,
                         avatar: avatar,
                         optionValue: option,
+                        answeredCorrect: answeredCorrect,
                     };
                     socket.emit("user-send-option", obj);
                     indexQuestion++;
@@ -294,11 +296,13 @@ block main
                         if (option.checked === true && option.value === currentQuestionAnswer) {
                             optionValue = option.value;
                             document.getElementById(correctOption).style.backgroundColor = "#44a500";
+                            answeredCorrect = 1;
                         } else if (option.checked && option.value !== currentQuestionAnswer) {
                             const wrongLabelId = option.labels[0].id;
                             optionValue = option.value;
                             document.getElementById(wrongLabelId).style.backgroundColor = "#fb5533";
                             document.getElementById(correctOption).style.backgroundColor = "#44a500";
+                            answeredCorrect = 0;
                         }
                     });
 
@@ -309,6 +313,7 @@ block main
                         fullname: fullname,
                         avatar: avatar,
                         optionValue: optionValue,
+                        answeredCorrect: answeredCorrect,
                     };
                     socket.emit("user-send-option", obj);
                     indexQuestion++;
@@ -390,6 +395,7 @@ block main
         });
 
         socket.on("server-send-finished", (data) => {
+            totalAnswerTrue = 0;
             $(".quiz").hide();
             //- $(".table_ranking").show();
             $(".overlay_ranking").show();
@@ -409,7 +415,7 @@ block main
                         </div>
                         <div class="block3">
                             <p><strong>Số câu đúng</strong></p>
-                            <p>2 câu</p>
+                            <p>${member.answeredCorrect}/${indexQuestion} câu</p>
                         </div>
                         <div class="block4">
                             <div class="place">2</div>
@@ -429,7 +435,7 @@ block main
                         </div>
                         <div class="block3">
                             <p><strong>Số câu đúng</strong></p>
-                            <p>2 câu</p>
+                            <p>${member.answeredCorrect}/${indexQuestion} câu</p>
                         </div>
                         <div class="block4">
                             <div class="place">1</div>
@@ -449,7 +455,7 @@ block main
                         </div>
                         <div class="block3">
                             <p><strong>Số câu đúng</strong></p>
-                            <p>2 câu</p>
+                            <p>${member.answeredCorrect}/${indexQuestion} câu</p>
                         </div>
                         <div class="block4">
                             <div class="place">3</div>
@@ -468,6 +474,9 @@ block main
             setTimeout(function(){
                 $('.r1').addClass('slideInUp');
             }, 900);
+            setTimeout(function(){
+                $('#btn-choose-competition').addClass('slideInUp');
+            }, 1200);
         })
 
         // handle server send length members to click start

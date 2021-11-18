@@ -99,6 +99,19 @@ socket.on("server-send-rooms", (data) => {
     });
 });
 
+socket.on("server-send-ranks-in-competition", (data) => {
+    $(".leaderboard div ol").html("");
+    data.map((item) => {
+        $(".leaderboard div ol").append(`
+            <li>
+                <img class="rounded-circle" src="${item.user[0].avatar}" width="30" height="30" style="object-fit: cover" />
+                <mark>${item.user[0].fullname}</mark>
+                <small>${item.score}</small>
+            </li>
+        `);
+    });
+});
+
 $(document).ready(function () {
     var chat = $(".chat");
     var chatShow = $(".chat-show");
@@ -114,7 +127,7 @@ $(document).ready(function () {
         chat.show(400);
     });
 
-    $(".leaderboard h1").click(function (e) {
+    $(".leaderboard h1").click(function () {
         $(this).parent().toggleClass("active");
     });
 

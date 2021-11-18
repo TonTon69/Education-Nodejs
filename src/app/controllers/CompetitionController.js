@@ -1,4 +1,6 @@
+const Rank = require("../models/Rank");
 const Room = require("../models/Room");
+const User = require("../models/User");
 class CompetitionController {
     async detail(req, res) {
         const room = await Room.aggregate([
@@ -32,8 +34,16 @@ class CompetitionController {
                 },
             },
         ]);
+
+        // const user = await User.findOne({
+        //     username: room[0].roomName.split("@").join(""),
+        // });
+        // const rank = await Rank.findOne({ userID: user._id });
+
         if (room.length > 0) {
-            res.render("competition/detail", { room });
+            res.render("competition/detail", {
+                room,
+            });
         } else {
             res.redirect("/competition");
         }

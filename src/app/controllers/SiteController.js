@@ -11,6 +11,7 @@ const Unit = require("../models/Unit");
 const Exercise = require("../models/Exercise");
 const Lession = require("../models/Lession");
 const Room = require("../models/Room");
+const Rank = require("../models/Rank");
 const bcrypt = require("bcrypt");
 
 class SiteController {
@@ -252,7 +253,23 @@ class SiteController {
                 },
             },
         ]);
-        res.render("competition", { rooms });
+
+        // load ranks in competition
+        const ranksCompetition = await Rank.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            {
+                $sort: { score: -1, victory: -1 },
+            },
+        ]);
+
+        res.render("competition", { rooms, ranksCompetition });
     }
 }
 

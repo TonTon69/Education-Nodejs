@@ -59,34 +59,11 @@ block main
                 ion-icon.fs-5(name="chevron-down")
             div
                 ol
-                    li
-                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
-                        mark Hoang Huynh
-                        small 6900000
-                    li
-                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
-                        mark Hoang Huynh
-                        small 6900
-                    li
-                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
-                        mark Hoang Huynh
-                        small 6900
-                    li
-                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
-                        mark Hoang Huynh
-                        small 6900
-                    li
-                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
-                        mark Hoang Huynh
-                        small 6900
-                    li
-                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
-                        mark Hoang Huynh
-                        small 6900
-                    li
-                        img.rounded-circle(src='/img/nobody.jpg', width='30', height='30', style='object-fit: cover')
-                        mark Hoang Huynh
-                        small 6900
+                    each rank in ranksCompetition
+                        li
+                            img.rounded-circle(src=rank.user[0].avatar, width='30', height='30', style='object-fit: cover')
+                            mark=rank.user[0].fullname
+                            small=rank.score
 
         .chat
             .msger

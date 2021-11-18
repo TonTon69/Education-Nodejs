@@ -17,6 +17,8 @@ const Unit = require("./app/models/Unit");
 const Lession = require("./app/models/Lession");
 const Exercise = require("./app/models/Exercise");
 const Room = require("./app/models/Room");
+const Rank = require("./app/models/Rank");
+const User = require("./app/models/User");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -334,6 +336,17 @@ io.on("connection", async (socket) => {
                 }
             }
         });
+
+        // delete socket when disconnect
+        ranks = ranks.filter(
+            (item) => item.socketID === socket.id && ranks.indexOf(item) === -1
+        );
+
+        users_answered = users_answered.filter(
+            (item) =>
+                item.socketID === socket.id &&
+                users_answered.indexOf(item) === -1
+        );
     });
 
     // chat all
@@ -752,26 +765,70 @@ io.on("connection", async (socket) => {
                                 hash[item.socketID] = {
                                     socketID: item.socketID,
                                     score: 0,
+                                    answeredCorrect: 0,
                                     roomId: item.roomId,
                                     fullname: item.fullname,
                                     avatar: item.avatar,
+                                    username: item.currentUser,
                                 };
                                 grouped.push(hash[item.socketID]);
                             }
                             hash[item.socketID].score += +item.score;
+                            hash[item.socketID].answeredCorrect +=
+                                +item.answeredCorrect;
                         };
                     })(Object.create(null))
                 );
 
-                grouped
-                    .sort(function (a, b) {
-                        return b.score - a.score;
-                    })
-                    .slice(0, 3);
+                grouped.sort(function (a, b) {
+                    return b.score - a.score;
+                });
 
                 io.sockets
                     .in(data.roomId)
                     .emit("server-send-finished", grouped);
+
+                grouped.forEach(async (item, index) => {
+                    const username = item.username.split("@").join("");
+                    const user = await User.findOne({
+                        username: username,
+                    });
+                    const checkUser = await Rank.findOne({ userID: user._id });
+                    if (checkUser && index === 0) {
+                        await Rank.updateOne(
+                            { userID: user._id },
+                            {
+                                $inc: {
+                                    score: item.score,
+                                    victory: 1,
+                                },
+                            }
+                        );
+                    } else if (checkUser) {
+                        await Rank.updateOne(
+                            { userID: user._id },
+                            {
+                                $inc: {
+                                    score: item.score,
+                                },
+                            }
+                        );
+                    } else if (!checkUser && index === 0) {
+                        let rank = new Rank({
+                            userID: user._id,
+                            score: item.score,
+                            victory: 1,
+                        });
+                        await rank.save();
+                    } else if (!checkUser) {
+                        let rank = new Rank({
+                            userID: user._id,
+                            score: item.score,
+                            victory: 0,
+                        });
+                        await rank.save();
+                    }
+                });
 
                 // throw multiple array away form server
                 ranks = ranks.filter(
@@ -790,6 +847,26 @@ io.on("connection", async (socket) => {
                     (item) =>
                         item.roomId === data.roomId &&
                         users_answered.indexOf(item) === -1
+                );
+
+                // load ranks in competition
+                const ranksCompetition = await Rank.aggregate([
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "userID",
+                            foreignField: "_id",
+                            as: "user",
+                        },
+                    },
+                    {
+                        $sort: { score: -1, victory: -1 },
+                    },
+                ]);
+
+                io.sockets.emit(
+                    "server-send-ranks-in-competition",
+                    ranksCompetition
                 );
             }
         }
@@ -817,6 +894,8 @@ io.on("connection", async (socket) => {
                     socketID: socket.id,
                     fullname: data.fullname,
                     avatar: data.avatar,
+                    currentUser: data.currentUser,
+                    answeredCorrect: data.answeredCorrect,
                 };
                 ranks.push(obj);
 
@@ -874,7 +953,6 @@ io.on("connection", async (socket) => {
                 });
 
                 io.sockets.in(data.roomId).emit("server-send-score", grouped);
-                // score = 15;
 
                 users_scored.forEach((item) => {
                     if (item.roomId === data.roomId) {
@@ -891,6 +969,8 @@ io.on("connection", async (socket) => {
                     socketID: socket.id,
                     fullname: data.fullname,
                     avatar: data.avatar,
+                    currentUser: data.currentUser,
+                    answeredCorrect: data.answeredCorrect,
                 };
                 ranks.push(obj);
 
@@ -963,6 +1043,8 @@ io.on("connection", async (socket) => {
                     socketID: socket.id,
                     fullname: data.fullname,
                     avatar: data.avatar,
+                    currentUser: data.currentUser,
+                    answeredCorrect: data.answeredCorrect,
                 };
                 ranks.push(obj);
                 ranks.forEach((rank) => {
@@ -1025,6 +1107,8 @@ io.on("connection", async (socket) => {
                     socketID: socket.id,
                     fullname: data.fullname,
                     avatar: data.avatar,
+                    currentUser: data.currentUser,
+                    answeredCorrect: data.answeredCorrect,
                 };
                 ranks.push(obj);
 
@@ -1075,8 +1159,8 @@ io.on("connection", async (socket) => {
                         .in(data.roomId)
                         .emit("server-send-next-question");
                 }
-                // handle sort ranks
 
+                // handle sort ranks
                 grouped.sort(function (a, b) {
                     return b.score - a.score;
                 });
