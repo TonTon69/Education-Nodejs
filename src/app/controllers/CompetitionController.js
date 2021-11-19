@@ -48,6 +48,60 @@ class CompetitionController {
             res.redirect("/competition");
         }
     }
+
+    // [GET]/competition/ranks
+    async ranks(req, res) {
+        let perPage = 3;
+        let page = req.params.page || 1;
+
+        const ranks = await Rank.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $sort: { score: -1, victory: -1 } },
+            { $skip: perPage * page - perPage },
+            { $limit: perPage },
+        ]);
+        const ranksCount = await Rank.countDocuments();
+
+        res.render("competition/ranks", {
+            ranks,
+            current: page,
+            pages: Math.ceil(ranksCount / perPage),
+        });
+    }
+
+    // [GET]/competition/ranks/:page
+    async pagination(req, res) {
+        let perPage = 3;
+        let page = req.params.page || 1;
+
+        const ranks = await Rank.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $sort: { score: -1, victory: -1 } },
+            { $skip: perPage * page - perPage },
+            { $limit: perPage },
+        ]);
+        const ranksCount = await Rank.countDocuments();
+
+        res.render("competition/ranks", {
+            ranks,
+            current: page,
+            pages: Math.ceil(ranksCount / perPage),
+        });
+    }
 }
 
 module.exports = new CompetitionController();

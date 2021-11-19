@@ -49,4 +49,40 @@ block content
                                 else
                                     tr
                                         td.text-center(colspan='6') Không có dữ liệu!!!
-                                        
+                    if pages > 0
+                        nav.d-flex.align-items-center.justify-content-center
+                            ul.pagination.mt-4
+                                if current == 1
+                                    li.page-item.disabled
+                                        a.page-link(href='#', aria-label='Previous')
+                                            span(aria-hidden='true') &laquo;
+                                            span.sr-only Previous
+                                else
+                                    li.page-item
+                                        a.page-link(href=`/competition/ranks`, aria-label='Previous')
+                                            span(aria-hidden='true') &laquo;
+                                            span.sr-only Previous
+                                - var i = (Number(current) > 3 ? Number(current) - 2 : 1);
+                                if i !== 1
+                                    li.page-item.disabled
+                                        a.page-link(href='#') ...
+                                - for(; i <= (Number(current) + 2) && i <= pages; i++)
+                                    if i == current
+                                        li.page-item.active
+                                            a.page-link(href=`/competition/ranks/${i}`)= i
+                                    else
+                                        li.page-item
+                                            a.page-link(href=`/competition/ranks/${i}`)= i
+                                    if i == Number(current) + 2 && i < pages
+                                        li.page-item.disabled
+                                            a.page-link(href='#') ...
+                                if current == pages
+                                    li.page-item.disabled
+                                        a.page-link(href='#', aria-label='Next')
+                                            span(aria-hidden='true') &raquo;
+                                            span.sr-only Next
+                                else
+                                    li.page-item
+                                        a.page-link(href=`/competition/ranks/${pages}`, aria-label='Next')
+                                            span(aria-hidden='true') &raquo;
+                                            span.sr-only Next

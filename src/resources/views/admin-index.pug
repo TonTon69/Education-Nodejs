@@ -52,23 +52,55 @@ block content
                                     i.mdi.mdi-blogger.mdi-18px.text-dark
                                 span.text-uppercase.font-weight-bold.text-dark bài viết            
                 .row.mt-4
-                    .col-sm-12.mb-4.mb-xl-0
-                        .d-lg-flex.align-items-center
-                            div
-                                h3.text-dark.font-weight-bold.mb-2 Top 6 học sinh đạt điểm tích lũy cao
+                    .col-sm-8.mb-4.mb-xl-0
+                        .d-lg-flex.align-items-center.justify-content-between
+                            h3.text-dark.font-weight-bold.mb-0 Bảng xếp hạng thi đấu
+                            a.text-orange.d-flex.align-items-center(href='/competition/ranks') 
+                                span.mr-2 Xem tất cả
+                                i.mdi.mdi-arrow-right
                 .row.mt-4
                     .col-sm-8.flex-column.d-flex.stretch-card
                         .row
-                            each item in top6
+                            each item, index in ranks
                                 .col-lg-4.d-flex.grid-margin.stretch-card
-                                    .card.top-score-border
+                                    .card.top-score-border.position-relative
+                                        .position-absolute(style="top: 5px; right: 5px")
+                                            if index === 0
+                                                img(src="/admin/images/dashboard/top1.png" width=30 height=40 style="object-fit: contain")
+                                            else if index === 1
+                                                img(src="/admin/images/dashboard/top2.png" width=30 height=40 style="object-fit: contain")
+                                            else if index === 2
+                                                img(src="/admin/images/dashboard/top3.png" width=30 height=40 style="object-fit: contain")
+                                        .card-body
+                                            h2.text-dark.mb-2.font-weight-bold= item.score
+                                                i.mdi.mdi-heart.text-danger.ml-2
+                                            small.text-muted #{item.victory} trận thắng
+                                            .d-flex.align-items-center.mb-2.mt-2
+                                                img.rounded-circle(src=item.user[0].avatar width=30 height=30 style="object-fit: cover")
+                                                h4.card-title.ml-2.mb-0= item.user[0].fullname
+                                            small.text-muted= item.user[0].email
+                        h3.text-dark.font-weight-bold.mb-0 Top 3 học sinh đạt điểm tích lũy cao
+                        .row.mt-4
+                            each item, index in top3
+                                .col-lg-4.d-flex.grid-margin.stretch-card
+                                    .card.top-score-border.position-relative
+                                        .position-absolute(style="top: 5px; right: 5px")
+                                            if index === 0
+                                                img(src="/admin/images/dashboard/top1.png" width=30 height=40 style="object-fit: contain")
+                                            else if index === 1
+                                                img(src="/admin/images/dashboard/top2.png" width=30 height=40 style="object-fit: contain")
+                                            else if index === 2
+                                                img(src="/admin/images/dashboard/top3.png" width=30 height=40 style="object-fit: contain")
                                         .card-body
                                             h2.text-dark.mb-2.font-weight-bold= item.totalScore
                                                 i.mdi.mdi-heart.text-danger.ml-2
-                                            h4.card-title.mb-2= item.user[0].fullname
+                                            .d-flex.align-items-center.mb-2.mt-3
+                                                img.rounded-circle(src=item.user[0].avatar width=30 height=30 style="object-fit: cover")
+                                                h4.card-title.ml-2.mb-0= item.user[0].fullname
                                             small.text-muted= item.user[0].email
+
                     .col-sm-4.flex-column.d-flex.stretch-card
-                        .row.flex-grow
+                        .row
                             .col-sm-12.grid-margin.stretch-card
                                 .card
                                     .card-body

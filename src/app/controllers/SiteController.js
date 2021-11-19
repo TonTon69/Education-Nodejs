@@ -166,7 +166,7 @@ class SiteController {
         const countExercises = await Exercise.countDocuments({});
         const countBlogs = await Blog.countDocuments({});
 
-        const top6 = await Statistical.aggregate([
+        const top3 = await Statistical.aggregate([
             {
                 $group: {
                     _id: "$userID",
@@ -193,7 +193,20 @@ class SiteController {
                 },
             },
             { $sort: { totalScore: -1 } },
-            { $limit: 6 },
+            { $limit: 3 },
+        ]);
+
+        const ranks = await Rank.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $sort: { score: -1, victory: -1 } },
+            { $limit: 3 },
         ]);
 
         res.render("admin-index", {
@@ -203,7 +216,8 @@ class SiteController {
             countLessions,
             countExercises,
             countBlogs,
-            top6,
+            top3,
+            ranks,
         });
     }
 

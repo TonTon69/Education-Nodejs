@@ -18,6 +18,12 @@ table tbody tr td {
     line-height: 1.5 !important;
 }
 
+.table td img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
 input::placeholder,
 textarea::placeholder {
     color: #495057 !important;

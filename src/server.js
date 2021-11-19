@@ -88,7 +88,7 @@ io.on("connection", async (socket) => {
     if (!$ipsConnected.hasOwnProperty($ipAddress)) {
         $ipsConnected[$ipAddress] = 1;
         connected_socket++;
-        socket.emit("server-send-counter", connected_socket);
+        io.sockets.emit("server-send-counter", connected_socket);
     }
 
     // handle out room
