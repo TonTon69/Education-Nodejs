@@ -25,7 +25,7 @@ block main
                             td= count
                             td= statistical.lession.name
                             td Đúng #{statistical.totalAnswerTrue}/#{statistical.lession.exercises.length} câu
-                            td #{statistical.score}/100
+                            td #{Math.round(statistical.score)}/100
                             if statistical.score === 100
                                 td Xuất sắc
                             else if statistical.score > 80

@@ -502,7 +502,7 @@ io.on("connection", async (socket) => {
                     roomName: data.roomId,
                 });
 
-                if (roomMembers.members.length === 2) {
+                if (roomMembers.members.length === 1) {
                     // await roomMembers.update({ status: "Full" });
                     await Room.updateOne(
                         {

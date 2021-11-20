@@ -15,6 +15,9 @@ block main
                                 button#btn-start.d-flex.align-items-center.btn.btn-primary
                                     ion-icon.fs-4(name="play")
                                     span.ms-2 Bắt đầu
+                                button#btn-copy-link.d-flex.align-items-center.btn.btn-exercise.ms-4
+                                    ion-icon.fs-4(name="link")
+                                    span.ms-2 Copy link
                                 button.d-flex.align-items-center.btn.btn-secondary.ms-4(data-bs-toggle="modal" data-bs-target="#outRoomModal")
                                     ion-icon.fs-4(name="log-out")
                                     span.ms-2 Rời phòng
@@ -54,7 +57,7 @@ block main
             .d-flex.align-items-center.justify-content-center.flex-column
                 .rounded-circle.bg-white.circle-time.text-center.mt-5
                     span.text-uppercase.fw-bold.d-block.mt-5 Bắt đầu sau
-                    .countdown.fw-bold 5
+                    .countdown.fw-bold 10
                     span.text-uppercase.fs-7 giây
                 button.d-flex.align-items-center.btn.btn-secondary.mt-4(data-bs-toggle="modal" data-bs-target="#outRoomModal") Rời phòng
                 .notes.fw-bold.fs-5.mt-5
@@ -121,7 +124,7 @@ block main
         socket.on("server-send-starting", (data) => {
             $("#overlay").show();
 
-            var counter = 5;
+            var counter = 10;
             var interval = setInterval(function() {
                 $('.countdown').text(counter);
                 counter--;
@@ -138,6 +141,7 @@ block main
             function handleShowHide() {
                 $("#overlay").hide();
                 $("#btn-start").attr("style", "display: none !important");
+                $("#btn-copy-link").attr("style", "display: none !important");
                 $(".master").attr("style", "display: none !important");
                 $(".members").hide();
                 $('button[data-bs-target="#outRoomModal"]').attr("style", "position: absolute; right: 3rem");
@@ -497,6 +501,16 @@ block main
                 $("#btn-start").attr("style", "display: none !important");
             }
 
+            // copy link
+            $("#btn-copy-link").click(function () {
+                var link = window.location.href;
+                //- link.select();
+                //- link.setSelectionRange(0, 99999); /* For mobile devices */
+                navigator.clipboard.writeText(link);
+                /* Alert the copied text */
+                alert("Đã copy link: " + link);
+            })
+
             //- btn out room click
             $("#btn-out-room, #btn-choose-competition").click(function() {
                 socket.emit("client-handle-out-room", roomId);
@@ -505,24 +519,24 @@ block main
 
             //- btn start room click
             $("#btn-start").click(() => {
-                //- if (lengthMembersInRoom > 0) {
-                //-     socket.emit("handle-start-room", roomId);
-                //-     return;
-                //- }
-                const obj = {
-                    roomId: roomId,
-                    username: $(".user__info .username").text(),
-                    avatar: $(".user__avatar img").attr("src"),
-                    fullname: $(".user__info .name").text(),
-                };
-                socket.emit("handle-start-room", obj);
+                if (lengthMembersInRoom > 0) {
+                    //- socket.emit("handle-start-room", roomId);
+                    const obj = {
+                        roomId: roomId,
+                        username: $(".user__info .username").text(),
+                        avatar: $(".user__avatar img").attr("src"),
+                        fullname: $(".user__info .name").text(),
+                    };
+                    socket.emit("handle-start-room", obj);
+                    return;
+                }
 
-                //- Eggy({
-                //-     title: 'Không đủ thành viên',
-                //-     message:  'Phòng phải có ít nhất 2 thành viên để bắt đầu thi đấu!!!',
-                //-     type: 'warning',
-                //-     duration: 5000,
-                //- });
+                Eggy({
+                    title: 'Không đủ thành viên',
+                    message:  'Phòng phải có ít nhất 2 thành viên để bắt đầu thi đấu!!!',
+                    type: 'warning',
+                    duration: 5000,
+                });
             })
 
             $(".leaderboard h1").click(function (e) {

@@ -21,7 +21,7 @@ block content
                                     p.card-text= userSta.fullname
                                     p.card-text= userSta.email
                                     p.card-text.font-weight-bold Kết quả:
-                                    p.card-text= statistical.score + " điểm"
+                                    p.card-text= Math.round(statistical.score) + " điểm"
                                     p.card-text Thời gian làm: #{statistical.time}
                                     p.card-text Số câu đúng: #{statistical.totalAnswerTrue}/#{results.length}
 

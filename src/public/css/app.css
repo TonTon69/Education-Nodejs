@@ -1393,7 +1393,9 @@ blockquote {
         padding: 10px 20px;
         border: 1px solid #e3950c;
         display: none; }
+        .main .exercise .quiz .exercise-item .recommend-body .explain-content,
         .main .exercise .quiz .exercise-item .recommend-body .recommend-content,
+        .main .exercise .quiz .exercise-item .explain-body .explain-content,
         .main .exercise .quiz .exercise-item .explain-body .recommend-content {
           line-height: 1.5; }
   .main .exercise .actions {

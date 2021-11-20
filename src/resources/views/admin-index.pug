@@ -92,7 +92,7 @@ block content
                                             else if index === 2
                                                 img(src="/admin/images/dashboard/top3.png" width=30 height=40 style="object-fit: contain")
                                         .card-body
-                                            h2.text-dark.mb-2.font-weight-bold= item.totalScore
+                                            h2.text-dark.mb-2.font-weight-bold= Math.round(item.totalScore)
                                                 i.mdi.mdi-heart.text-danger.ml-2
                                             .d-flex.align-items-center.mb-2.mt-3
                                                 img.rounded-circle(src=item.user[0].avatar width=30 height=30 style="object-fit: cover")
@@ -111,25 +111,25 @@ block content
                                                 .mt-4.d-lg-flex.align-items-center.justify-content-between
                                                     h1.font-weight-bold.text-dark#visitors
                                                 canvas#visitorsToday
-                .row
-                    .col-sm-6.grid-margin.grid-margin-md-0.stretch-card
-                        .card
-                            .card-body
-                                .d-flex.align-items-center.justify-content-between
-                                    h4.card-title Support Tracker
-                                    h4.text-success.font-weight-bold
-                                        | Tickets
-                                        span.text-dark.ml-3 163
-                                #support-tracker-legend.support-tracker-legend
-                                canvas#supportTracker
-                    .col-sm-6.grid-margin.grid-margin-md-0.stretch-card
-                        .card
-                            .card-body
-                                .d-lg-flex.align-items-center.justify-content-between.mb-4
-                                    h4.card-title Product Orders
-                                    p.text-dark +5.2% vs last 7 days
-                                .product-order-wrap.padding-reduced
-                                    #productorder-gage.gauge.productorder-gage
+                //- .row
+                //-     .col-sm-6.grid-margin.grid-margin-md-0.stretch-card
+                //-         .card
+                //-             .card-body
+                //-                 .d-flex.align-items-center.justify-content-between
+                //-                     h4.card-title Support Tracker
+                //-                     h4.text-success.font-weight-bold
+                //-                         | Tickets
+                //-                         span.text-dark.ml-3 163
+                //-                 #support-tracker-legend.support-tracker-legend
+                //-                 canvas#supportTracker
+                //-     .col-sm-6.grid-margin.grid-margin-md-0.stretch-card
+                //-         .card
+                //-             .card-body
+                //-                 .d-lg-flex.align-items-center.justify-content-between.mb-4
+                //-                     h4.card-title Product Orders
+                //-                     p.text-dark +5.2% vs last 7 days
+                //-                 .product-order-wrap.padding-reduced
+                //-                     #productorder-gage.gauge.productorder-gage
                 
             footer.footer
                 .footer-wrap
