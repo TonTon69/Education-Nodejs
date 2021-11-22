@@ -64,7 +64,7 @@ class AuthController {
                 sendEmail({
                     to: user.email,
                     subject: "Đặt lại mật khẩu",
-                    text: `Chào ${user.name}, đây là liên kết đặt lại mật khẩu của bạn: ${resetLink}. Nếu bạn không yêu cầu liên kết này, hãy bỏ qua nó.!`,
+                    text: `Chào ${user.fullname}, đây là liên kết đặt lại mật khẩu của bạn: ${resetLink}. Nếu bạn không yêu cầu liên kết này, hãy bỏ qua nó.!`,
                 });
                 req.flash(
                     "success",

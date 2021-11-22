@@ -4,22 +4,20 @@ block content
         .col-lg-12.grid-margin.stretch-card
             .card
                 .card-body
-                    h4.card-title
-                        | Bảng xếp hạng thi đấu
-                        p.card-description
-                        
+                    .d-flex.align-items-center.justify-content-between
+                        h4.card-title
+                            | Bảng xếp hạng thi đấu
+                        if ranks.length > 0
+                            form.mb-0(action=`/competition/ranks/export`, method='POST')
+                                button.btn.btn-outline-primary.btn-icon-text
+                                    i.mdi.mdi-file-excel.btn-icon-prepend
+                                    | Xuất excel
                     .d-flex.align-items-center
                         .form-group.mb-0
                             .input-group
                                 input.form-control(type='text' placeholder='Nhập từ khóa' name='search')
                                 .input-group-append
                                     button.btn.btn-sm.btn-primary(type='submit') Tìm kiếm
-                        //- .form-group.mb-0.ml-4
-                        //-     select.form-control.text-dark.p-2(name='category')
-                        //-         option.selected.disabled(value='') -- Tìm kiếm theo thể loại --
-                        //-         each category in categories
-                        //-             option(value=`${category._id}`)=category.category
-                        
                         
                     .table-responsive.pt-3
                         table.table.table-hover.text-dark

@@ -59,7 +59,7 @@ block content
                                             span.sr-only Previous
                                 else
                                     li.page-item
-                                        a.page-link(href=`/competition/ranks`, aria-label='Previous')
+                                        a.page-link(href=`/statisticals?subject=${subject._id}`, aria-label='Previous')
                                             span(aria-hidden='true') &laquo;
                                             span.sr-only Previous
                                 - var i = (Number(current) > 3 ? Number(current) - 2 : 1);
@@ -69,10 +69,10 @@ block content
                                 - for(; i <= (Number(current) + 2) && i <= pages; i++)
                                     if i == current
                                         li.page-item.active
-                                            a.page-link(href=`/competition/ranks/${i}`)= i
+                                            a.page-link(href=`/statisticals?subject=${subject._id}&page=${i}`)= i
                                     else
                                         li.page-item
-                                            a.page-link(href=`/competition/ranks/${i}`)= i
+                                            a.page-link(href=`/statisticals?subject=${subject._id}&page=${i}`)= i
                                     if i == Number(current) + 2 && i < pages
                                         li.page-item.disabled
                                             a.page-link(href='#') ...
@@ -83,6 +83,6 @@ block content
                                             span.sr-only Next
                                 else
                                     li.page-item
-                                        a.page-link(href=`/competition/ranks/${pages}`, aria-label='Next')
+                                        a.page-link(href=`/statisticals?subject=${subject._id}&page=${pages}`, aria-label='Next')
                                             span(aria-hidden='true') &raquo;
                                             span.sr-only Next

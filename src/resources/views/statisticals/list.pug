@@ -47,20 +47,58 @@ block content
                                 else
                                     tr
                                         td.text-center(colspan='7') Không có dữ liệu!!!
-                                form(name="delete-statistical-form", method="POST")
-                                #deleteStatisticalModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteStatisticalModalLabel', aria-hidden='true')
-                                    .modal-dialog(role='document', style='transition: all 0.3s ease')
-                                        .modal-content
-                                            .modal-header
-                                                strong#deleteStatisticalModalLabel.modal-title.font-weight-bold.text-danger.text-uppercase Xóa kết quả
-                                                button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                                    span(aria-hidden='true') &times;
-                                            .modal-body.text-dark
-                                                span.d-block.mb-2.mt-2 Hành động này không thể khôi phục!!!
-                                                span.d-block.mb-2 Bạn có chắc chắn muốn xóa kết quả này không???
-                                            .modal-footer
-                                                button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
-                                                button.btn.btn-danger#btn-delete-statistical(type='button') Chắc chắn
+                    if pages > 0
+                        nav.d-flex.align-items-center.justify-content-center
+                            ul.pagination.mt-4
+                                if current == 1
+                                    li.page-item.disabled
+                                        a.page-link(href='#', aria-label='Previous')
+                                            span(aria-hidden='true') &laquo;
+                                            span.sr-only Previous
+                                else
+                                    li.page-item
+                                        a.page-link(href=`/statisticals?lession=${lession._id}`, aria-label='Previous')
+                                            span(aria-hidden='true') &laquo;
+                                            span.sr-only Previous
+                                - var i = (Number(current) > 3 ? Number(current) - 2 : 1);
+                                if i !== 1
+                                    li.page-item.disabled
+                                        a.page-link(href='#') ...
+                                - for(; i <= (Number(current) + 2) && i <= pages; i++)
+                                    if i == current
+                                        li.page-item.active
+                                            a.page-link(href=`/statisticals?lession=${lession._id}&page=${i}`)= i
+                                    else
+                                        li.page-item
+                                            a.page-link(href=`/statisticals?lession=${lession._id}&page=${i}`)= i
+                                    if i == Number(current) + 2 && i < pages
+                                        li.page-item.disabled
+                                            a.page-link(href='#') ...
+                                if current == pages
+                                    li.page-item.disabled
+                                        a.page-link(href='#', aria-label='Next')
+                                            span(aria-hidden='true') &raquo;
+                                            span.sr-only Next
+                                else
+                                    li.page-item
+                                        a.page-link(href=`/statisticals?lession=${lession._id}&page=${pages}`, aria-label='Next')
+                                            span(aria-hidden='true') &raquo;
+                                            span.sr-only Next
+            
+            form(name="delete-statistical-form", method="POST")
+            #deleteStatisticalModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteStatisticalModalLabel', aria-hidden='true')
+                .modal-dialog(role='document', style='transition: all 0.3s ease')
+                    .modal-content
+                        .modal-header
+                            strong#deleteStatisticalModalLabel.modal-title.font-weight-bold.text-danger.text-uppercase Xóa kết quả
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                span(aria-hidden='true') &times;
+                        .modal-body.text-dark
+                            span.d-block.mb-2.mt-2 Hành động này không thể khôi phục!!!
+                            span.d-block.mb-2 Bạn có chắc chắn muốn xóa kết quả này không???
+                        .modal-footer
+                            button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
+                            button.btn.btn-danger#btn-delete-statistical(type='button') Chắc chắn
     if errors.length > 0
         - var msgError = errors
     else if success.length > 0

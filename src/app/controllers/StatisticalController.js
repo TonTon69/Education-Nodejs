@@ -20,6 +20,9 @@ class StatisticalController {
             const lession = await Lession.findById(req.query.lession);
 
             if (lession) {
+                let perPage = 3;
+                let page = req.query.page || 1;
+
                 const unit = await Unit.findOne({ _id: lession.unitID });
                 const subject = await Subject.findOne({ _id: unit.subjectID });
                 const exercises = await Exercise.find({
@@ -35,16 +38,19 @@ class StatisticalController {
                             as: "user",
                         },
                     },
-                    {
-                        $sort: { score: -1 },
-                    },
+                    { $sort: { score: -1 } },
+                    { $skip: perPage * page - perPage },
+                    { $limit: perPage },
                 ]);
+
                 res.render("statisticals/list", {
                     lession,
                     statisticals,
                     unit,
                     subject,
                     countExercises: exercises.length,
+                    current: page,
+                    pages: Math.ceil(statisticals.length / perPage),
                     errors: req.flash("error"),
                     success: req.flash("success"),
                 });
@@ -54,6 +60,9 @@ class StatisticalController {
         } else if (ObjectId.isValid(req.query.subject)) {
             const subject = await Subject.findById(req.query.subject);
             if (subject) {
+                let perPage = 3;
+                let page = req.query.page || 1;
+
                 const units = await Unit.find({ subjectID: subject._id });
                 const unitIdArray = units.map(({ _id }) => _id);
                 const lessions = await Lession.find({
@@ -94,12 +103,16 @@ class StatisticalController {
                         },
                     },
                     { $sort: { totalScore: -1 } },
+                    { $skip: perPage * page - perPage },
+                    { $limit: perPage },
                 ]);
 
                 res.render("statisticals/result", {
                     subject,
                     ranks,
                     countLessions: lessions.length,
+                    current: page,
+                    pages: Math.ceil(ranks.length / perPage),
                 });
             } else {
                 res.render("error");
