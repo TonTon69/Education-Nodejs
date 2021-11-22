@@ -746,7 +746,7 @@ blockquote {
         justify-content: space-between;
         align-items: center; }
         .main .competition .quiz .game-details-container h1 {
-          font-size: 1.2rem; }
+          font-size: 1rem; }
       .main .competition .quiz .game-question-container {
         width: 90%;
         height: 8rem;
@@ -850,15 +850,25 @@ blockquote {
     @media (max-width: 768px) {
       .main .competition {
         padding-left: 0; }
-        .main .competition .card {
-          padding: 0 !important;
-          box-shadow: none !important; }
-          .main .competition .card-body {
-            padding: 0; }
-            .main .competition .card-body .input-group {
+        .main .competition .col-sm-10 {
+          width: 100%; }
+          .main .competition .col-sm-10 .card {
+            padding: 0 !important;
+            box-shadow: none !important; }
+            .main .competition .col-sm-10 .card-body.p-5 {
+              padding: 0 !important; }
+            .main .competition .col-sm-10 .card-body .input-group {
               display: none; }
-            .main .competition .card-body button[data-bs-target="#competitionModal"] {
-              padding: 6px 20px; } }
+            .main .competition .col-sm-10 .card-body button[data-bs-target="#competitionModal"] {
+              padding: 6px 20px; }
+            .main .competition .col-sm-10 .card-body .master {
+              flex-direction: column; }
+              .main .competition .col-sm-10 .card-body .master .ms-4 {
+                margin-left: 0 !important;
+                margin-top: 12px; }
+            .main .competition .col-sm-10 .card-body .members img {
+              width: 50px;
+              height: 50px; } }
     .main .competition .leaderboard {
       display: none;
       position: fixed;
@@ -1079,8 +1089,6 @@ blockquote {
         flex-wrap: wrap;
         padding-right: 20px;
         padding-left: 20px; }
-        .main .competition .table_ranking .ranking {
-          width: 100%; }
       .main .competition .na {
         display: flex;
         flex-wrap: wrap;
