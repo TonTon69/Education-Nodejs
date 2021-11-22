@@ -1921,8 +1921,8 @@ blockquote {
       -webkit-box-orient: vertical;
       overflow: hidden; }
     .main .blog-detail .blog-related-content .blog-card .author img {
-      width: 38px;
-      height: 38px;
+      width: 32px;
+      height: 32px;
       object-fit: cover;
       border-radius: 50%; }
     .main .blog-detail .blog-related-content .blog-card .author .name {

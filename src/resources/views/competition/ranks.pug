@@ -12,13 +12,6 @@ block content
                                 button.btn.btn-outline-primary.btn-icon-text
                                     i.mdi.mdi-file-excel.btn-icon-prepend
                                     | Xuất excel
-                    .d-flex.align-items-center
-                        .form-group.mb-0
-                            .input-group
-                                input.form-control(type='text' placeholder='Nhập từ khóa' name='search')
-                                .input-group-append
-                                    button.btn.btn-sm.btn-primary(type='submit') Tìm kiếm
-                        
                     .table-responsive.pt-3
                         table.table.table-hover.text-dark
                             thead
@@ -28,6 +21,7 @@ block content
                                     th.font-weight-bold Email
                                     th.font-weight-bold Tổng điểm tích lũy
                                     th.font-weight-bold Số trận thắng
+                                    th.font-weight-bold Hoạt động
                             tbody
                                 - var count = 0;
                                 each rank in ranks
@@ -40,6 +34,7 @@ block content
                                         td= rank.user[0].email
                                         td= Math.round(rank.score) + " điểm"
                                         td= rank.victory
+                                        td= moment(rank.updatedAt).locale("vi").fromNow()
                     if pages > 0
                         nav.d-flex.align-items-center.justify-content-center
                             ul.pagination.mt-4
