@@ -13,7 +13,7 @@ class BlogController {
             const blogCategory = await BlogCategory.findById(blog.bcID);
             const userBlog = await User.findOne({ _id: blog.userID });
 
-            const blogRelated = await Blog.aggregate([
+            let blogRelated = await Blog.aggregate([
                 {
                     $match: {
                         bcID: ObjectId(blog.bcID),
@@ -28,8 +28,14 @@ class BlogController {
                     },
                 },
                 { $sort: { view: -1 } },
-                { $limit: 6 },
+                { $limit: 7 },
             ]);
+
+            blogRelated.forEach((item, index) => {
+                if (item.slug === req.params.slug) {
+                    blogRelated.splice(index, 1);
+                }
+            });
 
             res.render("blog/show", {
                 blog,

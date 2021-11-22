@@ -19,19 +19,20 @@ block main
                         span.bg-light.p-2.rounded.fs-7.blog-category= blogCategory.category
                     .pt-2.pb-2
                         hr
-                    .blog-related
-                        .blog-related-heading.fw-bold BÀI VIẾT LIÊN QUAN
-                        .blog-related-content.mt-5
-                            .row
-                                each item in blogRelated
-                                    .col-sm-4
-                                        a.d-block.blog-card.mb-5(href=`/blog/${item.slug}`)
-                                            img(src=item.image, alt=item.image)
-                                            h5.title.mt-3.mb-3= item.title
-                                            .author.d-flex.align-items-center
-                                                img(src=item.User[0].avatar, alt='')
-                                                .fs-7
-                                                    span.ms-2.name= item.User[0].fullname
-                                                    span.ms-1.me-1 .
-                                                    span= moment(item.updatedAt).locale("vi").fromNow()
+                    if blogRelated.length > 0
+                        .blog-related
+                            .blog-related-heading.fw-bold BÀI VIẾT LIÊN QUAN
+                            .blog-related-content.mt-5
+                                .row
+                                    each item in blogRelated
+                                        .col-sm-4
+                                            a.d-block.blog-card.mb-5(href=`/blog/${item.slug}`)
+                                                img(src=item.image, alt=item.image)
+                                                h5.title.mt-3.mb-3= item.title
+                                                .author.d-flex.align-items-center
+                                                    img(src=item.User[0].avatar, alt='')
+                                                    .fs-7
+                                                        span.ms-2.name= item.User[0].fullname
+                                                        span.ms-1.me-1 .
+                                                        span= moment(item.updatedAt).locale("vi").fromNow()
 
