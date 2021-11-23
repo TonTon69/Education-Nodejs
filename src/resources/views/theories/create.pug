@@ -16,15 +16,32 @@ block content
                     p.card-description Nhập thông tin bên dưới để thêm mới nội dung lý thuyết
                     form.mt-4(name='add-theory-form', action='/theories/create', method='post')
                         input(type='text', name='lessionID', value=lession._id, hidden)
-                        textarea#content.form-control(type='text', placeholder='Nhập nội dung lý thuyết ở đây', name='content')
+                        textarea#content-theory.form-control(type='text', placeholder='Nhập nội dung lý thuyết ở đây', name='content')
                         .text-center.mt-4
                             button.btn.btn-primary.ml-2#btn-add-theory(type='submit') Lưu lại
     if errors.length > 0
         - var msgError = errors
     script.
+        ClassicEditor.create(document.querySelector('#content-theory'), {
+            toolbar: {
+                items: [
+                    'heading', '|', 'fontsize', '|',
+                    'alignment', '|',
+                    'bold', 'italic', '|',
+                    'link', '|',
+                    'outdent', 'indent', '|',
+                    'bulletedList', 'numberedList', '|',
+                    'insertTable', '|',
+                    'uploadImage', 'blockQuote', '|',
+                    'undo', 'redo',
+                    'MathType',
+                    'ChemType',
+                ],
+                shouldNotGroupWhenFull: true
+            },
+        });
+
         $(document).ready(function () {
-            ClassicEditor.create( document.querySelector( '#content' ) );
-            
             let msgToastError = '#{msgError}';
             if(msgToastError != ''){
                 Eggy({

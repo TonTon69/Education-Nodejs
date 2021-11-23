@@ -27,7 +27,7 @@ block content
                                 span Xóa
                         .text-dark.mt-4
                             form(action=`/theories/${theory[0]._id}?_method=PUT` method="post")
-                                textarea#explain.form-control(type='text', placeholder='Nhập nội dung lý thuyết ở đây', name='content') !{theory[0].content}
+                                textarea#content-theory.form-control(type='text', placeholder='Nhập nội dung lý thuyết ở đây', name='content') !{theory[0].content}
                                 .text-center.mt-4
                                     button.btn.btn-primary.ml-2(type='submit') Lưu lại
                 else
@@ -57,8 +57,26 @@ block content
     else if success.length > 0
         - var msgSuccess = success
     script.
+        ClassicEditor.create(document.querySelector('#content-theory'), {
+            toolbar: {
+                items: [
+                    'heading', '|', 'fontsize', '|',
+                    'alignment', '|',
+                    'bold', 'italic', '|',
+                    'link', '|',
+                    'outdent', 'indent', '|',
+                    'bulletedList', 'numberedList', '|',
+                    'insertTable', '|',
+                    'uploadImage', 'blockQuote', '|',
+                    'undo', 'redo',
+                    'MathType',
+                    'ChemType',
+                ],
+                shouldNotGroupWhenFull: true
+            },
+        });
+
         $(document).ready(function () {
-            ClassicEditor.create( document.querySelector( '#explain' ) );
             var deleteTheoryModal = $("#deleteTheoryModal");
             var deleteTheoryForm = $("form[name='delete-theory-form']");
             var btnSubmitDeleteTheory = $("#btn-submit-delete-theory");

@@ -111,24 +111,53 @@ block content
     else if success.length > 0
         - var msgSuccess = success
     script.
+        var allEditorsQuestion = document.querySelectorAll('#question');
+        var allEditorsExplain = document.querySelectorAll('#explain');
+        for (var i = 0; i < allEditorsQuestion.length; ++i) {
+            ClassicEditor.create(allEditorsQuestion[i], {
+                toolbar: {
+                    items: [
+                        'heading', '|', 'fontsize', '|',
+                        'alignment', '|',
+                        'bold', 'italic', '|',
+                        'link', '|',
+                        'bulletedList', 'numberedList', '|',
+                        'insertTable', '|',
+                        'uploadImage', 'blockQuote', '|',
+                        'undo', 'redo',
+                        'MathType',
+                        'ChemType',
+                    ],
+                    shouldNotGroupWhenFull: true
+                },
+            });
+        }
+
+        for (var i = 0; i < allEditorsExplain.length; ++i) {
+            ClassicEditor.create(allEditorsExplain[i], {
+                toolbar: {
+                    items: [
+                        'heading', '|', 'fontsize', '|',
+                        'alignment', '|',
+                        'bold', 'italic', '|',
+                        'link', '|',
+                        'bulletedList', 'numberedList', '|',
+                        'insertTable', '|',
+                        'uploadImage', 'blockQuote', '|',
+                        'undo', 'redo',
+                        'MathType',
+                        'ChemType',
+                    ],
+                    shouldNotGroupWhenFull: true
+                },
+            });
+        }
+
         $(document).ready(function () {
-            var allEditorsQuestion = document.querySelectorAll('#question');
-            var allEditorsExplain = document.querySelectorAll('#explain');
             var deleteExerciseModal = $("#deleteExerciseModal");
             var deleteExerciseForm = $("form[name=delete-exercise-form]");
             var btnSubmitDeleteExercise = $("#btn-submit-delete-exercise");
             var exerciseId;
-
-            ClassicEditor.create(document.querySelector('#exercise-question'));
-            ClassicEditor.create(document.querySelector('#exercise-explain'));
-            
-            for (var i = 0; i < allEditorsQuestion.length; ++i) {
-                ClassicEditor.create(allEditorsQuestion[i]);
-            }
-
-            for (var i = 0; i < allEditorsExplain.length; ++i) {
-                ClassicEditor.create(allEditorsExplain[i]);
-            }
 
             $("#exercise-tab-1").addClass("active");
             $("#exercise-tab-1").attr("aria-selected", true);

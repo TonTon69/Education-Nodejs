@@ -26,9 +26,8 @@ block content
     if  success.length > 0
         - var msgSuccess = success
     script.
+        ClassicEditor.create(document.querySelector('#value'));
         document.addEventListener('DOMContentLoaded', function() {
-            ClassicEditor.create(document.querySelector('#value'));
-
             let msgToastSuccess = '#{msgSuccess}';
             if(msgToastSuccess != ''){
                 Eggy({

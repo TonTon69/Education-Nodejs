@@ -77,10 +77,44 @@ block content
     else if success.length > 0
         - var msgSuccess = success
     script.
-        $(document).ready(function () {
-            ClassicEditor.create(document.querySelector('#exercise-question'));
-            ClassicEditor.create(document.querySelector('#exercise-explain'));
+        ClassicEditor.create(document.querySelector('#exercise-question'), {
+            toolbar: {
+                items: [
+                    'heading', '|', 'fontsize', '|',
+                    'alignment', '|',
+                    'bold', 'italic', '|',
+                    'link', '|',
+                    'outdent', 'indent', '|',
+                    'bulletedList', 'numberedList', '|',
+                    'insertTable', '|',
+                    'uploadImage', 'blockQuote', '|',
+                    'undo', 'redo',
+                    'MathType',
+                    'ChemType',
+                ],
+                shouldNotGroupWhenFull: true
+            },
+        });
+        ClassicEditor.create(document.querySelector('#exercise-explain'), {
+            toolbar: {
+                items: [
+                    'heading', '|', 'fontsize', '|',
+                    'alignment', '|',
+                    'bold', 'italic', '|',
+                    'link', '|',
+                    'outdent', 'indent', '|',
+                    'bulletedList', 'numberedList', '|',
+                    'insertTable', '|',
+                    'uploadImage', 'blockQuote', '|',
+                    'undo', 'redo',
+                    'MathType',
+                    'ChemType',
+                ],
+                shouldNotGroupWhenFull: true
+            },
+        });
 
+        $(document).ready(function () {
             let msgToastSuccess = '#{msgSuccess}';
             if(msgToastSuccess != ''){
                 Eggy({

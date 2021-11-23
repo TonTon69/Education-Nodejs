@@ -64,6 +64,10 @@ app.use(
 );
 
 app.use(flash());
+app.use((req, res, next) => {
+    res.locals.require = require;
+    next();
+});
 
 // Route init
 route(app);
