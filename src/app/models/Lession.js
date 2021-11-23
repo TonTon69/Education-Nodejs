@@ -8,7 +8,7 @@ const Lession = new Schema(
     {
         name: { type: String, require: true },
         lessionNumber: { type: Number, require: true },
-        unitID: { type: Schema.Types.ObjectId, ref: "Unit" },
+        unitID: { type: Schema.Types.ObjectId, ref: "Unit", require: true },
         slug: { type: String, slug: "name", unique: true },
     },
     {

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ExerciseCategory = new Schema(
     {
-        type: { type: String },
+        type: { type: String, require: true },
     },
     {
         timestamps: true,

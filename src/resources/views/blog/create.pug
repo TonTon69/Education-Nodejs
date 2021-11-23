@@ -32,6 +32,31 @@ block content
                                 | H&#x1EE7;y b&#x1ECF;
                             button.btn.btn-primary.ml-4(type='submit')
                                 | &Dstrok;&abreve;ng b&agrave;i
-
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
     script.
         ClassicEditor.create(document.querySelector('#ckeditor-content'));
+        document.addEventListener('DOMContentLoaded', function() {
+            // toast message
+            let msgToastError = '#{msgError}';
+            if(msgToastError != ''){
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            }
+
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != ''){
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            }
+        })

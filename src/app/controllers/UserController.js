@@ -91,6 +91,21 @@ class UserController {
 
     async createUser(req, res, next) {
         const formUser = req.body;
+
+        const checkEmail = await User.findOne({ email: formUser.email });
+        const checkPhone = await User.findOne({ phone: formUser.phone });
+        if (checkEmail) {
+            req.flash("error", "Email này đã tồn tại!");
+            res.redirect("back");
+            return;
+        }
+
+        if (checkPhone) {
+            req.flash("error", "Số điện thoại này đã tồn tại!");
+            res.redirect("back");
+            return;
+        }
+
         formUser.fullname = formUser.firstName + " " + formUser.lastName;
         formUser.active = true;
         formUser.avatar = "/img/nobody.jpg";

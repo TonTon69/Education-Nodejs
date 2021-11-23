@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 class BlogController {
     // [GET]/blog/:slug
-    async show(req, res, next) {
+    async show(req, res) {
         try {
             const blog = await Blog.findOne({ slug: req.params.slug });
             await Blog.findByIdAndUpdate(blog._id, { $inc: { view: 1 } });
@@ -83,108 +83,101 @@ class BlogController {
         }
     }
 
-    async create(req, res, next) {
+    async create(req, res) {
         const categories = await BlogCategory.find({});
         res.render("blog/create", {
             categories,
+            success: req.flash("success"),
+            errors: req.flash("error"),
         });
     }
 
     //Post /blog/post
-    postBlog(req, res, next) {
+    async postBlog(req, res) {
         const formDate = req.body;
         formDate.userID = req.signedCookies.userId;
         const blog = new Blog(formDate);
-
-        blog.save()
-            .then(() => {
-                req.flash("success", "Đã thêm 1 bài viết mới thành công!");
-                res.redirect("/blog/list");
-            })
-            .catch((error) => {});
+        await blog.save();
+        req.flash("success", "Đã thêm 1 bài viết mới thành công!");
+        res.redirect("back");
     }
 
     // [POST]/blog/list-blog
     async searchFilter(req, res) {
-        try {
-            const searchString = req.body.query;
-            const option = req.body.option;
-            const categories = await BlogCategory.find({});
-            let blogs = [];
-            if (searchString) {
-                blogs = await Blog.aggregate([
-                    {
-                        $match: {
-                            title: { $regex: searchString, $options: "$i" },
-                        },
+        const searchString = req.body.query;
+        const option = req.body.option;
+        const categories = await BlogCategory.find({});
+        let blogs = [];
+        if (searchString) {
+            blogs = await Blog.aggregate([
+                {
+                    $match: {
+                        title: { $regex: searchString, $options: "$i" },
                     },
-                    {
-                        $lookup: {
-                            from: "users",
-                            localField: "userID",
-                            foreignField: "_id",
-                            as: "User",
-                        },
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "userID",
+                        foreignField: "_id",
+                        as: "User",
                     },
-                    {
-                        $lookup: {
-                            from: "blog-categories",
-                            localField: "bcID",
-                            foreignField: "_id",
-                            as: "BlogCategory",
-                        },
+                },
+                {
+                    $lookup: {
+                        from: "blog-categories",
+                        localField: "bcID",
+                        foreignField: "_id",
+                        as: "BlogCategory",
                     },
-                ]);
-            } else if (option) {
-                blogs = await Blog.aggregate([
-                    {
-                        $match: {
-                            bcID: ObjectId(option),
-                        },
+                },
+            ]);
+        } else if (option) {
+            blogs = await Blog.aggregate([
+                {
+                    $match: {
+                        bcID: ObjectId(option),
                     },
-                    {
-                        $lookup: {
-                            from: "users",
-                            localField: "userID",
-                            foreignField: "_id",
-                            as: "User",
-                        },
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "userID",
+                        foreignField: "_id",
+                        as: "User",
                     },
-                    {
-                        $lookup: {
-                            from: "blog-categories",
-                            localField: "bcID",
-                            foreignField: "_id",
-                            as: "BlogCategory",
-                        },
+                },
+                {
+                    $lookup: {
+                        from: "blog-categories",
+                        localField: "bcID",
+                        foreignField: "_id",
+                        as: "BlogCategory",
                     },
-                ]);
-            } else {
-                blogs = await Blog.aggregate([
-                    {
-                        $lookup: {
-                            from: "users",
-                            localField: "userID",
-                            foreignField: "_id",
-                            as: "User",
-                        },
+                },
+            ]);
+        } else {
+            blogs = await Blog.aggregate([
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "userID",
+                        foreignField: "_id",
+                        as: "User",
                     },
-                    {
-                        $lookup: {
-                            from: "blog-categories",
-                            localField: "bcID",
-                            foreignField: "_id",
-                            as: "BlogCategory",
-                        },
+                },
+                {
+                    $lookup: {
+                        from: "blog-categories",
+                        localField: "bcID",
+                        foreignField: "_id",
+                        as: "BlogCategory",
                     },
-                    { $sort: { view: -1 } },
-                ]);
-            }
-            res.render("helper/table-blog", { blogs, categories });
-        } catch (error) {
-            console.log(error);
-            req.flash("error", "Không tìm thấy kết quả!");
+                },
+                { $sort: { view: -1 } },
+            ]);
         }
+        res.render("helper/table-blog", { blogs, categories });
     }
     // [GET]/blog/:id/update
     async update(req, res) {
@@ -199,38 +192,27 @@ class BlogController {
     }
 
     // [PUT]/blog/:id/update
-    async putUpdate(req, res, next) {
-        Blog.updateOne({ _id: req.params.id }, req.body)
-            .then(() => {
-                req.flash("success", "Cập nhật bài viết thành công!");
-                res.redirect("/blog/list");
-            })
-            .catch(next);
+    async putUpdate(req, res) {
+        await Blog.updateOne({ _id: req.params.id }, req.body);
+        req.flash("success", "Cập nhật bài viết thành công!");
+        res.redirect("back");
     }
 
-    async deleteBlog(req, res, next) {
-        // code deleteblog in here
-        Blog.deleteOne({ _id: req.params.id })
-            .then(() => {
-                req.flash("success", "Xóa bài viết thành công!");
-                res.redirect("back");
-            })
-            .catch(next);
+    async deleteBlog(req, res) {
+        await Blog.deleteOne({ _id: req.params.id });
+        req.flash("success", "Xóa bài viết thành công!");
+        res.redirect("back");
     }
 
-    async addCategory(req, res, next) {
+    async addCategory(req, res) {
         const formDate = req.body;
         const category = new BlogCategory(formDate);
-        category
-            .save()
-            .then(() => {
-                req.flash("success", "Đã thêm 1 thể loại!");
-                res.redirect("/blog/list-category");
-            })
-            .catch((error) => {});
+        await category.save();
+        req.flash("success", "Đã thêm 1 thể loại!");
+        res.redirect("/blog/list-category");
     }
 
-    async listCategory(req, res, next) {
+    async listCategory(req, res) {
         const categories = await BlogCategory.find({});
         res.render("blog/list-category", {
             success: req.flash("success"),
@@ -240,15 +222,12 @@ class BlogController {
     }
 
     async deleteCategory(req, res, next) {
-        BlogCategory.deleteOne({ _id: req.params.id })
-            .then(() => {
-                req.flash("success", "Đã xóa thành công!");
-                res.redirect("back");
-            })
-            .catch(next);
+        await BlogCategory.deleteOne({ _id: req.params.id });
+        req.flash("success", "Đã xóa thành công!");
+        res.redirect("back");
     }
 
-    async listBlog(req, res, next) {
+    async listBlog(req, res) {
         let perPage = 3;
         let page = req.params.page || 1;
         const categories = await BlogCategory.find({});
@@ -287,40 +266,44 @@ class BlogController {
 
     // [GET]/blog/list/:page
     async pagination(req, res) {
-        let perPage = 3;
-        let page = req.params.page || 1;
-        const categories = await BlogCategory.find({});
-        const blogs = await Blog.aggregate([
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "userID",
-                    foreignField: "_id",
-                    as: "User",
+        try {
+            let perPage = 3;
+            let page = req.params.page || 1;
+            const categories = await BlogCategory.find({});
+            const blogs = await Blog.aggregate([
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "userID",
+                        foreignField: "_id",
+                        as: "User",
+                    },
                 },
-            },
-            {
-                $lookup: {
-                    from: "blog-categories",
-                    localField: "bcID",
-                    foreignField: "_id",
-                    as: "BlogCategory",
+                {
+                    $lookup: {
+                        from: "blog-categories",
+                        localField: "bcID",
+                        foreignField: "_id",
+                        as: "BlogCategory",
+                    },
                 },
-            },
-            { $sort: { view: -1 } },
-            { $skip: perPage * page - perPage },
-            { $limit: perPage },
-        ]);
+                { $sort: { view: -1 } },
+                { $skip: perPage * page - perPage },
+                { $limit: perPage },
+            ]);
 
-        const blogsCount = await Blog.countDocuments();
-        res.render("blog/list-blog", {
-            success: req.flash("success"),
-            errors: req.flash("error"),
-            blogs,
-            categories,
-            current: page,
-            pages: Math.ceil(blogsCount / perPage),
-        });
+            const blogsCount = await Blog.countDocuments();
+            res.render("blog/list-blog", {
+                success: req.flash("success"),
+                errors: req.flash("error"),
+                blogs,
+                categories,
+                current: page,
+                pages: Math.ceil(blogsCount / perPage),
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

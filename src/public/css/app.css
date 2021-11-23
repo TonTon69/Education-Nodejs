@@ -8,16 +8,6 @@
 html {
   scroll-behavior: smooth; }
 
-a,
-a:hover {
-  color: #292929;
-  text-decoration: none; }
-
-p,
-li {
-  word-break: break-word;
-  line-height: 1.5; }
-
 ::selection {
   background: rgba(200, 200, 200, 0.99); }
 
@@ -32,12 +22,6 @@ body {
     background: #b4bcc3;
     border-radius: 20px;
     border: 3px solid #b4bcc3; }
-
-ul {
-  list-style-type: none; }
-
-blockquote {
-  border-left: 5px solid #fb5533; }
 
 .btn.btn-primary,
 .btn.btn-secondary,
@@ -97,6 +81,22 @@ blockquote {
 
 .btn-padding {
   padding: 4px 12px !important; }
+
+a,
+a:hover {
+  color: #292929;
+  text-decoration: none; }
+
+p,
+li {
+  word-break: break-word;
+  line-height: 1.5; }
+
+ul {
+  list-style-type: none; }
+
+blockquote {
+  border-left: 5px solid #fb5533; }
 
 .fs-7 {
   font-size: 0.9rem !important; }
@@ -1398,7 +1398,7 @@ blockquote {
         cursor: pointer; }
       .main .exercise .quiz .exercise-item .recommend-body,
       .main .exercise .quiz .exercise-item .explain-body {
-        padding: 10px 20px;
+        padding: 20px;
         border: 1px solid #e3950c;
         display: none; }
         .main .exercise .quiz .exercise-item .recommend-body .explain-content,
@@ -1645,7 +1645,7 @@ blockquote {
         cursor: pointer; }
       .main .learning-result .exercise-item .explain-body {
         border-radius: 8px;
-        padding: 10px 20px;
+        padding: 20px;
         border: 1px solid #e3950c;
         display: none; }
         .main .learning-result .exercise-item .explain-body .recommend-content {
@@ -2213,7 +2213,3 @@ blockquote {
     font-size: 14px;
     font-weight: 400;
     color: #6c757d; }
-
-.eggy .title,
-.eggy .message {
-  line-height: 1.5; }

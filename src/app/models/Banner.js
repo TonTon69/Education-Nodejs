@@ -3,10 +3,10 @@ const Schema = mongoose.Schema;
 
 const Banner = new Schema(
     {
-        image: { type: String },
-        description: { type: String },
-        title: { type: String },
-        url: { type: String },
+        image: { type: String, require: true },
+        description: { type: String, require: true },
+        title: { type: String, require: true },
+        url: { type: String, require: true },
     },
     {
         timestamps: true,
