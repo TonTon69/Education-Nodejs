@@ -64,6 +64,47 @@ block main
                             img.rounded-circle(src=rank.user[0].avatar, width='30', height='30', style='object-fit: cover')
                             mark=rank.user[0].fullname
                             small=rank.score
+            button.btn.btn-light.btn-padding.d-flex.align-items-center.rounded-pill.fs-8.mx-auto.mt-1.mb-1(data-bs-toggle="modal" data-bs-target="#ranksDetailModal")
+                span.me-1 Xem chi tiết
+                ion-icon(name='arrow-forward')
+        
+        #ranksDetailModal.modal.fade(tabindex='-1', aria-labelledby='ranksDetailModalLabel', aria-hidden='true')
+            .modal-dialog.modal-dialog-centered.modal-dialog-scrollable(style='max-width: 850px')
+                .modal-content
+                    .modal-header
+                        h5#ranksDetailModalLabel.modal-title Bảng xếp hạng thi đấu
+                        button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                    .modal-body
+                        .d-flex.align-items-center.justify-content-between
+                            div
+                                button.btn.btn-primary.btn-padding.btn-week-ranks.active Tuần
+                                button.btn.btn-primary.btn-padding.btn-month-ranks.ms-2 Tháng
+                            .tab-rank.d-flex.align-items-center
+                                span
+                                    ion-icon(name="chevron-back")
+                                strong.ps-2.pe-2
+                                span
+                                    ion-icon(name="chevron-forward")
+                        .table-responsive.mt-2
+                            table.table.text-center
+                                thead.table-secondary
+                                    tr
+                                        th(scope='col') Xếp hạng
+                                        th(scope='col') Thành viên
+                                        th(scope='col') Điểm
+                                        th(scope='col') Trận đã thắng
+                                tbody
+                                    //- tr.table-secondary
+                                    //-     td(colspan='4').fw-bold Hạng của tôi
+                                    //- tr.align-middle
+                                    //-     th(scope='row')= rankMeIndex
+                                    //-     td
+                                    //-         img.rounded-circle(src=rankMe[0].user[0].avatar width=30 height=30)
+                                    //-         span.ms-2= rankMe[0].user[0].fullname
+                                    //-     td= rankMe[0].score
+                                    //-     td= rankMe[0].victory
+                    .modal-footer
+                        button.btn.btn-secondary.btn-padding(type='button', data-bs-dismiss='modal') Đóng
 
         .chat
             .msger
@@ -132,3 +173,4 @@ block main
                     button.btn.btn-primary#btn-create-room(type='button') Tạo phòng
     script(src="/socket.io/socket.io.js")
     script(src='/js/competition.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js')

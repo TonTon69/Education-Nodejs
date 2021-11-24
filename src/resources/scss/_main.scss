@@ -246,13 +246,24 @@
             }
         }
 
+        #ranksDetailModal {
+            button.active {
+                background: #ec8e00;
+            }
+
+            .tab-rank {
+                ion-icon {
+                    cursor: pointer;
+                }
+            }
+        }
+
         .leaderboard {
             display: none;
             position: fixed;
             bottom: 34px;
             right: 28px;
             width: 245px;
-            border-radius: 10px;
             box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
 
             &.active {

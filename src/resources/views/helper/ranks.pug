@@ -1,0 +1,15 @@
+tbody
+    if ranks.length > 0
+        - var count = 0;
+        each rank in ranks
+            - count++;
+            tr.align-middle
+                th(scope='row')= count
+                td.text-start
+                    img.rounded-circle(src=rank.user[0].avatar width=26 height=26)
+                    span.ms-2= rank.user[0].fullname
+                td= rank.score
+                td= rank.victory
+    else
+        tr 
+            td(colspan='4').text-center Không có dữ liệu!!!

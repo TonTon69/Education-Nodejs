@@ -116,6 +116,7 @@ $(document).ready(function () {
     var chat = $(".chat");
     var chatShow = $(".chat-show");
     var closeChat = $(".msger-header-options");
+    var toggledLeaderboard = false;
 
     closeChat.click(function () {
         chat.hide(400);
@@ -129,6 +130,12 @@ $(document).ready(function () {
 
     $(".leaderboard h1").click(function () {
         $(this).parent().toggleClass("active");
+
+        toggledLeaderboard = !toggledLeaderboard;
+        $(".leaderboard button").attr(
+            "style",
+            toggledLeaderboard ? "display: none !important" : ""
+        );
     });
 
     // send message when click send btn
@@ -250,6 +257,131 @@ $(document).ready(function () {
         socket.emit("user-search", $(this).val());
         console.log($(this).val());
     });
+
+    // get weeks, months
+    let currentWeek = 0;
+    let currentMonth = 0;
+    let isActive = false;
+
+    $(".btn-month-ranks, .btn-week-ranks").click(function () {
+        $("#ranksDetailModal button").removeClass("active");
+        $(this).addClass("active");
+    });
+
+    $(".btn-week-ranks, .leaderboard button").click(function () {
+        isActive = true;
+        loading();
+        showWeeks(0);
+    });
+
+    $(".btn-month-ranks").click(function () {
+        isActive = false;
+        loading();
+        showMonths(0);
+    });
+
+    $(".tab-rank ion-icon[name='chevron-back']").click(function () {
+        loading();
+        isActive ? showWeeks(-1) : showMonths(-1);
+    });
+
+    $(".tab-rank ion-icon[name='chevron-forward']").click(function () {
+        loading();
+        isActive ? showWeeks(1) : showMonths(1);
+    });
+
+    function loading() {
+        $("#ranksDetailModal table tbody").html("");
+        $("#ranksDetailModal table tbody").append(`
+            <tr id="#spinner-loading">
+                <td colspan='4'>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-grow" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        `);
+    }
+
+    function showWeeks(e) {
+        if (e == 1) {
+            currentWeek = currentWeek + 1;
+        } else if (e == -1) {
+            currentWeek = currentWeek - 1;
+        } else {
+            currentWeek = 0;
+        }
+
+        let startOfWeek, endOfWeek;
+        if (currentWeek == 0) {
+            startOfWeek = moment().startOf("isoWeek");
+            endOfWeek = moment().endOf("isoWeek");
+        } else if (currentWeek > 0) {
+            startOfWeek = moment().add(currentWeek, "weeks").startOf("isoWeek");
+            endOfWeek = moment().add(currentWeek, "weeks").endOf("isoWeek");
+        } else {
+            startOfWeek = moment().add(currentWeek, "weeks").startOf("isoWeek");
+            endOfWeek = moment().add(currentWeek, "weeks").endOf("isoWeek");
+        }
+
+        $(".tab-rank strong").text(
+            startOfWeek.format("DD/MM") + " - " + endOfWeek.format("DD/MM")
+        );
+
+        $.ajax({
+            type: "POST",
+            url: "/competition/ranks/week",
+            contentType: "application/json",
+            data: JSON.stringify({
+                startOfWeek: startOfWeek,
+                endOfWeek: endOfWeek,
+            }),
+            success: function (data) {
+                setTimeout(function () {
+                    $("#spinner-loading").hide();
+                    $("#ranksDetailModal table tbody").replaceWith(data);
+                }, 2000);
+            },
+        });
+    }
+
+    function showMonths(e) {
+        if (e == 1) {
+            currentMonth = currentMonth + 1;
+        } else if (e == -1) {
+            currentMonth = currentMonth - 1;
+        } else {
+            currentMonth = 0;
+        }
+
+        let month;
+        if (currentWeek == 0) {
+            month = moment();
+        } else if (currentWeek > 0) {
+            month = moment().add(currentMonth, "M");
+        } else {
+            month = moment().add(currentMonth, "M");
+        }
+
+        $(".tab-rank strong").text("Tháng " + month.format("MM/YYYY"));
+
+        $.ajax({
+            type: "POST",
+            url: "/competition/ranks/month",
+            contentType: "application/json",
+            data: JSON.stringify({
+                month: month,
+            }),
+            success: function (data) {
+                setTimeout(function () {
+                    $("#spinner-loading").hide();
+                    $("#ranksDetailModal table tbody").replaceWith(data);
+                }, 2000);
+            },
+        });
+    }
 });
 
 socket.on("server-send-list-subject-of-user-grade-option", (data) => {

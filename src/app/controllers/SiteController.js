@@ -13,6 +13,8 @@ const Lession = require("../models/Lession");
 const Room = require("../models/Room");
 const Rank = require("../models/Rank");
 const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 class SiteController {
     // [GET]/
@@ -283,7 +285,15 @@ class SiteController {
             },
         ]);
 
-        res.render("competition", { rooms, ranksCompetition });
+        // const rankMe = ranksCompetition.find({
+        //     userID: ObjectId(req.signedCookies.userId),
+        // });
+        // console.log(rankMe);
+
+        res.render("competition", {
+            rooms,
+            ranksCompetition,
+        });
     }
 }
 

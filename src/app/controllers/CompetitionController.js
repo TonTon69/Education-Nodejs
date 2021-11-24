@@ -148,6 +148,63 @@ class CompetitionController {
             res.redirect("back");
         }
     }
+
+    //[GET]/competition/ranks/week
+    async ranksWeek(req, res) {
+        const ranks = await Rank.aggregate([
+            {
+                $match: {
+                    $and: [
+                        {
+                            updatedAt: {
+                                $gt: new Date(req.body.startOfWeek),
+                                $lt: new Date(req.body.endOfWeek),
+                            },
+                        },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $sort: { score: -1, victory: -1 } },
+            { $limit: 10 },
+        ]);
+
+        res.render("helper/ranks", { ranks });
+    }
+
+    //[GET]/competition/ranks/month
+    async ranksMonth(req, res) {
+        const ranks = await Rank.aggregate([
+            {
+                $addFields: {
+                    month_document: { $month: "$updatedAt" },
+                    month_date: { $month: new Date(req.body.month) },
+                },
+            },
+            {
+                $match: { $expr: { $eq: ["$month_document", "$month_date"] } },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $sort: { score: -1, victory: -1 } },
+            { $limit: 10 },
+        ]);
+
+        res.render("helper/ranks", { ranks });
+    }
 }
 
 module.exports = new CompetitionController();
