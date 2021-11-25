@@ -154,14 +154,10 @@ class CompetitionController {
         const ranks = await Rank.aggregate([
             {
                 $match: {
-                    $and: [
-                        {
-                            updatedAt: {
-                                $gt: new Date(req.body.startOfWeek),
-                                $lt: new Date(req.body.endOfWeek),
-                            },
-                        },
-                    ],
+                    updatedAt: {
+                        $gt: new Date(req.body.startOfWeek),
+                        $lt: new Date(req.body.endOfWeek),
+                    },
                 },
             },
             {
@@ -189,6 +185,7 @@ class CompetitionController {
                 },
             },
             {
+                // the expression is equivalent to using the $eq operator
                 $match: { $expr: { $eq: ["$month_document", "$month_date"] } },
             },
             {

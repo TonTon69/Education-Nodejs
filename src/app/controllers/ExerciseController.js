@@ -11,6 +11,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const readXlsxFile = require("read-excel-file/node");
 const path = require("path");
 const XLSX = require("xlsx");
+const { htmlToText } = require("html-to-text");
 
 class ExerciseController {
     // [GET]/exercise/:slug?name=lession
@@ -384,14 +385,14 @@ class ExerciseController {
             exercises.forEach((item, index) => {
                 let exercise = {
                     STT: index + 1,
-                    "Câu hỏi": item.question,
+                    "Câu hỏi": htmlToText(item.question, { wordwrap: 130 }),
                     "Option 1": item.option1,
                     "Option 2": item.option2,
                     "Option 3": item.option3,
                     "Option 4": item.option4,
                     "Đáp án": item.answer,
                     "Gợi ý": item.recommend,
-                    "Lời giải": item.explain,
+                    "Lời giải": htmlToText(item.explain, { wordwrap: 130 }),
                     "Loại câu hỏi": item.category[0].type,
                 };
                 exercisesExcel.push(exercise);

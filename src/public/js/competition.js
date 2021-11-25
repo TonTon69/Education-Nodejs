@@ -258,7 +258,7 @@ $(document).ready(function () {
         console.log($(this).val());
     });
 
-    // get weeks, months
+    // get ranks by weeks, months
     let currentWeek = 0;
     let currentMonth = 0;
     let isActive = false;
@@ -360,9 +360,9 @@ $(document).ready(function () {
         if (currentWeek == 0) {
             month = moment();
         } else if (currentWeek > 0) {
-            month = moment().add(currentMonth, "M");
+            month = moment().add(currentMonth, "months");
         } else {
-            month = moment().add(currentMonth, "M");
+            month = moment().add(currentMonth, "months");
         }
 
         $(".tab-rank strong").text("Tháng " + month.format("MM/YYYY"));
