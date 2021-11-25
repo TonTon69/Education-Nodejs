@@ -34,6 +34,7 @@ router.post("/report", requireAuth, siteController.report);
 router.get("/subjects", siteController.subjects);
 router.get("/infor", requireAuth, siteController.infor);
 router.get("/blog", siteController.blog);
+router.get("/qa", siteController.qa);
 router.get("/logout", requireAuth, siteController.logout);
 router.get("/login", siteController.login);
 router.post("/login", authValidate, siteController.postLogin);

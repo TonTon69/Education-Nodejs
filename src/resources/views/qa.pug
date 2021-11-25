@@ -1,0 +1,65 @@
+extends ./layouts/common
+block main
+    section.qa
+        .row
+            .col-md-9.col-lg-9.col-xl-8
+                .qa-wrap
+                    .qa-heading
+                        p.qa-heading-title Nổi bật
+                    .qa-content
+                        each blog in blogs
+                            .qa-list
+                                .qa-item
+                                    .qa-item-heading
+                                        .qa-item-left
+                                            span.fs-8 Tư vấn chuyên ngành
+                                        .qa-item-right.fs-5
+                                            ion-icon.me-2(name='bookmark-outline')
+                                            ion-icon(name='ellipsis-horizontal')
+                                    .qa-item-content
+                                        a(href="").qa-item-content-title.mb-0 #{blog.title}
+                                        .d-flex.align-items-center.justify-content-between.mt-4.mb-4
+                                            .d-flex.align-items-center
+                                                img.qa-item-avatar(src=blog.User[0].avatar alt='')
+                                                .mb-0.fs-8.text-secondary
+                                                    span Đăng bởi 
+                                                    span.fw-bold #{blog.User[0].fullname} 
+                                                    span.me-2.ms-2 .
+                                                    span #{moment(blog.createdAt).locale("vi").fromNow()}
+                                            span.fs-8.text-secondary 100 trả lời
+                                        .fs-7.qa-item-content-desc !{blog.content}
+                                        .d-flex.align-items-center.justify-content-between.mt-4
+                                            div
+                                                .button.btn.btn-light.btn-sm
+                                                    span.text-secondary.fs-8 HagTag
+                                                .button.btn.btn-light.btn-sm.ms-2
+                                                    span.text-secondary.fs-8 HagTag
+                                                .button.btn.btn-light.btn-sm.ms-2
+                                                    span.text-secondary.fs-8 HagTag
+                                            a(href="").btn.btn-primary.btn-sm.rounded-pill Chi tiết
+                                            
+            .col-md-3.col-lg-3.col-xl-4
+                .topic-wrap
+                    .topic-wrap-heading
+                        | CÁC CHỦ ĐỀ ĐƯỢC ĐỀ XUẤT
+                    .toppic-wrap-content
+                        ul
+                            //- each category in categories
+                            //-     li #{category.category}
+    //- script.
+    //-     document.addEventListener('DOMContentLoaded', function() {
+    //-         $('.toppic-wrap-content ul li').click(function() {
+    //-             $(this).addClass('active').siblings().removeClass('active');
+                
+    //-             var option = $(this).text();
+    //-             $.ajax({
+    //-                 method: 'POST',
+    //-                 url: '/blog/filter',
+    //-                 contentType: 'application/json',
+    //-                 data: JSON.stringify({option: option}),
+    //-                 success: function (data) {
+    //-                     $(".blog-content").replaceWith(data);
+    //-                 }
+    //-             });
+    //-         });
+    //-     });

@@ -15,7 +15,7 @@
 
     &-wrap {
         height: 100%;
-        padding: 36px 40px 0;
+        padding: 36px 56px 0 40px;
         border-right: 1px solid #e6e6e6;
 
         @include mobile {
@@ -29,7 +29,7 @@
 
         &-title {
             width: fit-content;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 14px;
             padding: 0.5rem 1rem;
             border-bottom: 1px solid #292929;
@@ -135,6 +135,85 @@
                         height: 180px;
                     }
                 }
+            }
+        }
+    }
+}
+
+.qa {
+    &-wrap {
+        height: 100%;
+        padding: 36px 56px 0 40px;
+        border-right: 1px solid #e6e6e6;
+
+        @include mobile {
+            padding: 36px 0 0;
+            border-right: none;
+        }
+    }
+
+    &-heading {
+        border-bottom: 1px solid rgba(126, 117, 117, 0.2);
+
+        &-title {
+            width: fit-content;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #292929;
+            margin: 0;
+        }
+    }
+
+    &-item {
+        padding: 35px 0;
+        border-bottom: 1px solid rgba(126, 117, 117, 0.2);
+
+        &-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        &-left {
+            color: #fb5533;
+            font-weight: 400;
+        }
+
+        &-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            align-content: center;
+            object-fit: cover;
+        }
+
+        &-right {
+            i {
+                padding: 4px 8px;
+            }
+        }
+
+        &-content {
+            @include mobile {
+                flex-direction: column;
+            }
+
+            &-title {
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 1.5;
+            }
+
+            &-desc {
+                line-height: 1.5;
+                display: -webkit-box;
+                text-overflow: ellipsis;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
             }
         }
     }

@@ -295,6 +295,25 @@ class SiteController {
             ranksCompetition,
         });
     }
+
+    // [GET]/qa
+    async qa(req, res) {
+        const blogs = await Blog.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "User",
+                },
+            },
+            { $sort: { view: -1 } },
+        ]);
+
+        res.render("qa", {
+            blogs,
+        });
+    }
 }
 
 module.exports = new SiteController();

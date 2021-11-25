@@ -3,8 +3,15 @@ $(document).ready(function () {
     const userMenu = $(".header__actions--userMenu");
     const actionsUser = $(".header__actions--user");
 
+    const sidebarCreateBtn = $(".sidebar .create__button");
+
     userAva.click(function (e) {
         userMenu.toggleClass("show");
+    });
+
+    sidebarCreateBtn.click(function () {
+        $(this).toggleClass("show");
+        $(".sidebar .sidebar__menu").toggleClass("show");
     });
 
     $(document).click(function (e) {
@@ -14,6 +21,15 @@ $(document).ready(function () {
             actionsUser.has(e.target).length == 0
         ) {
             userMenu.removeClass("show");
+        }
+
+        if (
+            !sidebarCreateBtn.is(e.target) &&
+            sidebarCreateBtn.has(e.target).length == 0
+        ) {
+            $(".sidebar .sidebar__menu, .sidebar .create__button").removeClass(
+                "show"
+            );
         }
     });
 

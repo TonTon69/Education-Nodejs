@@ -1,5 +1,14 @@
 .sidebar
     ul.sidebar__list.ps-0
+        li.sidebar__item.d-flex.justify-content-center.mb-4.mt-2.position-relative
+            .sidebar__link.bg-primary.rounded-circle.create__button.text-white.fw-bold
+                img(src="/img/add.png")
+            .sidebar__menu.bg-white.shadow
+                ul.ps-0
+                    li
+                        a(href='/new-question').d-flex.align-items-center
+                            ion-icon(name='help')
+                            span.ms-2.fs-8 Đặt câu hỏi
         li.sidebar__item
             a.sidebar__link(href='/')
                 ion-icon(name='home')
@@ -14,9 +23,11 @@
                 span Thi đấu
             .loader
                 ion-icon.loader-star(name='star')
-
-            //- .position-absolute.top-0.end-0.text-warning.fs-5
         li.sidebar__item
             a.sidebar__link(href='/blog')
                 ion-icon(name='newspaper')
                 span Blog
+        li.sidebar__item
+            a.sidebar__link(href='/qa')
+                ion-icon(name='help')
+                span Hỏi
