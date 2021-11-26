@@ -314,6 +314,11 @@ class SiteController {
             blogs,
         });
     }
+
+    // [GET]/new-question
+    async newQuestion(req, res) {
+        res.render("qa/new-question");
+    }
 }
 
 module.exports = new SiteController();

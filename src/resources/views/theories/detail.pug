@@ -57,24 +57,7 @@ block content
     else if success.length > 0
         - var msgSuccess = success
     script.
-        ClassicEditor.create(document.querySelector('#content-theory'), {
-            toolbar: {
-                items: [
-                    'heading', '|', 'fontsize', '|',
-                    'alignment', '|',
-                    'bold', 'italic', '|',
-                    'link', '|',
-                    'outdent', 'indent', '|',
-                    'bulletedList', 'numberedList', '|',
-                    'insertTable', '|',
-                    'uploadImage', 'blockQuote', '|',
-                    'undo', 'redo',
-                    'MathType',
-                    'ChemType',
-                ],
-                shouldNotGroupWhenFull: true
-            },
-        });
+        ClassicEditor.create(document.querySelector('#content-theory'));
 
         $(document).ready(function () {
             var deleteTheoryModal = $("#deleteTheoryModal");

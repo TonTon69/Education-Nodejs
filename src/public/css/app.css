@@ -1824,6 +1824,24 @@ blockquote {
         background: -webkit-linear-gradient(#fff, #f0f0f0); }
       .main .learning-result .tab-content ul li .menu__item:hover {
         background: -webkit-linear-gradient(#fff, #f0f0f0); }
+  .main .new-question {
+    padding-left: 40px;
+    padding-top: 36px; }
+    .main .new-question-title {
+      color: #292929;
+      width: 100%;
+      outline: none;
+      border: none;
+      font-weight: 500;
+      line-height: 1.5; }
+      .main .new-question-title[contenteditable="true"]:empty:before {
+        content: attr(placeholder);
+        pointer-events: none;
+        color: #b3b3b1;
+        display: block; }
+    .main .new-question-label {
+      font-size: 18px;
+      font-weight: 600; }
   @media (max-width: 768px) {
     .main .blog .row {
       flex-direction: column; }
