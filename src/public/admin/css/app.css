@@ -150,3 +150,92 @@ p {
 .bg-green {
     background-color: #35a801;
 }
+
+textarea {
+    line-height: 1.5 !important;
+}
+
+.form-control {
+    border: 1px solid #d4d4d4 !important;
+}
+
+.form-control:focus {
+    border-color: #132c46 !important;
+}
+
+select.form-control {
+    padding: 0.75rem;
+    color: #495057;
+}
+
+.form-check-input-custom {
+    display: none;
+}
+
+.form-check-input-custom + label {
+    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.form-check-input-custom + label span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: -1px 4px 0 0;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    line-height: 44px;
+}
+
+.form-check-input-custom.color-1 + label span {
+    background-color: #2ecc71;
+}
+
+.form-check-input-custom.color-2 + label span {
+    background-color: #3498db;
+}
+
+.form-check-input-custom.color-3 + label span {
+    background-color: #f1c40f;
+}
+
+.form-check-input-custom.color-4 + label span {
+    background-color: #e74c3c;
+}
+
+.form-check-input-custom + label span img {
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.form-check-input-custom:checked + label span img {
+    opacity: 1;
+}
+
+.custom-desc {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: #222;
+    font-size: 14px;
+    border-radius: 8px;
+    color: #fff;
+    padding: 12px;
+    min-width: 232px;
+    max-width: 272px;
+    display: none;
+}
+
+.form-check-input-custom + label:hover + .custom-desc {
+    display: block;
+}

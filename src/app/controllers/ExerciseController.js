@@ -265,14 +265,49 @@ class ExerciseController {
     }
 
     // [PUT]/exercises/:id
-    async update(req, res, next) {
-        await Exercise.updateOne({ _id: req.params.id }, req.body);
+    async update(req, res) {
+        let {
+            answer,
+            option1,
+            option2,
+            option3,
+            option4,
+            question,
+            recommend,
+            explain,
+            ceID,
+        } = req.body;
+
+        if (answer === "A") {
+            answer = option1;
+        } else if (answer === "B") {
+            answer = option2;
+        } else if (answer === "C") {
+            answer = option3;
+        } else if (answer === "D") {
+            answer = option4;
+        }
+
+        await Exercise.updateOne(
+            { _id: req.params.id },
+            {
+                question,
+                option1,
+                option2,
+                option3,
+                option4,
+                answer,
+                recommend,
+                explain,
+                ceID,
+            }
+        );
         req.flash("success", "Cập nhật thành công!");
         res.redirect("back");
     }
 
     // [GET]/exercises/create
-    async create(req, res, next) {
+    async create(req, res) {
         if (ObjectId.isValid(req.query.lession)) {
             const lession = await Lession.findOne({ _id: req.query.lession });
             const unit = await Unit.findOne({ _id: lession.unitID });
@@ -292,15 +327,49 @@ class ExerciseController {
     }
 
     // [POST]/exercises/create
-    async postCreate(req, res, next) {
-        const exercise = new Exercise(req.body);
+    async postCreate(req, res) {
+        let {
+            lessionID,
+            answer,
+            option1,
+            option2,
+            option3,
+            option4,
+            question,
+            recommend,
+            explain,
+            ceID,
+        } = req.body;
+
+        if (answer === "A") {
+            answer = option1;
+        } else if (answer === "B") {
+            answer = option2;
+        } else if (answer === "C") {
+            answer = option3;
+        } else if (answer === "D") {
+            answer = option4;
+        }
+
+        const exercise = new Exercise({
+            lessionID,
+            question,
+            option1,
+            option2,
+            option3,
+            option4,
+            answer,
+            recommend,
+            explain,
+            ceID,
+        });
         await exercise.save();
         req.flash("success", "Thêm mới thành công!");
         res.redirect("back");
     }
 
     // [DELETE]/exercises
-    async delete(req, res, next) {
+    async delete(req, res) {
         await Exercise.deleteOne({ _id: req.params.id });
         req.flash("success", "Xóa thành công!");
         res.redirect("back");
@@ -330,6 +399,16 @@ class ExerciseController {
                             row[9] = category._id;
                         }
                     });
+
+                    if (row[6] === "A") {
+                        row[6] = row[2];
+                    } else if (row[6] === "B") {
+                        row[6] = row[3];
+                    } else if (row[6] === "C") {
+                        row[6] = row[4];
+                    } else if (row[6] === "D") {
+                        row[6] = row[5];
+                    }
 
                     let exercise = new Exercise({
                         question: row[1],

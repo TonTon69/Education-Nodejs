@@ -31,41 +31,50 @@ block content
                     form.mt-4(action="/exercises/create", method='post')
                         input(type='text', name='lessionID', value=lession._id, hidden)
                         .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='exercise-question') Câu hỏi
-                            .col-sm-9
-                                textarea#exercise-question.form-control(type='text', placeholder='Nhập câu hỏi', name='question')
+                            .col-sm-12
+                                textarea#exercise-question.form-control(type='text', placeholder='Nhập câu hỏi tại đây...', name='question')
                         .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='option1') Option 1
-                            .col-sm-9
-                                input#option1.form-control(type='text', placeholder='Nhập option 1', required, name='option1')
+                            .col-sm-3
+                                .text-center.position-relative
+                                    input.form-check-input-custom#custom1(type='radio' name='answer' value='A')
+                                    label(for='custom1')
+                                        span
+                                            img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg', alt='Checked Icon')
+                                    .custom-desc Đánh dấu đây là câu trả lời đúng
+                                textarea.form-control(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', required, name='option1')
+                            .col-sm-3
+                                .text-center.position-relative
+                                    input.form-check-input-custom#custom2(type='radio' name='answer' value='B')
+                                    label(for='custom2')
+                                        span
+                                            img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg', alt='Checked Icon')
+                                    .custom-desc Đánh dấu đây là câu trả lời đúng
+                                textarea.form-control(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', required, name='option2')
+                            .col-sm-3
+                                .text-center.position-relative
+                                    input.form-check-input-custom#custom3(type='radio' name='answer' value='C')
+                                    label(for='custom3')
+                                        span
+                                            img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg', alt='Checked Icon')
+                                    .custom-desc Đánh dấu đây là câu trả lời đúng
+                                textarea.form-control(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', required, name='option3')
+                            .col-sm-3
+                                .text-center.position-relative
+                                    input.form-check-input-custom#custom4(type='radio' name='answer' value='D')
+                                    label(for='custom4')
+                                        span
+                                            img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg', alt='Checked Icon')
+                                    .custom-desc Đánh dấu đây là câu trả lời đúng
+                                textarea.form-control(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', required, name='option4')
                         .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='option2') Option 2
-                            .col-sm-9
-                                input#option2.form-control(type='text', placeholder='Nhập option 2', required, name='option2')
+                            .col-sm-12
+                                textarea.form-control(type='text', rows='4', placeholder='Nhập gợi ý cho câu hỏi tại đây...', required, name='recommend')
                         .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='option3') Option 3
-                            .col-sm-9
-                                input#option3.form-control(type='text', placeholder='Nhập option 3', required, name='option3')
+                            .col-sm-12
+                                textarea#exercise-explain.form-control(type='text', placeholder='Nhập lời giải cho câu hỏi tại đây...', name='explain')
                         .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='option4') Option 4
-                            .col-sm-9
-                                input#option4.form-control(type='text', placeholder='Nhập option 4', required, name='option4')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='answer') Đáp án đúng
-                            .col-sm-9
-                                input#answer.form-control(type='text', placeholder='Nhập đáp án đúng', required, name='answer')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='recommend') Gợi ý
-                            .col-sm-9
-                                input#recommend.form-control(type='text', placeholder='Nhập gợi ý', required, name='recommend')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='exercise-explain') Lời giải
-                            .col-sm-9
-                                textarea#exercise-explain.form-control(type='text', placeholder='Nhập lời giải', name='explain')
-                        .form-group.row
-                            label.col-sm-3.col-form-label.text-dark(for='category') Loại câu hỏi
-                            .col-sm-9
-                                select.form-control.h-75(id='category', name='ceID', required)
+                            .col-sm-4
+                                select.form-control(id='category', name='ceID', required)
                                     option.selected(value='') --Chọn loại câu hỏi--
                                     each category in categories
                                         option(value=category._id)= category.type
