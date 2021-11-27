@@ -114,43 +114,11 @@ block content
         var allEditorsQuestion = document.querySelectorAll('#question');
         var allEditorsExplain = document.querySelectorAll('#explain');
         for (var i = 0; i < allEditorsQuestion.length; ++i) {
-            ClassicEditor.create(allEditorsQuestion[i], {
-                toolbar: {
-                    items: [
-                        'heading', '|', 'fontsize', '|',
-                        'alignment', '|',
-                        'bold', 'italic', '|',
-                        'link', '|',
-                        'bulletedList', 'numberedList', '|',
-                        'insertTable', '|',
-                        'uploadImage', 'blockQuote', '|',
-                        'undo', 'redo',
-                        'MathType',
-                        'ChemType',
-                    ],
-                    shouldNotGroupWhenFull: true
-                },
-            });
+            ClassicEditor.create(allEditorsQuestion[i]);
         }
 
         for (var i = 0; i < allEditorsExplain.length; ++i) {
-            ClassicEditor.create(allEditorsExplain[i], {
-                toolbar: {
-                    items: [
-                        'heading', '|', 'fontsize', '|',
-                        'alignment', '|',
-                        'bold', 'italic', '|',
-                        'link', '|',
-                        'bulletedList', 'numberedList', '|',
-                        'insertTable', '|',
-                        'uploadImage', 'blockQuote', '|',
-                        'undo', 'redo',
-                        'MathType',
-                        'ChemType',
-                    ],
-                    shouldNotGroupWhenFull: true
-                },
-            });
+            ClassicEditor.create(allEditorsExplain[i]);
         }
 
         $(document).ready(function () {
