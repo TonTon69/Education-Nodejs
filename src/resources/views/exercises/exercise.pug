@@ -74,30 +74,30 @@ block main
                                 .form-check.d-flex.align-items-center
                                     input.form-check-input.mt-0.me-3(id=`option-1-${i}`, type='radio', name=exercise._id, value=exercise.option1)
                                     label.form-check-label(for=`option-1-${i}`)
-                                        | A. #{exercise.option1}
+                                        | A. !{exercise.option1}
                                 .form-check.d-flex.align-items-center
                                     input.form-check-input.mt-0.me-3(id=`option-2-${i}`, type='radio', name=exercise._id, value=exercise.option2)
                                     label.form-check-label(for=`option-2-${i}`)
-                                        | B. #{exercise.option2}
+                                        | B. !{exercise.option2}
                                 .form-check.d-flex.align-items-center
                                     input.form-check-input.mt-0.me-3(id=`option-3-${i}`, type='radio', name=exercise._id, value=exercise.option3)
                                     label.form-check-label(for=`option-3-${i}`)
-                                        | C. #{exercise.option3}
+                                        | C. !{exercise.option3}
                                 .form-check.d-flex.align-items-center
                                     input.form-check-input.mt-0.me-3(id=`option-4-${i}`, type='radio', name=exercise._id, value=exercise.option4)
                                     label.form-check-label(for=`option-4-${i}`)
-                                        | D. #{exercise.option4}
+                                        | D. !{exercise.option4}
                             .check-result.mb-3.d-none
                                 span.message
                                 span.answer-true
                             if exercise.recommend !== null
                                 .recommend(id="")
-                                    .recommend-header.text-primary.d-inline-flex.align-items-center
+                                    .recommend-header.text-primary.d-inline-flex.align-items-center.mb-4
                                         span.me-1 Gợi ý
                                         ion-icon(name='sunny')
-                                    .recommend-body.mt-4
+                                    .recommend-body
                                         span.fw-bold Phương pháp giải
-                                        .mt-2.recommend-content= exercise.recommend
+                                        .mt-2.recommend-content !{exercise.recommend}
                         
                 .actions.pt-4.d-flex.align-items-center
                     button#btn-next-question.btn.btn-success.btn-padding(value="submit")

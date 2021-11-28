@@ -147,6 +147,16 @@ p {
     color: #fff !important;
 }
 
+.statistical__detail .form-check-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.statistical__detail .form-check-label p {
+    margin-bottom: 0;
+}
+
 .bg-green {
     background-color: #35a801;
 }

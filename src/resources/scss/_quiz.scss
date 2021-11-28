@@ -63,6 +63,10 @@
             border: 2px solid darkgray;
             border-radius: 20px;
             overflow: hidden;
+
+            label p {
+                margin-bottom: 0;
+            }
         }
     }
 
