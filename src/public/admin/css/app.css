@@ -156,11 +156,11 @@ textarea {
 }
 
 .form-control {
-    border: 1px solid #d4d4d4 !important;
+    border: 1px solid #d4d4d4;
 }
 
 .form-control:focus {
-    border-color: #132c46 !important;
+    border-color: #132c46;
 }
 
 select.form-control {

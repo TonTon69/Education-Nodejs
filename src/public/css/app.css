@@ -1928,7 +1928,7 @@ blockquote {
       .main .blog-item-content-right img {
         width: 200px;
         height: 120px;
-        border-radius: 10%;
+        border-radius: 10px;
         object-fit: cover; }
         @media (max-width: 768px) {
           .main .blog-item-content-right img {

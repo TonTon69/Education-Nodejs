@@ -14,7 +14,7 @@ block content
                                 .input-group-append
                                     button.btn.btn-sm.btn-primary(type='submit') T&igrave;m ki&#x1EBF;m
                         .form-group.mb-0.ml-4
-                            select.form-control.text-dark.p-2(name='role')
+                            select.selectpicker.show-tick.border-0(name='role' data-style="btn-outline-light" data-width="auto")
                                 option.selected.disabled(value='') -- Tìm kiếm theo chức vụ --
                                 each role in roles
                                     option(value=`${role._id}`)=role.description
@@ -137,7 +137,6 @@ block content
         }  
     script.
         document.addEventListener('DOMContentLoaded', function() {
-
             //Delete
             var userID;
             var deleteForm = document.forms["delete-user-form"];

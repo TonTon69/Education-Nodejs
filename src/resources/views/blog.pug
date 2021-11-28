@@ -25,7 +25,7 @@ block main
                                                 h5.blog-item-content-left-title
                                                     | #{blog.title}
                                                 .blog-item-content-left-text !{blog.content}
-                                                p.mt-3.blog-item-content-left-time= moment(blog.createdAt).locale("vi").fromNow()
+                                                p.mt-3.blog-item-content-left-time= moment(blog.updatedAt).locale("vi").fromNow()
                                             .blog-item-content-right
                                                 img(src=`${blog.image}` alt='')
             .col-md-3.col-lg-3.col-xl-4

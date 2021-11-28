@@ -15,7 +15,7 @@ block content
                                 .input-group-append
                                     button.btn.btn-sm.btn-primary(type='submit') T&igrave;m ki&#x1EBF;m
                         .form-group.mb-0.ml-4
-                            select.form-control.text-dark.p-2(name='category')
+                            select.selectpicker.show-tick.border-0(name='category' data-style="btn-outline-light" data-width="auto")
                                 option.selected.disabled(value='') -- Tìm kiếm theo thể loại --
                                 each category in categories
                                     option(value=`${category._id}`)=category.category
@@ -112,7 +112,7 @@ block content
     else if success.length > 0
         - var msgSuccess = success
     script.
-        document.addEventListener('DOMContentLoaded', function() {
+        $(document).ready(function () {
             // toast message
             let msgToastError = '#{msgError}';
             if(msgToastError != ''){
