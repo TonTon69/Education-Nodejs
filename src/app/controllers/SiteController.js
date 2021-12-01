@@ -64,7 +64,43 @@ class SiteController {
     async subjects(req, res, next) {
         const subjects = await Subject.find({});
         const grades = await Grade.find({});
-        res.render("subjects", { subjects, grades });
+
+        const statisticals = await Statistical.aggregate([
+            {
+                $match: { userID: ObjectId(req.signedCookies.userId) },
+            },
+        ]);
+
+        let subjectsStudying = [];
+        if (statisticals.length > 0) {
+            const statisticalsIdArr = statisticals.map(
+                ({ lessionID }) => lessionID
+            );
+
+            subjectsStudying = await Lession.aggregate([
+                { $match: { _id: { $in: statisticalsIdArr } } },
+                {
+                    $lookup: {
+                        from: "units",
+                        localField: "unitID",
+                        foreignField: "_id",
+                        as: "unit",
+                    },
+                },
+                {
+                    $unwind: "$unit",
+                },
+                {
+                    $lookup: {
+                        from: "subjects",
+                        localField: "unit.subjectID",
+                        foreignField: "_id",
+                        as: "unit.subject",
+                    },
+                },
+            ]);
+        }
+        res.render("subjects", { subjects, grades, subjectsStudying });
     }
 
     // [GET]/login
