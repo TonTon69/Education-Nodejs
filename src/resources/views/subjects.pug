@@ -8,13 +8,13 @@ block main
                     each item in subjectsStudying
                         .col-sm-3.col-12
                             .subjects__item.mb-5
-                                a.subjects__link(href=`/subjects/${item.unit.subject[0].slug}`)
+                                a.subjects__link(href=`/subjects/${item.slug}`)
                                     .brand PC3
                                     .subject
-                                        h4= item.unit.subject[0].name
-                                        ion-icon(name=item.unit.subject[0].icon)
+                                        h4= item.name
+                                        ion-icon(name=item.icon)
                                 h6.mt-3.subjects__title
-                                    a(href=`/subjects/${item.unit.subject[0].slug}`)= item.unit.subject[0].name + " " + item.unit.subject[0].gradeID
+                                    a(href=`/subjects/${item.slug}`)= item.name + " " + item.gradeID
         ul#myTab.nav.nav-tabs(role='tablist')
             li.nav-item(role='presentation')
                 button#grade10-tab.nav-link.active(data-bs-toggle='tab', data-bs-target='#grade10', type='button', role='tab', aria-controls='grade10', aria-selected='true')

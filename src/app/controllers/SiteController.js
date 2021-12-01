@@ -77,28 +77,19 @@ class SiteController {
                 ({ lessionID }) => lessionID
             );
 
-            subjectsStudying = await Lession.aggregate([
-                { $match: { _id: { $in: statisticalsIdArr } } },
-                {
-                    $lookup: {
-                        from: "units",
-                        localField: "unitID",
-                        foreignField: "_id",
-                        as: "unit",
-                    },
-                },
-                {
-                    $unwind: "$unit",
-                },
-                {
-                    $lookup: {
-                        from: "subjects",
-                        localField: "unit.subjectID",
-                        foreignField: "_id",
-                        as: "unit.subject",
-                    },
-                },
-            ]);
+            const lessions = await Lession.find({
+                _id: { $in: statisticalsIdArr },
+            });
+
+            const lessionsIdArr = lessions.map(({ unitID }) => unitID);
+
+            const units = await Unit.find({ _id: { $in: lessionsIdArr } });
+
+            const unitsIdArr = units.map(({ subjectID }) => subjectID);
+
+            subjectsStudying = await Subject.find({
+                _id: { $in: unitsIdArr },
+            });
         }
         res.render("subjects", { subjects, grades, subjectsStudying });
     }
