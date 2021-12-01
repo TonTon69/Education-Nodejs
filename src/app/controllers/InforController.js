@@ -10,7 +10,7 @@ cloudinary.config({
 
 class InforController {
     // [PUT]/infor/:id
-    async update(req, res, next) {
+    async update(req, res) {
         const { fullname, phone, birthDay, address } = req.body;
         const user = await User.findOne({
             fullname,
@@ -22,6 +22,22 @@ class InforController {
             res.redirect("back");
             return;
         }
+
+        // const checkUsername = await User.findOne({
+        //     username: slugify(fullname).toLowerCase(),
+        // });
+
+        // let username = "";
+        // if (checkUsername && checkUsername.fullname !== fullname) {
+        //     username = slugify(
+        //         fullname.toLowerCase() +
+        //             "-" +
+        //             Math.floor(1000 + Math.random() * 9000)
+        //     );
+        // } else {
+        //     username = slugify(fullname).toLowerCase();
+        // }
+
         await User.updateOne(
             { _id: req.signedCookies.userId },
             {
@@ -29,11 +45,7 @@ class InforController {
                 phone,
                 birthDay,
                 address,
-                username: slugify(
-                    fullname.toLowerCase() +
-                        "-" +
-                        Math.floor(1000 + Math.random() * 9000)
-                ),
+                // username: slugify(fullname).toLowerCase(),
             }
         );
         req.flash("success", "Cập nhật thông tin thành công!");

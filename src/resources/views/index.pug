@@ -123,8 +123,8 @@ block main
                                             img.avatar(src=b.User[0].avatar, alt='')
                                             .fs-7
                                                 strong= b.User[0].fullname
-                                                span.dot .
-                                                span= moment(b.updatedAt).locale("vi").fromNow()
+                                                span.dot ·
+                                                span.text-secondary= moment(b.updatedAt).locale("vi").fromNow()
                         .swiper-button-prev
                         .swiper-button-next
                         .swiper-scrollbar

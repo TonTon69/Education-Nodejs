@@ -33,6 +33,6 @@ block main
                                                     img(src=item.User[0].avatar, alt='')
                                                     .fs-7
                                                         span.ms-2.name= item.User[0].fullname
-                                                        span.ms-1.me-1 .
-                                                        span= moment(item.updatedAt).locale("vi").fromNow()
+                                                        span.ms-2.me-2 ·
+                                                        span.text-secondary.fs-8= moment(item.updatedAt).locale("vi").fromNow()
 

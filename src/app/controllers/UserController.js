@@ -21,9 +21,9 @@ class UserController {
             const users = await User.aggregate([
                 {
                     $lookup: {
-                        from: "roles", // table database liên kết
-                        localField: "roleID", // thuộc tính của object
-                        foreignField: "_id", // thuộc tính được liên kết
+                        from: "roles",
+                        localField: "roleID",
+                        foreignField: "_id",
                         as: "Role",
                     },
                 },
@@ -54,9 +54,9 @@ class UserController {
             const users = await User.aggregate([
                 {
                     $lookup: {
-                        from: "roles", // table database liên kết
-                        localField: "roleID", // thuộc tính của object
-                        foreignField: "_id", // thuộc tính được liên kết
+                        from: "roles",
+                        localField: "roleID",
+                        foreignField: "_id",
                         as: "Role",
                     },
                 },
@@ -78,6 +78,7 @@ class UserController {
         }
     }
 
+    // [GET]/user/create
     async create(req, res, next) {
         const roles = await Role.find({});
         const grades = await Grade.find({});
@@ -89,7 +90,8 @@ class UserController {
         });
     }
 
-    async createUser(req, res, next) {
+    // [POST]/user/create
+    async createUser(req, res) {
         const formUser = req.body;
 
         const checkEmail = await User.findOne({ email: formUser.email });
@@ -109,9 +111,8 @@ class UserController {
         formUser.fullname = formUser.firstName + " " + formUser.lastName;
         formUser.active = true;
         formUser.avatar = "/img/nobody.jpg";
+        formUser.password = await bcrypt.hash(formUser.phone, 10);
 
-        formUser.password = formUser.phone;
-        formUser.password = await bcrypt.hash(formUser.password, 10);
         const user = new User(formUser);
         await user.save();
         req.flash("success", "Đăng ký thành công tài khoản mới!");
