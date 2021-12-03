@@ -13,7 +13,7 @@ const readXlsxFile = require("read-excel-file/node");
 const path = require("path");
 class SubjectController {
     // [GET]/subjects/:slug
-    async show(req, res, next) {
+    async show(req, res) {
         try {
             const ratingRegulation = await System.findOne({
                 field: "rating_regulations",
@@ -163,7 +163,7 @@ class SubjectController {
     }
 
     // [GET]/subjects/:id/edit
-    async edit(req, res, next) {
+    async edit(req, res) {
         const subject = await Subject.findById(req.params.id);
         res.render("subjects/edit", {
             subject,
@@ -173,7 +173,7 @@ class SubjectController {
     }
 
     // [PUT]/subjects/:id
-    async update(req, res, next) {
+    async update(req, res) {
         const { name, gradeID } = req.body;
         const findSubject = await Subject.findOne({
             name: name,
@@ -201,7 +201,7 @@ class SubjectController {
     }
 
     // [DELETE]/subjects/:id
-    async delete(req, res, next) {
+    async delete(req, res) {
         const units = await Unit.find({ subjectID: req.params.id });
         if (units.length > 0) {
             const unitsIdArr = units.map(({ _id }) => _id);

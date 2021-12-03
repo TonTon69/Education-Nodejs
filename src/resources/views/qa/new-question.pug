@@ -3,15 +3,20 @@ block main
     section.new-question
         .row
             .col-sm-9
-                .new-question-title.fs-3(contenteditable="true" placeholder="Đặt câu hỏi (Nhấn vào đây để nhập tiêu đề)")
-                .new-question-img.mt-5
-                    .new-question-label.mb-4 Ảnh mô tả
-                    input(type="file")
-                .new-question-content.mt-5
-                    .new-question-label.mb-4 Nội dung
-                    textarea.new-question-textarea(type="text" placeholder="Mô tả vấn đề ở đây")
-                .mt-5
-                    button.btn.btn-success.btn-sm.rounded-pill.btn-post-question(disabled="true") Đăng câu hỏi
+                form(action="/new-question" method="post" enctype="multipart/form-data")
+                    input(type="text" name="title" hidden)
+                    .new-question-title.fs-3(contenteditable="true" placeholder="Đặt câu hỏi (Nhấn vào đây để nhập tiêu đề)")
+                    .new-question-img.mt-5
+                        .new-question-label.mb-4 Ảnh mô tả
+                        input(type="file" name="image" accept="image/*")
+                        .gallery.mt-2
+                    .new-question-content.mt-5
+                        .new-question-label.mb-4 Nội dung
+                        textarea.new-question-textarea(type="text" name="content" placeholder="Mô tả vấn đề ở đây")
+                    .mt-5
+                        button.btn.btn-success.btn-sm.rounded-pill.btn-post-question(disabled type="submit") Đăng câu hỏi
+    if success.length > 0
+        - var msgSuccess = success
     script(src="/vendor/ckeditor.js")
     script.
         ClassicEditor.create(document.querySelector('.new-question-textarea'), {
@@ -21,19 +26,51 @@ block main
                     'bulletedList', 'numberedList',
                     'insertTable', 'blockQuote',
                     'undo', 'redo',
+                    'MathType', 'ChemType'
                 ],
                 shouldNotGroupWhenFull: true
             },
         });
 
-        //- $(document).ready(function () {
-        //-     const newQuestionTitle = $(".new-question-title");
-        //-     const newQuestionTextarea = $(".new-question-textarea");
-        //-     const btnPostQuestion = $(".btn-post-question");
+        $(window).on("load", function() {
+            $(".new-question-title").focus();
+        });
 
-        //-     $("p[data-placeholder='Mô tả vấn đề ở đây']").change(function () {
-        //-         if ($(this).html().length > 0) {
-        //-             btnPostQuestion.removeAttr("disabled");
-        //-         }
-        //-     })
-        //- })
+        $(document).ready(function () {
+            const newQuestionTitle = $(".new-question-title");
+            const newQuestionTextarea = $(".new-question-textarea");
+            const newQuestionImg = $(".new-question-img input[type='file']");
+            const newQuestionTitleInput = $("input[name='title']");
+            const btnPostQuestion = $(".btn-post-question");
+            const newQuestionForm = $(".new-question form");
+
+            // preview image upload
+            newQuestionImg.on('change', function() {
+                $(".gallery").html("");
+                $(".gallery").append(`
+                    <img src="${URL.createObjectURL(event.target.files[0])}" width="100px" height="100px" style="object-fit: cover" />
+                `);
+            });
+
+            newQuestionForm.submit(function () {
+                newQuestionTitleInput.val(newQuestionTitle.text());
+            })
+
+            newQuestionTitle.keyup(function () {
+                if($(this).text().length > 10) {
+                    btnPostQuestion.prop('disabled', false);
+                } else {
+                    btnPostQuestion.prop('disabled', true);
+                }
+            })
+
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != '') {
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 10000,
+                });
+            };
+        })

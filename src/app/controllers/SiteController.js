@@ -12,13 +12,14 @@ const Exercise = require("../models/Exercise");
 const Lession = require("../models/Lession");
 const Room = require("../models/Room");
 const Rank = require("../models/Rank");
+const Question = require("../models/Question");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 class SiteController {
     // [GET]/
-    async index(req, res, next) {
+    async index(req, res) {
         try {
             const subjects = await Subject.find({});
             const banners = await Banner.find({});
@@ -49,7 +50,7 @@ class SiteController {
     }
 
     // [GET]/infor
-    async infor(req, res, next) {
+    async infor(req, res) {
         try {
             res.render("auth/infor", {
                 success: req.flash("success"),
@@ -61,7 +62,7 @@ class SiteController {
     }
 
     // [GET]/subjects
-    async subjects(req, res, next) {
+    async subjects(req, res) {
         const subjects = await Subject.find({});
         const grades = await Grade.find({});
 
@@ -95,7 +96,7 @@ class SiteController {
     }
 
     // [GET]/login
-    login(req, res, next) {
+    login(req, res) {
         res.render("login", {
             errors: req.flash("error"),
             success: req.flash("success"),
@@ -103,7 +104,7 @@ class SiteController {
     }
 
     // [POST]/login
-    async postLogin(req, res, next) {
+    async postLogin(req, res) {
         const { email, password } = req.body;
         const user = await User.findOne({ email: email });
         if (!user) {
@@ -148,7 +149,7 @@ class SiteController {
     }
 
     // [GET]/blog
-    async blog(req, res, next) {
+    async blog(req, res) {
         try {
             const categories = await BlogCategory.find({});
 
@@ -251,7 +252,7 @@ class SiteController {
     }
 
     // [GET]/about
-    async about(req, res, next) {
+    async about(req, res) {
         try {
             const systems = await System.find({});
             const countUsers = await User.countDocuments({});
@@ -269,7 +270,7 @@ class SiteController {
     }
 
     // [GET]/competition
-    async competition(req, res, next) {
+    async competition(req, res) {
         const rooms = await Room.aggregate([
             {
                 $lookup: {
@@ -344,7 +345,26 @@ class SiteController {
 
     // [GET]/new-question
     async newQuestion(req, res) {
-        res.render("qa/new-question");
+        res.render("qa/new-question", {
+            success: req.flash("success"),
+        });
+    }
+
+    // [POST]/new-question
+    async postNewQuestion(req, res) {
+        // const { title, content } = req.body;
+        // const question = new Question({
+        //     title,
+        //     content,
+        //     userID: ObjectId(req.signedCookies.userId),
+        // });
+        // await question.save();
+        console.log(req.body);
+        req.flash(
+            "success",
+            "Cảm ơn bạn đã đăng câu hỏi! Hệ thống đã gửi bài viết cho quản trị viên phê duyệt."
+        );
+        res.redirect("back");
     }
 }
 
