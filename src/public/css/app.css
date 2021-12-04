@@ -1836,6 +1836,15 @@ blockquote {
         background: -webkit-linear-gradient(#fff, #f0f0f0); }
       .main .learning-result .tab-content ul li .menu__item:hover {
         background: -webkit-linear-gradient(#fff, #f0f0f0); }
+  .main .my-qa {
+    padding-left: 40px;
+    padding-top: 36px; }
+    .main .my-qa .nav-tabs .nav-link {
+      color: #333; }
+      .main .my-qa .nav-tabs .nav-link:hover, .main .my-qa .nav-tabs .nav-link.active {
+        border-color: #fff #fff #292929 #fff; }
+      .main .my-qa .nav-tabs .nav-link.active {
+        font-weight: 600; }
   .main .new-question {
     padding-left: 40px;
     padding-top: 36px; }

@@ -1,45 +1,32 @@
 extends ../layouts/admin
 block content
-    section.subject__edit
+    section.qa__edit
         .row
-            .col-md-6.grid-margin.stretch-card.mx-auto
+            .col-md-10.grid-margin.stretch-card.mx-auto
                 .card
                     .card-body
                         .d-flex.align-items-center.justify-content-between
-                            h4.card-title Chỉnh sửa ảnh bìa
+                            h4.card-title Duyệt câu hỏi
                             a.btn.btn-outline-warning.btn-icon-text(href='/qa/list') 
                                 i.mdi.mdi-reload.btn-icon-prepend
                                 | Quay lại
-                        p.card-description Nhập thông tin bên dưới để chỉnh sửa 1 ảnh bìa
-                        //- form.mt-4(action=`/banners/${qa._id}?_method=PUT`, method='POST')
-                        //-     .form-group.row
-                        //-         label.col-sm-3.col-form-label.text-dark(for='title') Tiêu đề
-                        //-         .col-sm-9
-                        //-             input#title.form-control(type='text', placeholder='Nhập tiêu đề', name='title', required, value=qa.title)
-                        //-     .form-group.row
-                        //-         label.col-sm-3.col-form-label.text-dark(for='image') Ảnh bìa
-                        //-         .col-sm-9
-                        //-             input#image.form-control(type='text', placeholder='Chọn ảnh bìa', name='image', required, value=qa.image)
-                        //-     .form-group.row
-                        //-         label.col-sm-3.col-form-label.text-dark(for='description') Mô tả
-                        //-         .col-sm-9
-                        //-             textarea#description.form-control(type='text', placeholder='Nhập mô tả', name='description', rows=5, required)= qa.description
-                        //-     .form-group.row
-                        //-         label.col-sm-3.col-form-label.text-dark(for='url') Đường dẫn
-                        //-         .col-sm-9
-                        //-             input#url.form-control(type='text', placeholder='Nhập đường dẫn', name='url', required, value=qa.url)
-                        //-     a.btn.btn-light(href='/banners/list') Hủy bỏ
-                        //-     button.btn.btn-primary.ml-2(type='submit') Lưu lại
-    //- if  success.length > 0
-    //-     - var msgSuccess = success 
-    //- script.
-    //-     let msgToastSuccess = '#{msgSuccess}';
-    //-     if(msgToastSuccess != ''){
-    //-         Eggy({
-    //-             title: 'Thành công',
-    //-             message:  msgToastSuccess,
-    //-             type: 'success',
-    //-             duration: 5000,
-    //-         });
-    //-     }  
+                        form.mt-4(action=`/qa/${qa[0]._id}?_method=PUT`, method='POST')
+                            .form-group.row
+                                label.col-sm-3.text-dark Tiêu đề
+                                .col-sm-9
+                                    span= qa[0].title
+                            .form-group.row
+                                label.col-sm-3.text-dark Ảnh mô tả
+                                .col-sm-9
+                                    img(src=qa[0].thumbnail width=100 height=100 style='object-fit: cover')
+                            .form-group.row
+                                label.col-sm-3.text-dark Nội dung
+                                .col-sm-9
+                                    div !{qa[0].content}
+                            .form-group.row
+                                label.col-sm-3.col-form-label.text-dark(for='topic') Chủ đề
+                                .col-sm-9
+                                    input#topic.form-control(type='text', placeholder='Nhập chủ đề tại đây...', name='topic', required)
+                            a.btn.btn-light(href='/qa/list') Hủy bỏ
+                            button.btn.btn-primary.ml-2(type='submit') Duyệt câu hỏi
     

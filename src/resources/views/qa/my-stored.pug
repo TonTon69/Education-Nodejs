@@ -1,0 +1,56 @@
+extends ../layouts/common
+block main
+    section.my-qa
+        .row
+            .col-sm-10.mx-auto
+                h4.mb-4.fw-bold Câu hỏi của tôi
+                ul.nav.nav-tabs
+                    li.nav-item
+                        a.nav-link.active(data-bs-toggle='tab', href='#waiting-for-review') Đang chờ 
+                            if countMyQaWait !== 0
+                                span (#{countMyQaWait})
+                    li.nav-item
+                        a.nav-link(data-bs-toggle='tab', href='#published') Đã đăng 
+                            if countMyQaPublish !== 0
+                                span (#{countMyQaPublish})
+                .tab-content.mt-5
+                    #waiting-for-review.container.tab-pane.active
+                        if myQa.length > 0
+                            each item in myQa
+                                if !item.isApproved
+                                    .d-flex.align-items-center.justify-content-between
+                                        div
+                                            h5.mb-4
+                                                a(href=`/qa/${item._id}/edit`)= item.title
+                                            span.text-secondary.fs-7 Chỉnh sửa #{moment(item.updatedAt).locale("vi").fromNow()}
+                                        .fs-4.text-secondary
+                                            ion-icon(name='ellipsis-horizontal')
+                                    hr
+                        else
+                            p Chưa có xuất bản nào.
+                            p 
+                                span Bạn có thể 
+                                a.text-primary(href='/new-question') đặt câu hỏi 
+                                span hoặc 
+                                a.text-primary(href='/qa') đọc câu hỏi 
+                                span khác trên hệ thống nhé.
+                    #published.container.tab-pane.fade
+                        if myQa.length > 0
+                            each item in myQa
+                                if item.isApproved
+                                    .d-flex.align-items-center.justify-content-between
+                                        div
+                                            h5.mb-4
+                                                a(href=`/qa/${item.slug}`)= item.title
+                                            span.text-secondary.fs-7 #{moment(item.createdAt).locale("vi").fromNow()}
+                                        .fs-4.text-secondary
+                                            ion-icon(name='ellipsis-horizontal')
+                                    hr
+                        else
+                            p Chưa có xuất bản nào.
+                            p 
+                                span Bạn có thể 
+                                a.text-primary(href='/new-question') đặt câu hỏi 
+                                span hoặc 
+                                a.text-primary(href='/qa') đọc câu hỏi 
+                                span khác trên hệ thống nhé.

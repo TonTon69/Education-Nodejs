@@ -35,6 +35,7 @@ router.post("/report", requireAuth, siteController.report);
 router.get("/subjects", siteController.subjects);
 router.get("/infor", requireAuth, siteController.infor);
 router.get("/blog", siteController.blog);
+router.get("/my-qa", requireAuth, siteController.storedQa);
 router.get("/new-question", requireAuth, siteController.newQuestion);
 router.post(
     "/new-question",

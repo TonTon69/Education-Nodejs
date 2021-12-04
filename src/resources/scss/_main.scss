@@ -1690,6 +1690,26 @@
         }
     }
 
+    .my-qa {
+        padding-left: 40px;
+        padding-top: 36px;
+
+        .nav-tabs {
+            .nav-link {
+                color: #333;
+
+                &:hover,
+                &.active {
+                    border-color: $white-color $white-color #292929 $white-color;
+                }
+
+                &.active {
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
     .new-question {
         padding-left: 40px;
         padding-top: 36px;

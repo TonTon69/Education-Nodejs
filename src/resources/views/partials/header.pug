@@ -44,6 +44,9 @@ header.header
                         span.search__string.ms-2.fs-7
                     .search__result--content
     .header__actions
+        .header__actions--noti
+            .ms-2
+                ion-icon(name="notifications")
         .header__actions--user
             if user.length > 0
                 .header__actions--avatar
@@ -63,11 +66,18 @@ header.header
                     hr
                     ul.list
                         li.list__item
+                            a.list__link(href='/new-question') Đặt câu hỏi
+                        li.list__item
+                            a.list__link(href='/my-qa') Câu hỏi của tôi
+                    hr
+                    ul.list
+                        li.list__item
                             a.list__link(href='/infor') Thông tin cá nhân
                         li.list__item
                             a.list__link(href='/password/change') Đổi mật khẩu
                         li.list__item
                             a.list__link(href=`/learning/result?subject=toan-hoc-10`) Kết quả học tập
+                        
                     hr
                     ul.list
                         li.list__item

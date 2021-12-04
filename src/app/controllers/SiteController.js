@@ -16,12 +16,7 @@ const Question = require("../models/Question");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
-const cloudinary = require("cloudinary").v2;
-cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET,
-});
+const cloudinary = require("../../config/cloud/index");
 class SiteController {
     // [GET]/
     async index(req, res) {
@@ -379,6 +374,23 @@ class SiteController {
                 }
             });
         }
+    }
+
+    // [GET]/my-qa
+    async storedQa(req, res) {
+        const myQa = await Question.find({
+            userID: ObjectId(req.signedCookies.userId),
+        });
+
+        const countMyQaWait = await Question.countDocuments({
+            userID: ObjectId(req.signedCookies.userId),
+            isApproved: false,
+        });
+        const countMyQaPublish = await Question.countDocuments({
+            userID: ObjectId(req.signedCookies.userId),
+            isApproved: true,
+        });
+        res.render("qa/my-stored", { myQa, countMyQaWait, countMyQaPublish });
     }
 }
 

@@ -1,14 +1,10 @@
 extends ../layouts/admin
 block content
-    section.subject__list
+    section.qa__list
         .col-lg-12.grid-margin.stretch-card
             .card
                 .card-body
-                    .d-flex.align-items-center.justify-content-between
-                        .card-title Danh sách câu hỏi
-                        a.btn.btn-outline-success.btn-icon-text(href='/banners/create') 
-                            i.mdi.mdi-upload.btn-icon-prepend
-                            | Thêm mới
+                    .card-title Danh sách câu hỏi
                     .table-responsive.pt-3
                         table.table.table-hover.text-dark
                             thead
@@ -16,7 +12,9 @@ block content
                                     th.font-weight-bold #
                                     th.font-weight-bold Thành viên
                                     th.font-weight-bold Tiêu đề
-                                    th.font-weight-bold Ảnh mô tả
+                                    th.font-weight-bold Số lượt xem
+                                    th.font-weight-bold Số yêu thích
+                                    th.font-weight-bold Số bình luận
                                     th.font-weight-bold Ngày đăng
                                     th.font-weight-bold Trạng thái
                                     th.font-weight-bold Hành động
@@ -31,8 +29,9 @@ block content
                                                 img(src=qa.user[0].avatar)
                                                 span.ml-2= qa.user[0].fullname
                                             td= qa.title
-                                            td
-                                                img(src=qa.thumbnail)
+                                            td= qa.numViews
+                                            td= qa.numLikes
+                                            td= qa.numComments
                                             td= moment(qa.createdAt).format("DD/MM/YYYY HH:mm")
                                             if qa.isApproved
                                                 td 
@@ -45,63 +44,63 @@ block content
                                                     a.btn.btn-secondary.mr-2(href=`/qa/${qa._id}/edit`) Chi tiết
                                                 else
                                                     a.btn.btn-secondary.mr-2(href=`/qa/${qa._id}/edit`) Duyệt
-                                                button.btn.btn-danger(data-toggle="modal" data-target="#deleteBannerModal", data-id=qa._id) Xóa
+                                                button.btn.btn-danger(data-toggle="modal" data-target="#deleteQaModal", data-id=qa._id) Xóa
                                 else
                                     tr
-                                        td.text-center(colspan='6') Không có câu hỏi nào đang chờ xem xét!
-                                form(name="delete-banner-form", method="POST")
-                                #deleteBannerModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteBannerModalLabel', aria-hidden='true')
+                                        td.text-center(colspan='9') Không có câu hỏi nào đang chờ xem xét!
+                                form(name="delete-qa-form", method="POST")
+                                #deleteQaModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='deleteQaModalLabel', aria-hidden='true')
                                     .modal-dialog(role='document', style='transition: all 0.3s ease')
                                         .modal-content
                                             .modal-header
-                                                strong#deleteBannerModalLabel.modal-title.font-weight-bold.text-danger.text-uppercase Xóa ảnh bìa
+                                                strong#deleteQaModalLabel.modal-title.font-weight-bold.text-dark.text-uppercase Xóa câu hỏi
                                                 button.close(type='button', data-dismiss='modal', aria-label='Close')
                                                     span(aria-hidden='true') &times;
                                             .modal-body.text-dark
                                                 span.d-block.mb-2.mt-2 Hành động này không thể khôi phục!!!
-                                                span.d-block.mb-2 Bạn có chắc chắn muốn xóa ảnh bìa này không???
+                                                span.d-block.mb-2 Bạn có chắc chắn muốn xóa câu hỏi này không???
                                             .modal-footer
                                                 button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
-                                                button.btn.btn-danger#btn-delete-banner(type='button') Chắc chắn
-    //- if errors.length > 0
-    //-     - var msgError = errors
-    //- else if success.length > 0
-    //-     - var msgSuccess = success
-    //- script.
-    //-     document.addEventListener('DOMContentLoaded', function() {
-    //-         var deleteBannerModal = $("#deleteBannerModal");
-    //-         var bannerID;
-    //-         var deleteBannerForm = $('form[name="delete-banner-form"]');
-    //-         var btnDeleteBanner = $("#btn-delete-banner");
+                                                button.btn.btn-danger#btn-delete-qa(type='button') Chắc chắn
+    if errors.length > 0
+        - var msgError = errors
+    else if success.length > 0
+        - var msgSuccess = success
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            var deleteQaModal = $("#deleteQaModal");
+            var qaId;
+            var deleteQaForm = $('form[name="delete-qa-form"]');
+            var btnDeleteQa = $("#btn-delete-qa");
             
-    //-         let msgToastSuccess = '#{msgSuccess}';
-    //-         if(msgToastSuccess != '') {
-    //-             Eggy({
-    //-                 title: 'Thành công',
-    //-                 message:  msgToastSuccess,
-    //-                 type: 'success',
-    //-                 duration: 5000,
-    //-             });
-    //-         };
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != '') {
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            };
 
-    //-         let msgToastError = '#{msgError}';
-    //-         if(msgToastError != '') {
-    //-             Eggy({
-    //-                 title: 'Oops... Có gì đó không đúng',
-    //-                 message:  msgToastError,
-    //-                 type: 'warning',
-    //-                 duration: 5000,
-    //-             });
-    //-         };
+            let msgToastError = '#{msgError}';
+            if(msgToastError != '') {
+                Eggy({
+                    title: 'Oops... Có gì đó không đúng',
+                    message:  msgToastError,
+                    type: 'warning',
+                    duration: 5000,
+                });
+            };
 
-    //-         deleteBannerModal.on('show.bs.modal', function (event) {
-    //-             var button = $(event.relatedTarget);
-    //-             bannerID = button.data('id');
-    //-         });
+            deleteQaModal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                qaId = button.data('id');
+            });
 
-    //-          //When delete button btn clicked
-    //-         btnDeleteBanner.click(function () {
-    //-             deleteBannerForm.attr("action", "/banners/" + bannerID + "?_method=DELETE");
-    //-             deleteBannerForm.submit();
-    //-         });
-    //-     });
+             //When delete button btn clicked
+            btnDeleteQa.click(function () {
+                deleteQaForm.attr("action", "/qa/" + qaId + "?_method=DELETE");
+                deleteQaForm.submit();
+            });
+        });
