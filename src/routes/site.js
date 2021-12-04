@@ -3,6 +3,7 @@ const router = express.Router();
 
 const siteController = require("../app/controllers/SiteController");
 const authController = require("../app/controllers/AuthController");
+const upload = require("../utils/upload-image");
 const {
     requireAuth,
     checkAdmin,
@@ -35,7 +36,12 @@ router.get("/subjects", siteController.subjects);
 router.get("/infor", requireAuth, siteController.infor);
 router.get("/blog", siteController.blog);
 router.get("/new-question", requireAuth, siteController.newQuestion);
-router.post("/new-question", requireAuth, siteController.postNewQuestion);
+router.post(
+    "/new-question",
+    requireAuth,
+    upload.single("thumbnail"),
+    siteController.postNewQuestion
+);
 router.get("/qa", siteController.qa);
 router.get("/logout", requireAuth, siteController.logout);
 router.get("/login", siteController.login);

@@ -16,7 +16,12 @@ const Question = require("../models/Question");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
-
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
+});
 class SiteController {
     // [GET]/
     async index(req, res) {
@@ -352,19 +357,28 @@ class SiteController {
 
     // [POST]/new-question
     async postNewQuestion(req, res) {
-        // const { title, content } = req.body;
-        // const question = new Question({
-        //     title,
-        //     content,
-        //     userID: ObjectId(req.signedCookies.userId),
-        // });
-        // await question.save();
-        console.log(req.body);
-        req.flash(
-            "success",
-            "Cảm ơn bạn đã đăng câu hỏi! Hệ thống đã gửi bài viết cho quản trị viên phê duyệt."
-        );
-        res.redirect("back");
+        if (req.file) {
+            req.body.thumbnail = req.file.path.split("/").slice(-2).join("/");
+            cloudinary.uploader.upload(req.file.path, async (err, result) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    const { title, content } = req.body;
+                    const question = new Question({
+                        title,
+                        content,
+                        userID: ObjectId(req.signedCookies.userId),
+                        thumbnail: result.url,
+                    });
+                    await question.save();
+                    req.flash(
+                        "success",
+                        "Cảm ơn bạn đã đăng câu hỏi! Hệ thống đã gửi bài viết cho quản trị viên phê duyệt."
+                    );
+                    res.redirect("back");
+                }
+            });
+        }
     }
 }
 

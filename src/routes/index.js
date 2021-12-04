@@ -14,6 +14,7 @@ const theoriesRouter = require("./theories");
 const systemRouter = require("./system");
 const statisticalsRouter = require("./statisticals");
 const competitionRouter = require("./competition");
+const qaRouter = require("./qa");
 
 const {
     checkAdmin,
@@ -37,6 +38,7 @@ function route(app) {
     app.use("/exercises", exercisesRouter);
     app.use("/system", requireAuth, checkAdmin, systemRouter);
     app.use("/statisticals", requireAuth, checkAdmin, statisticalsRouter);
+    app.use("/qa", requireAuth, checkAdmin, qaRouter);
 }
 
 module.exports = route;

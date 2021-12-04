@@ -53,7 +53,7 @@ class InforController {
     }
 
     // [PUT]/infor/:id/avatar
-    async changeAvatar(req, res, next) {
+    async changeAvatar(req, res) {
         const user = await User.findOne({ _id: req.signedCookies.userId });
         if (req.file) {
             req.body.avatar = req.file.path.split("/").slice(-2).join("/");
