@@ -9,8 +9,9 @@ block main
                     .new-question-img.mt-5
                         .new-question-label.mb-4 Ảnh mô tả
                         input(type="file" name="thumbnail" accept="image/*" value=qa[0].thumbnail)
-                        .gallery.mt-2
-                            img(src=qa[0].thumbnail width=100 height=100 style='object-fit: cover')
+                        if qa[0].thumbnail !== ""
+                            .gallery.mt-2
+                                img(src=qa[0].thumbnail width=100 height=100 style='object-fit: cover')
                     .new-question-content.mt-5
                         .new-question-label.mb-4 Nội dung
                         textarea.new-question-textarea(type="text" name="content" placeholder="Mô tả vấn đề ở đây")= qa[0].content

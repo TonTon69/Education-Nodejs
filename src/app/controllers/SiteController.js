@@ -353,7 +353,20 @@ class SiteController {
 
     // [POST]/new-question
     async postNewQuestion(req, res) {
-        if (req.file) {
+        if (req.file === undefined) {
+            const { title, content } = req.body;
+            const question = new Question({
+                title,
+                content,
+                userID: ObjectId(req.signedCookies.userId),
+            });
+            await question.save();
+            req.flash(
+                "success",
+                "Cảm ơn bạn đã đăng câu hỏi! Hệ thống đã gửi bài viết cho quản trị viên phê duyệt."
+            );
+            res.redirect("/my-qa");
+        } else {
             req.body.thumbnail = req.file.path.split("/").slice(-2).join("/");
             cloudinary.uploader.upload(req.file.path, async (err, result) => {
                 if (err) {
@@ -371,7 +384,7 @@ class SiteController {
                         "success",
                         "Cảm ơn bạn đã đăng câu hỏi! Hệ thống đã gửi bài viết cho quản trị viên phê duyệt."
                     );
-                    res.redirect("back");
+                    res.redirect("/my-qa");
                 }
             });
         }

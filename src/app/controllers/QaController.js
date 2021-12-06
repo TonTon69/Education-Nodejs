@@ -138,8 +138,8 @@ class QaController {
         res.redirect("/qa/list");
     }
 
-    // [DELETE]/qa/:id
-    async delete(req, res) {
+    // [DELETE]/qa/:id/destroy
+    async destroy(req, res) {
         const qa = await Question.findById(req.params.id);
         const public_id = qa.thumbnail
             .split("/")
@@ -147,9 +147,31 @@ class QaController {
             .join("")
             .split(".")[0];
         cloudinary.uploader.destroy(public_id);
+
         await Question.deleteOne({ _id: req.params.id });
         req.flash("success", "Đã xóa câu hỏi thành công!");
         res.redirect("/qa/list");
+    }
+
+    // [DELETE]/qa/:id/delete
+    async delete(req, res) {
+        const qa = await Question.findOne({
+            _id: req.params.id,
+            userID: req.signedCookies.userId,
+        });
+        const public_id = qa.thumbnail
+            .split("/")
+            .slice(-1)
+            .join("")
+            .split(".")[0];
+        cloudinary.uploader.destroy(public_id);
+
+        await Question.deleteOne({
+            _id: req.params.id,
+            userID: req.signedCookies.userId,
+        });
+        req.flash("success", "Đã xóa câu hỏi thành công!");
+        res.redirect("/my-qa");
     }
 }
 

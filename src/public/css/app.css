@@ -1850,6 +1850,32 @@ blockquote {
         border-color: #fff #fff #292929 #fff; }
       .main .my-qa .nav-tabs .nav-link.active {
         font-weight: 600; }
+    .main .my-qa .tab-content #waiting-for-review ul {
+      padding: 8px 0;
+      margin-bottom: 0; }
+      .main .my-qa .tab-content #waiting-for-review ul li a {
+        display: block;
+        padding: 12px 20px;
+        cursor: pointer; }
+        .main .my-qa .tab-content #waiting-for-review ul li a:hover {
+          background: #f5f5f5; }
+    .main .my-qa .tab-content #waiting-for-review ion-icon[name="ellipsis-horizontal"] {
+      cursor: pointer; }
+    .main .my-qa .tab-content #waiting-for-review .menu-actions {
+      position: absolute;
+      top: 36px;
+      right: 0;
+      border-radius: 10px;
+      min-width: 200px;
+      z-index: 999;
+      transform: translateY(-10px);
+      transition: transform 0.3s ease;
+      opacity: 0;
+      visibility: hidden; }
+      .main .my-qa .tab-content #waiting-for-review .menu-actions.show {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible; }
   .main .new-question {
     padding-left: 40px;
     padding-top: 36px; }

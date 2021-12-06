@@ -23,9 +23,16 @@ block main
                                             h5.mb-4
                                                 a(href=`/qa/${item._id}/edit`)= item.title
                                             span.text-secondary.fs-7 Chỉnh sửa #{moment(item.updatedAt).locale("vi").fromNow()}
-                                        .fs-4.text-secondary
+                                        .fs-4.text-secondary.position-relative.qa-manager
                                             ion-icon(name='ellipsis-horizontal')
+                                            .menu-actions.bg-white.shadow
+                                                ul.ps-0
+                                                    li
+                                                        a.fs-7(href=`/qa/${item._id}/edit`) Chỉnh sửa
+                                                    li
+                                                        a.fs-7.btn-delete-qa(data-id=item._id) Xóa
                                     hr
+                            form(name='form-delete-qa' method='post')
                         else
                             p Chưa có câu hỏi nào.
                             p 
@@ -57,6 +64,9 @@ block main
     if success.length > 0
         - var msgSuccess = success
     script.
+        const qaManager = $(".qa-manager");
+        const menuActions = $(".menu-actions");
+
         $(document).ready(function () {
             let msgToastSuccess = '#{msgSuccess}';
             if(msgToastSuccess != '') {
@@ -67,4 +77,23 @@ block main
                     duration: 5000,
                 });
             };
+
+            $.each(qaManager, function(key, value) {   
+                value.onclick = function() {
+                    $(this).find(".menu-actions").toggleClass("show");
+                } 
+            });
+
+            const formDeleteQa = $("form[name='form-delete-qa']");
+            $(".btn-delete-qa").click(function() {
+                const qaID = $(this).attr("data-id");
+                formDeleteQa.attr("action", "/qa/" + qaID + "/delete?_method=DELETE");
+                formDeleteQa.submit();
+            })
         })
+        
+        $(document).click(function (e) {
+            if (!qaManager.is(e.target) && qaManager.has(e.target).length == 0 ) {
+                menuActions.removeClass("show");
+            }
+        });

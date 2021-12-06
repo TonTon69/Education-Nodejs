@@ -100,7 +100,7 @@ block content
 
              //When delete button btn clicked
             btnDeleteQa.click(function () {
-                deleteQaForm.attr("action", "/qa/" + qaId + "?_method=DELETE");
+                deleteQaForm.attr("action", "/qa/" + qaId + "/destroy?_method=DELETE");
                 deleteQaForm.submit();
             });
         });

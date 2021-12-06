@@ -17,9 +17,9 @@
                                 h5.blog-item-content-left-title
                                     | #{blog.title}
                                 .blog-item-content-left-text !{blog.content}
-                                p.mt-3.blog-item-content-left-time= moment(blog.updatedAt).locale("vi").fromNow()
+                                p.mt-3.blog-item-content-left-time= moment(blog.createdAt).locale("vi").fromNow()
                             .blog-item-content-right
                                 img(src=`${blog.image}` alt='')
     else
-        .text-center.mt-4
-            span(style='line-height: 1.5') Dữ liệu đang cập nhật... Vui lòng thử lại sau!!!
+        .mt-4
+            span(style='line-height: 1.5') Không có bài viết nào thuộc chủ đề này.

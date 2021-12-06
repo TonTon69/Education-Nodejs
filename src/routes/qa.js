@@ -3,12 +3,22 @@ const router = express.Router();
 
 const qaController = require("../app/controllers/QaController");
 const upload = require("../utils/upload-image");
+const {
+    checkAdmin,
+    requireAuth,
+} = require("../app/middlewares/AuthMiddleware");
 
-router.get("/:id/edit", qaController.edit);
-router.put("/:id/edit", upload.single("thumbnail"), qaController.updateQa);
-router.get("/:id/browser", qaController.browser);
-router.put("/:id/browser", qaController.updateBrowser);
-router.delete("/:id", qaController.delete);
-router.get("/list", qaController.list);
+router.get("/:id/edit", requireAuth, qaController.edit);
+router.put(
+    "/:id/edit",
+    requireAuth,
+    upload.single("thumbnail"),
+    qaController.updateQa
+);
+router.get("/:id/browser", requireAuth, checkAdmin, qaController.browser);
+router.put("/:id/browser", requireAuth, checkAdmin, qaController.updateBrowser);
+router.delete("/:id/delete", requireAuth, qaController.delete);
+router.delete("/:id/destroy", requireAuth, checkAdmin, qaController.destroy);
+router.get("/list", requireAuth, checkAdmin, qaController.list);
 
 module.exports = router;
