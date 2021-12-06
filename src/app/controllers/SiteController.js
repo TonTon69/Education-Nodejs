@@ -390,7 +390,12 @@ class SiteController {
             userID: ObjectId(req.signedCookies.userId),
             isApproved: true,
         });
-        res.render("qa/my-stored", { myQa, countMyQaWait, countMyQaPublish });
+        res.render("qa/my-stored", {
+            myQa,
+            countMyQaWait,
+            countMyQaPublish,
+            success: req.flash("success"),
+        });
     }
 }
 

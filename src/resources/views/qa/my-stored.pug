@@ -14,7 +14,7 @@ block main
                             if countMyQaPublish !== 0
                                 span (#{countMyQaPublish})
                 .tab-content.mt-5
-                    #waiting-for-review.container.tab-pane.active
+                    #waiting-for-review.tab-pane.active
                         if myQa.length > 0
                             each item in myQa
                                 if !item.isApproved
@@ -27,14 +27,14 @@ block main
                                             ion-icon(name='ellipsis-horizontal')
                                     hr
                         else
-                            p Chưa có xuất bản nào.
+                            p Chưa có câu hỏi nào.
                             p 
                                 span Bạn có thể 
                                 a.text-primary(href='/new-question') đặt câu hỏi 
                                 span hoặc 
                                 a.text-primary(href='/qa') đọc câu hỏi 
                                 span khác trên hệ thống nhé.
-                    #published.container.tab-pane.fade
+                    #published.tab-pane.fade
                         if myQa.length > 0
                             each item in myQa
                                 if item.isApproved
@@ -54,3 +54,17 @@ block main
                                 span hoặc 
                                 a.text-primary(href='/qa') đọc câu hỏi 
                                 span khác trên hệ thống nhé.
+    if success.length > 0
+        - var msgSuccess = success
+    script.
+        $(document).ready(function () {
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != '') {
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            };
+        })

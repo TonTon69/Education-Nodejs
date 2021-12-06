@@ -38,7 +38,7 @@ function route(app) {
     app.use("/exercises", exercisesRouter);
     app.use("/system", requireAuth, checkAdmin, systemRouter);
     app.use("/statisticals", requireAuth, checkAdmin, statisticalsRouter);
-    app.use("/qa", requireAuth, checkAdmin, qaRouter);
+    app.use("/qa", requireAuth, qaRouter);
 }
 
 module.exports = route;

@@ -41,9 +41,9 @@ block content
                                                     h4.badge.badge-danger Chưa duyệt
                                             td
                                                 if qa.isApproved
-                                                    a.btn.btn-secondary.mr-2(href=`/qa/${qa._id}/edit`) Chi tiết
+                                                    a.btn.btn-secondary.mr-2(href=`/qa/${qa._id}/browser`) Chi tiết
                                                 else
-                                                    a.btn.btn-secondary.mr-2(href=`/qa/${qa._id}/edit`) Duyệt
+                                                    a.btn.btn-secondary.mr-2(href=`/qa/${qa._id}/browser`) Duyệt
                                                 button.btn.btn-danger(data-toggle="modal" data-target="#deleteQaModal", data-id=qa._id) Xóa
                                 else
                                     tr

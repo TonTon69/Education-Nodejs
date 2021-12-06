@@ -1,32 +1,57 @@
-extends ../layouts/admin
-block content
-    section.qa__edit
+extends ../layouts/common
+block main
+    section.new-question
         .row
-            .col-md-10.grid-margin.stretch-card.mx-auto
-                .card
-                    .card-body
-                        .d-flex.align-items-center.justify-content-between
-                            h4.card-title Duyệt câu hỏi
-                            a.btn.btn-outline-warning.btn-icon-text(href='/qa/list') 
-                                i.mdi.mdi-reload.btn-icon-prepend
-                                | Quay lại
-                        form.mt-4(action=`/qa/${qa[0]._id}?_method=PUT`, method='POST')
-                            .form-group.row
-                                label.col-sm-3.text-dark Tiêu đề
-                                .col-sm-9
-                                    span= qa[0].title
-                            .form-group.row
-                                label.col-sm-3.text-dark Ảnh mô tả
-                                .col-sm-9
-                                    img(src=qa[0].thumbnail width=100 height=100 style='object-fit: cover')
-                            .form-group.row
-                                label.col-sm-3.text-dark Nội dung
-                                .col-sm-9
-                                    div !{qa[0].content}
-                            .form-group.row
-                                label.col-sm-3.col-form-label.text-dark(for='topic') Chủ đề
-                                .col-sm-9
-                                    input#topic.form-control(type='text', placeholder='Nhập chủ đề tại đây...', name='topic', required)
-                            a.btn.btn-light(href='/qa/list') Hủy bỏ
-                            button.btn.btn-primary.ml-2(type='submit') Duyệt câu hỏi
-    
+            .col-sm-9
+                form(action=`/qa/${qa[0]._id}/edit?_method=PUT` method="post" enctype="multipart/form-data")
+                    input(type="text" name="title" hidden)
+                    .new-question-title.fs-3(contenteditable="true" placeholder="Đặt câu hỏi (Nhấn vào đây để nhập tiêu đề)")= qa[0].title
+                    .new-question-img.mt-5
+                        .new-question-label.mb-4 Ảnh mô tả
+                        input(type="file" name="thumbnail" accept="image/*" value=qa[0].thumbnail)
+                        .gallery.mt-2
+                            img(src=qa[0].thumbnail width=100 height=100 style='object-fit: cover')
+                    .new-question-content.mt-5
+                        .new-question-label.mb-4 Nội dung
+                        textarea.new-question-textarea(type="text" name="content" placeholder="Mô tả vấn đề ở đây")= qa[0].content
+                    .mt-5
+                        button.btn.btn-success.btn-sm.rounded-pill.btn-post-question(type="submit") Cập nhật
+    script(src="/vendor/ckeditor.js")
+    script.
+        ClassicEditor.create(document.querySelector('.new-question-textarea'), {
+            toolbar: {
+                items: [
+                    'heading', 'bold', 'italic', 'underline', 'link',
+                    'bulletedList', 'numberedList',
+                    'insertTable', 'blockQuote',
+                    'undo', 'redo',
+                    'MathType', 'ChemType'
+                ],
+                shouldNotGroupWhenFull: true
+            },
+        });
+
+        $(window).on("load", function() {
+            $(".new-question-title").focus();
+        });
+
+        $(document).ready(function () {
+            const newQuestionTitle = $(".new-question-title");
+            const newQuestionTextarea = $(".new-question-textarea");
+            const newQuestionImg = $(".new-question-img input[type='file']");
+            const newQuestionTitleInput = $("input[name='title']");
+            const btnPostQuestion = $(".btn-post-question");
+            const newQuestionForm = $(".new-question form");
+
+            // preview image upload
+            newQuestionImg.on('change', function() {
+                $(".gallery").html("");
+                $(".gallery").append(`
+                    <img src="${URL.createObjectURL(event.target.files[0])}" width="100px" height="100px" style="object-fit: cover" />
+                `);
+            });
+
+            newQuestionForm.submit(function () {
+                newQuestionTitleInput.val(newQuestionTitle.text());
+            });
+        })
