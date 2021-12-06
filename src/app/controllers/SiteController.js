@@ -326,20 +326,21 @@ class SiteController {
 
     // [GET]/qa
     async qa(req, res) {
-        const blogs = await Blog.aggregate([
+        const qas = await Question.aggregate([
+            { $match: { isApproved: true } },
             {
                 $lookup: {
                     from: "users",
                     localField: "userID",
                     foreignField: "_id",
-                    as: "User",
+                    as: "user",
                 },
             },
             { $sort: { view: -1 } },
         ]);
 
         res.render("qa", {
-            blogs,
+            qas,
         });
     }
 

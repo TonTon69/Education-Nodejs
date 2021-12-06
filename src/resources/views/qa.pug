@@ -7,37 +7,44 @@ block main
                     .qa-heading
                         p.qa-heading-title Nổi bật
                     .qa-content
-                        each blog in blogs
-                            .qa-list
-                                .qa-item
-                                    .qa-item-heading
-                                        .qa-item-left
-                                            span.fs-8 Tư vấn chuyên ngành
-                                        .qa-item-right.fs-5
-                                            ion-icon.me-2(name='bookmark-outline')
-                                            ion-icon(name='ellipsis-horizontal')
-                                    .qa-item-content
-                                        a(href="").qa-item-content-title.mb-0 #{blog.title}
-                                        .d-flex.align-items-center.justify-content-between.mt-4.mb-4
-                                            .d-flex.align-items-center
-                                                img.qa-item-avatar(src=blog.User[0].avatar alt='')
-                                                .mb-0.fs-8.text-secondary
-                                                    span Đăng bởi 
-                                                    span.fw-bold #{blog.User[0].fullname} 
-                                                    span.me-2.ms-2 ·
-                                                    span #{moment(blog.createdAt).locale("vi").fromNow()}
-                                            span.fs-8.text-secondary 100 trả lời
-                                        .fs-7.qa-item-content-desc !{blog.content}
-                                        .d-flex.align-items-center.justify-content-between.mt-4
-                                            div
-                                                .button.btn.btn-light.btn-sm
-                                                    span.text-secondary.fs-8 HagTag
-                                                .button.btn.btn-light.btn-sm.ms-2
-                                                    span.text-secondary.fs-8 HagTag
-                                                .button.btn.btn-light.btn-sm.ms-2
-                                                    span.text-secondary.fs-8 HagTag
-                                            a(href="").btn.btn-primary.btn-sm.rounded-pill Chi tiết
-                                            
+                        if qas.length > 0
+                            each qa in qas
+                                .qa-list
+                                    .qa-item
+                                        .qa-item-heading
+                                            .qa-item-left
+                                                span.fs-8 Tư vấn chuyên ngành
+                                            .qa-item-right.fs-5
+                                                ion-icon.me-2(name='bookmark-outline')
+                                                ion-icon(name='ellipsis-horizontal')
+                                        .qa-item-content
+                                            a(href=`/qa/${qa.slug}`).qa-item-content-title.mb-0 #{qa.title}
+                                            .d-flex.align-items-center.justify-content-between.mt-4.mb-4
+                                                .d-flex.align-items-center
+                                                    img.qa-item-avatar(src=qa.user[0].avatar alt='')
+                                                    .mb-0.fs-8.text-secondary
+                                                        span Đăng bởi 
+                                                        span.fw-bold #{qa.user[0].fullname} 
+                                                        span.me-2.ms-2 ·
+                                                        span #{moment(qa.updatedAt).locale("vi").fromNow()}
+                                                span.fs-8.text-secondary 100 trả lời
+                                            .fs-7.qa-item-content-desc !{qa.content}
+                                            .d-flex.align-items-center.justify-content-between.mt-4
+                                                div
+                                                    .button.btn.btn-light.btn-sm
+                                                        span.text-secondary.fs-8 HagTag
+                                                    .button.btn.btn-light.btn-sm.ms-2
+                                                        span.text-secondary.fs-8 HagTag
+                                                    .button.btn.btn-light.btn-sm.ms-2
+                                                        span.text-secondary.fs-8 HagTag
+                                                a(href=`/qa/${qa.slug}`).btn.btn-primary.btn-sm.rounded-pill Chi tiết
+                        else
+                            .mt-4
+                                p Chưa có câu hỏi nào.
+                                p
+                                    span Bạn có thể 
+                                    a.text-primary(href='/new-question') đặt câu hỏi 
+                                    span trên hệ thống nhé.
             .col-md-3.col-lg-3.col-xl-4
                 .topic-wrap
                     .topic-wrap-heading

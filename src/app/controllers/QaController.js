@@ -1,6 +1,7 @@
 const Question = require("../models/Question");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const slugify = require("slugify");
 const cloudinary = require("../../config/cloud/index");
 class QaController {
     // [GET]/qa/list
@@ -83,6 +84,7 @@ class QaController {
                 {
                     title,
                     content,
+                    slug: slugify(title.toLowerCase()),
                 }
             );
             req.flash("success", "Đã chỉnh sửa câu hỏi thành công!");
@@ -113,6 +115,7 @@ class QaController {
                             title,
                             content,
                             thumbnail: result.url,
+                            slug: slugify(title.toLowerCase()),
                         }
                     );
                     req.flash("success", "Đã chỉnh sửa câu hỏi thành công!");

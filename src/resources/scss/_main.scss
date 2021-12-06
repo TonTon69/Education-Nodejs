@@ -1,6 +1,6 @@
 .main {
     min-height: 100vh;
-    padding: 66px 28px 78px 104px;
+    padding: 66px 28px 34px 104px;
 
     @include mobile {
         padding: 66px 16px 78px 16px;
@@ -200,6 +200,7 @@
     .competition {
         padding-left: 40px;
         padding-top: 36px;
+        padding-bottom: 36px;
 
         @import "./quiz";
 
@@ -845,6 +846,7 @@
     .exercise {
         padding-left: 40px;
         padding-top: 36px;
+        padding-bottom: 36px;
 
         @include mobile {
             padding-left: 0;
@@ -1149,6 +1151,7 @@
     .subject__detail {
         padding-left: 40px;
         padding-top: 36px;
+        padding-bottom: 36px;
 
         @include mobile {
             padding-left: 0;
@@ -1287,6 +1290,7 @@
     .learning {
         padding-left: 40px;
         padding-top: 36px;
+        padding-bottom: 36px;
 
         @include mobile {
             padding-left: 0;
@@ -1385,6 +1389,7 @@
     .learning-result {
         padding-left: 40px;
         padding-top: 36px;
+        padding-bottom: 36px;
 
         @include mobile {
             padding-left: 0;
