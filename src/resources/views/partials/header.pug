@@ -60,8 +60,7 @@ header.header
                                             | Chúc mừng 
                                             span.name #{user[0].fullname} 
                                             | đã chính thức gia nhập hệ thống ❤️
-                                        .notification-created 1 năm trước
-                       
+                                        .notification-created= moment(user[0].createdAt).locale("vi").fromNow()
             .header__actions--user
                 .header__actions--avatar
                     img(src=user[0].avatar)

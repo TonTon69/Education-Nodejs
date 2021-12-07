@@ -28,5 +28,15 @@ block content
                                 .col-sm-9
                                     input#topic.form-control(type='text', placeholder='Nhập chủ đề tại đây...', name='topic', required)
                             a.btn.btn-light(href='/qa/list') Hủy bỏ
+                            a.btn.btn-danger.ml-2.btn-delete-qa(data-id=qa[0]._id) Xóa
                             button.btn.btn-primary.ml-2(type='submit') Duyệt câu hỏi
-    
+                        form(name='form-delete-qa' method='post')
+    script.
+        $(document).ready(function () {
+            const formDeleteQa = $("form[name='form-delete-qa']");
+            $(".btn-delete-qa").click(function() {
+                const qaID = $(this).attr("data-id");
+                formDeleteQa.attr("action", "/qa/" + qaID + "/destroy?_method=DELETE");
+                formDeleteQa.submit();
+            })
+        })

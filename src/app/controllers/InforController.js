@@ -6,13 +6,14 @@ class InforController {
     // [PUT]/infor/:id
     async update(req, res) {
         const { fullname, phone, birthDay, address } = req.body;
-        const user = await User.findOne({
+        const user = await User.findById(req.params.id);
+        const checkUser = await User.findOne({
             fullname,
             phone,
             birthDay,
             address,
         });
-        if (user) {
+        if (checkUser) {
             res.redirect("back");
             return;
         }
@@ -32,6 +33,14 @@ class InforController {
         //     username = slugify(fullname).toLowerCase();
         // }
 
+        const phones = await User.find({ phone: phone });
+        const checkPhone = phones.filter((x) => x.phone !== user.phone);
+        if (checkPhone.length > 0) {
+            req.flash("error", "Số điện thoại này đã có người sử dụng!");
+            res.redirect("back");
+            return;
+        }
+
         await User.updateOne(
             { _id: req.signedCookies.userId },
             {
@@ -49,6 +58,16 @@ class InforController {
     // [PUT]/infor/:id/avatar
     async changeAvatar(req, res) {
         const user = await User.findOne({ _id: req.signedCookies.userId });
+        const checkAvatar = user.avatar;
+        if (checkAvatar !== "/img/nobody.jpg") {
+            const public_id = checkAvatar
+                .split("/")
+                .slice(-1)
+                .join("")
+                .split(".")[0];
+            cloudinary.uploader.destroy(public_id);
+        }
+
         if (req.file) {
             req.body.avatar = req.file.path.split("/").slice(-2).join("/");
             cloudinary.uploader.upload(req.file.path, async (err, result) => {
