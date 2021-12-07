@@ -15,8 +15,7 @@ block main
                         textarea.new-question-textarea(type="text" name="content" placeholder="Mô tả vấn đề ở đây")
                     .mt-5
                         button.btn.btn-success.btn-sm.rounded-pill.btn-post-question(disabled type="submit") Đăng câu hỏi
-    if success.length > 0
-        - var msgSuccess = success
+    
     script(src="/vendor/ckeditor.js")
     script.
         ClassicEditor.create(document.querySelector('.new-question-textarea'), {
@@ -63,14 +62,4 @@ block main
                     btnPostQuestion.prop('disabled', true);
                 }
             })
-
-            let msgToastSuccess = '#{msgSuccess}';
-            if(msgToastSuccess != '') {
-                Eggy({
-                    title: 'Thành công',
-                    message:  msgToastSuccess,
-                    type: 'success',
-                    duration: 10000,
-                });
-            };
         })

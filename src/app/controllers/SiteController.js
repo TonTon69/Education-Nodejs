@@ -346,9 +346,7 @@ class SiteController {
 
     // [GET]/new-question
     async newQuestion(req, res) {
-        res.render("qa/new-question", {
-            success: req.flash("success"),
-        });
+        res.render("qa/new-question");
     }
 
     // [POST]/new-question

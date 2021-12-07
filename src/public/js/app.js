@@ -2,6 +2,8 @@ $(document).ready(function () {
     const userAva = $(".header__actions--avatar img");
     const userMenu = $(".header__actions--userMenu");
     const actionsUser = $(".header__actions--user");
+    const notiIcon = $(".header__actions--notiIcon");
+    const notiMenu = $(".header__actions--notiMenu");
 
     const sidebarCreateBtn = $(".sidebar .create__button");
 
@@ -12,6 +14,10 @@ $(document).ready(function () {
     sidebarCreateBtn.click(function () {
         $(this).toggleClass("show");
         $(".sidebar .sidebar__menu").toggleClass("show");
+    });
+
+    notiIcon.click(function () {
+        notiMenu.toggleClass("show");
     });
 
     $(document).click(function (e) {
@@ -30,6 +36,10 @@ $(document).ready(function () {
             $(".sidebar .sidebar__menu, .sidebar .create__button").removeClass(
                 "show"
             );
+        }
+
+        if (!notiIcon.is(e.target) && notiIcon.has(e.target).length == 0) {
+            notiMenu.removeClass("show");
         }
     });
 

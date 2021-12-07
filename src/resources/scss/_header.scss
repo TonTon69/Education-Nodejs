@@ -213,12 +213,105 @@
 
         &--noti {
             padding: 8px;
+            position: relative;
 
             ion-icon {
                 vertical-align: -0.125em;
                 width: 0.875em;
                 color: #707070;
                 font-size: 1.5rem;
+            }
+
+            &Icon {
+                cursor: pointer;
+            }
+
+            &Menu {
+                background: $white-color;
+                position: absolute;
+                top: 0;
+                right: -25px;
+                left: auto;
+                bottom: auto;
+                min-width: 520px;
+                padding: 16px 12px;
+                border-radius: 10px;
+                transform: translate(-28px, 35px);
+                transition: transform 0.3s ease;
+                opacity: 0;
+                visibility: hidden;
+                z-index: 10;
+
+                min-height: 50px;
+                max-height: calc(90vh - 66px);
+                overflow-y: auto;
+                scroll-snap-type: y mandatory;
+
+                &.show {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translate(-28px, 45px);
+                }
+
+                &::-webkit-scrollbar {
+                    width: 8px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: rgb(180, 188, 195);
+                    border-radius: 20px;
+                    border: 3px solid rgb(180, 188, 195);
+                    opacity: 0;
+                    visibility: hidden;
+                }
+
+                &:hover::-webkit-scrollbar-thumb {
+                    opacity: 1;
+                    visibility: visible;
+                }
+
+                h6 {
+                    padding: 0 12px;
+                    font-weight: 600;
+                    font-size: 18px;
+                }
+
+                ul {
+                    li {
+                        a {
+                            display: block;
+                            padding: 10px 12px;
+                            border-radius: 5px;
+
+                            &:hover {
+                                background-color: #f5f5f5;
+                            }
+
+                            .notification-avatar {
+                                width: 48px;
+                                height: 48px;
+                                border-radius: 50%;
+                                overflow: hidden;
+                                flex-shrink: 0;
+                            }
+
+                            .notification-message {
+                                flex: 1 1;
+                                font-size: 14px;
+
+                                .name {
+                                    font-weight: 600;
+                                }
+                            }
+
+                            .notification-created {
+                                color: $primary-color;
+                                font-weight: 500;
+                                margin-top: 6px;
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -244,13 +337,12 @@
         &--userMenu {
             background: $white-color;
             position: absolute;
-            // inset: 0px 0px auto auto;
             top: 0;
             right: 0;
             left: auto;
             bottom: auto;
             min-width: 265px;
-            padding: 8px 24px;
+            padding: 12px 24px;
             border-radius: 10px;
             transform: translate(-28px, 45px);
             transition: transform 0.3s ease;

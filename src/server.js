@@ -83,7 +83,11 @@ let ranks = [];
 let users_answered = [];
 let users_scored = [];
 
+// const qaController = require("./app/controllers/QaController");
+
 io.on("connection", async (socket) => {
+    // qaController.respond(socket);
+
     var $ipAddress = socket.handshake.address;
     if (!$ipsConnected.hasOwnProperty($ipAddress)) {
         $ipsConnected[$ipAddress] = 1;

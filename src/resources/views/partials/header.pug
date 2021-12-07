@@ -44,11 +44,25 @@ header.header
                         span.search__string.ms-2.fs-7
                     .search__result--content
     .header__actions
-        .header__actions--noti
-            .ms-2
-                ion-icon(name="notifications")
-        .header__actions--user
-            if user.length > 0
+        if user.length > 0
+            .header__actions--noti
+                .header__actions--notiIcon
+                    ion-icon(name="notifications")
+                .header__actions--notiMenu.shadow
+                    h6 Thông báo
+                    ul.list.ps-0.mb-0.mt-4
+                        li.list__item
+                            a.list__link(href='#')
+                                .d-flex.align-items-center
+                                    img.notification-avatar(src="http://localhost:3000/img/thumbnail.jpg")
+                                    .px-3.notification-message
+                                        div 
+                                            | Chúc mừng 
+                                            span.name #{user[0].fullname} 
+                                            | đã chính thức gia nhập hệ thống ❤️
+                                        .notification-created 1 năm trước
+                       
+            .header__actions--user
                 .header__actions--avatar
                     img(src=user[0].avatar)
                 .header__actions--userMenu.shadow
@@ -82,8 +96,8 @@ header.header
                     ul.list
                         li.list__item
                             a.list__link(href='/logout') Đăng xuất
-            else
-                a.list__link.btn.btn-primary.btn-padding.fs-7(href='/login') Đăng nhập
+        else
+            a.list__link.btn.btn-primary.btn-padding.fs-7(href='/login') Đăng nhập
     script.
         document.addEventListener('DOMContentLoaded', function() {
             var searchAll = $("#search__all");
