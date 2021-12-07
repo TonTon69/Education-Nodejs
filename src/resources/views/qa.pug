@@ -13,7 +13,7 @@ block main
                                     .qa-item
                                         .qa-item-heading
                                             .qa-item-left
-                                                span.fs-8 Tư vấn chuyên ngành
+                                                span.fs-8= qa.topic
                                             .qa-item-right.fs-5
                                                 ion-icon.me-2(name='bookmark-outline')
                                                 ion-icon(name='ellipsis-horizontal')
@@ -27,7 +27,7 @@ block main
                                                         span.fw-bold #{qa.user[0].fullname} 
                                                         span.me-2.ms-2 ·
                                                         span #{moment(qa.updatedAt).locale("vi").fromNow()}
-                                                span.fs-8.text-secondary 100 trả lời
+                                                span.fs-8.text-secondary #{qa.numComments} trả lời
                                             .fs-7.qa-item-content-desc !{qa.content}
                                             .d-flex.align-items-center.justify-content-between.mt-4
                                                 div

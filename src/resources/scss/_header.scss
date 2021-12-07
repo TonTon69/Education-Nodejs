@@ -247,6 +247,11 @@
                 overflow-y: auto;
                 scroll-snap-type: y mandatory;
 
+                @include mobile {
+                    min-width: 340px;
+                    right: -34px;
+                }
+
                 &.show {
                     opacity: 1;
                     visibility: visible;

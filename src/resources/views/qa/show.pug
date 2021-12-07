@@ -1,0 +1,81 @@
+extends ../layouts/common
+block main
+    section.qa-show
+        .row
+            .col-sm-7
+                .qa-show__left
+                    h4.fw-primary= qa[0].title
+                    .mt-5.mb-5 !{qa[0].content}
+                    .qa-show__left--image
+                        h4.fw-primary.mb-4 Ảnh mô tả
+                        img#qa-img(src=qa[0].thumbnail alt=qa[0].title)
+                        .modal
+                            span.close &times;
+                            img.modal-content
+                            .caption
+
+            .col-sm-5
+                .qa-show__right
+                    .comment
+                        h4.fw-primary.mb-5 130 cau tra loi
+                        .comment-box
+                            img.comment-box__avatar(src=user[0].avatar alt=user[0].fullname)
+                            .comment-box__input.fs-7(tabindex="0" contenteditable="true" placeholder="Câu trả lời của bạn?" role="textbox" aria-multiline="true" spellcheck="false")
+                            .comment-box__actions.text-end
+                                button.btn.btn-secondary.btn-padding.rounded-pill.fs-7.btn-cancel Hủy
+                                button.btn.btn-primary.btn-padding.rounded-pill.fs-7.ms-2.btn-ok(disabled) Bình luận
+                        .comment-detail
+                            .avatar
+                                img(src=qa[0].thumbnail)
+                            .content
+                                .content-comment
+                                    h6.fw-primary tonton
+                                    span lúc ms e chọn mỗi mấy cái khóa của front end h muốn học thêm backend thì như nào ạ e tìm k thấy
+                                .content-time
+                                    .fs-5
+                                        ion-icon(name="heart-outline")
+                                    .fs-5
+                                        ion-icon(name="chatbubble-outline")
+                                    span ·
+                                    span.fs-8.text-secondary một tháng trước
+    script.
+        $(document).ready(function () {
+            var modal = $(".qa-show__left--image .modal");
+            var qaImg = $("#qa-img");
+            var modalImg = $(".qa-show__left--image .modal img.modal-content");
+            var captionText = $(".qa-show__left--image .modal .caption");
+            var commentBoxInput = $(".comment-box__input");
+            var commentBoxActions = $(".comment-box__actions");
+            var btnCancel = $(".btn-cancel");
+            var btnOk = $(".btn-ok");
+
+            qaImg.click(function () {
+                var thumbnailSrc = $(this).attr("src");
+                var thumbnailAlt = $(this).attr("alt");
+                modal.show();
+                modalImg.attr("src", thumbnailSrc);
+                captionText.text(thumbnailAlt);
+            })
+
+            var btnClose = $(".qa-show__left--image .modal span.close");
+            btnClose.click(function () {
+                modal.hide();
+            })
+
+            commentBoxInput.focus(function () {
+                commentBoxActions.show();
+            })
+
+            commentBoxInput.keyup(function() {
+                if ($(this).text().length > 0) {
+                    btnOk.attr("disabled", false);
+                } else {
+                    btnOk.attr("disabled", true);
+                }
+            })
+
+            btnCancel.click(function () {
+                commentBoxActions.hide();
+                commentBoxInput.text("");
+            })
+        })

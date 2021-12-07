@@ -1695,9 +1695,204 @@
         }
     }
 
+    .qa-show {
+        padding-left: 40px;
+        // padding-top: 36px;
+        // padding-bottom: 36px;
+
+        &__left {
+            border-right: 1px solid #e6e6e6;
+            padding: 36px 48px 44px 0;
+
+            &--image {
+                padding-top: 36px;
+                border-top: 1px solid #e6e6e6;
+
+                .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 999;
+                    padding-top: 100px;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: auto;
+                    background-color: rgb(0, 0, 0);
+                    background-color: rgba(0, 0, 0, 0.9);
+
+                    &-content {
+                        margin: auto;
+                        display: block;
+                        width: 80%;
+                        max-width: 700px;
+                    }
+                }
+
+                .caption {
+                    margin: auto;
+                    display: block;
+                    width: 80%;
+                    max-width: 700px;
+                    text-align: center;
+                    color: #ccc;
+                    padding: 10px 0;
+                }
+
+                .modal-content,
+                .caption {
+                    -webkit-animation-name: zoom;
+                    -webkit-animation-duration: 0.4s;
+                    animation-name: zoom;
+                    animation-duration: 0.4s;
+                }
+
+                @-webkit-keyframes zoom {
+                    from {
+                        -webkit-transform: scale(0.8);
+                    }
+                    to {
+                        -webkit-transform: scale(1);
+                    }
+                }
+
+                @keyframes zoom {
+                    from {
+                        transform: scale(0.8);
+                    }
+                    to {
+                        transform: scale(1);
+                    }
+                }
+
+                .close {
+                    position: absolute;
+                    top: 15px;
+                    right: 35px;
+                    color: #f1f1f1;
+                    font-size: 40px;
+                    font-weight: bold;
+                    transition: 0.3s;
+
+                    &:hover,
+                    &:focus {
+                        color: #bbb;
+                        text-decoration: none;
+                        cursor: pointer;
+                    }
+                }
+
+                @media only screen and (max-width: 700px) {
+                    .modal-content {
+                        width: 100%;
+                    }
+                }
+
+                #qa-img {
+                    width: 120px;
+                    height: 120px;
+                    object-fit: cover;
+                    border: 1px solid #e6e6e6;
+                    border-radius: 10px;
+                    cursor: zoom-in;
+                }
+            }
+        }
+
+        &__right {
+            padding-top: 36px;
+
+            .comment {
+                &-box {
+                    position: relative;
+                    margin: 0 0 8px 32px;
+                    padding-bottom: 48px;
+                    line-height: 1.5;
+
+                    &__avatar {
+                        position: absolute;
+                        left: -32px;
+                        top: -4px;
+                        width: 36px;
+                        height: 36px;
+                        object-fit: cover;
+                        border-radius: 50%;
+                    }
+
+                    &__input {
+                        color: #292929;
+                        outline: none;
+                        border: none;
+                        line-height: 1.5;
+                        margin-left: 16px;
+                        padding-bottom: 4px;
+                        border-bottom: 1px solid #ccc;
+                        white-space: pre-wrap;
+                        word-wrap: break-word;
+
+                        &[contenteditable="true"]:empty:before {
+                            content: attr(placeholder);
+                            pointer-events: none;
+                            color: #b3b3b1;
+                            display: block;
+                        }
+                    }
+
+                    &__actions {
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                        display: none;
+                    }
+                }
+
+                &-detail {
+                    display: flex;
+
+                    .avatar {
+                        flex-shrink: 0;
+
+                        img {
+                            width: 36px;
+                            height: 36px;
+                            object-fit: cover;
+                            border-radius: 50%;
+                        }
+                    }
+
+                    .content {
+                        position: relative;
+                        padding-left: 4px;
+                        margin-left: 8px;
+                        flex: 1 1;
+
+                        &-comment {
+                            background-color: #f2f3f5;
+                            border-radius: 18px;
+                            color: #1c1e21;
+                            display: inline-block;
+                            max-width: 586px;
+                            position: relative;
+                            padding: 9px 12px;
+                            line-height: 1.5;
+                        }
+
+                        &-time {
+                            margin: 14px 0;
+                            display: flex;
+                            align-items: center;
+                            gap: 16px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     .my-qa {
         padding-left: 40px;
         padding-top: 36px;
+        padding-bottom: 36px;
 
         .nav-tabs {
             .nav-link {
@@ -1715,7 +1910,8 @@
         }
 
         .tab-content {
-            #waiting-for-review {
+            #waiting-for-review,
+            #published {
                 ul {
                     padding: 8px 0;
                     margin-bottom: 0;

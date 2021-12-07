@@ -173,6 +173,23 @@ class QaController {
         req.flash("success", "Đã xóa câu hỏi thành công!");
         res.redirect("/my-qa");
     }
+
+    // [GET]/qa/:slug
+    async show(req, res) {
+        const qa = await Question.aggregate([
+            { $match: { slug: req.params.slug } },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+        ]);
+
+        res.render("qa/show", { qa });
+    }
 }
 
 module.exports = new QaController();

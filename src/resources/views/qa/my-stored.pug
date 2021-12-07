@@ -15,52 +15,58 @@ block main
                                 span (#{countMyQaPublish})
                 .tab-content.mt-5
                     #waiting-for-review.tab-pane.active
-                        if myQa.length > 0
-                            each item in myQa
-                                if !item.isApproved
-                                    .d-flex.align-items-center.justify-content-between
-                                        div
-                                            h5.mb-4
-                                                a(href=`/qa/${item._id}/edit`)= item.title
-                                            span.text-secondary.fs-7 Chỉnh sửa #{moment(item.updatedAt).locale("vi").fromNow()}
-                                        .fs-4.text-secondary.position-relative.qa-manager
-                                            ion-icon(name='ellipsis-horizontal')
-                                            .menu-actions.bg-white.shadow
-                                                ul.ps-0
-                                                    li
-                                                        a.fs-7(href=`/qa/${item._id}/edit`) Chỉnh sửa
-                                                    li
-                                                        a.fs-7.btn-delete-qa(data-id=item._id) Xóa
-                                    hr
-                            form(name='form-delete-qa' method='post')
-                        else
-                            p Chưa có câu hỏi nào.
-                            p 
-                                span Bạn có thể 
-                                a.text-primary(href='/new-question') đặt câu hỏi 
-                                span hoặc 
-                                a.text-primary(href='/qa') đọc câu hỏi 
-                                span khác trên hệ thống nhé.
+                        each item in myQa
+                            if !item.isApproved
+                                .d-flex.align-items-center.justify-content-between
+                                    div
+                                        h5.mb-4
+                                            a(href=`/qa/${item._id}/edit`)= item.title
+                                        span.text-secondary.fs-7 Chỉnh sửa #{moment(item.updatedAt).locale("vi").fromNow()}
+                                    .fs-4.text-secondary.position-relative.qa-manager
+                                        ion-icon(name='ellipsis-horizontal')
+                                        .menu-actions.bg-white.shadow
+                                            ul.ps-0
+                                                li
+                                                    a.fs-7(href=`/qa/${item._id}/edit`) Chỉnh sửa
+                                                li
+                                                    a.fs-7.btn-delete-qa(data-id=item._id) Xóa
+                                hr
+                        if countMyQaWait === 0
+                            div
+                                p Chưa có câu hỏi nào cần xem xét.
+                                p 
+                                    span Bạn có thể 
+                                    a.text-primary(href='/new-question') đặt câu hỏi 
+                                    span hoặc 
+                                    a.text-primary(href='/qa') đọc câu hỏi 
+                                    span khác trên hệ thống nhé.
+                    form(name='form-delete-qa' method='post')
                     #published.tab-pane.fade
-                        if myQa.length > 0
-                            each item in myQa
-                                if item.isApproved
-                                    .d-flex.align-items-center.justify-content-between
-                                        div
-                                            h5.mb-4
-                                                a(href=`/qa/${item.slug}`)= item.title
-                                            span.text-secondary.fs-7 #{moment(item.createdAt).locale("vi").fromNow()}
-                                        .fs-4.text-secondary
-                                            ion-icon(name='ellipsis-horizontal')
-                                    hr
-                        else
-                            p Chưa có xuất bản nào.
-                            p 
-                                span Bạn có thể 
-                                a.text-primary(href='/new-question') đặt câu hỏi 
-                                span hoặc 
-                                a.text-primary(href='/qa') đọc câu hỏi 
-                                span khác trên hệ thống nhé.
+                        each item in myQa
+                            if item.isApproved
+                                .d-flex.align-items-center.justify-content-between
+                                    div
+                                        h5.mb-4
+                                            a(href=`/qa/${item.slug}`)= item.title
+                                        span.text-secondary.fs-7 Chỉnh sửa #{moment(item.updatedAt).locale("vi").fromNow()}
+                                    .fs-4.text-secondary.position-relative.qa-manager
+                                        ion-icon(name='ellipsis-horizontal')
+                                        .menu-actions.bg-white.shadow
+                                            ul.ps-0
+                                                li
+                                                    a.fs-7(href=`/qa/${item._id}/edit`) Chỉnh sửa
+                                                li
+                                                    a.fs-7.btn-delete-qa(data-id=item._id) Xóa
+                                hr
+                        if countMyQaPublish === 0
+                            div
+                                p Chưa có xuất bản nào.
+                                p 
+                                    span Bạn có thể 
+                                    a.text-primary(href='/new-question') đặt câu hỏi 
+                                    span hoặc 
+                                    a.text-primary(href='/qa') đọc câu hỏi 
+                                    span khác trên hệ thống nhé.
     if success.length > 0
         - var msgSuccess = success
     script.
@@ -90,7 +96,7 @@ block main
                 formDeleteQa.attr("action", "/qa/" + qaID + "/delete?_method=DELETE");
                 formDeleteQa.submit();
             })
-        })
+        });
         
         $(document).click(function (e) {
             if (!qaManager.is(e.target) && qaManager.has(e.target).length == 0 ) {

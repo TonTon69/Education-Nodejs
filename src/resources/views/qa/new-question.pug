@@ -56,7 +56,7 @@ block main
             })
 
             newQuestionTitle.keyup(function () {
-                if($(this).text().length > 10) {
+                if($(this).text().length > 6) {
                     btnPostQuestion.prop('disabled', false);
                 } else {
                     btnPostQuestion.prop('disabled', true);
