@@ -27,9 +27,17 @@ block main
                                         .menu-actions.bg-white.shadow
                                             ul.ps-0
                                                 li
-                                                    a.fs-7(href=`/qa/${item._id}/edit`) Chỉnh sửa
+                                                    a(href=`/qa/${item._id}/edit`)
+                                                        .d-flex.align-items-center
+                                                            .fs-6
+                                                                ion-icon(name="pencil")
+                                                            span.ms-2 Chỉnh sửa
                                                 li
-                                                    a.fs-7.btn-delete-qa(data-id=item._id) Xóa
+                                                    a.btn-delete-qa(data-id=item._id)
+                                                        .d-flex.align-items-center
+                                                            .fs-6
+                                                                ion-icon(name="trash")
+                                                            span.ms-2 Xóa
                                 hr
                         if countMyQaWait === 0
                             div
@@ -54,9 +62,17 @@ block main
                                         .menu-actions.bg-white.shadow
                                             ul.ps-0
                                                 li
-                                                    a.fs-7(href=`/qa/${item._id}/edit`) Chỉnh sửa
+                                                    a(href=`/qa/${item._id}/edit`)
+                                                        .d-flex.align-items-center
+                                                            .fs-6
+                                                                ion-icon(name="pencil")
+                                                            span.ms-2 Chỉnh sửa
                                                 li
-                                                    a.fs-7.btn-delete-qa(data-id=item._id) Xóa
+                                                    a.btn-delete-qa(data-id=item._id)
+                                                        .d-flex.align-items-center
+                                                            .fs-6
+                                                                ion-icon(name="trash")
+                                                            span.ms-2 Xóa
                                 hr
                         if countMyQaPublish === 0
                             div

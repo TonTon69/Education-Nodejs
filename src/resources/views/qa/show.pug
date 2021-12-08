@@ -4,11 +4,17 @@ block main
         .row
             .col-sm-7
                 .qa-show__left
-                    h4.fw-primary= qa[0].title
-                    .mt-5.mb-5 !{qa[0].content}
+                    h4.fw-primary.qa-show__left--title= qa[0].title
+                    .mt-4.mb-4.d-flex.align-items-center
+                        img.rounded-circle(src=qa[0].user[0].avatar width=38 height=38 style='object-fit: cover')
+                        .ms-3
+                            span.fw-primary= qa[0].user[0].fullname
+                            span.d-block.text-secondary.fs-8.mt-2= moment(qa[0].createdAt).locale("vi").fromNow()
+                    .mb-4.qa-show__left--content !{qa[0].content}
                     .qa-show__left--image
                         h4.fw-primary.mb-4 Ảnh mô tả
                         img#qa-img(src=qa[0].thumbnail alt=qa[0].title)
+                        .text-secondary.fs-7.mt-4 (Bấm vào ảnh để xem chi tiết)
                         .modal
                             span.close &times;
                             img.modal-content
@@ -17,7 +23,7 @@ block main
             .col-sm-5
                 .qa-show__right
                     .comment
-                        h4.fw-primary.mb-5 130 cau tra loi
+                        h4.fw-primary.mb-5 1 câu trả lời
                         .comment-box
                             img.comment-box__avatar(src=user[0].avatar alt=user[0].fullname)
                             .comment-box__input.fs-7(tabindex="0" contenteditable="true" placeholder="Câu trả lời của bạn?" role="textbox" aria-multiline="true" spellcheck="false")
@@ -29,15 +35,39 @@ block main
                                 img(src=qa[0].thumbnail)
                             .content
                                 .content-comment
-                                    h6.fw-primary tonton
+                                    span.d-block.fw-primary.mb-1 tonton
                                     span lúc ms e chọn mỗi mấy cái khóa của front end h muốn học thêm backend thì như nào ạ e tìm k thấy
                                 .content-time
-                                    .fs-5
+                                    .fs-4
                                         ion-icon(name="heart-outline")
                                     .fs-5
                                         ion-icon(name="chatbubble-outline")
                                     span ·
                                     span.fs-8.text-secondary một tháng trước
+                                    .position-relative.qa-manager
+                                        .fs-5
+                                            ion-icon(name='ellipsis-horizontal')
+                                        .menu-actions.bg-white.shadow
+                                            ul.ps-0
+                                                li
+                                                    a(href=``)
+                                                        .d-flex.align-items-center
+                                                            .fs-6
+                                                                ion-icon(name="flag")
+                                                            span.ms-2 Báo cáo bình luận
+                                                li
+                                                    a(href=``)
+                                                        .d-flex.align-items-center
+                                                            .fs-6
+                                                                ion-icon(name="pencil")
+                                                            span.ms-2 Chỉnh sửa
+                                                li
+                                                    a.btn-delete-qa(data-id)
+                                                        .d-flex.align-items-center
+                                                            .fs-6
+                                                                ion-icon(name="trash")
+                                                            span.ms-2 Xóa
+                        
     script.
         $(document).ready(function () {
             var modal = $(".qa-show__left--image .modal");
@@ -48,6 +78,20 @@ block main
             var commentBoxActions = $(".comment-box__actions");
             var btnCancel = $(".btn-cancel");
             var btnOk = $(".btn-ok");
+            var qaManager = $(".qa-manager");
+            var menuActions = $(".menu-actions");
+
+            $.each(qaManager, function(key, value) {   
+                value.onclick = function() {
+                    $(this).find(".menu-actions").toggleClass("show");
+                } 
+            });
+
+            $(document).click(function (e) {
+                if (!qaManager.is(e.target) && qaManager.has(e.target).length == 0) {
+                    menuActions.removeClass("show");
+                }
+            })
 
             qaImg.click(function () {
                 var thumbnailSrc = $(this).attr("src");
