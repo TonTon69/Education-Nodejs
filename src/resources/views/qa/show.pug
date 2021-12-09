@@ -4,17 +4,17 @@ block main
         .row
             .col-sm-7
                 .qa-show__left
-                    h4.fw-primary.qa-show__left--title= qa[0].title
+                    h3.fw-primary.qa-show__left--title= qa[0].title
                     .mt-4.mb-4.d-flex.align-items-center
                         img.rounded-circle(src=qa[0].user[0].avatar width=38 height=38 style='object-fit: cover')
                         .ms-3
                             span.fw-primary= qa[0].user[0].fullname
-                            span.d-block.text-secondary.fs-8.mt-2= moment(qa[0].createdAt).locale("vi").fromNow()
+                            span.d-block.text-secondary.fs-8.mt-2= moment(qa[0].updatedAt).locale("vi").fromNow()
                     .mb-4.qa-show__left--content !{qa[0].content}
                     .qa-show__left--image
-                        h4.fw-primary.mb-4 Ảnh mô tả
+                        h4.fw-primary Ảnh mô tả
+                        .text-secondary.fs-7.mb-4 (Bấm vào ảnh để xem chi tiết)
                         img#qa-img(src=qa[0].thumbnail alt=qa[0].title)
-                        .text-secondary.fs-7.mt-4 (Bấm vào ảnh để xem chi tiết)
                         .modal
                             span.close &times;
                             img.modal-content
@@ -26,7 +26,7 @@ block main
                         h4.fw-primary.mb-5 1 câu trả lời
                         .comment-box
                             img.comment-box__avatar(src=user[0].avatar alt=user[0].fullname)
-                            .comment-box__input.fs-7(tabindex="0" contenteditable="true" placeholder="Câu trả lời của bạn?" role="textbox" aria-multiline="true" spellcheck="false")
+                            .comment-box__input(tabindex="0" contenteditable="true" placeholder="Viết câu trả lời..." role="textbox" aria-multiline="true" spellcheck="false")
                             .comment-box__actions.text-end
                                 button.btn.btn-secondary.btn-padding.rounded-pill.fs-7.btn-cancel Hủy
                                 button.btn.btn-primary.btn-padding.rounded-pill.fs-7.ms-2.btn-ok(disabled) Bình luận
@@ -38,9 +38,9 @@ block main
                                     span.d-block.fw-primary.mb-1 tonton
                                     span lúc ms e chọn mỗi mấy cái khóa của front end h muốn học thêm backend thì như nào ạ e tìm k thấy
                                 .content-time
-                                    .fs-4
+                                    .content-time__like
                                         ion-icon(name="heart-outline")
-                                    .fs-5
+                                    .content-time__reply
                                         ion-icon(name="chatbubble-outline")
                                     span ·
                                     span.fs-8.text-secondary một tháng trước
@@ -67,7 +67,11 @@ block main
                                                             .fs-6
                                                                 ion-icon(name="trash")
                                                             span.ms-2 Xóa
-                        
+                                .reply-box
+                                    img.reply-box__avatar(src=user[0].avatar alt=user[0].fullname)
+                                    .reply-box__input(tabindex="0" contenteditable="true" placeholder="Viết phản hồi..." role="textbox" aria-multiline="true" spellcheck="false")
+                                    .reply-box__detail
+                                        a hhh
     script.
         $(document).ready(function () {
             var modal = $(".qa-show__left--image .modal");
@@ -75,24 +79,31 @@ block main
             var modalImg = $(".qa-show__left--image .modal img.modal-content");
             var captionText = $(".qa-show__left--image .modal .caption");
             var commentBoxInput = $(".comment-box__input");
+            var replyBoxInput = $(".reply-box__input");
             var commentBoxActions = $(".comment-box__actions");
-            var btnCancel = $(".btn-cancel");
-            var btnOk = $(".btn-ok");
+            var btnCancel = $(".comment-box .btn-cancel");
+            var btnOk = $(".comment-box .btn-ok");
             var qaManager = $(".qa-manager");
             var menuActions = $(".menu-actions");
+            var btnClose = $(".qa-show__left--image .modal span.close");
+            var contentTimeLike = $(".content-time__like");
+            var contentTimeReply = $(".content-time__reply");
 
+            // when menu actions is clicked
             $.each(qaManager, function(key, value) {   
                 value.onclick = function() {
                     $(this).find(".menu-actions").toggleClass("show");
                 } 
             });
 
+            // clear menu actions
             $(document).click(function (e) {
                 if (!qaManager.is(e.target) && qaManager.has(e.target).length == 0) {
                     menuActions.removeClass("show");
                 }
             })
 
+            // when thumbnail is clicked
             qaImg.click(function () {
                 var thumbnailSrc = $(this).attr("src");
                 var thumbnailAlt = $(this).attr("alt");
@@ -100,17 +111,31 @@ block main
                 modalImg.attr("src", thumbnailSrc);
                 captionText.text(thumbnailAlt);
             })
-
-            var btnClose = $(".qa-show__left--image .modal span.close");
+            
+            // when btn close modal thumbnail detail is clicked
             btnClose.click(function () {
                 modal.hide();
             })
 
+            // when comment box input is focus
             commentBoxInput.focus(function () {
                 commentBoxActions.show();
+                if ($(this).text().length === 0) {
+                    btnOk.attr("disabled", true);
+                }
             })
 
-            commentBoxInput.keyup(function() {
+            // when comment box input enter
+            commentBoxInput.keydown(function(e) {
+                if (e.keyCode === 13) {
+                    $(this).text("");
+                    document.execCommand('selectAll', false, null);
+                    return false;
+                }
+            })
+
+            // disabled btn 
+            commentBoxInput.keyup(function(e) {
                 if ($(this).text().length > 0) {
                     btnOk.attr("disabled", false);
                 } else {
@@ -118,8 +143,23 @@ block main
                 }
             })
 
+            // when reply box input enter
+            replyBoxInput.keydown(function (e) {
+                if (e.keyCode === 13) {
+                    $(this).text("");
+                    document.execCommand('selectAll', false, null);
+                    return false;
+                }
+            })
+
+            // when btn cancel is clicked
             btnCancel.click(function () {
                 commentBoxActions.hide();
                 commentBoxInput.text("");
+            })
+
+            // when btn reply is clicked
+            contentTimeReply.click(function () {
+                $(this).parent().parent().find(".reply-box").show();
             })
         })

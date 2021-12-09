@@ -1812,7 +1812,8 @@
         &__right {
             padding-top: 36px;
 
-            .comment {
+            .comment,
+            .reply {
                 &-box {
                     position: relative;
                     margin: 0 0 8px 32px;
@@ -1830,6 +1831,7 @@
                     }
 
                     &__input {
+                        font-size: 14.5px;
                         color: #292929;
                         outline: none;
                         border: none;
@@ -1890,14 +1892,38 @@
                         }
 
                         &-time {
-                            margin: 14px 0;
+                            margin: 14px 0 18px 0;
                             display: flex;
                             align-items: center;
                             gap: 16px;
 
                             @import "./commonMenu";
+
+                            &__like,
+                            &__reply {
+                                cursor: pointer;
+                                font-size: 20px;
+                            }
+
+                            &__like {
+                                font-size: 22px;
+                            }
                         }
                     }
+                }
+            }
+
+            .reply-box {
+                max-width: 470px;
+                display: none;
+
+                &__avatar {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                &__input {
+                    margin-left: 4px;
                 }
             }
         }

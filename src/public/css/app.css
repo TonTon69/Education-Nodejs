@@ -1993,12 +1993,14 @@ blockquote {
           cursor: zoom-in; }
     .main .qa-show__right {
       padding-top: 36px; }
-      .main .qa-show__right .comment-box {
+      .main .qa-show__right .comment-box,
+      .main .qa-show__right .reply-box {
         position: relative;
         margin: 0 0 8px 32px;
         padding-bottom: 48px;
         line-height: 1.5; }
-        .main .qa-show__right .comment-box__avatar {
+        .main .qa-show__right .comment-box__avatar,
+        .main .qa-show__right .reply-box__avatar {
           position: absolute;
           left: -32px;
           top: -4px;
@@ -2006,7 +2008,9 @@ blockquote {
           height: 36px;
           object-fit: cover;
           border-radius: 50%; }
-        .main .qa-show__right .comment-box__input {
+        .main .qa-show__right .comment-box__input,
+        .main .qa-show__right .reply-box__input {
+          font-size: 14.5px;
           color: #292929;
           outline: none;
           border: none;
@@ -2016,32 +2020,39 @@ blockquote {
           border-bottom: 1px solid #ccc;
           white-space: pre-wrap;
           word-wrap: break-word; }
-          .main .qa-show__right .comment-box__input[contenteditable="true"]:empty:before {
+          .main .qa-show__right .comment-box__input[contenteditable="true"]:empty:before,
+          .main .qa-show__right .reply-box__input[contenteditable="true"]:empty:before {
             content: attr(placeholder);
             pointer-events: none;
             color: #b3b3b1;
             display: block; }
-        .main .qa-show__right .comment-box__actions {
+        .main .qa-show__right .comment-box__actions,
+        .main .qa-show__right .reply-box__actions {
           position: absolute;
           right: 0;
           bottom: 0;
           display: none; }
-      .main .qa-show__right .comment-detail {
+      .main .qa-show__right .comment-detail,
+      .main .qa-show__right .reply-detail {
         display: flex;
         margin-top: 16px; }
-        .main .qa-show__right .comment-detail .avatar {
+        .main .qa-show__right .comment-detail .avatar,
+        .main .qa-show__right .reply-detail .avatar {
           flex-shrink: 0; }
-          .main .qa-show__right .comment-detail .avatar img {
+          .main .qa-show__right .comment-detail .avatar img,
+          .main .qa-show__right .reply-detail .avatar img {
             width: 36px;
             height: 36px;
             object-fit: cover;
             border-radius: 50%; }
-        .main .qa-show__right .comment-detail .content {
+        .main .qa-show__right .comment-detail .content,
+        .main .qa-show__right .reply-detail .content {
           position: relative;
           padding-left: 4px;
           margin-left: 8px;
           flex: 1 1; }
-          .main .qa-show__right .comment-detail .content-comment {
+          .main .qa-show__right .comment-detail .content-comment,
+          .main .qa-show__right .reply-detail .content-comment {
             background-color: #f2f3f5;
             border-radius: 18px;
             color: #1c1e21;
@@ -2051,27 +2062,33 @@ blockquote {
             padding: 9px 12px;
             line-height: 1.5;
             font-size: 14px; }
-          .main .qa-show__right .comment-detail .content-time {
-            margin: 14px 0;
+          .main .qa-show__right .comment-detail .content-time,
+          .main .qa-show__right .reply-detail .content-time {
+            margin: 14px 0 18px 0;
             display: flex;
             align-items: center;
             gap: 16px; }
-            .main .qa-show__right .comment-detail .content-time ul {
+            .main .qa-show__right .comment-detail .content-time ul,
+            .main .qa-show__right .reply-detail .content-time ul {
               padding: 8px 0;
               margin-bottom: 0; }
-              .main .qa-show__right .comment-detail .content-time ul li a {
+              .main .qa-show__right .comment-detail .content-time ul li a,
+              .main .qa-show__right .reply-detail .content-time ul li a {
                 font-size: 14px;
                 display: block;
                 padding: 12px 20px;
                 cursor: pointer;
                 color: #444; }
-                .main .qa-show__right .comment-detail .content-time ul li a:hover {
+                .main .qa-show__right .comment-detail .content-time ul li a:hover,
+                .main .qa-show__right .reply-detail .content-time ul li a:hover {
                   color: #292929;
                   background: #f5f5f5; }
-            .main .qa-show__right .comment-detail .content-time ion-icon[name="ellipsis-horizontal"] {
-              cursor: pointer;
-              color: #444; }
-            .main .qa-show__right .comment-detail .content-time .menu-actions {
+            .main .qa-show__right .comment-detail .content-time ion-icon[name="ellipsis-horizontal"],
+            .main .qa-show__right .reply-detail .content-time ion-icon[name="ellipsis-horizontal"] {
+              color: #444;
+              cursor: pointer; }
+            .main .qa-show__right .comment-detail .content-time .menu-actions,
+            .main .qa-show__right .reply-detail .content-time .menu-actions {
               position: absolute;
               top: 36px;
               right: 0;
@@ -2082,10 +2099,27 @@ blockquote {
               transition: transform 0.3s ease;
               opacity: 0;
               visibility: hidden; }
-              .main .qa-show__right .comment-detail .content-time .menu-actions.show {
+              .main .qa-show__right .comment-detail .content-time .menu-actions.show,
+              .main .qa-show__right .reply-detail .content-time .menu-actions.show {
                 transform: translateY(0);
                 opacity: 1;
                 visibility: visible; }
+            .main .qa-show__right .comment-detail .content-time__like, .main .qa-show__right .comment-detail .content-time__reply,
+            .main .qa-show__right .reply-detail .content-time__like,
+            .main .qa-show__right .reply-detail .content-time__reply {
+              cursor: pointer;
+              font-size: 20px; }
+            .main .qa-show__right .comment-detail .content-time__like,
+            .main .qa-show__right .reply-detail .content-time__like {
+              font-size: 22px; }
+      .main .qa-show__right .reply-box {
+        max-width: 470px;
+        display: none; }
+        .main .qa-show__right .reply-box__avatar {
+          width: 24px;
+          height: 24px; }
+        .main .qa-show__right .reply-box__input {
+          margin-left: 4px; }
   .main .my-qa {
     padding-left: 40px;
     padding-top: 36px;
@@ -2113,8 +2147,8 @@ blockquote {
           background: #f5f5f5; }
     .main .my-qa .tab-content #waiting-for-review ion-icon[name="ellipsis-horizontal"],
     .main .my-qa .tab-content #published ion-icon[name="ellipsis-horizontal"] {
-      cursor: pointer;
-      color: #444; }
+      color: #444;
+      cursor: pointer; }
     .main .my-qa .tab-content #waiting-for-review .menu-actions,
     .main .my-qa .tab-content #published .menu-actions {
       position: absolute;

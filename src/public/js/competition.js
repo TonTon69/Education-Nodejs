@@ -280,12 +280,12 @@ $(document).ready(function () {
         showMonths(0);
     });
 
-    $(".tab-rank ion-icon[name='chevron-back']").click(function () {
+    $(".tab-rank .icon-chevron-back").click(function () {
         loading();
         isActive ? showWeeks(-1) : showMonths(-1);
     });
 
-    $(".tab-rank ion-icon[name='chevron-forward']").click(function () {
+    $(".tab-rank .icon-chevron-forward").click(function () {
         loading();
         isActive ? showWeeks(1) : showMonths(1);
     });
