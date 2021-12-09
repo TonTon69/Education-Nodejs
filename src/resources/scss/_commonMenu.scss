@@ -19,6 +19,10 @@ ul {
 ion-icon[name="ellipsis-horizontal"] {
     color: #444;
     cursor: pointer;
+
+    &:hover {
+        color: #292929;
+    }
 }
 
 .menu-actions {

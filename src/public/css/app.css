@@ -2062,6 +2062,24 @@ blockquote {
             padding: 9px 12px;
             line-height: 1.5;
             font-size: 14px; }
+            .main .qa-show__right .comment-detail .content-comment__count,
+            .main .qa-show__right .reply-detail .content-comment__count {
+              position: absolute;
+              bottom: -12px;
+              right: 0;
+              display: flex;
+              align-items: center;
+              background-color: #fff;
+              padding: 2px 4px;
+              border-radius: 10px; }
+              .main .qa-show__right .comment-detail .content-comment__count ion-icon,
+              .main .qa-show__right .reply-detail .content-comment__count ion-icon {
+                font-size: 16px;
+                color: red; }
+              .main .qa-show__right .comment-detail .content-comment__count span,
+              .main .qa-show__right .reply-detail .content-comment__count span {
+                font-size: 14px;
+                margin-left: 3px; }
           .main .qa-show__right .comment-detail .content-time,
           .main .qa-show__right .reply-detail .content-time {
             margin: 14px 0 18px 0;
@@ -2087,6 +2105,9 @@ blockquote {
             .main .qa-show__right .reply-detail .content-time ion-icon[name="ellipsis-horizontal"] {
               color: #444;
               cursor: pointer; }
+              .main .qa-show__right .comment-detail .content-time ion-icon[name="ellipsis-horizontal"]:hover,
+              .main .qa-show__right .reply-detail .content-time ion-icon[name="ellipsis-horizontal"]:hover {
+                color: #292929; }
             .main .qa-show__right .comment-detail .content-time .menu-actions,
             .main .qa-show__right .reply-detail .content-time .menu-actions {
               position: absolute;
@@ -2112,6 +2133,9 @@ blockquote {
             .main .qa-show__right .comment-detail .content-time__like,
             .main .qa-show__right .reply-detail .content-time__like {
               font-size: 22px; }
+              .main .qa-show__right .comment-detail .content-time__like.active ion-icon,
+              .main .qa-show__right .reply-detail .content-time__like.active ion-icon {
+                color: red; }
       .main .qa-show__right .reply-box {
         max-width: 470px;
         display: none; }
@@ -2149,6 +2173,9 @@ blockquote {
     .main .my-qa .tab-content #published ion-icon[name="ellipsis-horizontal"] {
       color: #444;
       cursor: pointer; }
+      .main .my-qa .tab-content #waiting-for-review ion-icon[name="ellipsis-horizontal"]:hover,
+      .main .my-qa .tab-content #published ion-icon[name="ellipsis-horizontal"]:hover {
+        color: #292929; }
     .main .my-qa .tab-content #waiting-for-review .menu-actions,
     .main .my-qa .tab-content #published .menu-actions {
       position: absolute;
