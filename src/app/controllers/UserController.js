@@ -11,9 +11,10 @@ const path = require("path");
 const readXlsxFile = require("read-excel-file/node");
 const moment = require("moment");
 const XLSX = require("xlsx");
+const cloudinary = require("../../config/cloud/index");
 
 class UserController {
-    async listUser(req, res, next) {
+    async listUser(req, res) {
         try {
             let perPage = 3;
             let page = req.params.page || 1;
@@ -79,7 +80,7 @@ class UserController {
     }
 
     // [GET]/user/create
-    async create(req, res, next) {
+    async create(req, res) {
         const roles = await Role.find({});
         const grades = await Grade.find({});
         res.render("user/create", {
@@ -171,7 +172,7 @@ class UserController {
         res.render("helper/table-user", { users });
     }
 
-    async listRole(req, res, next) {
+    async listRole(req, res) {
         const roles = await Role.find({});
         res.render("user/list-role", {
             success: req.flash("success"),
@@ -180,7 +181,7 @@ class UserController {
         });
     }
 
-    async update(req, res, next) {
+    async update(req, res) {
         var user = await User.findOne({ _id: req.params.id });
         const roles = await Role.find({});
         res.render("user/update", {
@@ -189,26 +190,27 @@ class UserController {
         });
     }
 
-    async putUpdate(req, res, next) {
-        User.updateOne({ _id: req.params.id }, req.body)
-            .then(() => {
-                req.flash("success", "Đã cập nhật thành công!");
-                res.redirect("/user/list-user");
-            })
-            .catch(next);
+    async putUpdate(req, res) {
+        await User.updateOne({ _id: req.params.id }, req.body);
+        req.flash("success", "Đã cập nhật thành công!");
+        res.redirect("/user/list-user");
     }
 
-    async deleteUser(req, res, next) {
-        User.deleteOne({ _id: req.params.id })
-            .then(() => {
-                req.flash("success", "Đã xóa thành công!");
-                res.redirect("back");
-            })
-            .catch(next);
+    async deleteUser(req, res) {
+        const user = await User.findById(req.params.id);
+        const public_id = user.avatar
+            .split("/")
+            .slice(-1)
+            .join("")
+            .split(".")[0];
+        cloudinary.uploader.destroy(public_id);
+        await User.deleteOne({ _id: req.params.id });
+        req.flash("success", "Đã xóa thành công!");
+        res.redirect("back");
     }
 
     //[POST] user/create-list-user
-    async addUserList(req, res, next) {
+    async addUserList(req, res) {
         if (req.file == undefined) {
             req.flash("error", "Vui lòng tải lên một tệp excel!");
             res.redirect("back");
@@ -310,7 +312,7 @@ class UserController {
     }
 
     // [POST]/user/export
-    async export(req, res, next) {
+    async export(req, res) {
         const users = await User.aggregate([
             {
                 $lookup: {

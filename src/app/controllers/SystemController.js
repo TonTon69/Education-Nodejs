@@ -13,7 +13,7 @@ class SystemController {
     }
 
     //   // [GET]/systems/:id/edit
-    async edit(req, res, next) {
+    async edit(req, res) {
         const systems = await System.findById(req.params.id);
         res.render("systems/edit", {
             systems,
@@ -22,14 +22,14 @@ class SystemController {
     }
 
     //   // [PUT]/systems/:id
-    async update(req, res, next) {
+    async update(req, res) {
         await System.updateOne({ _id: req.params.id }, req.body);
         req.flash("success", "Cập nhật thành công!");
         res.redirect("back");
     }
 
     //   // [DELETE]/systems/:id
-    async delete(req, res, next) {
+    async delete(req, res) {
         try {
             await System.deleteOne({ _id: req.params.id });
             req.flash("success", "Xóa thành công!");

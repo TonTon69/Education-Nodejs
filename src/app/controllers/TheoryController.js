@@ -14,7 +14,7 @@ const path = require("path");
 const options = require("../../utils/options");
 class TheoryController {
     // [GET]/theories?lession
-    async detail(req, res, next) {
+    async detail(req, res) {
         try {
             if (ObjectId.isValid(req.query.lession)) {
                 const lession = await Lession.findById(req.query.lession);
@@ -70,7 +70,7 @@ class TheoryController {
     }
 
     // [PUT]/theories/:id
-    async update(req, res, next) {
+    async update(req, res) {
         if (req.body.content === "") {
             req.flash(
                 "error",
@@ -85,7 +85,7 @@ class TheoryController {
     }
 
     // [GET]/theories/create
-    async create(req, res, next) {
+    async create(req, res) {
         if (ObjectId.isValid(req.query.lession)) {
             const lession = await Lession.findOne({ _id: req.query.lession });
             const unit = await Unit.findOne({ _id: lession.unitID });
@@ -107,7 +107,7 @@ class TheoryController {
     }
 
     // [POST]/theories/create
-    async postCreate(req, res, next) {
+    async postCreate(req, res) {
         if (req.body.content === "") {
             req.flash(
                 "error",
@@ -123,7 +123,7 @@ class TheoryController {
     }
 
     // [DELETE]/theories/:id
-    async delete(req, res, next) {
+    async delete(req, res) {
         const theory = await Theory.findById(req.params.id);
         const lession = await Lession.findById(theory.lessionID);
         const unit = await Unit.findById(lession.unitID);
@@ -134,7 +134,7 @@ class TheoryController {
     }
 
     // [POST]/theories/:id/export
-    async generatePdf(req, res, next) {
+    async generatePdf(req, res) {
         const html = fs.readFileSync(
             path.join(__dirname, "../../resources/views/templates/theory.html"),
             "utf-8"

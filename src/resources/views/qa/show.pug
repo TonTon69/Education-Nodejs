@@ -13,13 +13,15 @@ block main
                     .mb-4.qa-show__left--content !{qa[0].content}
                     .qa-show__left--image
                         h4.fw-primary Ảnh mô tả
-                        .text-secondary.fs-7.mb-4 (Bấm vào ảnh để xem chi tiết)
-                        img#qa-img(src=qa[0].thumbnail alt=qa[0].title)
-                        .modal
-                            span.close &times;
-                            img.modal-content
-                            .caption
-
+                        if qa[0].thumbnail !== ""
+                            .text-secondary.fs-7.mb-4 (Bấm vào ảnh để xem chi tiết)
+                            img#qa-img(src=qa[0].thumbnail alt=qa[0].title)
+                            .modal
+                                span.close &times;
+                                img.modal-content
+                                .caption
+                        else
+                            .text-secondary.mb-4 Không có ảnh mô tả.
             .col-sm-5
                 .qa-show__right
                     .comment

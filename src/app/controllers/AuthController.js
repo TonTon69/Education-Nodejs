@@ -13,7 +13,7 @@ class AuthController {
     }
 
     // [PUT]/password/change/:id
-    async putPasswordChange(req, res, next) {
+    async putPasswordChange(req, res) {
         const user = await User.findById(req.signedCookies.userId);
         const { passwordOld, passwordNew } = req.body;
 
@@ -41,7 +41,7 @@ class AuthController {
     }
 
     // [POST]/password/reset
-    async postPasswordReset(req, res, next) {
+    async postPasswordReset(req, res) {
         const user = await User.findOne({ email: req.body.email });
         if (!user) {
             req.flash("error", "Người dùng có email này không tồn tại!");
@@ -90,7 +90,7 @@ class AuthController {
     }
 
     // [GET]/auth/reset/confirm/:token
-    async resetConfirm(req, res, next) {
+    async resetConfirm(req, res) {
         const token = req.params.token;
         const passwordReset = await Token.findOne({ token: token });
         if (passwordReset !== null) {
@@ -106,7 +106,7 @@ class AuthController {
     }
 
     // [POST]/auth/reset/confirm/:token
-    async postResetConfirm(req, res, next) {
+    async postResetConfirm(req, res) {
         const token = req.params.token;
         const passwordReset = await Token.findOne({ token: token });
 

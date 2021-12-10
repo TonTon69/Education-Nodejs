@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 class LearningController {
     // [GET]/learning/:slug?name=lession
-    async learning(req, res, next) {
+    async learning(req, res) {
         try {
             const subject = await Subject.findOne({ slug: req.params.slug });
             if (subject) {
@@ -65,7 +65,7 @@ class LearningController {
     }
 
     // [GET]/learning/result
-    async learningResult(req, res, next) {
+    async learningResult(req, res) {
         try {
             const lession = await Lession.findOne({ slug: req.query.lession });
             const subject = await Subject.findOne({ slug: req.query.subject });

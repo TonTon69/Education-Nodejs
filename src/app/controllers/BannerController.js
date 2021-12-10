@@ -28,7 +28,7 @@ class BannerController {
     }
 
     //   // [GET]/banners/:id/edit
-    async edit(req, res, next) {
+    async edit(req, res) {
         const banner = await Banner.findById(req.params.id);
         res.render("banners/edit", {
             banner,
@@ -37,14 +37,14 @@ class BannerController {
     }
 
     //   // [PUT]/banners/:id
-    async update(req, res, next) {
+    async update(req, res) {
         await Banner.updateOne({ _id: req.params.id }, req.body);
         req.flash("success", "Cập nhật thành công!");
         res.redirect("back");
     }
 
     //   // [DELETE]/banners/:id
-    async delete(req, res, next) {
+    async delete(req, res) {
         try {
             await Banner.deleteOne({ _id: req.params.id });
             req.flash("success", "Xóa thành công!");

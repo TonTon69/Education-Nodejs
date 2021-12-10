@@ -29,7 +29,7 @@ class LessionController {
     }
 
     //   // [PUT]/lessions/:id
-    async update(req, res, next) {
+    async update(req, res) {
         const { name, lessionNumber, unitID } = req.body;
         const findLession = await Lession.findOne({ name: name });
         if (findLession) {
@@ -54,7 +54,7 @@ class LessionController {
     }
 
     // [DELETE]/lessions/:id
-    async delete(req, res, next) {
+    async delete(req, res) {
         const statisticals = await Statistical.find({
             lessionID: req.params.id,
         });
