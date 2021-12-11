@@ -1,4 +1,5 @@
 const Question = require("../models/Question");
+const Comment = require("../models/Comment");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const slugify = require("slugify");
@@ -188,7 +189,27 @@ class QaController {
             },
         ]);
 
-        res.render("qa/show", { qa });
+        const comments = await Comment.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { questionID: ObjectId(qa[0]._id) },
+                        { isApproved: true },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $sort: { updatedAt: 1 } },
+        ]);
+
+        res.render("qa/show", { qa, comments, success: req.flash("success") });
     }
 }
 

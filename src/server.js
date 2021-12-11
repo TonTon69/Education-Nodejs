@@ -19,6 +19,8 @@ const Exercise = require("./app/models/Exercise");
 const Room = require("./app/models/Room");
 const Rank = require("./app/models/Rank");
 const User = require("./app/models/User");
+const Comment = require("./app/models/Comment");
+const Question = require("./app/models/Question");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -88,12 +90,35 @@ let users_scored = [];
 io.on("connection", async (socket) => {
     // qaController.respond(socket);
 
+    console.log(socket.id + " ket noi");
+
     var $ipAddress = socket.handshake.address;
     if (!$ipsConnected.hasOwnProperty($ipAddress)) {
         $ipsConnected[$ipAddress] = 1;
         connected_socket++;
         io.sockets.emit("server-send-counter", connected_socket);
     }
+
+    // handle comment qa
+    socket.on("client-send-comment", async (data) => {
+        // console.log(data);
+        const dataComment = {
+            questionID: data.qaID,
+            userID: data.userID,
+            content: data.commentContent,
+        };
+        const comment = new Comment(dataComment);
+        await comment.save();
+
+        const user = await User.findById(data.userID);
+        const obj = {
+            dataComment,
+            user,
+            createdAt: data.createdAt,
+        };
+
+        io.sockets.emit("server-send-comment", obj);
+    });
 
     // handle out room
     socket.on("client-handle-out-room", async (data) => {
@@ -192,6 +217,7 @@ io.on("connection", async (socket) => {
             delete $ipsConnected[$ipAddress];
             connected_socket--;
             socket.emit("server-send-counter", connected_socket);
+            console.log(socket.id + " ngat ket noi");
         }
 
         const rooms = await Room.find({});

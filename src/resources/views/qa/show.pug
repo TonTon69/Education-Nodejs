@@ -32,52 +32,136 @@ block main
                             .comment-box__actions.text-end
                                 button.btn.btn-secondary.btn-padding.rounded-pill.fs-7.btn-cancel Hủy
                                 button.btn.btn-primary.btn-padding.rounded-pill.fs-7.ms-2.btn-ok(disabled) Bình luận
-                        .comment-detail
-                            .avatar
-                                img(src=qa[0].thumbnail)
-                            .content
-                                .content-comment
-                                    span.d-block.fw-primary.mb-1 tonton
-                                    span lúc ms e chọn mỗi mấy cái khóa của front end h muốn học thêm backend thì như nào ạ e tìm k thấy
-                                    .content-comment__count.shadow
-                                        ion-icon(name="heart")
-                                        span 2
-                                .content-time
-                                    .content-time__like
-                                        ion-icon(name="heart-outline")
-                                    .content-time__reply
-                                        ion-icon(name="chatbubble-outline")
-                                    span ·
-                                    span.fs-8.text-secondary một tháng trước
-                                    .position-relative.qa-manager
-                                        .fs-5
-                                            ion-icon(name='ellipsis-horizontal')
-                                        .menu-actions.bg-white.shadow
-                                            ul.ps-0
-                                                li
-                                                    a(href=``)
-                                                        .d-flex.align-items-center
-                                                            .fs-6
-                                                                ion-icon(name="flag")
-                                                            span.ms-2 Báo cáo bình luận
-                                                li
-                                                    a(href=``)
-                                                        .d-flex.align-items-center
-                                                            .fs-6
-                                                                ion-icon(name="pencil")
-                                                            span.ms-2 Chỉnh sửa
-                                                li
-                                                    a.btn-delete-qa(data-id)
-                                                        .d-flex.align-items-center
-                                                            .fs-6
-                                                                ion-icon(name="trash")
-                                                            span.ms-2 Xóa
-                                .reply-box
-                                    img.reply-box__avatar(src=user[0].avatar alt=user[0].fullname)
-                                    .reply-box__input(tabindex="0" contenteditable="true" placeholder="Viết phản hồi..." role="textbox" aria-multiline="true" spellcheck="false")
-                                    .reply-box__detail
-                                        //- a hhh
+                        .comment-content
+                            form(name="form-delete-comment" method="POST")
+                            each comment in comments
+                                .comment-detail
+                                    .avatar
+                                        img(src=comment.user[0].avatar)
+                                    .content
+                                        .content-comment
+                                            span.d-block.fw-primary.mb-1= comment.user[0].fullname
+                                            span= comment.content
+                                            if comment.numLikes !== 0
+                                                .content-comment__count.shadow
+                                                    ion-icon(name="heart")
+                                                    span= comment.numLikes
+                                        .content-time
+                                            .content-time__like
+                                                ion-icon(name="heart-outline")
+                                            .content-time__reply
+                                                ion-icon(name="chatbubble-outline")
+                                            span ·
+                                            span.fs-8.text-secondary= moment(comment.updatedAt).locale("vi").fromNow()
+                                            .position-relative.qa-manager
+                                                .fs-5
+                                                    ion-icon(name='ellipsis-horizontal')
+                                                .menu-actions.bg-white.shadow
+                                                    ul.ps-0
+                                                        if comment.user[0].username === user[0].username
+                                                            li
+                                                                a(href=``)
+                                                                    .d-flex.align-items-center
+                                                                        .fs-6
+                                                                            ion-icon(name="pencil")
+                                                                        span.ms-2 Chỉnh sửa
+                                                            li
+                                                                a.btn-delete-comment(data-id=comment._id)
+                                                                    .d-flex.align-items-center
+                                                                        .fs-6
+                                                                            ion-icon(name="trash")
+                                                                        span.ms-2 Xóa
+                                                        else
+                                                            li
+                                                                a(href=``)
+                                                                    .d-flex.align-items-center
+                                                                        .fs-6
+                                                                            ion-icon(name="flag")
+                                                                        span.ms-2 Báo cáo bình luận
+                                        .reply-box
+                                            img.reply-box__avatar(src=user[0].avatar alt=user[0].fullname)
+                                            .reply-box__input(tabindex="0" contenteditable="true" placeholder="Viết phản hồi..." role="textbox" aria-multiline="true" spellcheck="false")
+                                            .reply-box__detail
+    if success.length > 0
+        - var msgSuccess = success    
+    script(src="/socket.io/socket.io.js")
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js')
     script.
+        const socket = io();
+        socket.on("server-send-comment", (data) => {
+            $(".comment-content").append(`
+                <div class="comment-detail">
+                    <div class="avatar">
+                        <img src="${data.user.avatar}" />
+                    </div>
+                    <div class="content">
+                        <div class="content-comment">
+                            <span class="d-block fw-primary mb-1">${data.user.fullname}</span>
+                            <span>${data.dataComment.content}</span>
+                            <div class="content-comment__count shadow">
+                                <ion-icon name="heart"></ion-icon>
+                                <span>2</span>
+                            </div>
+                        </div>
+                        <div class="content-time">
+                            <div class="content-time__like">
+                                <ion-icon name="heart-outline"></ion-icon>
+                            </div>
+                            <div class="content-time__reply">
+                                <ion-icon name="chatbubble-outline"></ion-icon>
+                            </div>
+                            <span>·</span>
+                            <span class="fs-8 text-secondary">${data.createdAt}</span>
+                            <div class="position-relative qa-manager">
+                                <div class="fs-5">
+                                    <ion-icon name="ellipsis-horizontal"></ion-icon>
+                                </div>
+                                <div class="menu-actions bg-white shadow">
+                                    <ul class="ps-0">
+                                        <li>
+                                            <a href="">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fs-6">
+                                                        <ion-icon name="flag"></ion-icon>
+                                                    </div>
+                                                    <span class="ms-2">Báo cáo bình luận</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fs-6">
+                                                        <ion-icon name="pencil"></ion-icon>
+                                                    </div>
+                                                    <span class="ms-2">Chỉnh sửa</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="btn-delete-qa" data-id="data-id">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fs-6">
+                                                        <ion-icon name="trash"></ion-icon>
+                                                    </div>
+                                                    <span class="ms-2">Xóa</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reply-box"><img class="reply-box__avatar" src="" />
+                            <div class="reply-box__input" tabindex="0" contenteditable="true" placeholder="Viết phản hồi..." role="textbox" aria-multiline="true" spellcheck="false"></div>
+                            <div class="reply-box__detail"></div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        })
+
         $(document).ready(function () {
             var modal = $(".qa-show__left--image .modal");
             var qaImg = $("#qa-img");
@@ -93,6 +177,26 @@ block main
             var btnClose = $(".qa-show__left--image .modal span.close");
             var contentTimeLike = $(".content-time__like");
             var contentTimeReply = $(".content-time__reply");
+            var btnDeleteComment = $(".btn-delete-comment");
+            var formDeleteComment = $("form[name='form-delete-comment']");
+            
+            // toast message
+            let msgToastSuccess = '#{msgSuccess}';
+            if(msgToastSuccess != '') {
+                Eggy({
+                    title: 'Thành công',
+                    message:  msgToastSuccess,
+                    type: 'success',
+                    duration: 5000,
+                });
+            };
+
+            // when btn delete qa is clicked
+            btnDeleteComment.click(function () {
+                var commentID = $(this).attr("data-id");
+                formDeleteComment.attr("action", `/comment/${commentID}?_method=DELETE`);
+                formDeleteComment.submit();
+            })
 
             contentTimeLike.click(function () {
                 $(this).toggleClass("active");
@@ -136,7 +240,18 @@ block main
 
             // when comment box input enter
             commentBoxInput.keydown(function(e) {
-                if (e.keyCode === 13) {
+                var commentData = $(this).text();
+                if (e.keyCode === 13 && commentData.length > 0) {
+                    var qaID = "#{qa[0]._id}";
+                    var userID = "#{user[0]._id}";
+                    var data = {
+                        qaID: qaID,
+                        userID: userID,
+                        commentContent: commentData,
+                        createdAt: moment().locale("vi").fromNow(),
+                    };
+                    console.log(data);
+                    socket.emit("client-send-comment", data);
                     $(this).text("");
                     document.execCommand('selectAll', false, null);
                     return false;
