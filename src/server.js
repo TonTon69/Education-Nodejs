@@ -110,14 +110,82 @@ io.on("connection", async (socket) => {
         const comment = new Comment(dataComment);
         await comment.save();
 
-        const user = await User.findById(data.userID);
-        const obj = {
-            dataComment,
-            user,
-            createdAt: data.createdAt,
-        };
+        const comments = await Comment.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { questionID: ObjectId(data.qaID) },
+                        { isApproved: true },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $sort: { updatedAt: 1 } },
+        ]);
 
-        io.sockets.emit("server-send-comment", obj);
+        io.sockets.emit("server-send-comment", comments);
+    });
+
+    // handle edit comment
+    socket.on("client-edit-comment", async (data) => {
+        await Comment.updateOne(
+            { _id: data.commentID, userID: data.userID },
+            { content: data.commentEdit }
+        );
+        const comments = await Comment.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { questionID: ObjectId(data.qaID) },
+                        { isApproved: true },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $sort: { updatedAt: 1 } },
+        ]);
+
+        io.sockets.emit("server-send-comment", comments);
+    });
+
+    // handle delete comment
+    socket.on("client-delete-comment", async (data) => {
+        await Comment.deleteOne({ _id: data.commentID, userID: data.userID });
+        const comments = await Comment.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { questionID: ObjectId(data.qaID) },
+                        { isApproved: true },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $sort: { updatedAt: 1 } },
+        ]);
+
+        io.sockets.emit("server-send-comment", comments);
     });
 
     // handle out room

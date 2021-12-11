@@ -41,7 +41,7 @@ block main
                                     .content
                                         .content-comment
                                             span.d-block.fw-primary.mb-1= comment.user[0].fullname
-                                            span= comment.content
+                                            span.content-comment__text= comment.content
                                             if comment.numLikes !== 0
                                                 .content-comment__count.shadow
                                                     ion-icon(name="heart")
@@ -60,7 +60,7 @@ block main
                                                     ul.ps-0
                                                         if comment.user[0].username === user[0].username
                                                             li
-                                                                a(href=``)
+                                                                a.btn-edit-comment(data-id=comment._id)
                                                                     .d-flex.align-items-center
                                                                         .fs-6
                                                                             ion-icon(name="pencil")
@@ -78,6 +78,10 @@ block main
                                                                         .fs-6
                                                                             ion-icon(name="flag")
                                                                         span.ms-2 Báo cáo bình luận
+                                        .edit-box
+                                            img.edit-box__avatar(src=user[0].avatar alt=user[0].fullname)
+                                            .edit-box__input(tabindex="0" contenteditable="true" placeholder="Viết câu trả lời..." role="textbox" aria-multiline="true" spellcheck="false")
+                                            .edit-box__detail.fs-8.mt-1 Nhấn Enter để sửa hoặc nhấn Esc để hủy.
                                         .reply-box
                                             img.reply-box__avatar(src=user[0].avatar alt=user[0].fullname)
                                             .reply-box__input(tabindex="0" contenteditable="true" placeholder="Viết phản hồi..." role="textbox" aria-multiline="true" spellcheck="false")
@@ -90,76 +94,101 @@ block main
     script.
         const socket = io();
         socket.on("server-send-comment", (data) => {
-            $(".comment-content").append(`
-                <div class="comment-detail">
-                    <div class="avatar">
-                        <img src="${data.user.avatar}" />
-                    </div>
-                    <div class="content">
-                        <div class="content-comment">
-                            <span class="d-block fw-primary mb-1">${data.user.fullname}</span>
-                            <span>${data.dataComment.content}</span>
-                            <div class="content-comment__count shadow">
-                                <ion-icon name="heart"></ion-icon>
-                                <span>2</span>
-                            </div>
+            $(".comment-content").html("");
+            data.map((cmt) => {
+                $(".comment-content").append(`
+                    <div class="comment-detail">
+                        <div class="avatar">
+                            <img src="${cmt.user[0].avatar}" />
                         </div>
-                        <div class="content-time">
-                            <div class="content-time__like">
-                                <ion-icon name="heart-outline"></ion-icon>
+                        <div class="content">
+                            <div class="content-comment">
+                                <span class="d-block fw-primary mb-1">${cmt.user[0].fullname}</span>
+                                <span>${cmt.content}</span>
+                                ${ cmt.numLikes !== 0 ? `<div class="content-comment__count shadow">
+                                                            <ion-icon name="heart"></ion-icon>
+                                                            <span>${cmt.numLikes}</span>
+                                                        </div>` : ""
+                                }
+                                
                             </div>
-                            <div class="content-time__reply">
-                                <ion-icon name="chatbubble-outline"></ion-icon>
-                            </div>
-                            <span>·</span>
-                            <span class="fs-8 text-secondary">${data.createdAt}</span>
-                            <div class="position-relative qa-manager">
-                                <div class="fs-5">
-                                    <ion-icon name="ellipsis-horizontal"></ion-icon>
+                            <div class="content-time">
+                                <div class="content-time__like">
+                                    <ion-icon name="heart-outline"></ion-icon>
                                 </div>
-                                <div class="menu-actions bg-white shadow">
-                                    <ul class="ps-0">
-                                        <li>
-                                            <a href="">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="fs-6">
-                                                        <ion-icon name="flag"></ion-icon>
-                                                    </div>
-                                                    <span class="ms-2">Báo cáo bình luận</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="fs-6">
-                                                        <ion-icon name="pencil"></ion-icon>
-                                                    </div>
-                                                    <span class="ms-2">Chỉnh sửa</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="btn-delete-qa" data-id="data-id">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="fs-6">
-                                                        <ion-icon name="trash"></ion-icon>
-                                                    </div>
-                                                    <span class="ms-2">Xóa</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                <div class="content-time__reply">
+                                    <ion-icon name="chatbubble-outline"></ion-icon>
+                                </div>
+                                <span>·</span>
+                                <span class="fs-8 text-secondary">${moment(cmt.updatedAt).locale("vi").fromNow()}</span>
+                                <div class="position-relative qa-manager">
+                                    <div class="fs-5">
+                                        <ion-icon name="ellipsis-horizontal"></ion-icon>
+                                    </div>
+                                    <div class="menu-actions bg-white shadow">
+                                        <ul class="ps-0">
+                                            ${ cmt.user[0]._id === cmt.userID ? `
+                                                <li>
+                                                    <a class="btn-edit-comment" data-id=${cmt._id}>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="fs-6">
+                                                                <ion-icon name="pencil"></ion-icon>
+                                                            </div>
+                                                            <span class="ms-2">Chỉnh sửa</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="btn-delete-comment" data-id=${cmt._id}>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="fs-6">
+                                                                <ion-icon name="trash"></ion-icon>
+                                                            </div>
+                                                            <span class="ms-2">Xóa</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            ` : ""}
+                                            ${ cmt.user[0]._id !== cmt.userID ? `
+                                                <li>
+                                                    <a href="">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="fs-6">
+                                                                <ion-icon name="flag"></ion-icon>
+                                                            </div>
+                                                            <span class="ms-2">Báo cáo bình luận</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            ` : ""}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="reply-box"><img class="reply-box__avatar" src="" />
-                            <div class="reply-box__input" tabindex="0" contenteditable="true" placeholder="Viết phản hồi..." role="textbox" aria-multiline="true" spellcheck="false"></div>
-                            <div class="reply-box__detail"></div>
+                            <div class="reply-box"><img class="reply-box__avatar" src="" />
+                                <div class="reply-box__input" tabindex="0" contenteditable="true" placeholder="Viết phản hồi..." role="textbox" aria-multiline="true" spellcheck="false"></div>
+                                <div class="reply-box__detail"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `);
+                `);
+            })
+        })
+
+        $(document).click(function (e) {
+            var qaManager = $(".qa-manager");
+            var menuActions = $(".menu-actions");
+            // click ben ngoai thi remove menu
+            if (!qaManager.is(e.target) && qaManager.has(e.target).length == 0) {
+                menuActions.removeClass("show");
+            }
+
+            // when menu actions is clicked
+            if (qaManager.find("ion-icon").is(e.target)) {
+                var parent = $(e.target).closest(".qa-manager");
+                var menu = parent.find(".menu-actions");
+                menu.toggleClass("show");
+            }
         })
 
         $(document).ready(function () {
@@ -178,7 +207,10 @@ block main
             var contentTimeLike = $(".content-time__like");
             var contentTimeReply = $(".content-time__reply");
             var btnDeleteComment = $(".btn-delete-comment");
+            var btnEditComment = $(".btn-edit-comment");
             var formDeleteComment = $("form[name='form-delete-comment']");
+            var editBoxInput = $(".edit-box__input");
+            var commentID;
             
             // toast message
             let msgToastSuccess = '#{msgSuccess}';
@@ -191,29 +223,67 @@ block main
                 });
             };
 
-            // when btn delete qa is clicked
+            // when btn delete comment is clicked
             btnDeleteComment.click(function () {
-                var commentID = $(this).attr("data-id");
-                formDeleteComment.attr("action", `/comment/${commentID}?_method=DELETE`);
-                formDeleteComment.submit();
+                commentID = $(this).attr("data-id");
+                //- formDeleteComment.attr("action", `/comment/${commentID}?_method=DELETE`);
+                //- formDeleteComment.submit();
+                var parent = $(this).closest("div.content");
+                var menuActions = parent.find(".menu-actions");
+                
+                var userID = "#{user[0]._id}";
+                var qaID = "#{qa[0]._id}";
+                var data = {
+                    qaID: qaID,
+                    commentID: commentID,
+                    userID: userID,
+                };
+                
+                menuActions.removeClass("show");
+                socket.emit("client-delete-comment", data);
+            })
+
+            // when btn edit comment is clicked
+            btnEditComment.click(function () {
+                commentID = $(this).attr("data-id");
+                var parent = $(this).closest("div.content");
+                var editBox = parent.find(".edit-box");
+                var editBoxText = editBox.find(".edit-box__input");
+                var editCommentText = parent.find(".content-comment__text");
+                var menuActions = parent.find(".menu-actions");
+                menuActions.removeClass("show");
+                editBox.show();
+                editBoxText.text(editCommentText.text());
+                editBoxText.focus();
+            })
+
+            // handle edit box input
+            editBoxInput.keyup(function(e) {
+                // handle enter edit box input
+                if (e.keyCode === 13 && $(this).text().length > 0) {
+                    var userID = "#{user[0]._id}";
+                    var qaID = "#{qa[0]._id}";
+                    var commentEdit = $(this).text();
+                    var data = {
+                        qaID: qaID,
+                        commentID: commentID,
+                        userID: userID,
+                        commentEdit: commentEdit,
+                    };
+                    socket.emit("client-edit-comment", data);
+                    $(this).text("");
+                    $(this).parent().hide();
+                }
+
+                // handle esc edit box input
+                if (e.keyCode === 27) { 
+                    $(this).text("");
+                    $(this).parent().hide();
+                }
             })
 
             contentTimeLike.click(function () {
                 $(this).toggleClass("active");
-            })
-
-            // when menu actions is clicked
-            $.each(qaManager, function(key, value) {   
-                value.onclick = function() {
-                    $(this).find(".menu-actions").toggleClass("show");
-                } 
-            });
-
-            // clear menu actions
-            $(document).click(function (e) {
-                if (!qaManager.is(e.target) && qaManager.has(e.target).length == 0) {
-                    menuActions.removeClass("show");
-                }
             })
 
             // when thumbnail is clicked

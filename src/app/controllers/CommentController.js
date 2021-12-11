@@ -8,7 +8,7 @@ class CommentController {
             userID: req.signedCookies.userId,
         });
 
-        req.flash("success", "Xóa bình luận thành công!");
+        // req.flash("success", "Xóa bình luận thành công!");
         res.redirect("back");
     }
 }
