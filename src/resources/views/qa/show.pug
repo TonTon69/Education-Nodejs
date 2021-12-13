@@ -47,7 +47,7 @@ block main
                                                     ion-icon(name="heart")
                                                     span= comment.numLikes
                                         .content-time
-                                            .content-time__like
+                                            .content-time__like(data-id=comment._id)
                                                 ion-icon(name="heart-outline")
                                             .content-time__reply
                                                 ion-icon(name="chatbubble-outline")
@@ -115,7 +115,7 @@ block main
                                 
                             </div>
                             <div class="content-time">
-                                <div class="content-time__like">
+                                <div class="content-time__like" data-id=${cmt._id}>
                                     <ion-icon name="heart-outline"></ion-icon>
                                 </div>
                                 <div class="content-time__reply">
@@ -183,6 +183,18 @@ block main
             })
         })
 
+        socket.on("server-send-notification", (data) => {
+            var userID = "#{user[0]._id}";
+            if(data.recevier === userID) {
+                Eggy({
+                    title: 'Thông báo',
+                    message: data.notification,
+                    type: 'success',
+                    duration: 5000,
+                });
+            }
+        })
+
         $(document).click(function (e) {
             var qaManager = $(".qa-manager");
             var menuActions = $(".menu-actions");
@@ -209,7 +221,6 @@ block main
             var qaManager = $(".qa-manager");
             var menuActions = $(".menu-actions");
             var btnClose = $(".qa-show__left--image .modal span.close");
-            var contentTimeLike = $(".content-time__like");
             var commentID;
             
             // toast message
@@ -296,8 +307,17 @@ block main
                 }
             })
 
-            contentTimeLike.click(function () {
+            $("body").on("click", ".content-time__like", function() {
                 $(this).toggleClass("active");
+                commentID = $(this).attr("data-id");
+                var qaID = "#{qa[0]._id}";
+                var userID = "#{user[0]._id}";
+                var data = {
+                    commentID: commentID,
+                    userID: userID,
+                    qaID: qaID,
+                };
+                socket.emit("client-send-like-comment", data);
             })
 
             // when thumbnail is clicked
@@ -327,8 +347,10 @@ block main
                 var commentData = $(this).text();
                 if (e.keyCode === 13 && commentData.length > 0) {
                     var qaID = "#{qa[0]._id}";
+                    var author = "#{qa[0].userID}";
                     var userID = "#{user[0]._id}";
                     var data = {
+                        author: author,
                         qaID: qaID,
                         userID: userID,
                         commentContent: commentData,

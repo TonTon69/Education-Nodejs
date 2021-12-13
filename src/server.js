@@ -21,6 +21,7 @@ const Rank = require("./app/models/Rank");
 const User = require("./app/models/User");
 const Comment = require("./app/models/Comment");
 const CommentReport = require("./app/models/CommentReport");
+const CommentLike = require("./app/models/CommentLike");
 const Question = require("./app/models/Question");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -102,7 +103,6 @@ io.on("connection", async (socket) => {
 
     // handle comment qa
     socket.on("client-send-comment", async (data) => {
-        // console.log(data);
         const dataComment = {
             questionID: data.qaID,
             userID: data.userID,
@@ -136,6 +136,13 @@ io.on("connection", async (socket) => {
         ]);
 
         io.sockets.emit("server-send-comment", comments);
+
+        // send notification to author
+        const userCmt = await User.findById(data.userID);
+        socket.broadcast.emit("server-send-notification", {
+            recevier: data.author,
+            notification: `<strong>${userCmt.fullname}</strong> đã trả lời câu hỏi của bạn.`,
+        });
     });
 
     // handle edit comment
@@ -170,6 +177,12 @@ io.on("connection", async (socket) => {
     // handle delete comment
     socket.on("client-delete-comment", async (data) => {
         await Comment.deleteOne({ _id: data.commentID, userID: data.userID });
+        await CommentReport.deleteMany({
+            commentID: data.commentID,
+        });
+        await CommentReport.deleteMany({
+            commentID: data.commentID,
+        });
         await Question.updateOne(
             { _id: data.qaID },
             { $inc: { numComments: -1 } }
@@ -204,6 +217,54 @@ io.on("connection", async (socket) => {
             const reportCmt = new CommentReport(data);
             await reportCmt.save();
         }
+    });
+
+    // handle client like comment
+    socket.on("client-send-like-comment", async (data) => {
+        const like = await CommentLike.findOne(data);
+        if (!like) {
+            const likeCmt = new CommentLike(data);
+            await likeCmt.save();
+            await Comment.updateOne(
+                { _id: data.commentID },
+                { $inc: { numLikes: 1 } }
+            );
+        } else {
+            await CommentLike.deleteOne(data);
+            await Comment.updateOne(
+                { _id: data.commentID },
+                { $inc: { numLikes: -1 } }
+            );
+        }
+        const comments = await Comment.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { questionID: ObjectId(data.qaID) },
+                        { isApproved: true },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            {
+                $lookup: {
+                    from: "comment-likes",
+                    localField: "_id",
+                    foreignField: "commentID",
+                    as: "commentLikes",
+                },
+            },
+            { $sort: { updatedAt: 1 } },
+        ]);
+
+        io.sockets.emit("server-send-comment", comments);
     });
 
     // handle out room

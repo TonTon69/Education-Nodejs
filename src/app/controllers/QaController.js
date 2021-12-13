@@ -209,6 +209,14 @@ class QaController {
                         as: "user",
                     },
                 },
+                {
+                    $lookup: {
+                        from: "comment-likes",
+                        localField: "_id",
+                        foreignField: "commentID",
+                        as: "commentLikes",
+                    },
+                },
                 { $sort: { updatedAt: 1 } },
             ]);
 
