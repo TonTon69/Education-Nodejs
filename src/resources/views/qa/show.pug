@@ -106,7 +106,7 @@ block main
                         <div class="content">
                             <div class="content-comment">
                                 <span class="d-block fw-primary mb-1">${cmt.user[0].fullname}</span>
-                                <span>${cmt.content}</span>
+                                <span class="content-comment__text">${cmt.content}</span>
                                 ${ cmt.numLikes !== 0 ? `<div class="content-comment__count shadow">
                                                             <ion-icon name="heart"></ion-icon>
                                                             <span>${cmt.numLikes}</span>
@@ -167,9 +167,15 @@ block main
                                     </div>
                                 </div>
                             </div>
-                            <div class="reply-box"><img class="reply-box__avatar" src="" />
+                            <div class="reply-box">
+                                <img class="reply-box__avatar" src="${cmt.user[0].avatar}" alt="${cmt.user[0].fullname}" />
                                 <div class="reply-box__input" tabindex="0" contenteditable="true" placeholder="Viết phản hồi..." role="textbox" aria-multiline="true" spellcheck="false"></div>
                                 <div class="reply-box__detail"></div>
+                            </div>
+                            <div class="edit-box">
+                                <img class="edit-box__avatar" src="${cmt.user[0].avatar}" alt="${cmt.user[0].fullname}" />
+                                <div class="edit-box__input" tabindex="0" contenteditable="true" placeholder="Viết câu trả lời..." role="textbox" aria-multiline="true" spellcheck="false"></div>
+                                <div class="edit-box__detail fs-8 mt-1">Nhấn Enter để sửa hoặc nhấn Esc để hủy.</div>
                             </div>
                         </div>
                     </div>
@@ -195,24 +201,15 @@ block main
 
         $(document).ready(function () {
             var modal = $(".qa-show__left--image .modal");
-            var qaImg = $("#qa-img");
             var modalImg = $(".qa-show__left--image .modal img.modal-content");
             var captionText = $(".qa-show__left--image .modal .caption");
             var commentBoxInput = $(".comment-box__input");
-            var replyBoxInput = $(".reply-box__input");
             var commentBoxActions = $(".comment-box__actions");
-            var btnCancel = $(".comment-box .btn-cancel");
             var btnOk = $(".comment-box .btn-ok");
             var qaManager = $(".qa-manager");
             var menuActions = $(".menu-actions");
             var btnClose = $(".qa-show__left--image .modal span.close");
             var contentTimeLike = $(".content-time__like");
-            var contentTimeReply = $(".content-time__reply");
-            var btnDeleteComment = $(".btn-delete-comment");
-            var btnEditComment = $(".btn-edit-comment");
-            var btnReportComment = $(".btn-report-comment");
-            var formDeleteComment = $("form[name='form-delete-comment']");
-            var editBoxInput = $(".edit-box__input");
             var commentID;
             
             // toast message
@@ -227,7 +224,8 @@ block main
             };
 
             // when btn report comment is clicked
-            btnReportComment.click(function () {
+            $("body").on("click", ".btn-report-comment", function() {
+            //- btnReportComment.click(function () {
                 commentID = $(this).attr("data-id");
                 var userID = "#{user[0]._id}";
                 var data = {
@@ -235,15 +233,13 @@ block main
                     userID: userID,
                 };
 
-                menuActions.removeClass("show");
+                $(".menu-actions").removeClass("show");
                 socket.emit("client-report-comment", data);
             })
 
             // when btn delete comment is clicked
-            btnDeleteComment.click(function () {
+            $("body").on("click", ".btn-delete-comment", function() {
                 commentID = $(this).attr("data-id");
-                //- formDeleteComment.attr("action", `/comment/${commentID}?_method=DELETE`);
-                //- formDeleteComment.submit();
                 var parent = $(this).closest("div.content");
                 var menuActions = parent.find(".menu-actions");
                 
@@ -255,26 +251,28 @@ block main
                     userID: userID,
                 };
                 
-                menuActions.removeClass("show");
+                $(".menu-actions").removeClass("show");
                 socket.emit("client-delete-comment", data);
-            })
+            });
 
             // when btn edit comment is clicked
-            btnEditComment.click(function () {
+            $("body").on("click", ".btn-edit-comment", function() {
                 commentID = $(this).attr("data-id");
                 var parent = $(this).closest("div.content");
+                parent.find(".reply-box").hide();
+
                 var editBox = parent.find(".edit-box");
                 var editBoxText = editBox.find(".edit-box__input");
                 var editCommentText = parent.find(".content-comment__text");
                 var menuActions = parent.find(".menu-actions");
-                menuActions.removeClass("show");
+                $(".menu-actions").removeClass("show");
                 editBox.show();
                 editBoxText.text(editCommentText.text());
                 editBoxText.focus();
             })
 
             // handle edit box input
-            editBoxInput.keyup(function(e) {
+            $("body").on("keydown", ".edit-box__input", function(e) {
                 // handle enter edit box input
                 if (e.keyCode === 13 && $(this).text().length > 0) {
                     var userID = "#{user[0]._id}";
@@ -303,7 +301,7 @@ block main
             })
 
             // when thumbnail is clicked
-            qaImg.click(function () {
+            $("body").on("click", "#qa-img", function() {
                 var thumbnailSrc = $(this).attr("src");
                 var thumbnailAlt = $(this).attr("alt");
                 modal.show();
@@ -317,7 +315,7 @@ block main
             })
 
             // when comment box input is focus
-            commentBoxInput.focus(function () {
+            $("body").on("focus", ".comment-box__input", function() {
                 commentBoxActions.show();
                 if ($(this).text().length === 0) {
                     btnOk.attr("disabled", true);
@@ -325,7 +323,7 @@ block main
             })
 
             // when comment box input enter
-            commentBoxInput.keydown(function(e) {
+            $("body").on("keydown", ".comment-box__input", function(e) {
                 var commentData = $(this).text();
                 if (e.keyCode === 13 && commentData.length > 0) {
                     var qaID = "#{qa[0]._id}";
@@ -336,7 +334,6 @@ block main
                         commentContent: commentData,
                         createdAt: moment().locale("vi").fromNow(),
                     };
-                    console.log(data);
                     socket.emit("client-send-comment", data);
                     $(this).text("");
                     document.execCommand('selectAll', false, null);
@@ -344,8 +341,8 @@ block main
                 }
             })
 
-            // disabled btn 
-            commentBoxInput.keyup(function(e) {
+            // disabled btn
+            $("body").on("keyup", ".comment-box__input", function(e) {
                 if ($(this).text().length > 0) {
                     btnOk.attr("disabled", false);
                 } else {
@@ -354,7 +351,7 @@ block main
             })
 
             // when reply box input enter
-            replyBoxInput.keydown(function (e) {
+            $("body").on("keydown", ".reply-box__input", function(e) {
                 if (e.keyCode === 13) {
                     $(this).text("");
                     document.execCommand('selectAll', false, null);
@@ -363,13 +360,15 @@ block main
             })
 
             // when btn cancel is clicked
-            btnCancel.click(function () {
+            $("body").on("click", ".comment-box .btn-cancel", function() {
                 commentBoxActions.hide();
                 commentBoxInput.text("");
             })
 
             // when btn reply is clicked
-            contentTimeReply.click(function () {
-                $(this).parent().parent().find(".reply-box").show();
+            $("body").on("click", ".content-time__reply", function() {
+                var parentContent = $(this).parent().parent();
+                parentContent.find(".edit-box").hide();
+                parentContent.find(".reply-box").show();
             })
         })
