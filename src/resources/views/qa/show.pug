@@ -9,7 +9,7 @@ block main
                         img.rounded-circle(src=qa[0].user[0].avatar width=38 height=38 style='object-fit: cover')
                         .ms-3
                             span.fw-primary= qa[0].user[0].fullname
-                            span.d-block.text-secondary.fs-8.mt-2= moment(qa[0].updatedAt).locale("vi").fromNow()
+                            span.d-block.text-secondary.fs-8.mt-2= moment(qa[0].createdAt).locale("vi").fromNow()
                     .mb-4.qa-show__left--content !{qa[0].content}
                     .qa-show__left--image
                         h4.fw-primary Ảnh mô tả
@@ -25,7 +25,7 @@ block main
             .col-sm-5
                 .qa-show__right
                     .comment
-                        h4.fw-primary.mb-5 1 câu trả lời
+                        h4.fw-primary.mb-5.comment-count #{comments.length} câu trả lời
                         .comment-box
                             img.comment-box__avatar(src=user[0].avatar alt=user[0].fullname)
                             .comment-box__input(tabindex="0" contenteditable="true" placeholder="Viết câu trả lời..." role="textbox" aria-multiline="true" spellcheck="false")
@@ -73,7 +73,7 @@ block main
                                                                         span.ms-2 Xóa
                                                         else
                                                             li
-                                                                a(href=``)
+                                                                a.btn-report-comment(data-id=comment._id)
                                                                     .d-flex.align-items-center
                                                                         .fs-6
                                                                             ion-icon(name="flag")
@@ -94,6 +94,8 @@ block main
     script.
         const socket = io();
         socket.on("server-send-comment", (data) => {
+            var userID = "#{user[0]._id}";
+            $(".comment-count").html(data.length + " câu trả lời");
             $(".comment-content").html("");
             data.map((cmt) => {
                 $(".comment-content").append(`
@@ -127,7 +129,7 @@ block main
                                     </div>
                                     <div class="menu-actions bg-white shadow">
                                         <ul class="ps-0">
-                                            ${ cmt.user[0]._id === cmt.userID ? `
+                                            ${ userID === cmt.userID ? `
                                                 <li>
                                                     <a class="btn-edit-comment" data-id=${cmt._id}>
                                                         <div class="d-flex align-items-center">
@@ -149,9 +151,9 @@ block main
                                                     </a>
                                                 </li>
                                             ` : ""}
-                                            ${ cmt.user[0]._id !== cmt.userID ? `
+                                            ${ userID !== cmt.userID ? `
                                                 <li>
-                                                    <a href="">
+                                                    <a class="btn-report-comment" data-id=${cmt._id}>
                                                         <div class="d-flex align-items-center">
                                                             <div class="fs-6">
                                                                 <ion-icon name="flag"></ion-icon>
@@ -208,6 +210,7 @@ block main
             var contentTimeReply = $(".content-time__reply");
             var btnDeleteComment = $(".btn-delete-comment");
             var btnEditComment = $(".btn-edit-comment");
+            var btnReportComment = $(".btn-report-comment");
             var formDeleteComment = $("form[name='form-delete-comment']");
             var editBoxInput = $(".edit-box__input");
             var commentID;
@@ -222,6 +225,19 @@ block main
                     duration: 5000,
                 });
             };
+
+            // when btn report comment is clicked
+            btnReportComment.click(function () {
+                commentID = $(this).attr("data-id");
+                var userID = "#{user[0]._id}";
+                var data = {
+                    commentID: commentID,
+                    userID: userID,
+                };
+
+                menuActions.removeClass("show");
+                socket.emit("client-report-comment", data);
+            })
 
             // when btn delete comment is clicked
             btnDeleteComment.click(function () {

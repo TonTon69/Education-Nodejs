@@ -21,22 +21,22 @@ block main
                                             a(href=`/qa/${qa.slug}`).qa-item-content-title.mb-0 #{qa.title}
                                             .d-flex.align-items-center.justify-content-between.mt-4.mb-4
                                                 .d-flex.align-items-center
-                                                    img.qa-item-avatar(src=qa.user[0].avatar alt='')
+                                                    img.qa-item-avatar(src=qa.user[0].avatar alt=qa.user[0].fullname)
                                                     .mb-0.fs-8.text-secondary
                                                         span Đăng bởi 
                                                         span.fw-bold #{qa.user[0].fullname} 
                                                         span.me-2.ms-2 ·
-                                                        span #{moment(qa.updatedAt).locale("vi").fromNow()}
+                                                        span #{moment(qa.createdAt).locale("vi").fromNow()}
                                                 span.fs-8.text-secondary #{qa.numComments} trả lời
                                             .fs-7.qa-item-content-desc !{qa.content}
                                             .d-flex.align-items-center.justify-content-between.mt-4
                                                 div
-                                                    .button.btn.btn-light.btn-sm
-                                                        span.text-secondary.fs-8 HagTag
-                                                    .button.btn.btn-light.btn-sm.ms-2
-                                                        span.text-secondary.fs-8 HagTag
-                                                    .button.btn.btn-light.btn-sm.ms-2
-                                                        span.text-secondary.fs-8 HagTag
+                                                    //- .button.btn.btn-light.btn-sm
+                                                    //-     span.text-secondary.fs-8 HagTag
+                                                    //- .button.btn.btn-light.btn-sm.ms-2
+                                                    //-     span.text-secondary.fs-8 HagTag
+                                                    //- .button.btn.btn-light.btn-sm.ms-2
+                                                    //-     span.text-secondary.fs-8 HagTag
                                                 a(href=`/qa/${qa.slug}`).btn.btn-primary.btn-sm.rounded-pill Chi tiết
                         else
                             .mt-4
@@ -48,7 +48,7 @@ block main
             .col-md-3.col-lg-3.col-xl-4
                 .topic-wrap
                     .topic-wrap-heading
-                        | CÁC CHỦ ĐỀ ĐƯỢC ĐỀ XUẤT
+                        //- | CÁC CHỦ ĐỀ ĐƯỢC ĐỀ XUẤT
                     .toppic-wrap-content
                         ul
                             //- each category in categories

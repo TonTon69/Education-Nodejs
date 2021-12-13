@@ -149,6 +149,7 @@ class QaController {
             .split(".")[0];
         cloudinary.uploader.destroy(public_id);
 
+        await Comment.deleteMany({ questionID: req.params.id });
         await Question.deleteOne({ _id: req.params.id });
         req.flash("success", "Đã xóa câu hỏi thành công!");
         res.redirect("/qa/list");
@@ -167,6 +168,7 @@ class QaController {
             .split(".")[0];
         cloudinary.uploader.destroy(public_id);
 
+        await Comment.deleteMany({ questionID: req.params.id });
         await Question.deleteOne({
             _id: req.params.id,
             userID: req.signedCookies.userId,
@@ -189,27 +191,35 @@ class QaController {
             },
         ]);
 
-        const comments = await Comment.aggregate([
-            {
-                $match: {
-                    $and: [
-                        { questionID: ObjectId(qa[0]._id) },
-                        { isApproved: true },
-                    ],
+        if (qa.length > 0) {
+            const comments = await Comment.aggregate([
+                {
+                    $match: {
+                        $and: [
+                            { questionID: ObjectId(qa[0]._id) },
+                            { isApproved: true },
+                        ],
+                    },
                 },
-            },
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "userID",
-                    foreignField: "_id",
-                    as: "user",
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "userID",
+                        foreignField: "_id",
+                        as: "user",
+                    },
                 },
-            },
-            { $sort: { updatedAt: 1 } },
-        ]);
+                { $sort: { updatedAt: 1 } },
+            ]);
 
-        res.render("qa/show", { qa, comments, success: req.flash("success") });
+            res.render("qa/show", {
+                qa,
+                comments,
+                success: req.flash("success"),
+            });
+        } else {
+            res.render("error");
+        }
     }
 }
 
