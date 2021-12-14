@@ -2042,6 +2042,10 @@ blockquote {
       .main .qa-show__right .edit-detail {
         display: flex;
         margin-top: 16px; }
+        .main .qa-show__right .comment-detail:hover .content .content-time .qa-manager,
+        .main .qa-show__right .reply-detail:hover .content .content-time .qa-manager,
+        .main .qa-show__right .edit-detail:hover .content .content-time .qa-manager {
+          display: block; }
         .main .qa-show__right .comment-detail .avatar,
         .main .qa-show__right .reply-detail .avatar,
         .main .qa-show__right .edit-detail .avatar {
@@ -2100,52 +2104,56 @@ blockquote {
             display: flex;
             align-items: center;
             gap: 16px; }
-            .main .qa-show__right .comment-detail .content-time ul,
-            .main .qa-show__right .reply-detail .content-time ul,
-            .main .qa-show__right .edit-detail .content-time ul {
-              padding: 8px 0;
-              margin-bottom: 0; }
-              .main .qa-show__right .comment-detail .content-time ul li a,
-              .main .qa-show__right .reply-detail .content-time ul li a,
-              .main .qa-show__right .edit-detail .content-time ul li a {
-                font-size: 14px;
-                display: block;
-                padding: 12px 20px;
-                cursor: pointer;
-                color: #444; }
-                .main .qa-show__right .comment-detail .content-time ul li a:hover,
-                .main .qa-show__right .reply-detail .content-time ul li a:hover,
-                .main .qa-show__right .edit-detail .content-time ul li a:hover {
-                  color: #292929;
-                  background: #f5f5f5; }
-            .main .qa-show__right .comment-detail .content-time ion-icon[name="ellipsis-horizontal"],
-            .main .qa-show__right .reply-detail .content-time ion-icon[name="ellipsis-horizontal"],
-            .main .qa-show__right .edit-detail .content-time ion-icon[name="ellipsis-horizontal"] {
-              color: #444;
-              cursor: pointer; }
-              .main .qa-show__right .comment-detail .content-time ion-icon[name="ellipsis-horizontal"]:hover,
-              .main .qa-show__right .reply-detail .content-time ion-icon[name="ellipsis-horizontal"]:hover,
-              .main .qa-show__right .edit-detail .content-time ion-icon[name="ellipsis-horizontal"]:hover {
-                color: #292929; }
-            .main .qa-show__right .comment-detail .content-time .menu-actions,
-            .main .qa-show__right .reply-detail .content-time .menu-actions,
-            .main .qa-show__right .edit-detail .content-time .menu-actions {
-              position: absolute;
-              top: 36px;
-              right: 0;
-              border-radius: 10px;
-              min-width: 200px;
-              z-index: 999;
-              transform: translateY(-10px);
-              transition: transform 0.3s ease;
-              opacity: 0;
-              visibility: hidden; }
-              .main .qa-show__right .comment-detail .content-time .menu-actions.show,
-              .main .qa-show__right .reply-detail .content-time .menu-actions.show,
-              .main .qa-show__right .edit-detail .content-time .menu-actions.show {
-                transform: translateY(0);
-                opacity: 1;
-                visibility: visible; }
+            .main .qa-show__right .comment-detail .content-time .qa-manager,
+            .main .qa-show__right .reply-detail .content-time .qa-manager,
+            .main .qa-show__right .edit-detail .content-time .qa-manager {
+              display: none; }
+              .main .qa-show__right .comment-detail .content-time .qa-manager ul,
+              .main .qa-show__right .reply-detail .content-time .qa-manager ul,
+              .main .qa-show__right .edit-detail .content-time .qa-manager ul {
+                padding: 8px 0;
+                margin-bottom: 0; }
+                .main .qa-show__right .comment-detail .content-time .qa-manager ul li a,
+                .main .qa-show__right .reply-detail .content-time .qa-manager ul li a,
+                .main .qa-show__right .edit-detail .content-time .qa-manager ul li a {
+                  font-size: 14px;
+                  display: block;
+                  padding: 12px 20px;
+                  cursor: pointer;
+                  color: #444; }
+                  .main .qa-show__right .comment-detail .content-time .qa-manager ul li a:hover,
+                  .main .qa-show__right .reply-detail .content-time .qa-manager ul li a:hover,
+                  .main .qa-show__right .edit-detail .content-time .qa-manager ul li a:hover {
+                    color: #292929;
+                    background: #f5f5f5; }
+              .main .qa-show__right .comment-detail .content-time .qa-manager ion-icon[name="ellipsis-horizontal"],
+              .main .qa-show__right .reply-detail .content-time .qa-manager ion-icon[name="ellipsis-horizontal"],
+              .main .qa-show__right .edit-detail .content-time .qa-manager ion-icon[name="ellipsis-horizontal"] {
+                color: #444;
+                cursor: pointer; }
+                .main .qa-show__right .comment-detail .content-time .qa-manager ion-icon[name="ellipsis-horizontal"]:hover,
+                .main .qa-show__right .reply-detail .content-time .qa-manager ion-icon[name="ellipsis-horizontal"]:hover,
+                .main .qa-show__right .edit-detail .content-time .qa-manager ion-icon[name="ellipsis-horizontal"]:hover {
+                  color: #292929; }
+              .main .qa-show__right .comment-detail .content-time .qa-manager .menu-actions,
+              .main .qa-show__right .reply-detail .content-time .qa-manager .menu-actions,
+              .main .qa-show__right .edit-detail .content-time .qa-manager .menu-actions {
+                position: absolute;
+                top: 36px;
+                right: 0;
+                border-radius: 10px;
+                min-width: 200px;
+                z-index: 999;
+                transform: translateY(-10px);
+                transition: transform 0.3s ease;
+                opacity: 0;
+                visibility: hidden; }
+                .main .qa-show__right .comment-detail .content-time .qa-manager .menu-actions.show,
+                .main .qa-show__right .reply-detail .content-time .qa-manager .menu-actions.show,
+                .main .qa-show__right .edit-detail .content-time .qa-manager .menu-actions.show {
+                  transform: translateY(0);
+                  opacity: 1;
+                  visibility: visible; }
             .main .qa-show__right .comment-detail .content-time__like, .main .qa-show__right .comment-detail .content-time__reply,
             .main .qa-show__right .reply-detail .content-time__like,
             .main .qa-show__right .reply-detail .content-time__reply,
@@ -2165,6 +2173,9 @@ blockquote {
       .main .qa-show__right .edit-box {
         max-width: 470px;
         display: none; }
+        .main .qa-show__right .reply-box__username,
+        .main .qa-show__right .edit-box__username {
+          background-color: rgba(24, 119, 242, 0.45); }
         .main .qa-show__right .reply-box__avatar,
         .main .qa-show__right .edit-box__avatar {
           width: 24px;

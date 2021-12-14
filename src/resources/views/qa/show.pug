@@ -40,7 +40,7 @@ block main
                                         img(src=comment.user[0].avatar)
                                     .content
                                         .content-comment
-                                            span.d-block.fw-primary.mb-1= comment.user[0].fullname
+                                            span.d-block.fw-primary.mb-1.name= comment.user[0].fullname
                                             span.content-comment__text= comment.content
                                             if comment.numLikes !== 0
                                                 .content-comment__count.shadow
@@ -57,7 +57,7 @@ block main
                                             .content-time__reply
                                                 ion-icon(name="chatbubble-outline")
                                             span ·
-                                            span.fs-8.text-secondary= moment(comment.updatedAt).locale("vi").fromNow()
+                                            span.fs-8.text-secondary= moment(comment.createdAt).locale("vi").fromNow()
                                             .position-relative.qa-manager
                                                 .fs-5
                                                     ion-icon(name='ellipsis-horizontal')
@@ -90,7 +90,9 @@ block main
                                         .reply-box
                                             img.reply-box__avatar(src=user[0].avatar alt=user[0].fullname)
                                             .reply-box__input(tabindex="0" contenteditable="true" placeholder="Viết phản hồi..." role="textbox" aria-multiline="true" spellcheck="false")
-                                            .reply-box__detail
+                                                span.reply-box__username(contenteditable="false")
+                                                span  
+                                            .reply-box__detail.fs-8.mt-1 Nhấn Enter để phản hồi hoặc nhấn Esc để hủy.
     if success.length > 0
         - var msgSuccess = success    
     script(src="/socket.io/socket.io.js")
@@ -135,7 +137,7 @@ block main
                                     <ion-icon name="chatbubble-outline"></ion-icon>
                                 </div>
                                 <span>·</span>
-                                <span class="fs-8 text-secondary">${moment(cmt.updatedAt).locale("vi").fromNow()}</span>
+                                <span class="fs-8 text-secondary">${moment(cmt.createdAt).locale("vi").fromNow()}</span>
                                 <div class="position-relative qa-manager">
                                     <div class="fs-5">
                                         <ion-icon name="ellipsis-horizontal"></ion-icon>
@@ -290,8 +292,8 @@ block main
                 var menuActions = parent.find(".menu-actions");
                 $(".menu-actions").removeClass("show");
                 editBox.show();
-                editBoxText.text(editCommentText.text());
                 editBoxText.focus();
+                editBoxText.text(editCommentText.text());
             })
 
             // handle edit box input
@@ -391,6 +393,11 @@ block main
                     document.execCommand('selectAll', false, null);
                     return false;
                 }
+
+                if (e.keyCode === 27) {
+                    $(this).find("span").text(" ");
+                    $(this).parent().hide();
+                }
             })
 
             // when btn cancel is clicked
@@ -402,7 +409,17 @@ block main
             // when btn reply is clicked
             $("body").on("click", ".content-time__reply", function() {
                 var parentContent = $(this).parent().parent();
+                var authorCmt = parentContent.find(".content-comment span.name").text();
+                var replyBoxInput = parentContent.find(".reply-box .reply-box__input");
+                var replyBoxUsername = replyBoxInput.find("span.reply-box__username");
+
                 parentContent.find(".edit-box").hide();
                 parentContent.find(".reply-box").show();
+                replyBoxInput.focus();
+                replyBoxUsername.text(authorCmt);
+            })
+
+            $("body").on("click", ".content-time__reply", function() {
+
             })
         })

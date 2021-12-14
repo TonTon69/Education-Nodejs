@@ -218,7 +218,7 @@ class QaController {
                         as: "commentLikes",
                     },
                 },
-                { $sort: { updatedAt: 1 } },
+                { $sort: { createdAt: 1 } },
             ]);
 
             res.render("qa/show", {

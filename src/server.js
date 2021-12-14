@@ -140,7 +140,7 @@ io.on("connection", async (socket) => {
                     as: "commentLikes",
                 },
             },
-            { $sort: { updatedAt: 1 } },
+            { $sort: { createdAt: 1 } },
         ]);
 
         io.sockets.emit("server-send-comment", comments);
@@ -185,7 +185,7 @@ io.on("connection", async (socket) => {
                     as: "commentLikes",
                 },
             },
-            { $sort: { updatedAt: 1 } },
+            { $sort: { createdAt: 1 } },
         ]);
 
         io.sockets.emit("server-send-comment", comments);
@@ -229,7 +229,7 @@ io.on("connection", async (socket) => {
                     as: "commentLikes",
                 },
             },
-            { $sort: { updatedAt: 1 } },
+            { $sort: { createdAt: 1 } },
         ]);
 
         io.sockets.emit("server-send-comment", comments);
@@ -286,7 +286,7 @@ io.on("connection", async (socket) => {
                     as: "commentLikes",
                 },
             },
-            { $sort: { updatedAt: 1 } },
+            { $sort: { createdAt: 1 } },
         ]);
 
         io.sockets.emit("server-send-comment", comments);

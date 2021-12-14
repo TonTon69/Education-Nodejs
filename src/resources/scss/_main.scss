@@ -1863,6 +1863,12 @@
                     display: flex;
                     margin-top: 16px;
 
+                    &:hover {
+                        .content .content-time .qa-manager {
+                            display: block;
+                        }
+                    }
+
                     .avatar {
                         flex-shrink: 0;
 
@@ -1919,7 +1925,11 @@
                             align-items: center;
                             gap: 16px;
 
-                            @import "./commonMenu";
+                            .qa-manager {
+                                display: none;
+
+                                @import "./commonMenu";
+                            }
 
                             &__like,
                             &__reply {
@@ -1943,6 +1953,10 @@
             .edit-box {
                 max-width: 470px;
                 display: none;
+
+                &__username {
+                    background-color: rgba(24, 119, 242, 0.45);
+                }
 
                 &__avatar {
                     width: 24px;
