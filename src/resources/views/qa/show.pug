@@ -47,8 +47,13 @@ block main
                                                     ion-icon(name="heart")
                                                     span= comment.numLikes
                                         .content-time
-                                            .content-time__like(data-id=comment._id)
-                                                ion-icon(name="heart-outline")
+                                            if comment.commentLikes.length > 0
+                                                - var checkLike = comment.commentLikes.filter((x) => x.userID.equals(user[0]._id));
+                                                .content-time__like(data-id=comment._id class=(checkLike.length > 0 ? "active" : undefined))
+                                                    ion-icon(name="heart-outline")
+                                            else
+                                                .content-time__like(data-id=comment._id)
+                                                    ion-icon(name="heart-outline")
                                             .content-time__reply
                                                 ion-icon(name="chatbubble-outline")
                                             span ·
@@ -95,9 +100,11 @@ block main
         const socket = io();
         socket.on("server-send-comment", (data) => {
             var userID = "#{user[0]._id}";
+            var checkLike;
             $(".comment-count").html(data.length + " câu trả lời");
             $(".comment-content").html("");
             data.map((cmt) => {
+                checkLike = cmt.commentLikes.filter((x) => x.userID === userID);
                 $(".comment-content").append(`
                     <div class="comment-detail">
                         <div class="avatar">
@@ -115,9 +122,15 @@ block main
                                 
                             </div>
                             <div class="content-time">
-                                <div class="content-time__like" data-id=${cmt._id}>
-                                    <ion-icon name="heart-outline"></ion-icon>
-                                </div>
+                                ${ cmt.commentLikes.length > 0 ? `
+                                    <div class="content-time__like ${ checkLike.length > 0 ? 'active' : undefined }" data-id=${cmt._id}>
+                                        <ion-icon name="heart-outline"></ion-icon>
+                                    </div>  
+                                ` : `
+                                    <div class="content-time__like" data-id=${cmt._id}>
+                                        <ion-icon name="heart-outline"></ion-icon>
+                                    </div>
+                                ` }
                                 <div class="content-time__reply">
                                     <ion-icon name="chatbubble-outline"></ion-icon>
                                 </div>
@@ -185,11 +198,11 @@ block main
 
         socket.on("server-send-notification", (data) => {
             var userID = "#{user[0]._id}";
-            if(data.recevier === userID) {
+            if(data.receiver === userID) {
                 Eggy({
                     title: 'Thông báo',
                     message: data.notification,
-                    type: 'success',
+                    type: 'info',
                     duration: 5000,
                 });
             }
@@ -220,7 +233,6 @@ block main
             var btnOk = $(".comment-box .btn-ok");
             var qaManager = $(".qa-manager");
             var menuActions = $(".menu-actions");
-            var btnClose = $(".qa-show__left--image .modal span.close");
             var commentID;
             
             // toast message
@@ -330,7 +342,7 @@ block main
             })
             
             // when btn close modal thumbnail detail is clicked
-            btnClose.click(function () {
+            $("body").on("click", ".qa-show__left--image .modal span.close", function() {
                 modal.hide();
             })
 

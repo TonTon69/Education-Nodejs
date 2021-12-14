@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const slugify = require("slugify");
 const cloudinary = require("../../config/cloud/index");
+const CommentLike = require("../models/CommentLike");
 class QaController {
     // [GET]/qa/list
     async list(req, res) {

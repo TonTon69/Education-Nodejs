@@ -132,6 +132,14 @@ io.on("connection", async (socket) => {
                     as: "user",
                 },
             },
+            {
+                $lookup: {
+                    from: "comment-likes",
+                    localField: "_id",
+                    foreignField: "commentID",
+                    as: "commentLikes",
+                },
+            },
             { $sort: { updatedAt: 1 } },
         ]);
 
@@ -140,7 +148,8 @@ io.on("connection", async (socket) => {
         // send notification to author
         const userCmt = await User.findById(data.userID);
         socket.broadcast.emit("server-send-notification", {
-            recevier: data.author,
+            sender: userCmt._id,
+            receiver: data.author,
             notification: `<strong>${userCmt.fullname}</strong> đã trả lời câu hỏi của bạn.`,
         });
     });
@@ -166,6 +175,14 @@ io.on("connection", async (socket) => {
                     localField: "userID",
                     foreignField: "_id",
                     as: "user",
+                },
+            },
+            {
+                $lookup: {
+                    from: "comment-likes",
+                    localField: "_id",
+                    foreignField: "commentID",
+                    as: "commentLikes",
                 },
             },
             { $sort: { updatedAt: 1 } },
@@ -202,6 +219,14 @@ io.on("connection", async (socket) => {
                     localField: "userID",
                     foreignField: "_id",
                     as: "user",
+                },
+            },
+            {
+                $lookup: {
+                    from: "comment-likes",
+                    localField: "_id",
+                    foreignField: "commentID",
+                    as: "commentLikes",
                 },
             },
             { $sort: { updatedAt: 1 } },
