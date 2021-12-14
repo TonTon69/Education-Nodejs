@@ -3,6 +3,7 @@ const router = express.Router();
 
 const siteController = require("../app/controllers/SiteController");
 const authController = require("../app/controllers/AuthController");
+const qaController = require("../app/controllers/QaController");
 const upload = require("../utils/upload-image");
 const {
     requireAuth,
@@ -13,6 +14,7 @@ const {
 } = require("../app/middlewares/AuthMiddleware");
 const { search } = require("../app/middlewares/LocalMiddleware");
 
+router.post("/notif/mark-all-read", requireAuth, qaController.postMarkAllRead);
 router.get("/password/change", requireAuth, authController.passwordChange);
 router.put(
     "/password/change/:id",

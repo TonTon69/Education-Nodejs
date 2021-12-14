@@ -10,7 +10,10 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
 
-const { userLocal } = require("./app/middlewares/LocalMiddleware");
+const {
+    userLocal,
+    notification,
+} = require("./app/middlewares/LocalMiddleware");
 const { messages } = require("./utils/message-data");
 const Subject = require("./app/models/Subject");
 const Unit = require("./app/models/Unit");
@@ -23,6 +26,7 @@ const Comment = require("./app/models/Comment");
 const CommentReport = require("./app/models/CommentReport");
 const CommentLike = require("./app/models/CommentLike");
 const Question = require("./app/models/Question");
+const Notification = require("./app/models/Notification");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -54,6 +58,7 @@ app.use(methodOverride("_method"));
 
 // Custom middleware
 app.use(userLocal);
+app.use(notification);
 
 app.locals.moment = moment;
 
@@ -147,11 +152,17 @@ io.on("connection", async (socket) => {
 
         // send notification to author
         const userCmt = await User.findById(data.userID);
-        socket.broadcast.emit("server-send-notification", {
-            sender: userCmt._id,
-            receiver: data.author,
-            notification: `<strong>${userCmt.fullname}</strong> đã trả lời câu hỏi của bạn.`,
-        });
+        const notiContent = {
+            content: `<strong>${userCmt.fullname}</strong> đã trả lời câu hỏi của bạn.`,
+            sourceID: data.qaID,
+            senderID: userCmt._id,
+            receiverID: data.author,
+        };
+        socket.broadcast.emit("server-send-notification", notiContent);
+
+        // handle notification
+        const notification = new Notification(notiContent);
+        await notification.save();
     });
 
     // handle edit comment
@@ -204,6 +215,9 @@ io.on("connection", async (socket) => {
             { _id: data.qaID },
             { $inc: { numComments: -1 } }
         );
+        await Notification.deleteMany({
+            sourceID: data.qaID,
+        });
         const comments = await Comment.aggregate([
             {
                 $match: {
@@ -254,13 +268,31 @@ io.on("connection", async (socket) => {
                 { _id: data.commentID },
                 { $inc: { numLikes: 1 } }
             );
+
+            // handle notification
+            const userLikeCmt = await User.findById(data.userID);
+            const authorCmt = await Comment.findById(data.commentID);
+            const notiContent = {
+                content: `<strong>${userLikeCmt.fullname}</strong> đã thích một bình luận mà bạn đã viết câu trả lời trong một câu hỏi.`,
+                sourceID: data.commentID,
+                senderID: userLikeCmt._id,
+                receiverID: authorCmt.userID,
+            };
+            const notification = new Notification(notiContent);
+            await notification.save();
+            socket.broadcast.emit("server-send-notification", notiContent);
         } else {
             await CommentLike.deleteOne(data);
             await Comment.updateOne(
                 { _id: data.commentID },
                 { $inc: { numLikes: -1 } }
             );
+            await Notification.deleteOne({
+                senderID: data.userID,
+                sourceID: data.commentID,
+            });
         }
+
         const comments = await Comment.aggregate([
             {
                 $match: {

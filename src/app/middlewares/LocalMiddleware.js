@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const Subject = require("../models/Subject");
 const Blog = require("../models/Blog");
-const System = require("../models/System");
+const Notification = require("../models/Notification");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -40,6 +40,38 @@ module.exports = {
             }
         } catch (error) {
             req.flash("error", "Không tìm thấy kết quả!");
+        }
+    },
+
+    notification: async function (req, res, next) {
+        try {
+            const user = await User.findById(req.signedCookies.userId);
+            if (user) {
+                const notifications = await Notification.aggregate([
+                    { $match: { receiverID: ObjectId(user._id) } },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "senderID",
+                            foreignField: "_id",
+                            as: "sender",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "questions",
+                            localField: "sourceID",
+                            foreignField: "_id",
+                            as: "question",
+                        },
+                    },
+                    { $sort: { createdAt: -1 } },
+                ]);
+                res.locals.notifications = notifications;
+                next();
+            }
+        } catch (error) {
+            console.log(error);
         }
     },
 };

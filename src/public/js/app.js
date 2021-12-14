@@ -2,10 +2,17 @@ $(document).ready(function () {
     const userAva = $(".header__actions--avatar img");
     const userMenu = $(".header__actions--userMenu");
     const actionsUser = $(".header__actions--user");
-    const notiIcon = $(".header__actions--notiIcon");
+    const notiUser = $(".header__actions--noti");
+    const notiUserIcon = $(".header__actions--notiIcon");
     const notiMenu = $(".header__actions--notiMenu");
-
     const sidebarCreateBtn = $(".sidebar .create__button");
+
+    // const notiMenuItem = $(".header__actions--notiMenu ul li a");
+    // $.each(notiMenuItem, function (index, val) {
+    //     val.onclick = function () {
+    //         console.log(123);
+    //     };
+    // });
 
     userAva.click(function (e) {
         userMenu.toggleClass("show");
@@ -16,7 +23,7 @@ $(document).ready(function () {
         $(".sidebar .sidebar__menu").toggleClass("show");
     });
 
-    notiIcon.click(function () {
+    notiUserIcon.click(function () {
         notiMenu.toggleClass("show");
     });
 
@@ -38,7 +45,7 @@ $(document).ready(function () {
             );
         }
 
-        if (!notiIcon.is(e.target) && notiIcon.has(e.target).length == 0) {
+        if (!notiUser.is(e.target) && notiUser.has(e.target).length == 0) {
             notiMenu.removeClass("show");
         }
     });

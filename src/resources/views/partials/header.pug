@@ -49,8 +49,19 @@ header.header
                 .header__actions--notiIcon
                     ion-icon(name="notifications")
                 .header__actions--notiMenu.shadow
-                    h6 Thông báo
+                    .d-flex.align-items-center.justify-content-between
+                        h6.mb-0 Thông báo
+                        span.fs-7.text-primary.mark-all-read(style="cursor:pointer") Đánh dấu tất cả là đã đọc
                     ul.list.ps-0.mb-0.mt-4
+                        if notifications.length > 0
+                            each noti in notifications
+                                li.list__item
+                                    a.list__link(href=`/qa/${noti.question[0].slug}/?ref=notif` class=(noti.isRead ? undefined : "unread"))
+                                        .d-flex.align-items-center
+                                            img.notification-avatar(src=noti.sender[0].avatar)
+                                            .px-3.notification-message
+                                                div !{noti.content}
+                                                .notification-created= moment(noti.createdAt).locale("vi").fromNow()
                         li.list__item
                             a.list__link(href='#')
                                 .d-flex.align-items-center
@@ -102,6 +113,7 @@ header.header
             var searchAll = $("#search__all");
             var iconClose = $("ion-icon[name=close]");
             var searchResult = $(".search__result");
+            var markAllRead = $(".mark-all-read");
 
             searchAll.keyup(function(e) {
                 iconClose.addClass("d-block");
@@ -124,6 +136,18 @@ header.header
                     });     
                 }
             });
+
+            markAllRead.click(function(e) {
+                $.ajax({
+                    method: 'POST',
+                    url: '/notif/mark-all-read',
+                    contentType: 'application/json',
+                    data: JSON.stringify({action: 'mark all as read'}),
+                    success: function (data) {
+                        $(".header__actions--notiMenu ul").replaceWith(data);
+                    }
+                });  
+            })
 
             iconClose.click(function (e) {
                 clearSearch();

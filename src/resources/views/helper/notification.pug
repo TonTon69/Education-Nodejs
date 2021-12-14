@@ -1,0 +1,20 @@
+ul.list.ps-0.mb-0.mt-4
+    if notifications.length > 0
+        each noti in notifications
+            li.list__item
+                a.list__link(href=`/qa/${noti.question[0].slug}/?ref=notif` class=(noti.isRead ? undefined : "unread"))
+                    .d-flex.align-items-center
+                        img.notification-avatar(src=noti.sender[0].avatar)
+                        .px-3.notification-message
+                            div !{noti.content}
+                            .notification-created= moment(noti.createdAt).locale("vi").fromNow()
+    li.list__item
+        a.list__link(href='#')
+            .d-flex.align-items-center
+                img.notification-avatar(src="http://localhost:3000/img/thumbnail.jpg")
+                .px-3.notification-message
+                    div 
+                        | Chúc mừng 
+                        span.name #{user[0].fullname} 
+                        | đã chính thức gia nhập hệ thống ❤️
+                    .notification-created= moment(user[0].createdAt).locale("vi").fromNow()

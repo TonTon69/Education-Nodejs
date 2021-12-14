@@ -288,7 +288,11 @@
                             padding: 10px 12px;
                             border-radius: 5px;
 
-                            &:hover {
+                            &.unread {
+                                background-color: #fceeee;
+                            }
+
+                            &:hover:not(.unread) {
                                 background-color: #f5f5f5;
                             }
 

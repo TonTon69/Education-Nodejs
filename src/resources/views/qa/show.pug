@@ -200,10 +200,10 @@ block main
 
         socket.on("server-send-notification", (data) => {
             var userID = "#{user[0]._id}";
-            if(data.receiver === userID) {
+            if(data.receiverID === userID) {
                 Eggy({
                     title: 'Thông báo',
-                    message: data.notification,
+                    message: data.content,
                     type: 'info',
                     duration: 5000,
                 });
@@ -250,7 +250,6 @@ block main
 
             // when btn report comment is clicked
             $("body").on("click", ".btn-report-comment", function() {
-            //- btnReportComment.click(function () {
                 commentID = $(this).attr("data-id");
                 var userID = "#{user[0]._id}";
                 var data = {
@@ -417,9 +416,5 @@ block main
                 parentContent.find(".reply-box").show();
                 replyBoxInput.focus();
                 replyBoxUsername.text(authorCmt);
-            })
-
-            $("body").on("click", ".content-time__reply", function() {
-
             })
         })

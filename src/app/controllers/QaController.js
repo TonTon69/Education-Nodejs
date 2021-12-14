@@ -5,6 +5,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const slugify = require("slugify");
 const cloudinary = require("../../config/cloud/index");
 const CommentLike = require("../models/CommentLike");
+const Notification = require("../models/Notification");
 class QaController {
     // [GET]/qa/list
     async list(req, res) {
@@ -229,6 +230,35 @@ class QaController {
         } else {
             res.render("error");
         }
+    }
+
+    // ----------------------------------------------------------------
+    async postMarkAllRead(req, res) {
+        await Notification.updateMany(
+            { receiverID: req.signedCookies.userId },
+            { isRead: true }
+        );
+        const notifications = await Notification.aggregate([
+            { $match: { receiverID: ObjectId(req.signedCookies.userId) } },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "senderID",
+                    foreignField: "_id",
+                    as: "sender",
+                },
+            },
+            {
+                $lookup: {
+                    from: "questions",
+                    localField: "sourceID",
+                    foreignField: "_id",
+                    as: "question",
+                },
+            },
+            { $sort: { createdAt: -1 } },
+        ]);
+        res.render("helper/notification", { notifications });
     }
 }
 
