@@ -288,17 +288,12 @@ blockquote {
         left: auto;
         bottom: auto;
         min-width: 520px;
-        padding: 16px 12px;
         border-radius: 10px;
         transform: translate(-28px, 35px);
         transition: transform 0.3s ease;
         opacity: 0;
         visibility: hidden;
-        z-index: 10;
-        min-height: 50px;
-        max-height: calc(90vh - 66px);
-        overflow-y: auto;
-        scroll-snap-type: y mandatory; }
+        z-index: 10; }
         @media (max-width: 768px) {
           .header__actions--notiMenu {
             min-width: 340px;
@@ -307,44 +302,50 @@ blockquote {
           opacity: 1;
           visibility: visible;
           transform: translate(-28px, 45px); }
-        .header__actions--notiMenu::-webkit-scrollbar {
-          width: 8px; }
-        .header__actions--notiMenu::-webkit-scrollbar-thumb {
-          background: #b4bcc3;
-          border-radius: 20px;
-          border: 3px solid #b4bcc3;
-          opacity: 0;
-          visibility: hidden; }
-        .header__actions--notiMenu:hover::-webkit-scrollbar-thumb {
-          opacity: 1;
-          visibility: visible; }
         .header__actions--notiMenu h6 {
-          padding: 0 12px;
           font-weight: 600;
           font-size: 18px; }
-        .header__actions--notiMenu ul li a {
-          display: block;
-          padding: 10px 12px;
-          border-radius: 5px; }
-          .header__actions--notiMenu ul li a.unread {
-            background-color: #fceeee; }
-          .header__actions--notiMenu ul li a:hover:not(.unread) {
-            background-color: #f5f5f5; }
-          .header__actions--notiMenu ul li a .notification-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            overflow: hidden;
-            flex-shrink: 0; }
-          .header__actions--notiMenu ul li a .notification-message {
-            flex: 1 1;
-            font-size: 14px; }
-            .header__actions--notiMenu ul li a .notification-message .name {
-              font-weight: 600; }
-          .header__actions--notiMenu ul li a .notification-created {
-            color: #113685;
-            font-weight: 500;
-            margin-top: 6px; }
+        .header__actions--notiMenu .notiMenu-header {
+          padding: 16px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+        .header__actions--notiMenu .notiMenu-container {
+          max-height: 500px;
+          overflow-y: auto;
+          scroll-snap-type: y mandatory; }
+          .header__actions--notiMenu .notiMenu-container::-webkit-scrollbar {
+            width: 8px; }
+          .header__actions--notiMenu .notiMenu-container::-webkit-scrollbar-thumb {
+            background: #b4bcc3;
+            border-radius: 20px;
+            border: 3px solid #b4bcc3;
+            opacity: 0;
+            visibility: hidden; }
+          .header__actions--notiMenu .notiMenu-container:hover::-webkit-scrollbar-thumb {
+            opacity: 1;
+            visibility: visible; }
+          .header__actions--notiMenu .notiMenu-container ul li a {
+            display: block;
+            padding: 16px;
+            border-radius: 5px; }
+            .header__actions--notiMenu .notiMenu-container ul li a.unread {
+              background-color: #fceeee; }
+            .header__actions--notiMenu .notiMenu-container ul li a:hover:not(.unread) {
+              background-color: #f5f5f5; }
+            .header__actions--notiMenu .notiMenu-container ul li a .notification-avatar {
+              width: 48px;
+              height: 48px;
+              border-radius: 50%;
+              overflow: hidden;
+              flex-shrink: 0; }
+            .header__actions--notiMenu .notiMenu-container ul li a .notification-message {
+              flex: 1 1;
+              font-size: 14px; }
+              .header__actions--notiMenu .notiMenu-container ul li a .notification-message .name {
+                font-weight: 600; }
+            .header__actions--notiMenu .notiMenu-container ul li a .notification-created {
+              color: #113685;
+              font-weight: 500;
+              margin-top: 6px; }
     .header__actions--avatar {
       display: flex;
       align-items: center;

@@ -49,29 +49,31 @@ header.header
                 .header__actions--notiIcon
                     ion-icon(name="notifications")
                 .header__actions--notiMenu.shadow
-                    .d-flex.align-items-center.justify-content-between
+                    .notiMenu-header.d-flex.align-items-center.justify-content-between
                         h6.mb-0 Thông báo
                         span.fs-7.text-primary.mark-all-read(style="cursor:pointer") Đánh dấu tất cả là đã đọc
-                    ul.list.ps-0.mb-0.mt-4
-                        if notifications.length > 0
-                            each noti in notifications
-                                li.list__item
-                                    a.list__link(href=`/qa/${noti.question[0].slug}/?ref=notif` class=(noti.isRead ? undefined : "unread"))
-                                        .d-flex.align-items-center
-                                            img.notification-avatar(src=noti.sender[0].avatar)
-                                            .px-3.notification-message
-                                                div !{noti.content}
-                                                .notification-created= moment(noti.createdAt).locale("vi").fromNow()
-                        li.list__item
-                            a.list__link(href='#')
-                                .d-flex.align-items-center
-                                    img.notification-avatar(src="http://localhost:3000/img/thumbnail.jpg")
-                                    .px-3.notification-message
-                                        div 
-                                            | Chúc mừng 
-                                            span.name #{user[0].fullname} 
-                                            | đã chính thức gia nhập hệ thống ❤️
-                                        .notification-created= moment(user[0].createdAt).locale("vi").fromNow()
+                    .notiMenu-container
+                        ul.list.ps-0.mb-0
+                            if notifications.length > 0
+                                each noti in notifications
+                                    li.list__item
+                                        a.list__link(href=`/qa/${noti.question[0].slug}/?ref=notif` class=(noti.isRead ? undefined : "unread"))
+                                            .d-flex.align-items-center
+                                                img.notification-avatar(src=noti.sender[0].avatar)
+                                                .px-3.notification-message
+                                                    div !{noti.content}
+                                                    .notification-created= moment(noti.createdAt).locale("vi").fromNow()
+                            li.list__item
+                                a.list__link(href='#')
+                                    .d-flex.align-items-center
+                                        img.notification-avatar(src="/img/logo2.jpg")
+                                        .px-3.notification-message
+                                            div 
+                                                | Chúc mừng 
+                                                span.name #{user[0].fullname} 
+                                                | đã chính thức gia nhập hệ thống ❤️
+                                            .notification-created= moment(user[0].createdAt).locale("vi").fromNow()
+                            
             .header__actions--user
                 .header__actions--avatar
                     img(src=user[0].avatar)
@@ -144,7 +146,7 @@ header.header
                     contentType: 'application/json',
                     data: JSON.stringify({action: 'mark all as read'}),
                     success: function (data) {
-                        $(".header__actions--notiMenu ul").replaceWith(data);
+                        $(".header__actions--notiMenu .notiMenu-container").replaceWith(data);
                     }
                 });  
             })
