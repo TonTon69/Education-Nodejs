@@ -20,6 +20,7 @@ router.get("/:id/browser", requireAuth, checkAdmin, qaController.browser);
 router.put("/:id/browser", requireAuth, checkAdmin, qaController.updateBrowser);
 router.delete("/:id/delete", requireAuth, qaController.delete);
 router.delete("/:id/destroy", requireAuth, checkAdmin, qaController.destroy);
+router.get("/list/:page", qaController.pagination);
 router.get("/list", requireAuth, checkAdmin, qaController.list);
 router.get("/:slug", qaController.show);
 

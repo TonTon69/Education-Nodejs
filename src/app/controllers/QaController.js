@@ -9,6 +9,8 @@ const Notification = require("../models/Notification");
 class QaController {
     // [GET]/qa/list
     async list(req, res) {
+        let perPage = 3;
+        let page = req.params.page || 1;
         const qaList = await Question.aggregate([
             {
                 $lookup: {
@@ -18,10 +20,40 @@ class QaController {
                     as: "user",
                 },
             },
+            { $skip: perPage * page - perPage },
+            { $limit: perPage },
         ]);
 
         res.render("qa/list", {
             qaList,
+            current: page,
+            pages: Math.ceil(qaList.length / perPage),
+            success: req.flash("success"),
+            errors: req.flash("error"),
+        });
+    }
+
+    // [GET]/qa/list/:page
+    async pagination(req, res) {
+        let perPage = 3;
+        let page = req.params.page || 1;
+        const qaList = await Question.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $skip: perPage * page - perPage },
+            { $limit: perPage },
+        ]);
+
+        res.render("qa/list", {
+            qaList,
+            current: page,
+            pages: Math.ceil(qaList.length / perPage),
             success: req.flash("success"),
             errors: req.flash("error"),
         });

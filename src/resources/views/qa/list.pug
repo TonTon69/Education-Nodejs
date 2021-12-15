@@ -60,6 +60,43 @@ block content
                                             .modal-footer
                                                 button.btn.btn-secondary(type='button', data-dismiss='modal') Hủy bỏ
                                                 button.btn.btn-danger#btn-delete-qa(type='button') Chắc chắn
+                    if pages > 0
+                        nav.d-flex.align-items-center.justify-content-center
+                            ul.pagination.mt-4
+                                if current == 1
+                                    li.page-item.disabled
+                                        a.page-link(href='#', aria-label='Previous')
+                                            span(aria-hidden='true') &laquo;
+                                            span.sr-only Previous
+                                else
+                                    li.page-item
+                                        a.page-link(href=`/qa/list`, aria-label='Previous')
+                                            span(aria-hidden='true') &laquo;
+                                            span.sr-only Previous
+                                - var i = (Number(current) > 3 ? Number(current) - 2 : 1);
+                                if i !== 1
+                                    li.page-item.disabled
+                                        a.page-link(href='#') ...
+                                - for(; i <= (Number(current) + 2) && i <= pages; i++)
+                                    if i == current
+                                        li.page-item.active
+                                            a.page-link(href=`/qa/list/${i}`)= i
+                                    else
+                                        li.page-item
+                                            a.page-link(href=`/qa/list/${i}`)= i
+                                    if i == Number(current) + 2 && i < pages
+                                        li.page-item.disabled
+                                            a.page-link(href='#') ...
+                                if current == pages
+                                    li.page-item.disabled
+                                        a.page-link(href='#', aria-label='Next')
+                                            span(aria-hidden='true') &raquo;
+                                            span.sr-only Next
+                                else
+                                    li.page-item
+                                        a.page-link(href=`/qa/list/${pages}`, aria-label='Next')
+                                            span(aria-hidden='true') &raquo;
+                                            span.sr-only Next
     if errors.length > 0
         - var msgError = errors
     else if success.length > 0

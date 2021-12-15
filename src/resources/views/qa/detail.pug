@@ -13,6 +13,10 @@ block content
                         form.mt-4(action=`/qa/${qa[0]._id}/browser?_method=PUT`, method='POST')
                             input(type="text" name="action" value="edit" hidden)
                             .form-group.row.text-dark
+                                label.col-sm-3.fw-primary Liên kết đến trang
+                                .col-sm-9
+                                    a(href=`/qa/${qa[0].slug}` target="_blank")= qa[0].slug
+                            .form-group.row.text-dark
                                 label.col-sm-3.fw-primary Tiêu đề
                                 .col-sm-9
                                     span= qa[0].title
