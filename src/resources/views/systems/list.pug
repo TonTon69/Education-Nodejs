@@ -4,8 +4,11 @@ block content
         .col-lg-12.grid-margin.stretch-card
             .card
                 .card-body
-                    .card-title Quản lý thông tin website
-                    .d-flex.align-items-center
+                    .d-flex.align-items-center.justify-content-between
+                        .card-title Quản lý thông tin website
+                        a.btn.btn-outline-primary.btn-icon-text(href='/banners/list') 
+                            i.mdi.mdi-file-image.btn-icon-prepend
+                            | Quản lý banner
                     .table-responsive.pt-3
                         table.table.table-hover.text-dark
                             thead

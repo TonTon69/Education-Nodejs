@@ -1,0 +1,76 @@
+extends ../layouts/admin
+block content
+    section.qa__detail
+        .row
+            .col-md-10.grid-margin.stretch-card.mx-auto
+                .card
+                    .card-body
+                        .d-flex.align-items-center.justify-content-between
+                            h4.card-title Chi tiết câu hỏi
+                            a.btn.btn-outline-warning.btn-icon-text(href='/qa/list') 
+                                i.mdi.mdi-reload.btn-icon-prepend
+                                | Quay lại
+                        form.mt-4(action=`/qa/${qa[0]._id}/browser?_method=PUT`, method='POST')
+                            input(type="text" name="action" value="edit" hidden)
+                            .form-group.row.text-dark
+                                label.col-sm-3.fw-primary Tiêu đề
+                                .col-sm-9
+                                    span= qa[0].title
+                            .form-group.row.text-dark
+                                label.col-sm-3.fw-primary Ảnh mô tả
+                                .col-sm-9
+                                    if qa[0].thumbnail !== ""
+                                        img(src=qa[0].thumbnail width=100 height=100 style='object-fit: cover')
+                                    else
+                                        div Không có ảnh mô tả.
+                            .form-group.row.text-dark
+                                label.col-sm-3.fw-primary Nội dung
+                                .col-sm-9
+                                    div !{qa[0].content}
+                            .form-group.row.text-dark
+                                label.col-sm-3.col-form-label.fw-primary(for='topic') Chủ đề
+                                .col-sm-9
+                                    input#topic.form-control(type='text', placeholder='Nhập chủ đề tại đây...', name='topic', value=qa[0].topic, required)
+                            .form-group.row.text-dark
+                                label.col-sm-3.fw-primary Lượt xem
+                                .col-sm-9
+                                    span= qa[0].numViews
+                            .form-group.row.text-dark
+                                label.col-sm-3.fw-primary Bình luận
+                                .col-sm-9
+                                    span= qa[0].numComments + " câu trả lời"
+                            .table-responsive.pt-3
+                                table.table.table-hover.text-dark
+                                    thead
+                                        tr
+                                            th.fw-primary #
+                                            th.fw-primary Thành viên
+                                            th.fw-primary Câu trả lời
+                                            th.fw-primary Lượt thích
+                                            th.fw-primary Hoạt động
+                                            th.fw-primary Trạng thái
+                                            th.fw-primary Báo cáo
+                                            th.fw-primary Hành động
+                                    tbody
+                                        if comments.length > 0
+                                            each cmt, index in comments
+                                                tr
+                                                    td= index + 1
+                                                    td.d-flex.align-items-center
+                                                        img(src=cmt.user[0].avatar)
+                                                        span.ml-2= cmt.user[0].fullname
+                                                    td= cmt.content
+                                                    td= cmt.numLikes
+                                                    td= moment(cmt.createdAt).format("DD/MM/YYYY HH:mm")
+                                                    if cmt.isApproved
+                                                        td
+                                                            h4.badge.badge-success Cho phép
+                                                    else
+                                                        td
+                                                            h4.badge.badge-danger Không cho phép
+                                                    td= cmt.commentReports.length
+                                                    td
+                                                        button.btn.btn-danger(type="button" data-toggle="modal" data-target="#deleteQaModal", data-id) Xóa
+                            .mt-5
+                                a.btn.btn-light(href='/qa/list') Hủy bỏ
+                                button.btn.btn-primary.ml-4(type='submit') Cập nhật

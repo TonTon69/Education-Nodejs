@@ -8,6 +8,7 @@ const {
     requireAuth,
 } = require("../app/middlewares/AuthMiddleware");
 
+router.get("/:id/detail", requireAuth, checkAdmin, qaController.detail);
 router.get("/:id/edit", requireAuth, qaController.edit);
 router.put(
     "/:id/edit",

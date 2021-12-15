@@ -27,6 +27,58 @@ class QaController {
         });
     }
 
+    // [GET]/qa/:id/detail
+    async detail(req, res) {
+        const qa = await Question.aggregate([
+            {
+                $match: { _id: ObjectId(req.params.id) },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+        ]);
+
+        const comments = await Comment.aggregate([
+            {
+                $match: {
+                    $and: [{ questionID: ObjectId(qa[0]._id) }],
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            {
+                $lookup: {
+                    from: "comment-likes",
+                    localField: "_id",
+                    foreignField: "commentID",
+                    as: "commentLikes",
+                },
+            },
+            {
+                $lookup: {
+                    from: "comment-reports",
+                    localField: "_id",
+                    foreignField: "commentID",
+                    as: "commentReports",
+                },
+            },
+            { $sort: { numLikes: -1 } },
+        ]);
+
+        res.render("qa/detail", { qa, comments });
+    }
+
     // [GET]/qa/:id/browser
     async browser(req, res) {
         const qa = await Question.aggregate([
@@ -130,14 +182,24 @@ class QaController {
 
     // [PUT]/qa/:id/browser
     async updateBrowser(req, res) {
-        await Question.updateOne(
-            { _id: req.params.id },
-            {
-                topic: req.body.topic,
-                isApproved: true,
-            }
-        );
-        req.flash("success", "Đã duyệt câu hỏi thành công!");
+        if (req.body.action === "browser") {
+            await Question.updateOne(
+                { _id: req.params.id },
+                {
+                    topic: req.body.topic,
+                    isApproved: true,
+                }
+            );
+            req.flash("success", "Đã duyệt câu hỏi thành công!");
+        } else if (req.body.action === "edit") {
+            await Question.updateOne(
+                { _id: req.params.id },
+                {
+                    topic: req.body.topic,
+                }
+            );
+            req.flash("success", "Đã cập nhật câu hỏi thành công!");
+        }
         res.redirect("/qa/list");
     }
 
@@ -151,8 +213,14 @@ class QaController {
             .split(".")[0];
         cloudinary.uploader.destroy(public_id);
 
+        const comments = await Comment.find({ questionID: req.params.id });
+        const commentsIdArr = comments.map(({ _id }) => _id);
+        await CommentLike.deleteMany({ commentID: { $in: commentsIdArr } });
+        await CommentReport.deleteMany({ commentID: { $in: commentsIdArr } });
+
         await Comment.deleteMany({ questionID: req.params.id });
         await Question.deleteOne({ _id: req.params.id });
+
         req.flash("success", "Đã xóa câu hỏi thành công!");
         res.redirect("/qa/list");
     }
@@ -181,6 +249,10 @@ class QaController {
 
     // [GET]/qa/:slug
     async show(req, res) {
+        await Question.updateOne(
+            { slug: req.params.slug },
+            { $inc: { numViews: 1 } }
+        );
         const qa = await Question.aggregate([
             { $match: { slug: req.params.slug } },
             {

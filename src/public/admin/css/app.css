@@ -59,6 +59,10 @@ p {
     line-height: 1.5 !important;
 }
 
+.fw-primary {
+    font-weight: 500;
+}
+
 .system__list table tbody tr .value {
     line-height: 1.5;
     display: -webkit-box;

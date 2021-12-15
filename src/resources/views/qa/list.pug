@@ -12,9 +12,8 @@ block content
                                     th.font-weight-bold #
                                     th.font-weight-bold Thành viên
                                     th.font-weight-bold Tiêu đề
-                                    th.font-weight-bold Số lượt xem
-                                    th.font-weight-bold Số yêu thích
-                                    th.font-weight-bold Số bình luận
+                                    th.font-weight-bold Lượt xem
+                                    th.font-weight-bold Bình luận
                                     th.font-weight-bold Ngày đăng
                                     th.font-weight-bold Trạng thái
                                     th.font-weight-bold Hành động
@@ -30,7 +29,6 @@ block content
                                                 span.ml-2= qa.user[0].fullname
                                             td= qa.title
                                             td= qa.numViews
-                                            td= qa.numLikes
                                             td= qa.numComments
                                             td= moment(qa.createdAt).format("DD/MM/YYYY HH:mm")
                                             if qa.isApproved
@@ -41,7 +39,7 @@ block content
                                                     h4.badge.badge-danger Chưa duyệt
                                             td
                                                 if qa.isApproved
-                                                    a.btn.btn-secondary.mr-2(href=`/qa/${qa._id}/browser`) Chi tiết
+                                                    a.btn.btn-secondary.mr-2(href=`/qa/${qa._id}/detail`) Chi tiết
                                                 else
                                                     a.btn.btn-secondary.mr-2(href=`/qa/${qa._id}/browser`) Duyệt
                                                 button.btn.btn-danger(data-toggle="modal" data-target="#deleteQaModal", data-id=qa._id) Xóa
