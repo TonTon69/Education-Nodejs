@@ -47,14 +47,14 @@ block content
                                 table.table.table-hover.text-dark
                                     thead
                                         tr
-                                            th.fw-primary #
-                                            th.fw-primary Thành viên
-                                            th.fw-primary Câu trả lời
-                                            th.fw-primary Lượt thích
-                                            th.fw-primary Hoạt động
-                                            th.fw-primary Trạng thái
-                                            th.fw-primary Báo cáo
-                                            th.fw-primary Hành động
+                                            th #
+                                            th Thành viên
+                                            th Câu trả lời
+                                            th Lượt thích
+                                            th Hoạt động
+                                            th Trạng thái
+                                            th Báo cáo
+                                            th Hành động
                                     tbody
                                         if comments.length > 0
                                             each cmt, index in comments
@@ -75,6 +75,9 @@ block content
                                                     td= cmt.commentReports.length
                                                     td
                                                         button.btn.btn-danger(type="button" data-toggle="modal" data-target="#deleteQaModal", data-id) Xóa
+                                        else
+                                            tr
+                                                td(colspan='8').text-center Không có dữ liệu. 
                             .mt-5
                                 a.btn.btn-light(href='/qa/list') Hủy bỏ
                                 button.btn.btn-primary.ml-4(type='submit') Cập nhật

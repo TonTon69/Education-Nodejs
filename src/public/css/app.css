@@ -279,6 +279,7 @@ blockquote {
         color: #707070;
         font-size: 1.5rem; }
       .header__actions--notiIcon {
+        position: relative;
         cursor: pointer; }
       .header__actions--notiMenu {
         background: #fff;
@@ -326,7 +327,7 @@ blockquote {
           .header__actions--notiMenu .notiMenu-container ul li a {
             display: block;
             padding: 16px;
-            border-radius: 5px; }
+            border-radius: 10px; }
             .header__actions--notiMenu .notiMenu-container ul li a.unread {
               background-color: #fceeee; }
             .header__actions--notiMenu .notiMenu-container ul li a:hover:not(.unread) {

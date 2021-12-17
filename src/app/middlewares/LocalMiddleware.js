@@ -67,9 +67,17 @@ module.exports = {
                     },
                     { $sort: { createdAt: -1 } },
                 ]);
+                const countNotifUnread = await Notification.countDocuments({
+                    receiverID: user._id,
+                    isRead: false,
+                });
                 res.locals.notifications = notifications;
-                next();
+                res.locals.countNotifUnread = countNotifUnread;
+            } else {
+                res.locals.notifications = [];
+                res.locals.countNotifUnread = 0;
             }
+            next();
         } catch (error) {
             console.log(error);
         }

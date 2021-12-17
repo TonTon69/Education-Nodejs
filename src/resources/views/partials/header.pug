@@ -48,6 +48,9 @@ header.header
             .header__actions--noti
                 .header__actions--notiIcon
                     ion-icon(name="notifications")
+                    if countNotifUnread > 0
+                        span.position-absolute.top-0.start-100.translate-middle.badge.rounded-circle.bg-danger
+                            | #{countNotifUnread}
                 .header__actions--notiMenu.shadow
                     .notiMenu-header.d-flex.align-items-center.justify-content-between
                         h6.mb-0 Thông báo
@@ -147,6 +150,7 @@ header.header
                     data: JSON.stringify({action: 'mark all as read'}),
                     success: function (data) {
                         $(".header__actions--notiMenu .notiMenu-container").replaceWith(data);
+                        $(".header__actions--notiIcon span").html("");
                     }
                 });  
             })
