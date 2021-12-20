@@ -56,46 +56,53 @@ block main
                             a.btn.btn-exercise.rounded-pill(type="button" data-bs-toggle="modal" data-bs-target="#exerciseModal")
                                 | Luyện bài tập vận dụng tại đây
                     hr
-                    .report
-                        button.report__btn(type='button', data-bs-toggle='modal', data-bs-target='#reportModal')
-                            ion-icon(name='close-circle')
-                            span.ms-1 Báo lỗi
-                        #reportModal.modal.fade(tabindex='-1', aria-labelledby='reportModalLabel', aria-hidden='true')
-                            .modal-dialog
-                                .modal-content
-                                    .modal-header
-                                        h5#reportModalLabel.modal-title Báo lỗi
-                                        button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
-                                    form(method='post', action='/report')
-                                        .modal-body
-                                            .mb-3
-                                                label.col-form-label(for='message-text')
-                                                    | Vấn đề bạn gặp phải là gì?
-                                                .form-check.d-flex.align-items-center.mt-1.mb-1
-                                                    input#flexRadioReport1.form-check-input.mt-0.me-2(type='radio', name='content', value='Sai nội dung')
-                                                    label.form-check-label(for='flexRadioReport1')
-                                                        | Sai nội dung
-                                                .form-check.d-flex.align-items-center.mt-1.mb-1
-                                                    input#flexRadioReport2.form-check-input.mt-0.me-2(type='radio', name='content', value='Lý thuyết khó hiểu')
-                                                    label.form-check-label(for='flexRadioReport2')
-                                                        | Lý thuyết khó hiểu
-                                                .form-check.d-flex.align-items-center.mt-1.mb-1
-                                                    input#flexRadioReport3.form-check-input.mt-0.me-2(type='radio', name='content', value='Nội dung chưa phù hợp')
-                                                    label.form-check-label(for='flexRadioReport3')
-                                                        | Nội dung chưa phù hợp (VD: Đã giảm tải,...)
-                                                .form-check.d-flex.align-items-center.mt-1.mb-1
-                                                    input#flexRadioReport4.form-check-input.mt-0.me-2(type='radio', name='content', value='Lỗi khác')
-                                                    label.form-check-label(for='flexRadioReport4')
-                                                        | Lỗi khác
-                                            .mb-3
-                                                label.col-form-label(for='message-text')
-                                                    | Mô tả chi tiết
-                                                textarea#message-text.form-control(rows='5', name='summary', placeholder='Góp ý lỗi bạn gặp phải với chúng tôi để khắc phục sớm nhất. Cảm ơn, chúc bạn học tập vui vẻ!', required)
-                                        .modal-footer
-                                            button.btn.btn-secondary(type='button', data-bs-dismiss='modal')
-                                                | Hủy bỏ
-                                            button.btn.btn-primary(type='submit')
-                                                | Gửi
+                    .d-flex.align-items-center.justify-content-end
+                        if theory
+                            .download
+                                form(action=`/theories/${lession._id}/export` method='post')
+                                    button.download__btn(type='submit')
+                                        ion-icon(name='arrow-down-circle')
+                                        span.ms-1 Tải về
+                        .report.ms-4
+                            button.report__btn(type='button', data-bs-toggle='modal', data-bs-target='#reportModal')
+                                ion-icon(name='close-circle')
+                                span.ms-1 Báo lỗi
+                            #reportModal.modal.fade(tabindex='-1', aria-labelledby='reportModalLabel', aria-hidden='true')
+                                .modal-dialog
+                                    .modal-content
+                                        .modal-header
+                                            h5#reportModalLabel.modal-title Báo lỗi
+                                            button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                                        form(method='post', action='/report')
+                                            .modal-body
+                                                .mb-3
+                                                    label.col-form-label(for='message-text')
+                                                        | Vấn đề bạn gặp phải là gì?
+                                                    .form-check.d-flex.align-items-center.mt-1.mb-1
+                                                        input#flexRadioReport1.form-check-input.mt-0.me-2(type='radio', name='content', value='Sai nội dung')
+                                                        label.form-check-label(for='flexRadioReport1')
+                                                            | Sai nội dung
+                                                    .form-check.d-flex.align-items-center.mt-1.mb-1
+                                                        input#flexRadioReport2.form-check-input.mt-0.me-2(type='radio', name='content', value='Lý thuyết khó hiểu')
+                                                        label.form-check-label(for='flexRadioReport2')
+                                                            | Lý thuyết khó hiểu
+                                                    .form-check.d-flex.align-items-center.mt-1.mb-1
+                                                        input#flexRadioReport3.form-check-input.mt-0.me-2(type='radio', name='content', value='Nội dung chưa phù hợp')
+                                                        label.form-check-label(for='flexRadioReport3')
+                                                            | Nội dung chưa phù hợp (VD: Đã giảm tải,...)
+                                                    .form-check.d-flex.align-items-center.mt-1.mb-1
+                                                        input#flexRadioReport4.form-check-input.mt-0.me-2(type='radio', name='content', value='Lỗi khác')
+                                                        label.form-check-label(for='flexRadioReport4')
+                                                            | Lỗi khác
+                                                .mb-3
+                                                    label.col-form-label(for='message-text')
+                                                        | Mô tả chi tiết
+                                                    textarea#message-text.form-control(rows='5', name='summary', placeholder='Góp ý lỗi bạn gặp phải với chúng tôi để khắc phục sớm nhất. Cảm ơn, chúc bạn học tập vui vẻ!', required)
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button', data-bs-dismiss='modal')
+                                                    | Hủy bỏ
+                                                button.btn.btn-primary(type='submit')
+                                                    | Gửi
             .col-sm-4
                 .learning__list
                     h6= subject.name + " " + subject.gradeID
@@ -125,6 +132,7 @@ block main
     script.
         $(document).ready(function () {
             $(".learning__content .image_resized").each(function (index, item) {
+                item.style = 'margin-left: 6px; width: 24px; cursor: pointer';
                 item.onclick = function () {
                     var speakText = $(this).attr("alt");
                     //- responsiveVoice.speak(speakText);

@@ -1698,29 +1698,35 @@ blockquote {
             display: block; }
       .main .learning__content .title {
         font-weight: 600; }
-      .main .learning__content .report {
+      .main .learning__content .download__btn {
         display: flex;
         align-items: center;
-        justify-content: flex-end; }
-        .main .learning__content .report__btn {
-          display: flex;
-          align-items: center;
-          outline: none;
-          border: none;
-          background: transparent; }
-          .main .learning__content .report__btn ion-icon {
-            font-size: 26px; }
-          .main .learning__content .report__btn:hover {
-            opacity: 0.7; }
-        .main .learning__content .report .modal-dialog {
-          transition: all 0.3s ease; }
-        .main .learning__content .report .btn-close {
-          box-shadow: unset; }
-        .main .learning__content .report .col-form-label {
-          font-weight: 600; }
-        .main .learning__content .report textarea:focus {
-          box-shadow: unset;
-          border-color: unset; }
+        outline: none;
+        border: none;
+        background: transparent; }
+        .main .learning__content .download__btn ion-icon {
+          font-size: 26px; }
+        .main .learning__content .download__btn:hover {
+          opacity: 0.7; }
+      .main .learning__content .report__btn {
+        display: flex;
+        align-items: center;
+        outline: none;
+        border: none;
+        background: transparent; }
+        .main .learning__content .report__btn ion-icon {
+          font-size: 26px; }
+        .main .learning__content .report__btn:hover {
+          opacity: 0.7; }
+      .main .learning__content .report .modal-dialog {
+        transition: all 0.3s ease; }
+      .main .learning__content .report .btn-close {
+        box-shadow: unset; }
+      .main .learning__content .report .col-form-label {
+        font-weight: 600; }
+      .main .learning__content .report textarea:focus {
+        box-shadow: unset;
+        border-color: unset; }
   .main .learning-result {
     padding-left: 40px;
     padding-top: 36px;
