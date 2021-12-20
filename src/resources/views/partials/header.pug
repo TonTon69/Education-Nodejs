@@ -48,9 +48,9 @@ header.header
             .header__actions--noti
                 .header__actions--notiIcon
                     ion-icon(name="notifications")
-                    if countNotifUnread > 0
-                        span.position-absolute.top-0.start-100.translate-middle.badge.rounded-circle.bg-danger
-                            | #{countNotifUnread}
+                    //- if countNotifUnread > 0
+                    //-     span.position-absolute.top-0.start-100.translate-middle.badge.rounded-circle.bg-danger
+                    //-         | #{countNotifUnread}
                 .header__actions--notiMenu.shadow
                     .notiMenu-header.d-flex.align-items-center.justify-content-between
                         h6.mb-0 Thông báo
@@ -60,7 +60,7 @@ header.header
                             if notifications.length > 0
                                 each noti in notifications
                                     li.list__item
-                                        a.list__link(href=`/qa/${noti.question[0].slug}/?ref=notif` class=(noti.isRead ? undefined : "unread"))
+                                        a.list__link(href=(noti.question.length > 0 ? `/qa/${noti.question[0].slug}/?ref=notif`: `/qa/${noti.comment.question[0].slug}/?ref=notif`) class=(noti.isRead ? undefined : "unread"))
                                             .d-flex.align-items-center
                                                 img.notification-avatar(src=noti.sender[0].avatar)
                                                 .px-3.notification-message

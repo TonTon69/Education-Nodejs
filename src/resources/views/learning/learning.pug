@@ -50,7 +50,7 @@ block main
                     if theory
                         .mt-4.mb-4 !{theory.content}
                     else
-                        .mt-4.mb-4(style='line-height: 1.5') Nội dung bài học đang cập nhật. Vui lòng thử lại sau!
+                        .mt-4.mb-4(style='line-height: 1.5') Nội dung lý thuyết của bài học đang cập nhật.
                     .text-center.mt-4.mb-4
                         if exercises.length > 0
                             a.btn.btn-exercise.rounded-pill(type="button" data-bs-toggle="modal" data-bs-target="#exerciseModal")
@@ -122,3 +122,14 @@ block main
                                                     a(href=`/learning/${subject.slug}?name=${item.slug}`).lession__item.active Bài #{item.lessionNumber}. #{item.name}
                                                 else
                                                     a(href=`/learning/${subject.slug}?name=${item.slug}`).lession__item Bài #{item.lessionNumber}. #{item.name}
+    script.
+        $(document).ready(function () {
+            $(".learning__content .image_resized").each(function (index, item) {
+                item.onclick = function () {
+                    var speakText = $(this).attr("alt");
+                    //- responsiveVoice.speak(speakText);
+                    var msg = new SpeechSynthesisUtterance(speakText);
+                    window.speechSynthesis.speak(msg);
+                }
+            })
+        })

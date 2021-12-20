@@ -65,38 +65,47 @@ module.exports = {
 
     notification: async function (req, res, next) {
         try {
-            const user = await User.findById(req.signedCookies.userId);
-            if (user) {
-                const notifications = await Notification.aggregate([
-                    { $match: { receiverID: ObjectId(user._id) } },
-                    {
-                        $lookup: {
-                            from: "users",
-                            localField: "senderID",
-                            foreignField: "_id",
-                            as: "sender",
-                        },
+            const notifications = await Notification.aggregate([
+                {
+                    $match: {
+                        receiverID: ObjectId(req.signedCookies.userId),
                     },
-                    {
-                        $lookup: {
-                            from: "questions",
-                            localField: "sourceID",
-                            foreignField: "_id",
-                            as: "question",
-                        },
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "senderID",
+                        foreignField: "_id",
+                        as: "sender",
                     },
-                    { $sort: { createdAt: -1 } },
-                ]);
-                const countNotifUnread = await Notification.countDocuments({
-                    receiverID: user._id,
-                    isRead: false,
-                });
-                res.locals.notifications = notifications;
-                res.locals.countNotifUnread = countNotifUnread;
-            } else {
-                res.locals.notifications = [];
-                res.locals.countNotifUnread = 0;
-            }
+                },
+                {
+                    $lookup: {
+                        from: "questions",
+                        localField: "sourceID",
+                        foreignField: "_id",
+                        as: "question",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "comments",
+                        localField: "sourceID",
+                        foreignField: "_id",
+                        as: "comment",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "questions",
+                        localField: "comment.questionID",
+                        foreignField: "_id",
+                        as: "comment.question",
+                    },
+                },
+                { $sort: { createdAt: -1 } },
+            ]);
+            res.locals.notifications = notifications;
             next();
         } catch (error) {
             console.log(error);
