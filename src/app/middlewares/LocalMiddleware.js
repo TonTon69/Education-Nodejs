@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Subject = require("../models/Subject");
 const Blog = require("../models/Blog");
 const Notification = require("../models/Notification");
+const Question = require("../models/Question");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -36,7 +37,26 @@ module.exports = {
                 const searchBlogs = await Blog.find({
                     title: { $regex: searchString, $options: "$i" },
                 });
-                res.render("helper/search", { seacrchSubjects, searchBlogs });
+                const searchQa = await Question.aggregate([
+                    {
+                        $match: {
+                            title: { $regex: searchString, $options: "$i" },
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "userID",
+                            foreignField: "_id",
+                            as: "user",
+                        },
+                    },
+                ]);
+                res.render("helper/search", {
+                    seacrchSubjects,
+                    searchBlogs,
+                    searchQa,
+                });
             }
         } catch (error) {
             req.flash("error", "Không tìm thấy kết quả!");

@@ -18,3 +18,12 @@
             a(href=`/blog/${blog.slug}`).search__result--item.d-flex.align-items-center
                 img(src=blog.image, width=32, height=32).rounded-circle
                 span.ms-3.fs-7= blog.title
+    if searchQa.length > 0
+        .search__result--heading.d-flex.align-items-center.pt-4.justify-content-between
+            h5.text-uppercase.mb-0.fs-7.text-dark hỏi đáp
+            a(href='/qa').fs-7.see-more Xem thêm
+        hr
+        each qa in searchQa
+            a(href=`/qa/${qa.slug}`).search__result--item.d-flex.align-items-center
+                img(src=qa.user[0].avatar, width=32, height=32, alt=qa.user[0].fullname).rounded-circle
+                span.ms-3.fs-7= qa.title
