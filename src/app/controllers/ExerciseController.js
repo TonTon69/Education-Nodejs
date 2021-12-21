@@ -15,11 +15,14 @@ const { htmlToText } = require("html-to-text");
 
 class ExerciseController {
     // [GET]/exercise/:slug?name=lession
-    async exercise(req, res, next) {
+    async exercise(req, res) {
         try {
             const subject = await Subject.findOne({ slug: req.params.slug });
             if (subject) {
                 const lession = await Lession.findOne({ slug: req.query.name });
+                const exercisesCount = await Exercise.countDocuments({
+                    lessionID: lession.id,
+                });
                 const exercises = await Exercise.aggregate([
                     {
                         $match: {
@@ -37,6 +40,7 @@ class ExerciseController {
                     {
                         $project: { answer: 0, explain: 0 },
                     },
+                    { $sample: { size: exercisesCount } },
                 ]);
 
                 // làm lại tất cả
@@ -94,7 +98,7 @@ class ExerciseController {
     }
 
     // [POST]/exercise/:slug?name=lession
-    async postExercise(req, res, next) {
+    async postExercise(req, res) {
         try {
             const lession = await Lession.findOne({ slug: req.query.name });
             if (lession) {
@@ -196,7 +200,7 @@ class ExerciseController {
     }
 
     // [GET]/exercise?lession
-    async detail(req, res, next) {
+    async detail(req, res) {
         if (ObjectId.isValid(req.query.lession)) {
             const lession = await Lession.findById(req.query.lession);
             if (lession) {

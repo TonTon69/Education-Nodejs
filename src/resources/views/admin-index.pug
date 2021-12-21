@@ -64,13 +64,13 @@ block content
                             each item, index in ranks
                                 .col-lg-4.d-flex.grid-margin.stretch-card
                                     .card.top-score-border.position-relative
-                                        .position-absolute(style="top: 5px; right: 5px")
-                                            if index === 0
-                                                img(src="/admin/images/dashboard/top1.png" width=30 height=40 style="object-fit: contain")
-                                            else if index === 1
-                                                img(src="/admin/images/dashboard/top2.png" width=30 height=40 style="object-fit: contain")
-                                            else if index === 2
-                                                img(src="/admin/images/dashboard/top3.png" width=30 height=40 style="object-fit: contain")
+                                        //- .position-absolute(style="top: 5px; right: 5px")
+                                        //-     if index === 0
+                                        //-         img(src="/admin/images/dashboard/top1.png" width=30 height=40 style="object-fit: contain")
+                                        //-     else if index === 1
+                                        //-         img(src="/admin/images/dashboard/top2.png" width=30 height=40 style="object-fit: contain")
+                                        //-     else if index === 2
+                                        //-         img(src="/admin/images/dashboard/top3.png" width=30 height=40 style="object-fit: contain")
                                         .card-body
                                             h2.text-dark.mb-2.font-weight-bold= item.score
                                                 i.mdi.mdi-heart.text-danger.ml-2
@@ -84,13 +84,13 @@ block content
                             each item, index in top3
                                 .col-lg-4.d-flex.grid-margin.stretch-card
                                     .card.top-score-border.position-relative
-                                        .position-absolute(style="top: 5px; right: 5px")
-                                            if index === 0
-                                                img(src="/admin/images/dashboard/top1.png" width=30 height=40 style="object-fit: contain")
-                                            else if index === 1
-                                                img(src="/admin/images/dashboard/top2.png" width=30 height=40 style="object-fit: contain")
-                                            else if index === 2
-                                                img(src="/admin/images/dashboard/top3.png" width=30 height=40 style="object-fit: contain")
+                                        //- .position-absolute(style="top: 5px; right: 5px")
+                                        //-     if index === 0
+                                        //-         img(src="/admin/images/dashboard/top1.png" width=30 height=40 style="object-fit: contain")
+                                        //-     else if index === 1
+                                        //-         img(src="/admin/images/dashboard/top2.png" width=30 height=40 style="object-fit: contain")
+                                        //-     else if index === 2
+                                        //-         img(src="/admin/images/dashboard/top3.png" width=30 height=40 style="object-fit: contain")
                                         .card-body
                                             h2.text-dark.mb-2.font-weight-bold= Math.round(item.totalScore)
                                                 i.mdi.mdi-heart.text-danger.ml-2
