@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 const Theory = new Schema(
     {
         content: { type: String },
+        audioUrl: { type: String, default: "" },
         lessionID: { type: Schema.Types.ObjectId, ref: "Lession" },
     },
     {

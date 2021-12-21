@@ -49,6 +49,12 @@ block main
                     hr
                     if theory
                         .mt-4.mb-4 !{theory.content}
+                        if theory.audioUrl !== ""
+                            - var audioId = theory.audioUrl.split("/")[5];
+                            .mt-4
+                                audio(controls)
+                                    source(src=`https://drive.google.com/uc?id=${audioId}&export=download`, type='audio/mp3')
+
                     else
                         .mt-4.mb-4(style='line-height: 1.5') Nội dung lý thuyết của bài học đang cập nhật.
                     .text-center.mt-4.mb-4

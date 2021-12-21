@@ -22,7 +22,12 @@ block content
 
                     form.mt-4(name='add-theory-form', action='/theories/create', method='post')
                         input(type='text', name='lessionID', value=lession._id, hidden)
-                        textarea#content-theory.form-control(type='text', placeholder='Nhập nội dung lý thuyết ở đây', name='content')
+                        textarea#content-theory.form-control(type='text', placeholder='Nhập nội dung lý thuyết tại đây...', name='content')
+                        
+                        .form-group.row.mt-4
+                            label.col-sm-2.col-form-label.text-dark(for='audioUrl') Liên kết audio
+                            .col-sm-10
+                                input#audioUrl.form-control(type='text', placeholder='Nhập liên kết file audio tại đây (nếu có)', name='audioUrl')
                         .text-center.mt-4
                             button.btn.btn-primary.ml-2#btn-add-theory(type='submit') Lưu lại
     if errors.length > 0
