@@ -78,47 +78,55 @@ block content
                                                                 input.form-check-input.mt-0.ml-0(type='radio', disabled)
                                                                 label.form-check-label.text-dark
                                                                     | B. !{result.exercise[0].option2}
-                                                        if result.exercise[0].answer === result.exercise[0].option3
-                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-green
-                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
-                                                                label.form-check-label.text-white
-                                                                    | C. !{result.exercise[0].option3}
-                                                        else if result.option === result.exercise[0].option3
-                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-danger
-                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
-                                                                label.form-check-label.text-white
-                                                                    | C. !{result.exercise[0].option3}
-                                                        else
-                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center
-                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
-                                                                label.form-check-label.text-dark
-                                                                    | C. !{result.exercise[0].option3}
-                                                        if result.exercise[0].answer === result.exercise[0].option4
-                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-green
-                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
-                                                                label.form-check-label.text-white
-                                                                    | D. !{result.exercise[0].option4}
-                                                        else if result.option === result.exercise[0].option4
-                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-danger
-                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
-                                                                label.form-check-label.text-white
-                                                                    | D. !{result.exercise[0].option4}
-                                                        else
-                                                            .col-sm-6.p-2.form-check.d-flex.align-items-center
-                                                                input.form-check-input.mt-0.ml-0(type='radio', disabled)
-                                                                label.form-check-label.text-dark
-                                                                    | D. !{result.exercise[0].option4}
+                                                        if result.exercise[0].option3
+                                                            if result.exercise[0].answer === result.exercise[0].option3
+                                                                .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-green
+                                                                    input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                    label.form-check-label.text-white
+                                                                        | C. !{result.exercise[0].option3}
+                                                            else if result.option === result.exercise[0].option3
+                                                                .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-danger
+                                                                    input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                    label.form-check-label.text-white
+                                                                        | C. !{result.exercise[0].option3}
+                                                            else
+                                                                .col-sm-6.p-2.form-check.d-flex.align-items-center
+                                                                    input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                    label.form-check-label.text-dark
+                                                                        | C. !{result.exercise[0].option3}
+                                                        if result.exercise[0].option4
+                                                            if result.exercise[0].answer === result.exercise[0].option4
+                                                                .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-green
+                                                                    input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                    label.form-check-label.text-white
+                                                                        | D. !{result.exercise[0].option4}
+                                                            else if result.option === result.exercise[0].option4
+                                                                .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-danger
+                                                                    input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                    label.form-check-label.text-white
+                                                                        | D. !{result.exercise[0].option4}
+                                                            else
+                                                                .col-sm-6.p-2.form-check.d-flex.align-items-center
+                                                                    input.form-check-input.mt-0.ml-0(type='radio', disabled)
+                                                                    label.form-check-label.text-dark
+                                                                        | D. !{result.exercise[0].option4}
                                                     .mt-4
                                                         .text-dark
                                                             div
                                                                 i.mdi.mdi-arrow-right
                                                                 span.ml-2.font-weight-bold Phương pháp giải
-                                                            .mt-2 !{result.exercise[0].recommend}
+                                                            if result.exercise[0].recommend
+                                                                .mt-2 !{result.exercise[0].recommend}
+                                                            else
+                                                                .mt-2 Không có phương pháp giải
                                                         .text-dark.mt-4
                                                             div
                                                                 i.mdi.mdi-arrow-right
                                                                 span.ml-2.font-weight-bold Lời giải
-                                                            .mt-2 !{result.exercise[0].explain}
+                                                            if result.exercise[0].explain
+                                                                .mt-2 !{result.exercise[0].explain}
+                                                            else
+                                                                .mt-2 Không có lời giải chi tiết
     script.
         $(document).ready(function () {
             $("#result-tab-1").addClass("active");

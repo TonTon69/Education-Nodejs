@@ -8,9 +8,9 @@ const Question = new Schema(
     {
         title: { type: String, require: true },
         content: { type: String, require: true },
-        thumbnail: { type: String, default: "" },
-        topic: { type: String, default: "" },
-        tags: { type: String, default: "" },
+        thumbnail: { type: String },
+        topic: { type: String },
+        tags: { type: String },
         numViews: { type: Number, default: 0 },
         numLikes: { type: Number, default: 0 },
         numComments: { type: Number, default: 0 },

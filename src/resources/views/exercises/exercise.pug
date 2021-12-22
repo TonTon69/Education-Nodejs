@@ -70,6 +70,12 @@ block main
                                     span.index-qa= i
                                 button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= exercise.Cate[0].type
                             .question.mt-2 !{exercise.question}
+                            if subject.name === "Tiếng Anh"
+                                if exercise.audioUrl
+                                    - var audioId = exercise.audioUrl.split("/")[5];
+                                    .mt-3
+                                        audio(controls)
+                                            source(src=`https://drive.google.com/uc?id=${audioId}&export=download`, type='audio/mp3')  
                             .options.mt-3
                                 .form-check.d-flex.align-items-center
                                     input.form-check-input.mt-0.me-3(id=`option-1-${i}`, type='radio', name=exercise._id, value=exercise.option1)
@@ -79,18 +85,20 @@ block main
                                     input.form-check-input.mt-0.me-3(id=`option-2-${i}`, type='radio', name=exercise._id, value=exercise.option2)
                                     label.form-check-label(for=`option-2-${i}`)
                                         | B. !{exercise.option2}
-                                .form-check.d-flex.align-items-center
-                                    input.form-check-input.mt-0.me-3(id=`option-3-${i}`, type='radio', name=exercise._id, value=exercise.option3)
-                                    label.form-check-label(for=`option-3-${i}`)
-                                        | C. !{exercise.option3}
-                                .form-check.d-flex.align-items-center
-                                    input.form-check-input.mt-0.me-3(id=`option-4-${i}`, type='radio', name=exercise._id, value=exercise.option4)
-                                    label.form-check-label(for=`option-4-${i}`)
-                                        | D. !{exercise.option4}
+                                if exercise.option3
+                                    .form-check.d-flex.align-items-center
+                                        input.form-check-input.mt-0.me-3(id=`option-3-${i}`, type='radio', name=exercise._id, value=exercise.option3)
+                                        label.form-check-label(for=`option-3-${i}`)
+                                            | C. !{exercise.option3}
+                                if exercise.option4
+                                    .form-check.d-flex.align-items-center
+                                        input.form-check-input.mt-0.me-3(id=`option-4-${i}`, type='radio', name=exercise._id, value=exercise.option4)
+                                        label.form-check-label(for=`option-4-${i}`)
+                                            | D. !{exercise.option4}
                             .check-result.mb-3.d-none
                                 span.message
                                 span.answer-true
-                            if exercise.recommend !== null
+                            if exercise.recommend
                                 .recommend(id="")
                                     .recommend-header.text-primary.d-inline-flex.align-items-center.mb-4
                                         span.me-1 Gợi ý
@@ -113,6 +121,11 @@ block main
             var listExercise = !{JSON.stringify(exercises)};
             var currentQa = 0;
 
+            if (currentQa == listExercise.length - 1) {
+                $("#btn-next-question").hide();
+                $("#btn-submit-exercise").show();
+            }
+
             $(".exercise-item").first().addClass("show");
 
             //StopWatch
@@ -123,10 +136,17 @@ block main
                 e.preventDefault();
                 var inputChecked = $(".form-check-input:checked");
                 var arrayTemp = [];
+
+                if (inputChecked.length === 0 && (confirm("Bạn muốn bỏ qua câu này?") === false)) {
+                    return false;
+                }
+
                 arrayTemp.push({
                     name: inputChecked.attr("name"),
                     value: inputChecked.attr("value"),
                 });
+
+                currentQa++;
 
                 $.ajax({
                     type: "POST",
@@ -134,8 +154,9 @@ block main
                     contentType: "application/json",
                     data: JSON.stringify({
                         objectData: arrayTemp,
-                        exercise: $(".form-check-input").attr("name"),
-                        time: $("#stopwatch").text()
+                        exercise: $(".exercise-item.show .form-check-input").attr("name"),
+                        time: $("#stopwatch").text(),
+                        currentQa: currentQa,
                     }),
                     success: function (data) {
                         console.log(data);
@@ -152,6 +173,11 @@ block main
                 
                 var inputChecked = $(".form-check-input:checked");
                 var arrayTemp = [];
+
+                if (inputChecked.length === 0 && (confirm("Bạn muốn bỏ qua câu này?") === false)) {
+                    return false;
+                }
+
                 arrayTemp.push({
                     name: inputChecked.attr("name"),
                     value: inputChecked.attr("value"),
@@ -163,7 +189,7 @@ block main
                     contentType: "application/json",
                     data: JSON.stringify({
                         objectData: arrayTemp,
-                        exercise: $(".form-check-input").attr("name"),
+                        exercise: $(".exercise-item.show .form-check-input").attr("name"),
                         time: $("#stopwatch").text(),
                     }),
                     success: function (data) {
@@ -171,10 +197,6 @@ block main
                     },
                 });
 
-                if (inputChecked.length === 0 && (confirm("Bạn muốn bỏ qua câu này?") === false)) {
-                    return false;
-                }
-                
                 currentQa++;
                 var exerciseItem = $(".exercise-item");
                 for (var i = 0; i < exerciseItem.length; i++) {

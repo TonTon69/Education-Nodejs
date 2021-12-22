@@ -33,6 +33,11 @@ block content
                         .form-group.row
                             .col-sm-12
                                 textarea#exercise-question.form-control(type='text', placeholder='Nhập câu hỏi tại đây...', name='question')
+                        if subject.name === "Tiếng Anh"
+                            .form-group.row
+                                label.col-sm-2.col-form-label.text-dark(for='audioUrl') Liên kết audio
+                                .col-sm-10
+                                    input#audioUrl.form-control(type='text', placeholder='Nhập liên kết file audio tại đây (nếu có)', name='audioUrl')
                         .form-group.row
                             .col-sm-3
                                 .text-center.position-relative

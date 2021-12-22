@@ -20,9 +20,6 @@ class ExerciseController {
             const subject = await Subject.findOne({ slug: req.params.slug });
             if (subject) {
                 const lession = await Lession.findOne({ slug: req.query.name });
-                const exercisesCount = await Exercise.countDocuments({
-                    lessionID: lession.id,
-                });
                 const exercises = await Exercise.aggregate([
                     {
                         $match: {
@@ -40,7 +37,7 @@ class ExerciseController {
                     {
                         $project: { answer: 0, explain: 0 },
                     },
-                    { $sample: { size: exercisesCount } },
+                    { $sample: { size: 20 } },
                 ]);
 
                 // làm lại tất cả
@@ -126,7 +123,7 @@ class ExerciseController {
                     lessionID: lession._id,
                 });
                 if (findStatistical) {
-                    if (myJsonObj.name == exercises[exercises.length - 1]._id) {
+                    if (req.body.currentQa == exercises.length) {
                         await Statistical.updateOne(
                             { _id: findStatistical._id },
                             {
@@ -280,6 +277,7 @@ class ExerciseController {
             recommend,
             explain,
             ceID,
+            audioUrl,
         } = req.body;
 
         if (answer === "A") {
@@ -304,6 +302,7 @@ class ExerciseController {
                 recommend,
                 explain,
                 ceID,
+                audioUrl,
             }
         );
         req.flash("success", "Cập nhật thành công!");
@@ -343,6 +342,7 @@ class ExerciseController {
             recommend,
             explain,
             ceID,
+            audioUrl,
         } = req.body;
 
         if (answer === "A") {
@@ -366,6 +366,7 @@ class ExerciseController {
             recommend,
             explain,
             ceID,
+            audioUrl,
         });
         await exercise.save();
         req.flash("success", "Thêm mới thành công!");
@@ -404,13 +405,13 @@ class ExerciseController {
                         }
                     });
 
-                    if (row[6] === "A") {
+                    if (row[6] === "A" || row[6] === "a") {
                         row[6] = row[2];
-                    } else if (row[6] === "B") {
+                    } else if (row[6] === "B" || row[6] === "b") {
                         row[6] = row[3];
-                    } else if (row[6] === "C") {
+                    } else if (row[6] === "C" || row[6] === "c") {
                         row[6] = row[4];
-                    } else if (row[6] === "D") {
+                    } else if (row[6] === "D" || row[6] === "d") {
                         row[6] = row[5];
                     }
 

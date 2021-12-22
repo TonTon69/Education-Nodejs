@@ -49,7 +49,7 @@ block main
                     hr
                     if theory
                         .mt-4.mb-4 !{theory.content}
-                        if theory.audioUrl !== ""
+                        if theory.audioUrl
                             - var audioId = theory.audioUrl.split("/")[5];
                             .mt-4
                                 audio(controls)

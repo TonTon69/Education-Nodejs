@@ -13,6 +13,12 @@ block main
                                     span.index-qa= count
                                 button.btn.btn-success.btn-padding.btn-type.rounded-pill.fs-7= item.exercise.category[0].type
                             .question.mt-2 !{item.exercise.question}
+                            if subject.name === "Tiếng Anh"
+                                if item.exercise.audioUrl
+                                    - var audioId = item.exercise.audioUrl.split("/")[5];
+                                    .mt-3
+                                        audio(controls)
+                                            source(src=`https://drive.google.com/uc?id=${audioId}&export=download`, type='audio/mp3')  
                             .options.mt-3.row
                                 .col-sm-6.form-check.d-flex.align-items-center
                                     input.form-check-input.ms-0.mt-0.me-3(id="option1", type='radio', disabled)
@@ -22,14 +28,16 @@ block main
                                     input.form-check-input.ms-0.mt-0.me-3(id="option2", type='radio', disabled)
                                     label.form-check-label(for="option2")
                                         | B. !{item.exercise.option2}
-                                .col-sm-6.form-check.d-flex.align-items-center
-                                    input.form-check-input.ms-0.mt-0.me-3(id="option3", type='radio', disabled)
-                                    label.form-check-label(for="option3")
-                                        | C. !{item.exercise.option3}
-                                .col-sm-6.form-check.d-flex.align-items-center
-                                    input.form-check-input.ms-0.mt-0.me-3(id="option4", type='radio', disabled)
-                                    label.form-check-label(for="option4")
-                                        | D. !{item.exercise.option4}
+                                if item.exercise.option3
+                                    .col-sm-6.form-check.d-flex.align-items-center
+                                        input.form-check-input.ms-0.mt-0.me-3(id="option3", type='radio', disabled)
+                                        label.form-check-label(for="option3")
+                                            | C. !{item.exercise.option3}
+                                if item.exercise.option4
+                                    .col-sm-6.form-check.d-flex.align-items-center
+                                        input.form-check-input.ms-0.mt-0.me-3(id="option4", type='radio', disabled)
+                                        label.form-check-label(for="option4")
+                                            | D. !{item.exercise.option4}
 
                             if  item.option == item.exercise.answer
                                 .check-result.valid.mb-4.mt-2.d-flex.align-items-center
@@ -101,10 +109,16 @@ block main
                                     ion-icon(name='sunny')
                                 .explain-body.mt-4
                                     span.fw-bold Phương pháp giải
-                                    .mt-2.recommend-content !{item.exercise.recommend}
+                                    if item.exercise.recommend
+                                        .mt-4.recommend-content !{item.exercise.recommend}
+                                    else
+                                        .mt-4 Không có phương pháp giải
                                     hr
                                     span.fw-bold Lời giải
-                                    .mt-2.explain-content !{item.exercise.explain}
+                                    if item.exercise.explain
+                                        .mt-4.explain-content !{item.exercise.explain}
+                                    else
+                                        .mt-4 Không có lời giải chi tiết
                 .result
                     .animate
                     .score

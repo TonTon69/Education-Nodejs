@@ -53,6 +53,11 @@ block content
                                                             .form-group.row
                                                                 .col-sm-12
                                                                     textarea#question.form-control(type='text', placeholder='Nhập câu hỏi tại đây...', name='question')= exercise.question
+                                                            if exercises[0].lession.unit.subject[0].name === "Tiếng Anh"
+                                                                .form-group.row
+                                                                    label.col-sm-2.col-form-label.text-dark(for='audioUrl') Liên kết audio
+                                                                    .col-sm-10
+                                                                        input#audioUrl.form-control(type='text', placeholder='Nhập liên kết file audio tại đây (nếu có)', name='audioUrl', value=exercise.audioUrl)
                                                             .form-group.row
                                                                 .col-sm-3
                                                                     .text-center.position-relative
@@ -61,7 +66,7 @@ block content
                                                                             span
                                                                                 img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg', alt='Checked Icon')
                                                                         .custom-desc Đánh dấu đây là câu trả lời đúng
-                                                                    textarea#option1.form-control.option-custom(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', required, name='option1')= exercise.option1
+                                                                    textarea#option1.form-control.option-custom(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', name='option1')= exercise.option1
                                                                 .col-sm-3
                                                                     .text-center.position-relative
                                                                         input.form-check-input-custom.color-2(id=`custom2-${i}` type='radio' name='answer' value='B' checked=exercise.answer==exercise.option2)
@@ -69,7 +74,7 @@ block content
                                                                             span
                                                                                 img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg', alt='Checked Icon')
                                                                         .custom-desc Đánh dấu đây là câu trả lời đúng
-                                                                    textarea#option2.form-control.option-custom(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', required, name='option2')= exercise.option2
+                                                                    textarea#option2.form-control.option-custom(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', name='option2')= exercise.option2
                                                                 .col-sm-3
                                                                     .text-center.position-relative
                                                                         input.form-check-input-custom.color-3(id=`custom3-${i}` type='radio' name='answer' value='C' checked=exercise.answer==exercise.option3)
@@ -77,7 +82,7 @@ block content
                                                                             span
                                                                                 img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg', alt='Checked Icon')
                                                                         .custom-desc Đánh dấu đây là câu trả lời đúng
-                                                                    textarea#option3.form-control.option-custom(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', required, name='option3')= exercise.option3
+                                                                    textarea#option3.form-control.option-custom(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', name='option3')= exercise.option3
                                                                 .col-sm-3
                                                                     .text-center.position-relative
                                                                         input.form-check-input-custom.color-4(id=`custom4-${i}` type='radio' name='answer' value='D' checked=exercise.answer==exercise.option4)
@@ -85,12 +90,12 @@ block content
                                                                             span
                                                                                 img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg', alt='Checked Icon')
                                                                         .custom-desc Đánh dấu đây là câu trả lời đúng
-                                                                    textarea#option4.form-control.option-custom(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', required, name='option4')= exercise.option4
+                                                                    textarea#option4.form-control.option-custom(type='text', rows='8', placeholder='Nhập 1 tùy chọn câu trả lời tại đây...', name='option4')= exercise.option4
                                             
                                                             .form-group.row
                                                                 label.col-sm-3.col-form-label.text-dark(for='recommend') Gợi ý
                                                                 .col-sm-9
-                                                                    textarea#recommend.form-control(type='text', rows="4" placeholder='Nhập gợi ý', required, name='recommend')=exercise.recommend
+                                                                    textarea#recommend.form-control(type='text', rows="4" placeholder='Nhập gợi ý', name='recommend')=exercise.recommend
                                                             .form-group.row
                                                                 label.col-sm-3.col-form-label.text-dark(for='explain') Lời giải
                                                                 .col-sm-9

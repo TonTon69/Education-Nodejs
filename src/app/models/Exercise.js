@@ -8,11 +8,11 @@ const Exercise = new Schema(
         question: { type: String, require: true },
         option1: { type: String, require: true },
         option2: { type: String, require: true },
-        option3: { type: String, require: true },
-        option4: { type: String, require: true },
+        option3: { type: String },
+        option4: { type: String },
         answer: { type: String, require: true },
-        explain: { type: String, require: true },
-        recommend: { type: String, require: true },
+        explain: { type: String },
+        recommend: { type: String },
         ceID: {
             type: Schema.Types.ObjectId,
             ref: "Exercise-Category",
@@ -23,6 +23,7 @@ const Exercise = new Schema(
             ref: "Lession",
             require: true,
         },
+        audioUrl: { type: String },
     },
     {
         timestamps: true,
