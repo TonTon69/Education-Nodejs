@@ -31,7 +31,8 @@ block content
                                         td= report.content
                                         td= report.summary
                                         td= moment(report.createdAt).format("DD-MM-YYYY")
-                                        td= report.user[0].fullname
+                                        td
+                                            a(href=`/user/${report.user[0]._id}/update`)= report.user[0].fullname
                                         td.text-center(style='width: 15%')
                                             a.btn.btn-secondary.mr-2(href=`/reports/${report._id}/detail`) Chi tiết
                                             button.btn.btn-danger(data-toggle="modal" data-target="#deleteReportModal", data-id=report._id) Xóa

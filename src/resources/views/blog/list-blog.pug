@@ -34,7 +34,7 @@ block content
                                     th.font-weight-bold Ảnh bìa
                                     th.font-weight-bold Ti&ecirc;u &dstrok;&#x1EC1;
                                     th.font-weight-bold Th&#x1EC3; lo&#x1EA1;i
-                                    th.font-weight-bold Tác giả
+                                    th.font-weight-bold Người đăng
                                     th.font-weight-bold Ng&agrave;y &dstrok;&abreve;ng
                                     th.font-weight-bold Lượt xem
                                     th.font-weight-bold Hành động
@@ -48,7 +48,8 @@ block content
                                             img(src=`${blog.image}` alt='image')
                                         td.w-25= blog.title
                                         td= blog.BlogCategory[0].category
-                                        td= blog.User[0].fullname
+                                        td
+                                            a(href=`/user/${blog.User[0]._id}/update`)= blog.User[0].fullname
                                         td= moment(blog.createdAt).format("DD-MM-YYYY") 
                                         td= blog.view
                                         td

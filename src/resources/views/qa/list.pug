@@ -24,9 +24,10 @@ block content
                                         - count++;
                                         tr
                                             td= count
-                                            td.d-flex.align-items-center
-                                                img(src=qa.user[0].avatar)
-                                                span.ml-2= qa.user[0].fullname
+                                            td
+                                                a.d-flex.align-items-center(href=`/user/${qa.user[0]._id}/update`)
+                                                    img(src=qa.user[0].avatar)
+                                                    span.ml-2= qa.user[0].fullname
                                             td= qa.title
                                             td= qa.numViews
                                             td= qa.numComments

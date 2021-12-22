@@ -37,8 +37,9 @@ block content
                                         tr
                                             td= count
                                             td
-                                                img(src=rank.user[0].avatar)
-                                                span.ml-2= rank.user[0].fullname
+                                                a.d-flex.align-items-center(href=`/user/${rank.user[0]._id}/update`)
+                                                    img(src=rank.user[0].avatar)
+                                                    span.ml-2= rank.user[0].fullname
                                             td= rank.user[0].email
                                             td= Math.round(rank.totalScore) + " điểm"
                                             td Hoàn thành #{rank.totalLessionDone}/#{countLessions} bài học (#{percent}%)
