@@ -5,6 +5,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const slugify = require("slugify");
 const cloudinary = require("../../config/cloud/index");
 const CommentLike = require("../models/CommentLike");
+const CommentReport = require("../models/CommentReport");
 const Notification = require("../models/Notification");
 class QaController {
     // [GET]/qa/list

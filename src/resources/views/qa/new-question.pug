@@ -10,6 +10,12 @@ block main
                         .new-question-label.mb-4 Ảnh mô tả
                         input(type="file" name="thumbnail" accept="image/*")
                         .gallery.mt-2
+                    .new-question-topic.mt-5
+                        .new-question-label.mb-4 Chủ đề
+                        div
+                            input(type="text" name="topic" hidden)
+                            each subject in subjects
+                                button.btn.btn-light.rounded-pill.fs-7.me-3(type="button")= subject._id
                     .new-question-content.mt-5
                         .new-question-label.mb-4 Nội dung
                         textarea.new-question-textarea(type="text" name="content" placeholder="Mô tả vấn đề ở đây")
@@ -40,8 +46,10 @@ block main
             const newQuestionTextarea = $(".new-question-textarea");
             const newQuestionImg = $(".new-question-img input[type='file']");
             const newQuestionTitleInput = $("input[name='title']");
+            const newQuestionTopicInput = $("input[name='topic']");
             const btnPostQuestion = $(".btn-post-question");
             const newQuestionForm = $(".new-question form");
+            const newQuestionTopicBtn = $(".new-question-topic div button");
 
             // preview image upload
             newQuestionImg.on('change', function(e) {
@@ -53,6 +61,8 @@ block main
 
             newQuestionForm.submit(function () {
                 newQuestionTitleInput.val(newQuestionTitle.text());
+                var topic = $(".new-question-topic div button.active").text();
+                newQuestionTopicInput.val(topic);
             })
 
             newQuestionTitle.keyup(function () {
@@ -61,5 +71,10 @@ block main
                 } else {
                     btnPostQuestion.prop('disabled', true);
                 }
+            })
+
+            newQuestionTopicBtn.click(function () {
+                newQuestionTopicBtn.removeClass("active");
+                $(this).addClass("active");
             })
         })

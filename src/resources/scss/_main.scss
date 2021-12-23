@@ -2047,6 +2047,21 @@
             font-size: 18px;
             font-weight: 600;
         }
+
+        &-topic {
+            button {
+                border: none;
+
+                &:focus {
+                    border-color: unset;
+                    box-shadow: unset;
+                }
+
+                &.active {
+                    background: #ffdfd8;
+                }
+            }
+        }
     }
 
     @import "./blog";

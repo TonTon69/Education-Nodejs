@@ -8,11 +8,9 @@ const Question = new Schema(
     {
         title: { type: String, require: true },
         content: { type: String, require: true },
-        thumbnail: { type: String },
-        topic: { type: String },
-        tags: { type: String },
+        thumbnail: { type: String, default: "" },
+        topic: { type: String, require: true },
         numViews: { type: Number, default: 0 },
-        numLikes: { type: Number, default: 0 },
         numComments: { type: Number, default: 0 },
         userID: { type: Schema.Types.ObjectId, ref: "User", require: true },
         slug: { type: String, slug: "title", unique: true },

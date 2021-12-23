@@ -2266,6 +2266,13 @@ blockquote {
     .main .new-question-label {
       font-size: 18px;
       font-weight: 600; }
+    .main .new-question-topic button {
+      border: none; }
+      .main .new-question-topic button:focus {
+        border-color: unset;
+        box-shadow: unset; }
+      .main .new-question-topic button.active {
+        background: #ffdfd8; }
   @media (max-width: 768px) {
     .main .blog .row {
       flex-direction: column; }

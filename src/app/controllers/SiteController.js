@@ -346,16 +346,25 @@ class SiteController {
 
     // [GET]/new-question
     async newQuestion(req, res) {
-        res.render("qa/new-question");
+        const subjects = await Subject.aggregate([
+            {
+                $group: {
+                    _id: "$name",
+                },
+            },
+        ]);
+
+        res.render("qa/new-question", { subjects });
     }
 
     // [POST]/new-question
     async postNewQuestion(req, res) {
         if (req.file === undefined) {
-            const { title, content } = req.body;
+            const { title, content, topic } = req.body;
             const question = new Question({
                 title,
                 content,
+                topic,
                 userID: ObjectId(req.signedCookies.userId),
             });
             await question.save();
@@ -370,10 +379,11 @@ class SiteController {
                 if (err) {
                     console.log(err);
                 } else {
-                    const { title, content } = req.body;
+                    const { title, content, topic } = req.body;
                     const question = new Question({
                         title,
                         content,
+                        topic,
                         userID: ObjectId(req.signedCookies.userId),
                         thumbnail: result.url,
                     });

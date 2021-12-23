@@ -19,11 +19,9 @@ block content
                                     th.font-weight-bold Hành động
                             tbody
                                 if qaList.length > 0
-                                    - var count = 0;
-                                    each qa in qaList
-                                        - count++;
+                                    each qa, index in qaList
                                         tr
-                                            td= count
+                                            td= index + 1
                                             td
                                                 a.d-flex.align-items-center(href=`/user/${qa.user[0]._id}/update`)
                                                     img(src=qa.user[0].avatar)

@@ -10,12 +10,17 @@ block content
                             a.btn.btn-outline-warning.btn-icon-text(href='/qa/list') 
                                 i.mdi.mdi-reload.btn-icon-prepend
                                 | Quay lại
-                        form.mt-4(action=`/qa/${qa[0]._id}/browser?_method=PUT`, method='POST')
+                        //- form.mt-4(action=`/qa/${qa[0]._id}/browser?_method=PUT`, method='POST')
+                        div
                             input(type="text" name="action" value="edit" hidden)
                             .form-group.row.text-dark
                                 label.col-sm-3.fw-primary Liên kết đến trang
                                 .col-sm-9
                                     a(href=`/qa/${qa[0].slug}` target="_blank")= qa[0].slug
+                            .form-group.row.text-dark
+                                label.col-sm-3.fw-primary Chủ đề
+                                .col-sm-9
+                                    span= qa[0].topic
                             .form-group.row.text-dark
                                 label.col-sm-3.fw-primary Tiêu đề
                                 .col-sm-9
@@ -31,10 +36,6 @@ block content
                                 label.col-sm-3.fw-primary Nội dung
                                 .col-sm-9
                                     div !{qa[0].content}
-                            .form-group.row.text-dark
-                                label.col-sm-3.col-form-label.fw-primary(for='topic') Chủ đề
-                                .col-sm-9
-                                    input#topic.form-control(type='text', placeholder='Nhập chủ đề tại đây...', name='topic', value=qa[0].topic, required)
                             .form-group.row.text-dark
                                 label.col-sm-3.fw-primary Lượt xem
                                 .col-sm-9
@@ -78,6 +79,6 @@ block content
                                         else
                                             tr
                                                 td(colspan='8').text-center Không có dữ liệu. 
-                            .mt-5
-                                a.btn.btn-light(href='/qa/list') Hủy bỏ
-                                button.btn.btn-primary.ml-4(type='submit') Cập nhật
+                            //- .mt-5
+                            //-     a.btn.btn-light(href='/qa/list') Hủy bỏ
+                            //-     button.btn.btn-primary.ml-4(type='submit') Cập nhật

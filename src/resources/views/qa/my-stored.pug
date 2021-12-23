@@ -107,7 +107,7 @@ block main
             });
 
             const formDeleteQa = $("form[name='form-delete-qa']");
-            $(".btn-delete-qa").click(function() {
+            $(".tab-pane.active .btn-delete-qa").click(function() {
                 const qaID = $(this).attr("data-id");
                 formDeleteQa.attr("action", "/qa/" + qaID + "/delete?_method=DELETE");
                 formDeleteQa.submit();
