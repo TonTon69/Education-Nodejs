@@ -9,10 +9,7 @@ block main
                         .col-sm-3.col-12
                             .subjects__item.mb-5
                                 a.subjects__link(href=`/subjects/${item.slug}`)
-                                    .brand PC3
-                                    .subject
-                                        h4= item.name
-                                        ion-icon(name=item.icon)
+                                    img(src=item.thumbnail)
                                 h6.mt-3.subjects__title
                                     a(href=`/subjects/${item.slug}`)= item.name + " " + item.gradeID
         ul#myTab.nav.nav-tabs(role='tablist')
@@ -34,10 +31,7 @@ block main
                             .col-sm-3.col-12
                                 .subjects__item.mb-5
                                     a.subjects__link(href=`/subjects/${subject.slug}`)
-                                        .brand PC3
-                                        .subject
-                                            h4= subject.name
-                                            ion-icon(name=subject.icon)
+                                        img(src=subject.thumbnail)
                                     h6.mt-3.subjects__title
                                         a(href=`/subjects/${subject.slug}`)= subject.name + " 10"
             #grade11.tab-pane.fade(role='tabpanel', aria-labelledby='grade11-tab')
@@ -48,10 +42,7 @@ block main
                             .col-sm-3
                                 .subjects__item.mb-5
                                     a.subjects__link(href=`/subjects/${subject.slug}`)
-                                        .brand PC3
-                                        .subject
-                                            h4= subject.name
-                                            ion-icon(name=subject.icon)
+                                        img(src=subject.thumbnail)
                                     h6.mt-3.subjects__title
                                         a(href=`/subjects/${subject.slug}`)= subject.name + " 11"
             #grade12.tab-pane.fade(role='tabpanel', aria-labelledby='grade12-tab')
@@ -62,9 +53,6 @@ block main
                             .col-sm-3
                                 .subjects__item.mb-5
                                     a.subjects__link(href=`/subjects/${subject.slug}`)
-                                        .brand PC3
-                                        .subject
-                                            h4= subject.name
-                                            ion-icon(name=subject.icon)
+                                        img(src=subject.thumbnail)
                                     h6.mt-3.subjects__title
                                         a(href=`/subjects/${subject.slug}`)= subject.name + " 12"

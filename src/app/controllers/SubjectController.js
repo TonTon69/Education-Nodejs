@@ -144,8 +144,8 @@ class SubjectController {
     async postCreate(req, res) {
         const { name, gradeID } = req.body;
         const findSubject = await Subject.findOne({
-            name: name,
-            gradeID: gradeID,
+            name,
+            gradeID,
         });
         if (findSubject) {
             req.flash(
@@ -174,10 +174,10 @@ class SubjectController {
 
     // [PUT]/subjects/:id
     async update(req, res) {
-        const { name, gradeID } = req.body;
+        const { name, gradeID, thumbnail } = req.body;
         const findSubject = await Subject.findOne({
-            name: name,
-            gradeID: gradeID,
+            name,
+            gradeID,
         });
         if (findSubject) {
             req.flash(
@@ -191,8 +191,9 @@ class SubjectController {
         await Subject.updateOne(
             { _id: req.params.id },
             {
-                name: name,
-                gradeID: gradeID,
+                name,
+                gradeID,
+                thumbnail,
                 slug: slugify(name.toLowerCase() + "-" + gradeID.toLowerCase()),
             }
         );
@@ -308,6 +309,7 @@ class SubjectController {
                         name: row[1],
                         gradeID: row[2],
                         icon: row[3],
+                        thumbnail: row[4],
                     });
                     subjects.push(subject);
                 });

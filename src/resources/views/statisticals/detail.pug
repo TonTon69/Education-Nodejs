@@ -47,6 +47,12 @@ block content
                                                                 i.mdi.mdi-close-circle.mdi-24px
                                                                 span.ml-2 Học sinh đã bỏ qua câu này
                                                     .text-dark.mt-4 !{result.exercise[0].question}
+                                                    if subject.name === "Tiếng Anh"
+                                                        if result.exercise[0].audioUrl
+                                                            - var audioId = result.exercise[0].audioUrl.split("/")[5];
+                                                            .mt-3
+                                                                audio(controls)
+                                                                    source(src=`https://drive.google.com/uc?id=${audioId}&export=download`, type='audio/mp3')  
                                                     .row.ml-0
                                                         if result.exercise[0].answer === result.exercise[0].option1
                                                             .col-sm-6.p-2.form-check.d-flex.align-items-center.bg-green

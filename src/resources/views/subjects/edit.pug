@@ -21,6 +21,10 @@ block content
                                 .col-sm-9
                                     input#icon.form-control(type='text', placeholder='Nhập tên biểu tượng', name='icon', value=subject.icon, required)
                             .form-group.row
+                                label.col-sm-3.col-form-label.text-dark(for='thumbnail') Ảnh bìa
+                                .col-sm-9
+                                    input#thumbnail.form-control(type='text', placeholder='Nhập liên kết ảnh bìa', name='thumbnail', value=subject.thumbnail, required)
+                            .form-group.row
                                 label.col-sm-3.col-form-label.text-dark(for='grade') Khối
                                 .col-sm-9
                                     select.form-control.h-75(id='grade', name='gradeID', required)

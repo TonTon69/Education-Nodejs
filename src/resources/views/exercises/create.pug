@@ -17,7 +17,11 @@ block content
                                     button.ml-2.btn.btn-sm.btn-primary#btn-submit-add-excel(type="submit") Lưu
                                     button.ml-2.btn.btn-sm.btn-secondary#btn-cancel(type="button") Hủy
                         div
-                            a.btn.btn-outline-primary.btn-icon-text(href='/files/sample-create-exercises.xlsx' download) 
+                            if lession.name.includes("Reading") || lession.name.includes("Listening")
+                                a.btn.btn-outline-primary.btn-icon-text(href='') 
+                                    i.mdi.mdi-database-plus.btn-icon-prepend
+                                    | Thêm bài tập đục lỗ
+                            a.btn.btn-outline-success.btn-icon-text.ml-4(href='/files/sample-create-exercises.xlsx' download) 
                                 i.mdi.mdi-file-excel.btn-icon-prepend
                                 | Excel mẫu
                             a.btn.btn-outline-warning.btn-icon-text.ml-4(href=`/subjects/${subject._id}/content`) 
