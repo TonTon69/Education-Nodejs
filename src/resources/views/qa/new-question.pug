@@ -60,9 +60,9 @@ block main
             });
 
             newQuestionForm.submit(function () {
+                var topic = $(".new-question-topic div button.active");
                 newQuestionTitleInput.val(newQuestionTitle.text());
-                var topic = $(".new-question-topic div button.active").text();
-                newQuestionTopicInput.val(topic);
+                newQuestionTopicInput.val(topic.text());
             })
 
             newQuestionTitle.keyup(function () {
