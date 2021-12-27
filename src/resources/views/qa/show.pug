@@ -49,15 +49,15 @@ block main
                                         .content-time
                                             if comment.commentLikes.length > 0
                                                 - var checkLike = comment.commentLikes.filter((x) => x.userID.equals(user[0]._id));
-                                                .content-time__like(data-id=comment._id class=(checkLike.length > 0 ? "active" : undefined))
+                                                .content-time__like.me-2(data-id=comment._id class=(checkLike.length > 0 ? "active" : ""))
                                                     ion-icon(name="heart-outline")
                                             else
-                                                .content-time__like(data-id=comment._id)
+                                                .content-time__like.me-2(data-id=comment._id)
                                                     ion-icon(name="heart-outline")
-                                            .content-time__reply
+                                            .content-time__reply.me-2
                                                 ion-icon(name="chatbubble-outline")
-                                            span ·
-                                            span.fs-8.text-secondary= moment(comment.createdAt).locale("vi").fromNow()
+                                            span.me-2 ·
+                                            span.me-2.fs-8.text-secondary= moment(comment.createdAt).locale("vi").fromNow()
                                             .position-relative.qa-manager
                                                 .fs-5
                                                     ion-icon(name='ellipsis-horizontal')
@@ -125,19 +125,19 @@ block main
                             </div>
                             <div class="content-time">
                                 ${ cmt.commentLikes.length > 0 ? `
-                                    <div class="content-time__like ${ checkLike.length > 0 ? 'active' : undefined }" data-id=${cmt._id}>
+                                    <div class="content-time__like me-2 ${ checkLike.length > 0 ? 'active' : '' }" data-id=${cmt._id}>
                                         <ion-icon name="heart-outline"></ion-icon>
                                     </div>  
                                 ` : `
-                                    <div class="content-time__like" data-id=${cmt._id}>
+                                    <div class="content-time__like me-2" data-id=${cmt._id}>
                                         <ion-icon name="heart-outline"></ion-icon>
                                     </div>
                                 ` }
-                                <div class="content-time__reply">
+                                <div class="content-time__reply me-2">
                                     <ion-icon name="chatbubble-outline"></ion-icon>
                                 </div>
-                                <span>·</span>
-                                <span class="fs-8 text-secondary">${moment(cmt.createdAt).locale("vi").fromNow()}</span>
+                                <span class="me-2">·</span>
+                                <span class="fs-8 text-secondary me-2">${moment(cmt.createdAt).locale("vi").fromNow()}</span>
                                 <div class="position-relative qa-manager">
                                     <div class="fs-5">
                                         <ion-icon name="ellipsis-horizontal"></ion-icon>

@@ -15,7 +15,7 @@ block main
                         div
                             input(type="text" name="topic" hidden)
                             each subject in subjects
-                                button.btn.btn-light.rounded-pill.fs-7.me-3(type="button")= subject._id
+                                button.btn.btn-light.rounded-pill.fs-7.me-3.mb-3(type="button")= subject._id
                     .new-question-content.mt-5
                         .new-question-label.mb-4 Nội dung
                         textarea.new-question-textarea(type="text" name="content" placeholder="Mô tả vấn đề ở đây")

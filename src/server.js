@@ -161,8 +161,10 @@ io.on("connection", async (socket) => {
         socket.broadcast.emit("server-send-notification", notiContent);
 
         // handle notification
-        const notification = new Notification(notiContent);
-        await notification.save();
+        if (data.author !== data.userID) {
+            const notification = new Notification(notiContent);
+            await notification.save();
+        }
     });
 
     // handle edit comment
@@ -208,16 +210,18 @@ io.on("connection", async (socket) => {
         await CommentReport.deleteMany({
             commentID: data.commentID,
         });
-        await CommentReport.deleteMany({
+        await CommentLike.deleteMany({
             commentID: data.commentID,
         });
         await Question.updateOne(
             { _id: data.qaID },
             { $inc: { numComments: -1 } }
         );
-        await Notification.deleteMany({
-            sourceID: data.qaID,
-        });
+
+        // await Notification.deleteMany({
+        //     sourceID: data.qaID,
+        //     senderID: data.userID,
+        // });
         const comments = await Comment.aggregate([
             {
                 $match: {
